@@ -3,8 +3,9 @@ import { Menu, X } from 'lucide-react'
 
 const navLinks = [
   { label: 'El Desafío', href: '#desafio' },
-  { label: 'Modelo', href: '#modelo' },
+  { label: 'Centro Demostrativo', href: '#modelo' },
   { label: 'Plataforma', href: '#plataforma' },
+  { label: 'Marketplace', href: '#marketplace' },
   { label: 'Agua', href: '#agua' },
   { label: 'Implementación', href: '#implementacion' },
   { label: 'Contacto', href: '#contacto' },
@@ -38,13 +39,17 @@ export default function Navbar() {
               <path d="M26 20 C24 24 20 28 16 28" stroke="white" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </div>
-          <span className={`font-bold text-xl tracking-tight transition-colors ${scrolled ? 'text-agro-green-700' : 'text-white'}`}>
-            Agro<span className={scrolled ? 'text-agro-green-500' : 'text-agro-green-300'}>Hub</span>
-          </span>
+          <div className="flex flex-col leading-none">
+            <span className={`font-bold text-lg tracking-tight transition-colors leading-tight ${scrolled ? 'text-agro-green-700' : 'text-white'}`}>
+              Agro<span className={scrolled ? 'text-agro-green-500' : 'text-agro-green-300'}>Hub</span>{' '}
+              <span className={`text-xs font-semibold tracking-widest uppercase ${scrolled ? 'text-agro-green-400' : 'text-white/60'}`}>UC</span>
+            </span>
+            <span className={`text-[10px] font-medium tracking-wide ${scrolled ? 'text-gray-400' : 'text-white/50'}`}>Valle de Choapa</span>
+          </div>
         </a>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-8">
+        <ul className="hidden lg:flex items-center gap-7">
           {navLinks.map(link => (
             <li key={link.href}>
               <a
@@ -62,7 +67,7 @@ export default function Navbar() {
         {/* CTA */}
         <a
           href="#contacto"
-          className="hidden md:inline-flex items-center gap-2 bg-agro-green-600 hover:bg-agro-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow transition-all duration-200 hover:shadow-md"
+          className="hidden lg:inline-flex items-center gap-2 bg-agro-green-600 hover:bg-agro-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow transition-all duration-200 hover:shadow-md"
         >
           Comenzar
         </a>
@@ -70,7 +75,7 @@ export default function Navbar() {
         {/* Mobile toggle */}
         <button
           onClick={() => setMenuOpen(v => !v)}
-          className={`md:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-gray-700' : 'text-white'}`}
+          className={`lg:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-gray-700' : 'text-white'}`}
         >
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
@@ -78,7 +83,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
+        <div className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
           <ul className="flex flex-col py-4">
             {navLinks.map(link => (
               <li key={link.href}>

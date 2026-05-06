@@ -23,24 +23,16 @@ export default function Hero() {
       <div className="absolute inset-0">
         <img
           src={HERO_IMAGE}
-          alt="Agricultor trabajando en campo con tecnología"
+          alt="Agricultor en terreno con tecnología agrícola en el Valle de Choapa"
           className="w-full h-full object-cover object-center"
           loading="eager"
         />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-agro-green-900/80 via-agro-green-800/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-agro-green-900/85 via-agro-green-800/65 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-agro-green-900/50 via-transparent to-transparent" />
       </div>
 
-      {/* Animated dots/nodes */}
+      {/* Animated sensor nodes */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20" aria-hidden>
-        <defs>
-          <radialGradient id="nodeGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#86efac" />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-        </defs>
-        {/* Connecting lines */}
         <line x1="20%" y1="70%" x2="40%" y2="50%" stroke="#86efac" strokeWidth="1" strokeDasharray="6 4" opacity="0.6">
           <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="3s" repeatCount="indefinite" />
         </line>
@@ -50,7 +42,6 @@ export default function Hero() {
         <line x1="60%" y1="35%" x2="78%" y2="55%" stroke="#86efac" strokeWidth="1" strokeDasharray="6 4" opacity="0.6">
           <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="2.8s" repeatCount="indefinite" />
         </line>
-        {/* Nodes */}
         <circle cx="20%" cy="70%" r="5" fill="#86efac" opacity="0.8">
           <animate attributeName="r" values="4;7;4" dur="2.5s" repeatCount="indefinite" />
         </circle>
@@ -71,19 +62,24 @@ export default function Hero() {
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
             <span className="w-2 h-2 bg-agro-green-400 rounded-full animate-pulse" />
-            <span className="text-white/90 text-sm font-medium">Centro Demostrativo Digital</span>
+            <span className="text-white/90 text-sm font-medium">Centro Demostrativo AgroHub UC · Valle de Choapa</span>
           </div>
 
           {/* Headline */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-            Transformando el centro demostrativo en un{' '}
-            <span className="text-agro-green-300">sistema demostrativo permanente</span>
+            Un Centro Demostrativo{' '}
+            <span className="text-agro-green-300">integrado para la agricultura del Valle de Choapa</span>
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-10 max-w-xl">
-            Acompañamos la evolución agrícola integrando conocimiento, monitoreo y continuidad operativa.
-            La tecnología al servicio de las personas, no al revés.
+          <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-4 max-w-xl">
+            AgroHub UC integra medición, conocimiento técnico, transferencia tecnológica,
+            capacitación, comercialización y toma de decisiones en una solución práctica
+            y continua para el agricultor.
+          </p>
+          <p className="text-base text-white/60 leading-relaxed mb-10 max-w-lg">
+            No es solo una aplicación. Es un Centro Demostrativo donde el agricultor observa,
+            entiende, usa y valida soluciones en su propia realidad productiva.
           </p>
 
           {/* Buttons */}
@@ -93,7 +89,7 @@ export default function Hero() {
               className="inline-flex items-center gap-2 bg-agro-green-600 hover:bg-agro-green-500 text-white font-semibold px-7 py-3.5 rounded-full shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5"
             >
               <Play size={16} className="fill-current" />
-              Ver cómo funciona
+              Ver el modelo
             </a>
             <a
               href="#plataforma"
@@ -103,18 +99,33 @@ export default function Hero() {
             </a>
           </div>
 
-          {/* Stats row */}
-          <div className="flex flex-wrap gap-8 mt-14 pt-8 border-t border-white/20">
-            {[
-              { value: '6', label: 'Etapas de transformación' },
-              { value: '24/7', label: 'Acompañamiento continuo' },
-              { value: '100%', label: 'Adaptable al territorio' },
-            ].map(stat => (
-              <div key={stat.value}>
-                <div className="text-3xl font-bold text-white">{stat.value}</div>
-                <div className="text-white/60 text-sm mt-0.5">{stat.label}</div>
-              </div>
-            ))}
+          {/* 3-level distinction */}
+          <div className="mt-14 pt-8 border-t border-white/20">
+            <p className="text-white/40 text-xs uppercase tracking-widest font-medium mb-4">La distinción clave</p>
+            <div className="flex flex-wrap gap-3">
+              {[
+                { label: 'Kit tecnológico', sub: 'Genera datos', dim: true },
+                { label: 'Centro Demostrativo', sub: 'Genera aprendizaje', dim: true },
+                { label: 'AgroHub UC', sub: 'Genera decisiones e impacto', dim: false },
+              ].map((item, i) => (
+                <div
+                  key={item.label}
+                  className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl border ${
+                    item.dim
+                      ? 'bg-white/8 border-white/10 opacity-60'
+                      : 'bg-agro-green-600/40 border-agro-green-400/40'
+                  }`}
+                >
+                  {i > 0 && (
+                    <span className="text-white/30 text-base mr-[-4px]">›</span>
+                  )}
+                  <div>
+                    <div className={`text-sm font-semibold ${item.dim ? 'text-white/70' : 'text-white'}`}>{item.label}</div>
+                    <div className={`text-xs ${item.dim ? 'text-white/40' : 'text-agro-green-300'}`}>{item.sub}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

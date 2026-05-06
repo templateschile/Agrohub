@@ -21,14 +21,14 @@ const knowledgeFeatures = [
     color: 'text-agro-blue-600',
     bg: 'bg-agro-blue-50',
     title: 'Gestión institucional',
-    desc: 'Las instituciones pueden publicar documentos, crear capacitaciones y acceder a estadísticas agregadas.',
+    desc: 'Instituciones y academia publican documentos, capacitaciones y acceden a estadísticas territoriales agregadas.',
   },
   {
     icon: Users,
     color: 'text-purple-600',
     bg: 'bg-purple-50',
-    title: 'Comunidad activa',
-    desc: 'Productores, técnicos e instituciones colaborando en una red viva que crece con el territorio.',
+    title: 'Coordinación de actores',
+    desc: 'Agricultores, técnicos, extensionistas, estudiantes e instituciones en una red viva que crece con el territorio.',
   },
 ]
 
@@ -53,14 +53,14 @@ function KnowledgeFeatureItem({ item, index }) {
 }
 
 const nodes = [
-  { id: 'cd', x: 50, y: 50, label: 'Centro\nDemostrativo', icon: Building2, size: 20, color: '#2d7325', ring: '#86efac' },
-  { id: 'p1', x: 22, y: 30, label: 'Productor\nSector A', icon: Sprout, size: 14, color: '#1e4aac', ring: '#93cbfb' },
-  { id: 'p2', x: 78, y: 28, label: 'Productor\nSector B', icon: Sprout, size: 14, color: '#1e4aac', ring: '#93cbfb' },
-  { id: 'p3', x: 18, y: 68, label: 'Productor\nSector C', icon: Sprout, size: 14, color: '#1e4aac', ring: '#93cbfb' },
-  { id: 'p4', x: 82, y: 70, label: 'Productor\nSector D', icon: Sprout, size: 14, color: '#1e4aac', ring: '#93cbfb' },
-  { id: 't1', x: 35, y: 16, label: 'Equipo\nTécnico', icon: GraduationCap, size: 15, color: '#7d4f27', ring: '#d4b27a' },
-  { id: 'inst', x: 65, y: 14, label: 'Institución\nRegional', icon: Building2, size: 15, color: '#6d28d9', ring: '#c4b5fd' },
-  { id: 'p5', x: 50, y: 85, label: 'Comunidad\nAgrícola', icon: Users, size: 16, color: '#0f766e', ring: '#5eead4' },
+  { id: 'cd', x: 50, y: 50, label: 'Centro\nDemostrativo', size: 20, color: '#2d7325', ring: '#86efac' },
+  { id: 'p1', x: 22, y: 30, label: 'Productor\nSector A', size: 14, color: '#1e4aac', ring: '#93cbfb' },
+  { id: 'p2', x: 78, y: 28, label: 'Productor\nSector B', size: 14, color: '#1e4aac', ring: '#93cbfb' },
+  { id: 'p3', x: 18, y: 68, label: 'Productor\nSector C', size: 14, color: '#1e4aac', ring: '#93cbfb' },
+  { id: 'p4', x: 82, y: 70, label: 'Productor\nSector D', size: 14, color: '#1e4aac', ring: '#93cbfb' },
+  { id: 't1', x: 35, y: 16, label: 'Equipo\nTécnico', size: 15, color: '#7d4f27', ring: '#d4b27a' },
+  { id: 'inst', x: 65, y: 14, label: 'UC\nAcademia', size: 15, color: '#6d28d9', ring: '#c4b5fd' },
+  { id: 'p5', x: 50, y: 85, label: 'Comunidad\nAgrícola', size: 16, color: '#0f766e', ring: '#5eead4' },
 ]
 
 const edges = [
@@ -89,14 +89,15 @@ export default function KnowledgeHub() {
         >
           <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-100 rounded-full px-4 py-1.5 mb-5">
             <Share2 size={14} className="text-teal-600" />
-            <span className="text-teal-700 text-sm font-medium">Conocimiento colaborativo</span>
+            <span className="text-teal-700 text-sm font-medium">Coordinación territorial</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Un territorio que aprende junto
+            Un territorio que aprende y crece junto
           </h2>
           <p className="text-gray-500 text-lg leading-relaxed">
-            El conocimiento puede permanecer privado o compartirse progresivamente.
-            Cada productor decide qué aporta y qué accede.
+            AgroHub UC crea el espacio común que falta: agricultores, técnicos, instituciones y academia
+            coordinados en una sola plataforma. El conocimiento puede permanecer privado
+            o compartirse progresivamente.
           </p>
         </div>
 
@@ -108,11 +109,10 @@ export default function KnowledgeHub() {
           >
             <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-sm font-semibold text-gray-700">Red del territorio</span>
-                <span className="text-xs text-gray-400">Valle de Choapa · Mapa colaborativo</span>
+                <span className="text-sm font-semibold text-gray-700">Red del Centro Demostrativo</span>
+                <span className="text-xs text-gray-400">Valle de Choapa · AgroHub UC</span>
               </div>
               <svg viewBox="0 0 100 100" className="w-full aspect-square">
-                {/* Edge lines */}
                 {edges.map(([a, b]) => {
                   const nodeA = getPos(a)
                   const nodeB = getPos(b)
@@ -128,11 +128,10 @@ export default function KnowledgeHub() {
                     />
                   )
                 })}
-                {/* Nodes */}
                 {nodes.map(node => (
                   <g key={node.id}>
                     <circle cx={node.x} cy={node.y} r={node.size / 2 + 2} fill={node.ring} opacity="0.3">
-                      <animate attributeName="r" values={`${node.size/2+1};${node.size/2+3};${node.size/2+1}`} dur={`${2.5 + Math.random()}s`} repeatCount="indefinite"/>
+                      <animate attributeName="r" values={`${node.size/2+1};${node.size/2+3};${node.size/2+1}`} dur={`${2.5 + (node.x % 1.5)}s`} repeatCount="indefinite"/>
                     </circle>
                     <circle cx={node.x} cy={node.y} r={node.size / 2} fill={node.color} opacity="0.9" />
                     <text x={node.x} y={node.y + node.size / 2 + 4} textAnchor="middle" fontSize="3.2" fill="#374151" fontFamily="Inter,sans-serif" fontWeight="500">

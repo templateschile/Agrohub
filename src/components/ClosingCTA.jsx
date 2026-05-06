@@ -11,8 +11,8 @@ export default function ClosingCTA() {
       {/* Closing hero */}
       <section className="relative py-32 overflow-hidden">
         <div className="absolute inset-0">
-          <img src={SUNSET_IMAGE} alt="Campo agrícola al atardecer con personas trabajando juntas" className="w-full h-full object-cover" loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-t from-agro-green-900/90 via-agro-green-800/60 to-agro-green-900/40" />
+          <img src={SUNSET_IMAGE} alt="Valle de Choapa al atardecer, agricultores y técnicos trabajando juntos" className="w-full h-full object-cover" loading="lazy" />
+          <div className="absolute inset-0 bg-gradient-to-t from-agro-green-900/92 via-agro-green-800/65 to-agro-green-900/45" />
         </div>
 
         <div
@@ -22,17 +22,21 @@ export default function ClosingCTA() {
           }`}
         >
           <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-8">
-            <span className="text-white/90 text-sm font-medium">El compromiso de AgroHub</span>
+            <span className="text-white/90 text-sm font-medium">El compromiso de AgroHub UC</span>
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-            No buscamos reemplazar<br />lo que ya funciona.
+            La propuesta no busca separar<br />lo tradicional de lo tecnológico.
           </h2>
-          <p className="text-2xl md:text-3xl font-light text-agro-green-200 mb-8">
-            Buscamos acompañar su evolución.
+          <p className="text-2xl md:text-3xl font-light text-agro-green-200 mb-6 leading-relaxed">
+            Busca unir ambos mundos.
           </p>
-          <p className="text-white/70 text-lg leading-relaxed max-w-2xl mx-auto mb-12">
-            Cada centro demostrativo tiene su historia, su confianza y su territorio.
-            AgroHub se adapta a esa realidad, no al revés.
+          <p className="text-white/65 text-lg leading-relaxed max-w-2xl mx-auto mb-4">
+            La experiencia del agricultor, el conocimiento técnico, la medición en terreno,
+            la comercialización y una herramienta digital fácil de usar.
+          </p>
+          <p className="text-white/50 text-base leading-relaxed max-w-xl mx-auto mb-12">
+            El Centro Demostrativo AgroHub UC integra todo en un modelo visible, práctico y escalable
+            para el Valle de Choapa.
           </p>
           <a
             href="#contacto"
@@ -53,9 +57,13 @@ export default function ClosingCTA() {
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
                 Conversemos sobre tu territorio
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
-                Cuéntanos dónde estás y qué necesitas. Exploramos juntos cómo AgroHub puede
-                integrarse a tu centro demostrativo.
+              <p className="text-gray-500 text-lg leading-relaxed mb-4">
+                Cuéntanos dónde estás y qué necesitas. Exploramos juntos cómo el Centro Demostrativo
+                AgroHub UC puede integrarse a tu realidad productiva.
+              </p>
+              <p className="text-gray-500 text-sm leading-relaxed mb-8">
+                La implementación comienza con un diagnóstico: entendemos el territorio, los actores
+                y las necesidades antes de instalar cualquier instrumento.
               </p>
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-3">
@@ -79,9 +87,10 @@ export default function ClosingCTA() {
               </div>
             </div>
 
-            {/* Right: simple form */}
+            {/* Right: form */}
             <div className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm">
-              <h3 className="font-semibold text-gray-900 text-lg mb-6">Dejanos tus datos</h3>
+              <h3 className="font-semibold text-gray-900 text-lg mb-2">Déjanos tus datos</h3>
+              <p className="text-gray-400 text-sm mb-6">Nos ponemos en contacto dentro de 48 horas hábiles.</p>
               <form className="flex flex-col gap-4" onSubmit={e => e.preventDefault()}>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -96,7 +105,7 @@ export default function ClosingCTA() {
                     <label className="block text-xs font-medium text-gray-600 mb-1.5">Organización</label>
                     <input
                       type="text"
-                      placeholder="Centro Demo."
+                      placeholder="Centro Demo. / SAG / etc."
                       className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-agro-green-400 focus:border-transparent placeholder-gray-400"
                     />
                   </div>
@@ -113,7 +122,7 @@ export default function ClosingCTA() {
                   <label className="block text-xs font-medium text-gray-600 mb-1.5">Cuéntanos sobre tu territorio</label>
                   <textarea
                     rows={4}
-                    placeholder="¿Dónde están ubicados? ¿Qué productores atienden? ¿Qué les gustaría mejorar?"
+                    placeholder="¿Dónde están ubicados? ¿Qué productores atienden? ¿Cuáles son los principales desafíos del territorio?"
                     className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-agro-green-400 focus:border-transparent placeholder-gray-400 resize-none"
                   />
                 </div>
