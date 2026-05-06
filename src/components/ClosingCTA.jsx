@@ -49,7 +49,7 @@ export default function ClosingCTA() {
               <div className="flex flex-col gap-4">
                 {[
                   { icon: Mail,  label: 'Email',              value: 'contacto@agrohub.cl' },
-                  { icon: Phone, label: 'Teléfono / WhatsApp', value: '+56 9 0000 0000' },
+                  { icon: Phone, label: 'Teléfono / WhatsApp', value: '+56 9 8756 1076' },
                 ].map(({ icon: Icon, label, value }) => (
                   <div key={label} className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-agro-green-50 border border-agro-green-100 rounded-xl flex items-center justify-center">
