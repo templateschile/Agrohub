@@ -1,110 +1,137 @@
 import {
-  MessageSquare, Wifi, FolderOpen, ShoppingBag,
-  Bell, BookOpen, Smartphone, Monitor, Leaf, BarChart2
+  MessageSquare, FolderOpen, BookOpen, Users,
+  Wifi, Bell, Smartphone, Monitor, ShoppingBag, Leaf
 } from 'lucide-react'
 import { useInView } from '../hooks/useInView'
 
 const modules = [
   {
-    icon: Wifi,
-    color: 'text-agro-blue-600',
-    bg: 'bg-agro-blue-50',
-    title: 'Sensores e Instrumentos',
-    benefit: 'El instrumento mide',
-    useCase: 'Humedad del suelo, temperatura, viento, evapotranspiración y alertas. Información de campo que antes era invisible.',
-  },
-  {
-    icon: BarChart2,
+    icon: MessageSquare,
     color: 'text-agro-green-600',
     bg: 'bg-agro-green-50',
-    title: 'Dashboard de Monitoreo',
-    benefit: 'El dato orienta',
-    useCase: 'Visualización simple de variables productivas en tiempo real. El agricultor entiende qué ocurre sin necesidad de intermediarios.',
-  },
-  {
-    icon: MessageSquare,
-    color: 'text-teal-600',
-    bg: 'bg-teal-50',
-    title: 'Asistente con IA',
-    benefit: 'Consultas 24/7',
-    useCase: 'El agricultor pregunta "¿cuándo riego mis tomates?" y recibe respuesta técnica adaptada a sus datos de campo en segundos.',
-  },
-  {
-    icon: Bell,
-    color: 'text-rose-600',
-    bg: 'bg-rose-50',
-    title: 'Alertas y Recomendaciones',
-    benefit: 'Decisiones a tiempo',
-    useCase: 'Alerta de déficit hídrico moderado con recomendación práctica: "Programar riego hoy 12:00 hrs por 50 minutos."',
+    size: 'large',
+    title: 'Conversación en lenguaje natural',
+    benefit: 'La puerta de entrada a la adopción',
+    useCase: 'El agricultor escribe o habla como habla. Pregunta "¿cuándo riego?" y recibe una respuesta técnica precisa, basada en sus datos reales y en fuentes confiables validadas por expertos.',
+    tag: 'Adopción temprana',
+    tagColor: 'bg-agro-green-100 text-agro-green-700',
   },
   {
     icon: FolderOpen,
-    color: 'text-agro-earth-600',
-    bg: 'bg-agro-earth-50',
-    title: 'Repositorio de Documentos',
-    benefit: 'Conocimiento siempre disponible',
-    useCase: 'Protocolos técnicos, fichas de cultivo y guías de riego accesibles desde cualquier dispositivo, en cualquier momento.',
+    color: 'text-agro-blue-600',
+    bg: 'bg-agro-blue-50',
+    size: 'large',
+    title: 'Centralización del conocimiento',
+    benefit: 'Todo en un solo lugar, siempre disponible',
+    useCase: 'Protocolos técnicos, fichas de cultivo, registros históricos, recomendaciones y decisiones pasadas. El saber del territorio deja de estar disperso y empieza a acumularse.',
+    tag: 'Digitalización',
+    tagColor: 'bg-agro-blue-100 text-agro-blue-700',
   },
   {
     icon: BookOpen,
     color: 'text-amber-600',
     bg: 'bg-amber-50',
-    title: 'Capacitación por Etapas',
-    benefit: 'Adopción gradual',
-    useCase: 'Videos cortos, tutoriales y fichas técnicas organizados por cultivo, etapa y nivel de adopción tecnológica.',
+    size: 'large',
+    title: 'Capacitación orgánica por etapas',
+    benefit: 'Aprender sin sentir que se está estudiando',
+    useCase: 'El aprendizaje ocurre en el uso diario. Guías cortas, respuestas contextuales y materiales adaptados al nivel y cultivo de cada agricultor, siempre apoyado por técnicos expertos.',
+    tag: 'Aprendizaje continuo',
+    tagColor: 'bg-amber-100 text-amber-700',
   },
   {
-    icon: ShoppingBag,
-    color: 'text-purple-600',
-    bg: 'bg-purple-50',
-    title: 'Marketplace Agrícola',
-    benefit: 'La mejora productiva tiene salida comercial',
-    useCase: 'Agricultores publican cosechas, ofrecen servicios, acceden a insumos y conectan con compradores en un solo lugar.',
+    icon: Users,
+    color: 'text-teal-600',
+    bg: 'bg-teal-50',
+    size: 'large',
+    title: 'Colaboración entre agricultores',
+    benefit: 'El conocimiento de uno enriquece a todos',
+    useCase: 'Lo que aprende un agricultor en un sector puede ayudar a otro con el mismo cultivo. La experiencia colectiva se convierte en conocimiento estructurado y accesible.',
+    tag: 'Ecosistema',
+    tagColor: 'bg-teal-100 text-teal-700',
+  },
+  {
+    icon: Wifi,
+    color: 'text-agro-blue-500',
+    bg: 'bg-agro-blue-50',
+    size: 'normal',
+    title: 'Sensores y monitoreo',
+    benefit: 'Datos que orientan decisiones',
+    useCase: 'Humedad, temperatura, viento y ET en tiempo real. El instrumento mide, la plataforma interpreta.',
+  },
+  {
+    icon: Bell,
+    color: 'text-rose-500',
+    bg: 'bg-rose-50',
+    size: 'normal',
+    title: 'Alertas inteligentes',
+    benefit: 'Actuar antes de que sea tarde',
+    useCase: 'Notificaciones prácticas con recomendación lista: qué hacer, cuándo y cómo.',
   },
   {
     icon: Leaf,
     color: 'text-agro-green-700',
     bg: 'bg-agro-green-50',
-    title: 'Micorrizas y Bioinsumos',
+    size: 'normal',
+    title: 'Micorrizas y bioinsumos',
     benefit: 'Resiliencia biológica',
-    useCase: 'Fortalecimiento del sistema suelo-planta. Implementación con seguimiento técnico y validación en terreno.',
+    useCase: 'Fortalecimiento del sistema suelo-planta con seguimiento técnico y validación en terreno.',
   },
   {
     icon: Smartphone,
     color: 'text-indigo-600',
     bg: 'bg-indigo-50',
-    title: 'App Móvil',
-    benefit: 'Todo desde el campo',
-    useCase: 'Interfaz simple pensada para el agricultor real. Sin tecnicismos, sin curvas complejas. La herramienta respeta sus tiempos.',
+    size: 'normal',
+    title: 'App móvil simple',
+    benefit: 'Para el campo, no para la oficina',
+    useCase: 'Interfaz diseñada para el agricultor real. Sin tecnicismos, sin pantallas complejas.',
   },
   {
     icon: Monitor,
     color: 'text-agro-blue-700',
     bg: 'bg-agro-blue-50',
-    title: 'Plataforma Web',
-    benefit: 'Visión completa del territorio',
-    useCase: 'Panel para técnicos e instituciones: ver todos los predios, sensores, alertas y actividad en un solo lugar.',
+    size: 'normal',
+    title: 'Panel para técnicos',
+    benefit: 'Visión territorial completa',
+    useCase: 'Técnicos e instituciones ven todos los predios, sensores, alertas y actividad de la red.',
+  },
+  {
+    icon: ShoppingBag,
+    color: 'text-purple-500',
+    bg: 'bg-purple-50',
+    size: 'normal',
+    title: 'Marketplace',
+    benefit: 'Salida comercial integrada',
+    useCase: 'Productores, servicios e insumos en un canal digital sencillo dentro de la misma plataforma.',
   },
 ]
 
 function ModuleCard({ mod, index }) {
-  const [ref, visible] = useInView({ threshold: 0.1 })
+  const [ref, visible] = useInView({ threshold: 0.08 })
   const Icon = mod.icon
+  const isLarge = mod.size === 'large'
+
   return (
     <div
       ref={ref}
-      className={`card-hover group bg-white border border-gray-100 rounded-2xl p-6 flex flex-col gap-4 cursor-default transition-all duration-500 ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
+      className={`card-hover group bg-white border border-gray-100 rounded-2xl flex flex-col gap-4 cursor-default transition-all duration-500 ${
+        isLarge ? 'p-7' : 'p-5'
+      } ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
       style={{ transitionDelay: `${index * 45}ms` }}
     >
-      <div className={`w-12 h-12 rounded-xl ${mod.bg} flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}>
-        <Icon size={22} className={mod.color} />
+      <div className="flex items-start justify-between gap-3">
+        <div className={`${isLarge ? 'w-13 h-13' : 'w-11 h-11'} w-12 h-12 rounded-xl ${mod.bg} flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shrink-0`}>
+          <Icon size={isLarge ? 24 : 20} className={mod.color} />
+        </div>
+        {mod.tag && (
+          <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${mod.tagColor} shrink-0`}>
+            {mod.tag}
+          </span>
+        )}
       </div>
       <div>
         <div className={`text-xs font-semibold ${mod.color} mb-1`}>{mod.benefit}</div>
-        <h3 className="font-semibold text-gray-900 text-sm mb-2">{mod.title}</h3>
-        <p className="text-gray-500 text-xs leading-relaxed">{mod.useCase}</p>
+        <h3 className={`font-bold text-gray-900 mb-2 ${isLarge ? 'text-lg' : 'text-sm'}`}>{mod.title}</h3>
+        <p className={`text-gray-500 leading-relaxed ${isLarge ? 'text-sm' : 'text-xs'}`}>{mod.useCase}</p>
       </div>
     </div>
   )
@@ -112,6 +139,8 @@ function ModuleCard({ mod, index }) {
 
 export default function HowItHelps() {
   const [titleRef, titleVisible] = useInView({ threshold: 0.2 })
+  const large = modules.filter(m => m.size === 'large')
+  const normal = modules.filter(m => m.size === 'normal')
 
   return (
     <section id="herramientas" className="py-24 bg-gray-50">
@@ -127,31 +156,39 @@ export default function HowItHelps() {
             <span className="text-agro-green-700 text-sm font-medium">Componentes de la solución</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Las herramientas que acompañan cada necesidad
+            Herramientas pensadas para la adopción real
           </h2>
           <p className="text-gray-500 text-lg leading-relaxed">
-            Cada componente fue diseñado para responder a un problema real del agricultor y del técnico.
-            Técnicamente robusto, visualmente simple.
+            La tecnología no sirve si no se usa. Por eso cada componente prioriza la simplicidad,
+            el lenguaje natural y el aprendizaje gradual — para que el agricultor adopte sin esfuerzo.
           </p>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-          {modules.map((mod, i) => (
+        {/* Large cards — core 4 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+          {large.map((mod, i) => (
             <ModuleCard key={mod.title} mod={mod} index={i} />
+          ))}
+        </div>
+
+        {/* Normal cards — supporting */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          {normal.map((mod, i) => (
+            <ModuleCard key={mod.title} mod={mod} index={i + large.length} />
           ))}
         </div>
 
         {/* Note */}
         <div className="mt-10 bg-white border border-gray-100 rounded-2xl p-6 flex flex-col md:flex-row gap-4 items-start max-w-3xl mx-auto shadow-sm">
           <div className="w-10 h-10 rounded-xl bg-agro-green-50 flex items-center justify-center shrink-0 mt-0.5">
-            <Leaf size={18} className="text-agro-green-600" />
+            <MessageSquare size={18} className="text-agro-green-600" />
           </div>
           <div>
-            <h4 className="font-semibold text-gray-900 text-sm mb-1">Diseño centrado en el usuario principal: el agricultor del Valle de Choapa</h4>
+            <h4 className="font-semibold text-gray-900 text-sm mb-1">La conversación es la puerta de entrada</h4>
             <p className="text-gray-500 text-sm leading-relaxed">
-              El diseño respeta su lenguaje, sus tiempos, su realidad productiva y su forma de aprender.
-              La tecnología acompaña la experiencia agrícola, no la reemplaza.
+              Un agricultor no necesita aprender a usar una plataforma. Solo necesita poder preguntarle
+              a alguien de confianza, en su propio lenguaje, y recibir una respuesta útil.
+              AgroHub UC hace exactamente eso.
             </p>
           </div>
         </div>
