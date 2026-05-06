@@ -1,146 +1,157 @@
-import { Droplets, TrendingDown, TrendingUp, Zap, Thermometer, BarChart2 } from 'lucide-react'
+import { Droplets, TrendingDown, TrendingUp, Zap, Thermometer, BarChart2, Wind } from 'lucide-react'
 import { useInView } from '../hooks/useInView'
 
-const FIELD_IMAGE = 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=80&auto=format'
+/* Use a reliable Unsplash URL with explicit format */
+const FIELD_IMAGE = 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1400&q=80'
 
 function MetricCard({ icon: Icon, label, value, trend, trendLabel, color, bg }) {
+  const [ref, visible] = useInView({ threshold: 0.1 })
   return (
-    <div className={`bg-white border border-gray-100 rounded-xl p-5 shadow-sm`}>
-      <div className="flex items-start justify-between mb-3">
-        <div className={`w-10 h-10 rounded-lg ${bg} flex items-center justify-center`}>
-          <Icon size={18} className={color} />
+    <div
+      ref={ref}
+      className={`bg-white/90 backdrop-blur-sm border border-white/60 rounded-xl p-4 shadow-sm transition-all duration-500 ${
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+      }`}
+    >
+      <div className="flex items-start justify-between mb-2">
+        <div className={`w-9 h-9 rounded-lg ${bg} flex items-center justify-center`}>
+          <Icon size={16} className={color} />
         </div>
-        <div className={`flex items-center gap-1 text-xs font-semibold ${trend === 'up' ? 'text-agro-green-600' : trend === 'down' ? 'text-rose-500' : 'text-gray-400'}`}>
-          {trend === 'up' ? <TrendingUp size={13} /> : trend === 'down' ? <TrendingDown size={13} /> : null}
-          {trendLabel}
-        </div>
+        {trend && (
+          <div className={`flex items-center gap-1 text-xs font-semibold ${
+            trend === 'up' ? 'text-agro-green-600' : 'text-rose-500'
+          }`}>
+            {trend === 'up' ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+            {trendLabel}
+          </div>
+        )}
       </div>
-      <div className={`text-2xl font-bold ${color} mb-1`}>{value}</div>
+      <div className={`text-xl font-bold ${color} mb-0.5`}>{value}</div>
       <div className="text-xs text-gray-500">{label}</div>
     </div>
   )
 }
 
+function SensorBar({ label, value, max, unit, color }) {
+  const [ref, visible] = useInView({ threshold: 0.1 })
+  const pct = Math.round((value / max) * 100)
+  return (
+    <div ref={ref}>
+      <div className="flex justify-between items-center mb-1.5">
+        <span className="text-xs text-white/70">{label}</span>
+        <span className="text-xs font-bold text-white">{value}{unit}</span>
+      </div>
+      <div className="h-1.5 bg-white/15 rounded-full overflow-hidden">
+        <div
+          className={`h-full rounded-full ${color} transition-all duration-1000`}
+          style={{ width: visible ? `${pct}%` : '0%' }}
+        />
+      </div>
+    </div>
+  )
+}
+
 export default function WaterResilience() {
-  const [titleRef, titleVisible] = useInView({ threshold: 0.2 })
-  const [chartRef, chartVisible] = useInView({ threshold: 0.15 })
+  const [titleRef, titleVisible] = useInView({ threshold: 0.15 })
+  const [panelRef, panelVisible] = useInView({ threshold: 0.1 })
 
   const metrics = [
-    { icon: Droplets, label: 'Humedad actual del suelo', value: '28%', trend: 'down', trendLabel: '-12%', color: 'text-agro-blue-600', bg: 'bg-agro-blue-50' },
-    { icon: Thermometer, label: 'Temperatura ambiente', value: '24.3°C', trend: null, trendLabel: 'Estable', color: 'text-amber-600', bg: 'bg-amber-50' },
-    { icon: BarChart2, label: 'Déficit hídrico', value: 'Moderado', trend: 'down', trendLabel: 'Alerta', color: 'text-rose-500', bg: 'bg-rose-50' },
-    { icon: Zap, label: 'Eficiencia de riego', value: '+34%', trend: 'up', trendLabel: 'Con AgroHub', color: 'text-agro-green-600', bg: 'bg-agro-green-50' },
+    { icon: Droplets, label: 'Humedad suelo', value: '28%', trend: 'down', trendLabel: 'Bajo', color: 'text-agro-blue-600', bg: 'bg-agro-blue-50' },
+    { icon: Thermometer, label: 'Temperatura', value: '24.3°C', trend: null, trendLabel: '', color: 'text-amber-600', bg: 'bg-amber-50' },
+    { icon: Wind, label: 'Viento', value: '12 km/h', trend: null, trendLabel: '', color: 'text-teal-600', bg: 'bg-teal-50' },
+    { icon: Zap, label: 'Eficiencia riego', value: '+34%', trend: 'up', trendLabel: 'Mejora', color: 'text-agro-green-600', bg: 'bg-agro-green-50' },
   ]
-
-  const weekData = [62, 58, 51, 44, 38, 32, 28]
-  const maxVal = 80
-  const dayLabels = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Hoy']
 
   return (
     <section id="agua" className="py-24 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0">
-        <img src={FIELD_IMAGE} alt="Campo agrícola con sistema de riego" className="w-full h-full object-cover" loading="lazy" />
-        <div className="absolute inset-0 bg-agro-blue-900/85" />
-      </div>
+      {/* Background image — explicit inline style to ensure it loads */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url('${FIELD_IMAGE}')` }}
+        role="img"
+        aria-label="Campo agrícola con sistema de riego"
+      />
+      {/* Strong overlay for text legibility */}
+      <div className="absolute inset-0 bg-agro-green-950/80" />
+      <div className="absolute inset-0"
+        style={{ background: 'radial-gradient(ellipse 90% 80% at 20% 50%, rgba(30,74,172,0.25) 0%, transparent 70%)' }}
+      />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-14">
         {/* Header */}
         <div
           ref={titleRef}
-          className={`max-w-2xl mb-12 transition-all duration-700 ${
+          className={`max-w-xl mb-12 transition-all duration-700 ${
             titleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <div className="inline-flex items-center gap-2 bg-white/15 border border-white/20 rounded-full px-4 py-1.5 mb-5">
-            <Droplets size={14} className="text-agro-blue-300" />
+          <div className="inline-flex items-center gap-2 bg-white/12 border border-white/20 rounded-full px-4 py-1.5 mb-5">
+            <Droplets size={13} className="text-agro-blue-300" />
             <span className="text-white text-sm font-medium">Resiliencia hídrica</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Del dato del campo a la decisión de riego
           </h2>
-          <p className="text-white/70 text-lg leading-relaxed">
-            AgroHub transforma datos del terreno en decisiones prácticas. Sin intermediarios,
-            sin esperar al técnico. La información correcta, en el momento correcto.
+          <p className="text-white/65 text-base leading-relaxed">
+            AgroHub UC transforma mediciones en tiempo real en recomendaciones prácticas.
+            Sin esperar al técnico. Sin intuición.
           </p>
         </div>
 
         {/* Content grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left: metrics */}
-          <div className="grid grid-cols-2 gap-4">
-            {metrics.map(m => (
-              <MetricCard key={m.label} {...m} />
-            ))}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          {/* Left: metric cards */}
+          <div className="grid grid-cols-2 gap-3">
+            {metrics.map(m => <MetricCard key={m.label} {...m} />)}
+            {/* Alert banner */}
+            <div className="col-span-2 bg-amber-500/25 border border-amber-400/40 rounded-xl p-4 flex gap-3 items-start">
+              <BarChart2 size={18} className="text-amber-300 shrink-0 mt-0.5" />
+              <div>
+                <div className="text-amber-200 text-sm font-semibold">Recomendación automática</div>
+                <div className="text-white/70 text-xs mt-0.5 leading-relaxed">
+                  Déficit hídrico moderado en Sector A. Regar hoy 12:00–13:00 hrs · 50 minutos.
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Right: chart */}
+          {/* Right: bar chart panel */}
           <div
-            ref={chartRef}
-            className={`bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 transition-all duration-700 ${
-              chartVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+            ref={panelRef}
+            className={`bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-6 transition-all duration-700 ${
+              panelVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
             }`}
           >
             <div className="flex items-center justify-between mb-5">
               <div>
-                <h3 className="font-semibold text-white text-base">Evolución humedad (7 días)</h3>
-                <p className="text-white/50 text-xs">Sector El Molino – Sensor A</p>
+                <h3 className="font-semibold text-white text-sm">Humedad – últimos 7 días</h3>
+                <p className="text-white/45 text-xs">Sector El Molino · Sensor A</p>
               </div>
-              <div className="bg-rose-500/20 border border-rose-400/30 rounded-full px-3 py-1">
-                <span className="text-rose-300 text-xs font-medium">Tendencia a la baja</span>
-              </div>
+              <span className="text-rose-300 text-xs font-medium bg-rose-500/20 border border-rose-400/30 rounded-full px-3 py-0.5">
+                Tendencia ↓
+              </span>
             </div>
-
-            {/* Bar chart */}
-            <div className="flex items-end gap-2 h-40 mb-3">
-              {weekData.map((val, i) => {
-                const h = Math.round((val / maxVal) * 100)
-                const isToday = i === weekData.length - 1
-                return (
-                  <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                    <span className="text-[10px] text-white/60">{val}%</span>
-                    <div
-                      className={`w-full rounded-t-lg transition-all duration-700 ${isToday ? 'bg-rose-400' : 'bg-agro-blue-400/60'}`}
-                      style={{
-                        height: chartVisible ? `${h}%` : '0%',
-                        transitionDelay: `${i * 80}ms`,
-                      }}
-                    />
-                  </div>
-                )
-              })}
+            <div className="flex flex-col gap-3 mb-6">
+              <SensorBar label="Humedad Sector A" value={28} max={100} unit="%" color="bg-agro-blue-400" />
+              <SensorBar label="Humedad Sector B" value={42} max={100} unit="%" color="bg-agro-green-400" />
+              <SensorBar label="Temperatura" value={24} max={45} unit="°C" color="bg-amber-400" />
+              <SensorBar label="Evapotranspiración" value={6} max={15} unit=" mm/d" color="bg-teal-400" />
             </div>
-            <div className="flex gap-2">
-              {dayLabels.map((d, i) => (
-                <div key={i} className={`flex-1 text-center text-[10px] ${i === dayLabels.length - 1 ? 'text-rose-300 font-semibold' : 'text-white/40'}`}>
-                  {d}
+            {/* Benefit row */}
+            <div className="grid grid-cols-2 gap-3 pt-4 border-t border-white/10">
+              {[
+                { label: 'Monitoreo continuo', desc: 'Sin visitar el predio' },
+                { label: 'Ahorro de agua', desc: 'Riego cuando corresponde' },
+                { label: 'Historial hídrico', desc: 'Últimos 30 días' },
+                { label: 'Alertas automáticas', desc: 'Solo cuando importan' },
+              ].map(b => (
+                <div key={b.label}>
+                  <div className="text-white text-xs font-semibold">{b.label}</div>
+                  <div className="text-white/40 text-[10px]">{b.desc}</div>
                 </div>
               ))}
             </div>
-
-            {/* Alert */}
-            <div className="mt-5 bg-amber-500/20 border border-amber-400/30 rounded-xl p-4">
-              <div className="text-amber-300 text-xs font-semibold mb-1">Recomendación automática</div>
-              <div className="text-white/80 text-sm">
-                Déficit hídrico moderado detectado. Programar riego hoy a las 12:00 hrs por 50 minutos en Sector El Molino.
-              </div>
-            </div>
           </div>
-        </div>
-
-        {/* Bottom benefits */}
-        <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-5">
-          {[
-            { label: 'Monitoreo continuo', desc: 'Sin visitar el predio cada día' },
-            { label: 'Alertas automáticas', desc: 'Notificaciones cuando se necesitan' },
-            { label: 'Historial hídrico', desc: 'Datos de los últimos 30 días' },
-            { label: 'Optimización del riego', desc: 'Ahorro de agua comprobable' },
-          ].map(b => (
-            <div key={b.label} className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4">
-              <div className="text-white font-semibold text-sm mb-1">{b.label}</div>
-              <div className="text-white/55 text-xs">{b.desc}</div>
-            </div>
-          ))}
         </div>
       </div>
     </section>

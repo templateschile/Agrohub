@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import StatsBar from './components/StatsBar'
 import Problems from './components/Problems'
 import Transformation from './components/Transformation'
 import HowItHelps from './components/HowItHelps'
@@ -11,12 +12,14 @@ import Marketplace from './components/Marketplace'
 import Implementation from './components/Implementation'
 import ClosingCTA from './components/ClosingCTA'
 import Footer from './components/Footer'
+import FloatingCTA from './components/FloatingCTA'
 
 export default function App() {
   return (
     <div className="min-h-screen">
       <Navbar />
       <Hero />
+      <StatsBar />
       <Problems />
       <Transformation />
       <HowItHelps />
@@ -28,6 +31,7 @@ export default function App() {
       <Implementation />
       <ClosingCTA />
       <Footer />
+      <FloatingCTA />
     </div>
   )
 }

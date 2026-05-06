@@ -1,124 +1,136 @@
-import { ArrowDown, Play } from 'lucide-react'
 import { useEffect, useRef } from 'react'
+import { ArrowDown } from 'lucide-react'
 
-const HERO_IMAGE = 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1800&q=80&auto=format'
+const HERO_IMAGE = 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=85&auto=format&fit=crop'
 
 export default function Hero() {
-  const overlayRef = useRef(null)
+  const bgRef = useRef(null)
 
+  /* Parallax on scroll */
   useEffect(() => {
-    const el = overlayRef.current
+    const el = bgRef.current
     if (!el) return
-    el.style.opacity = '0'
-    const t = setTimeout(() => {
-      el.style.transition = 'opacity 1.2s ease'
-      el.style.opacity = '1'
-    }, 100)
-    return () => clearTimeout(t)
+    const onScroll = () => {
+      const y = window.scrollY
+      el.style.transform = `translateY(${y * 0.35}px) scale(1.15)`
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
-      <div className="absolute inset-0">
+    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden grain">
+      {/* ── Parallax background ── */}
+      <div className="absolute inset-0 overflow-hidden">
         <img
+          ref={bgRef}
           src={HERO_IMAGE}
-          alt="Agricultor en terreno con tecnología agrícola en el Valle de Choapa"
-          className="w-full h-full object-cover object-center"
+          alt="Agricultor trabajando en campo"
+          className="w-full h-full object-cover object-center scale-110 will-change-transform"
           loading="eager"
+          fetchpriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-agro-green-900/88 via-agro-green-800/65 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-agro-green-900/50 via-transparent to-transparent" />
       </div>
 
-      {/* Animated nodes */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20" aria-hidden>
-        <line x1="20%" y1="70%" x2="40%" y2="50%" stroke="#86efac" strokeWidth="1" strokeDasharray="6 4" opacity="0.6">
-          <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="3s" repeatCount="indefinite" />
-        </line>
-        <line x1="40%" y1="50%" x2="60%" y2="35%" stroke="#86efac" strokeWidth="1" strokeDasharray="6 4" opacity="0.6">
-          <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="3.5s" repeatCount="indefinite" />
-        </line>
-        <line x1="60%" y1="35%" x2="78%" y2="55%" stroke="#86efac" strokeWidth="1" strokeDasharray="6 4" opacity="0.6">
-          <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="2.8s" repeatCount="indefinite" />
-        </line>
-        {[['20%','70%','2.5'], ['40%','50%','3'], ['60%','35%','2'], ['78%','55%','3.2']].map(([cx,cy,dur], i) => (
-          <circle key={i} cx={cx} cy={cy} r="5" fill={i%2===0?'#86efac':'#4ade80'} opacity="0.8">
-            <animate attributeName="r" values="4;7;4" dur={`${dur}s`} repeatCount="indefinite" />
+      {/* ── Multi-layer gradient for legibility ── */}
+      <div className="absolute inset-0 bg-gradient-to-br from-agro-green-950/90 via-agro-green-900/75 to-agro-green-800/50 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
+      {/* warm vignette */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 80% 70% at 50% 60%, transparent 40%, rgba(0,0,0,0.55) 100%)' }} />
+
+      {/* ── Animated sensor nodes ── */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden>
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        {[
+          { x1:'18%', y1:'72%', x2:'38%', y2:'52%', dur:'3' },
+          { x1:'38%', y1:'52%', x2:'58%', y2:'36%', dur:'3.8' },
+          { x1:'58%', y1:'36%', x2:'76%', y2:'56%', dur:'2.9' },
+        ].map((l, i) => (
+          <line key={i} {...l} stroke="#86efac" strokeWidth="1.2" strokeDasharray="6 4" opacity="0.35" filter="url(#glow)">
+            <animate attributeName="stroke-dashoffset" from="0" to="-20" dur={`${l.dur}s`} repeatCount="indefinite"/>
+          </line>
+        ))}
+        {[
+          { cx:'18%', cy:'72%', r:'4', dur:'2.4', fill:'#86efac' },
+          { cx:'38%', cy:'52%', r:'5', dur:'3.1', fill:'#4ade80' },
+          { cx:'58%', cy:'36%', r:'4', dur:'2.7', fill:'#86efac' },
+          { cx:'76%', cy:'56%', r:'4.5', dur:'3.5', fill:'#4ade80' },
+        ].map((c, i) => (
+          <circle key={i} cx={c.cx} cy={c.cy} fill={c.fill} opacity="0.7" filter="url(#glow)">
+            <animate attributeName="r" values={`${parseFloat(c.r)-1};${parseFloat(c.r)+2};${parseFloat(c.r)-1}`} dur={`${c.dur}s`} repeatCount="indefinite"/>
           </circle>
         ))}
       </svg>
 
-      <div ref={overlayRef} className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-28 pb-20">
-        <div className="max-w-2xl">
-          {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
-            <span className="w-2 h-2 bg-agro-green-400 rounded-full animate-pulse" />
-            <span className="text-white/90 text-sm font-medium">Centro Demostrativo AgroHub UC · Valle de Choapa</span>
+      {/* ── Content ── */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-14 pt-32 pb-24">
+        <div className="max-w-[680px]">
+
+          {/* Badge */}
+          <div className="hero-line-1 inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 mb-8 pulse-badge">
+            <span className="w-1.5 h-1.5 bg-agro-green-400 rounded-full" />
+            <span className="text-white/85 text-sm font-medium tracking-wide">
+              Centro Demostrativo · Valle de Choapa
+            </span>
           </div>
 
-          {/* Headline */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-            El conocimiento agrícola{' '}
-            <span className="text-agro-green-300">centralizado, disponible y en constante crecimiento</span>
+          {/* Headline — short, big, high contrast */}
+          <h1 className="hero-line-2 font-extrabold leading-[1.05] text-white mb-6"
+              style={{ fontSize: 'clamp(2.4rem, 6vw, 4.5rem)' }}>
+            El saber agrícola,{' '}
+            <span className="text-agro-green-300">
+              digitalizado y siempre disponible
+            </span>
           </h1>
 
-          {/* Subheadline */}
-          <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-4 max-w-xl">
-            AgroHub UC digitaliza el saber del campo, lo centraliza y lo hace accesible
-            a través de una conversación simple — como hablar con un técnico de confianza,
-            siempre disponible.
-          </p>
-          <p className="text-base text-white/55 leading-relaxed mb-10 max-w-lg">
-            Cada agricultor que participa enriquece el ecosistema. El aprendizaje es orgánico,
-            apoyado por expertos, y crece con el territorio.
+          {/* Sub — one sentence */}
+          <p className="hero-line-3 text-white/70 text-xl leading-relaxed mb-10 max-w-lg">
+            AgroHub UC centraliza el conocimiento del campo, lo hace conversable y construye
+            un ecosistema que crece con cada agricultor.
           </p>
 
-          {/* Buttons */}
-          <div className="flex flex-wrap gap-4">
-            <a
-              href="#conversacion"
-              className="inline-flex items-center gap-2 bg-agro-green-600 hover:bg-agro-green-500 text-white font-semibold px-7 py-3.5 rounded-full shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5"
-            >
-              <Play size={16} className="fill-current" />
+          {/* CTAs */}
+          <div className="hero-line-4 flex flex-wrap gap-4 mb-14">
+            <a href="#conversacion"
+               className="inline-flex items-center gap-2 bg-agro-green-500 hover:bg-agro-green-400 text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-agro-green-900/40 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl text-base">
               Ver cómo funciona
             </a>
-            <a
-              href="#ecosistema"
-              className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur-sm border border-white/30 text-white font-semibold px-7 py-3.5 rounded-full transition-all duration-200 hover:-translate-y-0.5"
-            >
-              El ecosistema
+            <a href="#contacto"
+               className="inline-flex items-center gap-2 bg-white/12 hover:bg-white/20 backdrop-blur-sm border border-white/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-200 hover:-translate-y-0.5 text-base">
+              Hablar con el equipo
             </a>
           </div>
 
-          {/* 3 pillars */}
-          <div className="mt-14 pt-8 border-t border-white/20">
-            <p className="text-white/40 text-xs uppercase tracking-widest font-medium mb-4">Los tres ejes</p>
-            <div className="flex flex-wrap gap-3">
-              {[
-                { label: 'Digitalización', sub: 'Del campo a la plataforma' },
-                { label: 'Centralización', sub: 'Todo el conocimiento en un lugar' },
-                { label: 'Ecosistema colaborativo', sub: 'Crece con cada agricultor' },
-              ].map((item, i) => (
-                <div
-                  key={item.label}
-                  className="flex items-start gap-2.5 px-4 py-2.5 rounded-xl bg-white/10 border border-white/15"
-                >
-                  <span className="w-2 h-2 bg-agro-green-400 rounded-full mt-1.5 shrink-0" />
-                  <div>
-                    <div className="text-sm font-semibold text-white">{item.label}</div>
-                    <div className="text-xs text-white/50">{item.sub}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
+          {/* 3 anchors */}
+          <div className="hero-line-5 flex flex-wrap gap-6 pt-8 border-t border-white/15">
+            {[
+              { value: 'Digitalización', label: 'Del campo a la plataforma' },
+              { value: 'Centralización', label: 'Todo el conocimiento unido' },
+              { value: 'Ecosistema', label: 'Crece con cada agricultor' },
+            ].map(item => (
+              <div key={item.value}>
+                <div className="text-agro-green-300 font-bold text-base">{item.value}</div>
+                <div className="text-white/45 text-xs mt-0.5">{item.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/50">
-        <span className="text-xs uppercase tracking-widest font-medium">Descubrir</span>
-        <ArrowDown size={16} className="animate-bounce" />
+      {/* Scroll cue */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 text-white/40">
+        <span className="text-[10px] uppercase tracking-[0.2em] font-medium">Descubrir</span>
+        <ArrowDown size={15} className="animate-bounce" />
       </div>
+
+      {/* Bottom fade */}
+      <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
     </section>
   )
 }
