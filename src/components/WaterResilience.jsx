@@ -93,7 +93,7 @@ export default function WaterResilience() {
             Del dato del campo a la decisión de riego
           </h2>
           <p className="text-white/65 text-base leading-relaxed">
-            AgroHub UC transforma mediciones en tiempo real en recomendaciones prácticas.
+            AgroHub transforma mediciones en tiempo real en recomendaciones prácticas.
             Sin esperar al técnico. Sin intuición.
           </p>
         </div>

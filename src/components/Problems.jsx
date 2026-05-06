@@ -51,7 +51,7 @@ export default function Problems() {
             <span className="text-rose-500 text-sm font-medium">Diagnóstico · Valle de Choapa</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-            Los desafíos que AgroHub UC resuelve
+            Los desafíos que AgroHub resuelve
           </h2>
         </div>
 

@@ -30,7 +30,7 @@ export default function EcosystemSection() {
               Cada agricultor hace el sistema más inteligente
             </h2>
             <p className="text-white/55 text-base">
-              AgroHub UC es un ecosistema vivo. El conocimiento se acumula, las respuestas mejoran
+              AgroHub es un ecosistema vivo. El conocimiento se acumula, las respuestas mejoran
               y el modelo escala a cualquier territorio.
             </p>
           </div>

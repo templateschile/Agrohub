@@ -91,7 +91,7 @@ export default function KnowledgeHub() {
             El conocimiento agrícola en un solo lugar, al servicio de todos
           </h2>
           <p className="text-gray-500 text-lg leading-relaxed">
-            AgroHub UC centraliza lo que antes estaba disperso — en documentos, en la memoria de técnicos,
+            AgroHub centraliza lo que antes estaba disperso — en documentos, en la memoria de técnicos,
             en cuadernos de campo — y lo convierte en un recurso vivo, accesible y colaborativo.
           </p>
         </div>
@@ -105,7 +105,7 @@ export default function KnowledgeHub() {
             <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm font-semibold text-gray-700">Red de conocimiento compartido</span>
-                <span className="text-xs text-gray-400">Valle de Choapa · AgroHub UC</span>
+                <span className="text-xs text-gray-400">Valle de Choapa · AgroHub</span>
               </div>
               <svg viewBox="0 0 100 100" className="w-full aspect-square">
                 {edges.map(([a, b]) => {

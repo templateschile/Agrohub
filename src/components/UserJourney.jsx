@@ -80,7 +80,7 @@ export default function UserJourney() {
             De la observación a la conexión comercial
           </h2>
           <p className="text-white/60 text-lg leading-relaxed">
-            AgroHub UC no solo acompaña la producción — acompaña todo el recorrido del agricultor,
+            AgroHub no solo acompaña la producción — acompaña todo el recorrido del agricultor,
             desde que observa su cultivo hasta que conecta con compradores.
           </p>
         </div>
@@ -120,7 +120,7 @@ export default function UserJourney() {
         {/* Bottom message */}
         <div className="mt-16 text-center">
           <p className="text-white/40 text-sm max-w-xl mx-auto leading-relaxed">
-            AgroHub UC acompaña la evolución completa del agricultor — desde la primera medición
+            AgroHub acompaña la evolución completa del agricultor — desde la primera medición
             hasta la primera venta digital. Sin saltarse etapas, sin dejar a nadie solo.
           </p>
         </div>

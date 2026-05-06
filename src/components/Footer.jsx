@@ -36,7 +36,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-white/30 text-xs">© 2025 AgroHub UC · Valle de Choapa · Chile</p>
+          <p className="text-white/30 text-xs">© 2025 AgroHub · Valle de Choapa · Chile</p>
           <p className="text-white/30 text-xs">Adaptación agrícola · Transferencia tecnológica · Acompañamiento continuo</p>
         </div>
       </div>

@@ -25,7 +25,7 @@ export default function ClosingCTA() {
             <span className="text-agro-green-300">No al revés.</span>
           </h2>
           <p className="text-white/55 text-lg mb-10 max-w-xl mx-auto">
-            AgroHub UC digitaliza el conocimiento agrícola y lo hace crecer con cada agricultor del territorio.
+            AgroHub digitaliza el conocimiento agrícola y lo hace crecer con cada agricultor del territorio.
           </p>
           <a
             href="#contacto"

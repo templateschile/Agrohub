@@ -91,7 +91,7 @@ export default function Hero() {
 
           {/* Sub — one sentence */}
           <p className="hero-line-3 text-white/70 text-xl leading-relaxed mb-10 max-w-lg">
-            AgroHub UC centraliza el conocimiento del campo, lo hace conversable y construye
+            AgroHub centraliza el conocimiento del campo, lo hace conversable y construye
             un ecosistema que crece con cada agricultor.
           </p>
 

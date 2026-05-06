@@ -12,7 +12,7 @@ function ChatMock() {
     <div className="bg-gray-50 rounded-2xl overflow-hidden shadow-xl border border-gray-100 w-full max-w-xs">
       <div className="bg-agro-green-700 px-4 py-3 flex items-center gap-2">
         <span className="w-1.5 h-1.5 bg-agro-green-300 rounded-full animate-pulse" />
-        <span className="text-white text-xs font-semibold">AgroHub UC — Asistente</span>
+        <span className="text-white text-xs font-semibold">AgroHub — Asistente</span>
       </div>
       <div className="p-4 flex flex-col gap-4">
         {msgs.map((m, i) => (

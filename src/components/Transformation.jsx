@@ -17,7 +17,7 @@ const levels = [
   },
   {
     step: '03',
-    label: 'AgroHub UC',
+    label: 'AgroHub',
     desc: 'Tecnología, datos, personas, procesos y comercialización integrados.',
     outcome: 'Genera decisiones e impacto',
     active: true,
@@ -50,7 +50,7 @@ export default function Transformation() {
               Más que un kit tecnológico
             </h2>
             <p className="text-gray-500 text-base">
-              AgroHub UC integra los cuatro elementos que transforman instrumentos en impacto real.
+              AgroHub integra los cuatro elementos que transforman instrumentos en impacto real.
             </p>
           </div>
 

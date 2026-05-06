@@ -40,12 +40,12 @@ export default function FloatingCTA() {
               </svg>
             </div>
             <div>
-              <div className="font-semibold text-gray-900 text-sm">AgroHub UC</div>
+              <div className="font-semibold text-gray-900 text-sm">AgroHub</div>
               <div className="text-gray-400 text-xs">Respondemos en 24–48 hrs</div>
             </div>
           </div>
           <p className="text-gray-600 text-sm leading-relaxed mb-4">
-            ¿Quieres saber cómo AgroHub UC puede integrarse a tu territorio?
+            ¿Quieres saber cómo AgroHub puede integrarse a tu territorio?
           </p>
           <a
             href="#contacto"

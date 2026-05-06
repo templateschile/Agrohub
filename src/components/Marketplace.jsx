@@ -21,7 +21,7 @@ export default function Marketplace() {
             <h3 className="text-xl font-bold text-gray-900 mb-2">Marketplace agrícola integrado</h3>
             <p className="text-gray-500 text-sm leading-relaxed">
               La mejora productiva también tiene una salida económica. Una vez que el agricultor
-              produce mejor, AgroHub UC ofrece un canal digital sencillo para publicar cosechas,
+              produce mejor, AgroHub ofrece un canal digital sencillo para publicar cosechas,
               servicios e insumos — conectando directamente con compradores dentro del mismo ecosistema.
             </p>
           </div>
