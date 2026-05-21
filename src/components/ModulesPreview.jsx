@@ -18,7 +18,7 @@ const modules = [
     bg: "bg-agro-green-50",
     border: "border-agro-green-100",
     title: "AI Chat",
-    desc: "Pregunta en lenguaje natural y recibe recomendaciones tecnicas basadas en tus datos del predio.",
+    desc: "Pregunta en lenguaje natural y recibe recomendaciones técnicas basadas en tus datos del predio.",
     href: "/ai-chat",
   },
   {
@@ -27,7 +27,7 @@ const modules = [
     bg: "bg-agro-earth-50",
     border: "border-agro-earth-100",
     title: "Documentos",
-    desc: "Centralizacion y busqueda de protocolos, guias tecnicas e historiales del campo.",
+    desc: "Centralización y búsqueda de protocolos, guías técnicas e historiales del campo.",
     href: "/documentos",
   },
   {
@@ -36,7 +36,7 @@ const modules = [
     bg: "bg-purple-50",
     border: "border-purple-100",
     title: "Eventos y Capacitaciones",
-    desc: "Agenda de talleres, demostraciones en terreno y capacitaciones para tu equipo agricola.",
+    desc: "Agenda de talleres, demostraciones en terreno y capacitaciones para tu equipo agrícola.",
     href: "/eventos",
   },
   {
@@ -54,7 +54,7 @@ const modules = [
     bg: "bg-amber-50",
     border: "border-amber-100",
     title: "Precios y Cotizador",
-    desc: "Conoce los planes disponibles y cotiza tu AgroHub personalizado segun tus necesidades.",
+    desc: "Conoce los planes disponibles y cotiza tu AgroHub personalizado según tus necesidades.",
     href: "/precios",
   },
 ]
@@ -72,14 +72,14 @@ export default function ModulesPreview() {
           }`}
         >
           <div className="inline-flex items-center gap-2 bg-agro-green-50 border border-agro-green-100 rounded-full px-4 py-1.5 mb-4">
-            <span className="text-agro-green-700 text-sm font-medium">Modulos de la plataforma</span>
+            <span className="text-agro-green-700 text-sm font-medium">Módulos de la plataforma</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-            Un hub. Multiples herramientas.
+            Un hub. Múltiples herramientas.
           </h2>
           <p className="text-gray-500 text-base leading-relaxed">
-            Cada modulo resuelve una necesidad concreta. Activa los que necesitas
-            y escala cuando estes listo.
+            Cada módulo resuelve una necesidad concreta. Activa los que necesitas
+            y escala cuando estés listo.
           </p>
         </div>
 
@@ -103,7 +103,7 @@ export default function ModulesPreview() {
                   <p className="text-gray-500 text-sm leading-relaxed">{m.desc}</p>
                 </div>
                 <span className={`text-sm font-semibold ${m.color} flex items-center gap-1 mt-auto`}>
-                  Ver modulo <span className="group-hover:translate-x-1 transition-transform inline-block">-&gt;</span>
+                  Ver módulo <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
                 </span>
               </Link>
             )

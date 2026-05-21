@@ -98,7 +98,7 @@ export default function Precios() {
             Tu AgroHub, <span className="text-agro-green-300">a tu medida</span>
           </h1>
           <p className="text-white/65 text-xl max-w-xl leading-relaxed">
-            Selecciona los modulos, sensores y usuarios que necesitas.
+            Selecciona los módulos, sensores y usuarios que necesitas.
             El precio se calcula en tiempo real.
           </p>
         </div>
@@ -118,8 +118,8 @@ export default function Precios() {
                 {/* 1. Modulos */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
                   <div className="flex items-center gap-2 mb-1">
-                    <h2 className="font-bold text-gray-900 text-base">1. Modulos</h2>
-                    <Tooltip text="Mas modulos activos = mayor descuento por modulo. Con 4 o mas modulos: 20% off." />
+                    <h2 className="font-bold text-gray-900 text-base">1. Módulos</h2>
+                    <Tooltip text="Más módulos activos = mayor descuento por módulo. Con 4 o más módulos: 20% off." />
                   </div>
                   {descModulo && (
                     <p className="text-xs text-agro-green-600 font-semibold mb-3">Descuento por volumen: {descModulo}</p>
@@ -145,12 +145,12 @@ export default function Precios() {
 
                 {/* 2. Fuentes externas */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                  <h2 className="font-bold text-gray-900 text-base mb-4">2. Fuentes externas de informacion</h2>
+                  <h2 className="font-bold text-gray-900 text-base mb-4">2. Fuentes externas de información</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
                         Fuentes con API REST
-                        <Tooltip text="Fuentes que ya tienen API disponible (ej: INIA, datos publicos, meteo). Integracion estandar." />
+                        <Tooltip text="Fuentes que ya tienen API disponible (ej: INIA, datos públicos, meteo). Integración estándar." />
                       </label>
                       <div className="flex items-center gap-3">
                         <button onClick={() => setFuentesApi(v => Math.max(0,v-1))} className="w-8 h-8 bg-gray-100 rounded-lg font-bold text-gray-700 hover:bg-gray-200 transition-colors">-</button>
@@ -161,7 +161,7 @@ export default function Precios() {
                     </div>
                     <div>
                       <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                        Fuentes sin API (extraccion custom)
+                        Fuentes sin API (extracción custom)
                         <Tooltip text="Fuentes que requieren fabricar el conector desde cero (scraping, PDF, etc). Mayor costo de desarrollo." />
                       </label>
                       <div className="flex items-center gap-3">
@@ -206,7 +206,7 @@ export default function Precios() {
 
                 {/* 4. Soporte */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                  <h2 className="font-bold text-gray-900 text-base mb-4">4. Anos de soporte incluido</h2>
+                  <h2 className="font-bold text-gray-900 text-base mb-4">4. Años de soporte incluido</h2>
                   <div className="flex gap-3 flex-wrap">
                     {SOPORTE_OPCIONES.map(n => (
                       <button
@@ -218,7 +218,7 @@ export default function Precios() {
                       </button>
                     ))}
                   </div>
-                  <p className="text-xs text-gray-400 mt-3">Minimo 1 ano. Soporte activo, mejoras iterativas y seguimiento mensual.</p>
+                  <p className="text-xs text-gray-400 mt-3">Mínimo 1 año. Soporte activo, mejoras iterativas y seguimiento mensual.</p>
                 </div>
 
                 {/* 5. Licencia */}
@@ -232,9 +232,9 @@ export default function Precios() {
                         <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 ${licencia ? "bg-agro-green-600 border-agro-green-600" : "border-gray-300"}`}>
                           {licencia && <Check size={11} className="text-white"/>}
                         </div>
-                        <span className="font-bold text-gray-900 text-sm">5. Licencia compartida del codigo</span>
+                        <span className="font-bold text-gray-900 text-sm">5. Licencia compartida del código</span>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1.5 ml-7">Incluye acceso al codigo fuente del front-end, panel de administracion y documentacion tecnica.</p>
+                      <p className="text-xs text-gray-500 mt-1.5 ml-7">Incluye acceso al código fuente del front-end, panel de administración y documentación técnica.</p>
                     </div>
                     <span className="text-sm font-bold text-gray-700 ml-4 shrink-0">{CLP(10000000)}</span>
                   </button>
@@ -247,7 +247,7 @@ export default function Precios() {
                     {[
                       { label: "Admins / Hub managers", val: admins,      set: setAdmins,      hint: "Gestionan la plataforma" },
                       { label: "Agricultores",           val: agricultores, set: setAgricultores, hint: "Usan la app en terreno" },
-                      { label: "Asesores agricolas",     val: asesores,    set: setAsesores,    hint: "Tecnicos y consultores" },
+                      { label: "Asesores agrícolas",     val: asesores,    set: setAsesores,    hint: "Técnicos y consultores" },
                     ].map(u => (
                       <div key={u.label}>
                         <label className="text-xs font-semibold text-gray-700 mb-1 block">{u.label}</label>
@@ -281,7 +281,7 @@ export default function Precios() {
                     {fuentesApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes API ({fuentesApi})</span><span className="font-medium text-gray-800">{CLP(fuentesApi*800000)}</span></div>}
                     {fuentesSinApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes custom ({fuentesSinApi})</span><span className="font-medium text-gray-800">{CLP(fuentesSinApi*1200000)}</span></div>}
                     {sensores.length > 0 && <div className="flex justify-between"><span className="text-gray-500">Sensores ({sensores.length})</span><span className="font-medium text-gray-800">{CLP(sensores.length*700000)}</span></div>}
-                    <div className="flex justify-between"><span className="text-gray-500">Soporte {soporte} ano{soporte>1?"s":""}</span><span className="font-medium text-gray-800">incluido</span></div>
+                    <div className="flex justify-between"><span className="text-gray-500">Soporte {soporte} año{soporte>1?"s":""}</span><span className="font-medium text-gray-800">incluido</span></div>
                     {licencia && <div className="flex justify-between"><span className="text-gray-500">Licencia compartida</span><span className="font-medium text-gray-800">{CLP(10000000)}</span></div>}
                     <div className="flex justify-between"><span className="text-gray-500">Usuarios ({admins+agricultores+asesores})</span><span className="font-medium text-gray-800">incluido</span></div>
                   </div>
@@ -303,7 +303,7 @@ export default function Precios() {
                     Hablamos
                   </a>
                   <p className="text-[10px] text-gray-400 text-center mt-3 leading-relaxed">
-                    El cotizador es referencial. El precio final se confirma en propuesta formal tras diagnostico.
+                    El cotizador es referencial. El precio final se confirma en propuesta formal tras diagnóstico.
                   </p>
                 </div>
               </div>

@@ -29,10 +29,10 @@ function CountUp({ to, suffix = '', duration = 1800 }) {
 }
 
 const stats = [
-  { value: 10, suffix: '+', label: 'Problematicas resueltas',   sub: 'Diagnostico agricola integral' },
-  { value: 24, suffix: '/7', label: 'Acompanamiento continuo',  sub: 'Consultas sin horarios' },
-  { value: 6,  suffix: '',   label: 'Semanas a operativo',       sub: 'Desde el diagnostico' },
-  { value: 4,  suffix: '',   label: 'Actores integrados',        sub: 'Agricultores, tecnicos, instituciones, asesores' },
+  { value: 10, suffix: '+', label: 'Problemáticas resueltas',   sub: 'Diagnóstico agrícola integral' },
+  { value: 24, suffix: '/7', label: 'Acompañamiento continuo',  sub: 'Consultas sin horarios' },
+  { value: 6,  suffix: '',   label: 'Semanas a operativo',       sub: 'Desde el diagnóstico' },
+  { value: 4,  suffix: '',   label: 'Actores integrados',        sub: 'Agricultores, técnicos, instituciones, asesores' },
 ]
 
 export default function StatsBar() {

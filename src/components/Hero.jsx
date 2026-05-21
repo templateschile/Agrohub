@@ -80,8 +80,8 @@ export default function Hero() {
           </h1>
 
           <p className="hero-line-3 text-white/70 text-xl leading-relaxed mb-10 max-w-lg">
-            AgroHub es un hub demostrativo movil que centraliza tecnologia, datos y conocimiento
-            para que cualquier grupo de agricultores optimice su operacion y comercialice sus productos.
+            AgroHub es un hub demostrativo móvil que centraliza tecnología, datos y conocimiento
+            para que cualquier grupo de agricultores optimice su operación y comercialice sus productos.
           </p>
 
           <div className="hero-line-4 flex flex-wrap gap-4 mb-14">
@@ -97,8 +97,8 @@ export default function Hero() {
 
           <div className="hero-line-5 flex flex-wrap gap-6 pt-8 border-t border-white/15">
             {[
-              { value: 'Hub Movil',      label: 'Va donde el agricultor' },
-              { value: 'Centralizacion', label: 'Todo el conocimiento unido' },
+              { value: 'Demostrativo Móvil', label: 'Va donde el agricultor' },
+              { value: 'Centralización', label: 'Todo el conocimiento unido' },
               { value: 'Ecosistema',     label: 'Crece con cada agricultor' },
             ].map(item => (
               <div key={item.value}>

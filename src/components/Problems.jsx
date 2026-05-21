@@ -2,12 +2,12 @@ import { Droplets, Cpu, Database, Activity, TrendingUp, Users } from 'lucide-rea
 import { useInView } from '../hooks/useInView'
 
 const problems = [
-  { icon: Droplets,   color: 'text-agro-blue-500', bg: 'bg-agro-blue-50',   title: 'Escasez hidrica',           stat: '4%',   sub: 'monitorea humedad del suelo' },
+  { icon: Droplets,   color: 'text-agro-blue-500', bg: 'bg-agro-blue-50',   title: 'Escasez hídrica',           stat: '4%',   sub: 'monitorea humedad del suelo' },
   { icon: Activity,   color: 'text-rose-500',       bg: 'bg-rose-50',        title: 'Riego ineficiente',         stat: '<15%', sub: 'usa datos para regar' },
-  { icon: Cpu,        color: 'text-agro-earth-600', bg: 'bg-agro-earth-50',  title: 'Baja adopcion tecnologica', stat: '<10%', sub: 'usa plataformas digitales' },
-  { icon: Database,   color: 'text-agro-green-600', bg: 'bg-agro-green-50',  title: 'Informacion dispersa',      stat: '0',    sub: 'registros centralizados' },
+  { icon: Cpu,        color: 'text-agro-earth-600', bg: 'bg-agro-earth-50',  title: 'Baja adopción tecnológica', stat: '<10%', sub: 'usa plataformas digitales' },
+  { icon: Database,   color: 'text-agro-green-600', bg: 'bg-agro-green-50',  title: 'Información dispersa',      stat: '0',    sub: 'registros centralizados' },
   { icon: TrendingUp, color: 'text-purple-600',     bg: 'bg-purple-50',      title: 'Sin salida comercial',      stat: '92%',  sub: 'sin estrategia comercial' },
-  { icon: Users,      color: 'text-teal-600',       bg: 'bg-teal-50',        title: 'Actores descoordinados',    stat: '-',    sub: 'sin plataforma comun' },
+  { icon: Users,      color: 'text-teal-600',       bg: 'bg-teal-50',        title: 'Actores descoordinados',    stat: '-',    sub: 'sin plataforma común' },
 ]
 
 function Card({ p, i }) {
@@ -47,7 +47,7 @@ export default function Problems() {
             <span className="text-rose-500 text-sm font-medium">Diagnostico agricola</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-            Los desafios que AgroHub resuelve
+            Los desafíos que AgroHub resuelve
           </h2>
         </div>
 
@@ -58,10 +58,10 @@ export default function Problems() {
           {problems.slice(3, 5).map((p, i) => <Card key={p.title} p={p} i={i} />)}
           <div className="bg-agro-green-700 rounded-2xl p-5 flex flex-col justify-between">
             <p className="font-semibold text-white text-sm leading-snug mb-3">
-              Respuesta integrada a cada problematica del territorio agricola.
+              Respuesta integrada a cada problemática del territorio agrícola.
             </p>
             <a href="#modelo" className="text-agro-green-300 text-sm font-semibold hover:text-white transition-colors">
-              Ver el modelo ->
+              Ver el modelo →
             </a>
           </div>
         </div>

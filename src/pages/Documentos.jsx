@@ -3,18 +3,18 @@ import { FolderOpen, Search, Share2, Star, BookOpen, FileText, UploadCloud, User
 
 const docs = [
   { name: 'Protocolo Riego Tomate 2024',       category: 'Riego',        uses: '34 consultas', starred: true },
-  { name: 'Guia Micorrizas para Hortalizas',   category: 'Nutricion',    uses: '18 consultas', starred: true },
+  { name: 'Guía Micorrizas para Hortalizas',   category: 'Nutrición',    uses: '18 consultas', starred: true },
   { name: 'Plan Fitosanitario Vid Temporada',   category: 'Sanidad',      uses: '27 consultas', starred: false },
-  { name: 'Historial Hidrico Sector Norte',     category: 'Datos',        uses: 'Actualizado hoy', starred: false },
-  { name: 'Manual Sensor WiseConn',             category: 'Tecnologia',   uses: '9 consultas',  starred: true },
+  { name: 'Historial Hídrico Sector Norte',     category: 'Datos',        uses: 'Actualizado hoy', starred: false },
+  { name: 'Manual Sensor WiseConn',             category: 'Tecnología',   uses: '9 consultas',  starred: true },
   { name: 'Reglamento Agua INDAP 2024',         category: 'Normativa',    uses: '15 consultas', starred: false },
 ]
 
 const features = [
-  { icon: Search,      title: 'Busqueda inteligente',  desc: 'Encuentra cualquier documento por palabras clave o categoria.' },
-  { icon: Share2,      title: 'Compartibilidad total', desc: 'Comparte documentos con todo tu equipo o con asesores externos.' },
-  { icon: UploadCloud, title: 'Carga facil',            desc: 'Sube PDFs, Excel o imagenes. El sistema los indexa automaticamente.' },
-  { icon: Users,       title: 'Control de acceso',     desc: 'Define quien puede ver, editar o comentar cada documento.' },
+  { icon: Search,      title: 'Búsqueda inteligente',  desc: 'Encuentra cualquier documento por palabras clave o categoría.' },
+  { icon: Share2,      title: 'Compatibilidad total', desc: 'Comparte documentos con todo tu equipo o con asesores externos.' },
+  { icon: UploadCloud, title: 'Carga fácil',            desc: 'Sube PDFs, Excel o imágenes. El sistema los indexa automáticamente.' },
+  { icon: Users,       title: 'Control de acceso',     desc: 'Define quién puede ver, editar o comentar cada documento.' },
 ]
 
 export default function Documentos() {
@@ -31,10 +31,10 @@ export default function Documentos() {
             <span className="text-white/85 text-sm font-medium">Buscador y centralizador de documentos</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 max-w-2xl">
-            Todo el conocimiento agricola, <span className="text-agro-green-300">en un solo lugar</span>
+            Todo el conocimiento agrícola, <span className="text-agro-green-300">en un solo lugar</span>
           </h1>
           <p className="text-white/65 text-xl max-w-xl leading-relaxed">
-            Protocolos, guias, historiales e informes. Accesibles para todo el equipo,
+            Protocolos, guías, historiales e informes. Accesibles para todo el equipo,
             siempre actualizados, siempre citables.
           </p>
         </div>
@@ -82,7 +82,7 @@ export default function Documentos() {
             {/* Search bar mockup */}
             <div className="bg-white border border-gray-200 rounded-2xl flex items-center gap-3 px-5 py-3.5 mb-5 shadow-sm">
               <Search size={16} className="text-gray-400" />
-              <span className="text-gray-400 text-sm">Buscar protocolos, guias, historiales...</span>
+              <span className="text-gray-400 text-sm">Buscar protocolos, guías, historiales...</span>
             </div>
 
             <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">

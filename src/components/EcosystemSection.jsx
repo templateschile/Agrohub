@@ -9,7 +9,7 @@ const insights = [
 
 const actors = [
   { icon: Sprout,        bg: 'bg-agro-green-100', color: 'text-agro-green-700', label: 'Agricultores',   sub: 'Usan y aportan' },
-  { icon: GraduationCap, bg: 'bg-agro-earth-100', color: 'text-agro-earth-700', label: 'Tecnicos',       sub: 'Validan y acompanan' },
+  { icon: GraduationCap, bg: 'bg-agro-earth-100', color: 'text-agro-earth-700', label: 'Técnicos',       sub: 'Validan y acompañan' },
   { icon: Building2,     bg: 'bg-agro-blue-100',  color: 'text-agro-blue-700',  label: 'Instituciones',  sub: 'Estructuran conocimiento' },
   { icon: Users,         bg: 'bg-purple-100',      color: 'text-purple-700',     label: 'Asesores',       sub: 'Investigan y certifican' },
 ]
@@ -26,7 +26,7 @@ export default function EcosystemSection() {
         >
           <div className="max-w-xl mx-auto text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
-              Cada agricultor hace el sistema mas inteligente
+              Cada agricultor hace el sistema más inteligente
             </h2>
             <p className="text-white/55 text-base">
               AgroHub es un ecosistema vivo. El conocimiento se acumula, las respuestas mejoran

@@ -17,12 +17,12 @@ export default function Footer() {
             </div>
             <div>
               <div className="font-bold text-lg leading-tight">AgroHub</div>
-              <div className="text-white/50 text-xs">Centro Demostrativo Movil</div>
+              <div className="text-white/50 text-xs">Centro Demostrativo Móvil</div>
             </div>
           </div>
 
           <p className="text-white/50 text-sm text-center max-w-md">
-            Conocimiento que se comparte &middot; Tecnologia que acompana &middot; Decisiones que transforman.
+            Conocimiento que se comparte · Tecnología que acompaña · Decisiones que transforman.
           </p>
 
           <nav className="flex flex-wrap gap-5 text-white/60 text-sm justify-center">
@@ -40,7 +40,7 @@ export default function Footer() {
             {' &middot; '}
             <a href="mailto:contacto@agrohub.cl" className="hover:text-white/70 transition-colors">contacto@agrohub.cl</a>
           </p>
-          <p className="text-white/30 text-xs">Digitalizacion &middot; Transferencia tecnologica &middot; Acompanamiento</p>
+          <p className="text-white/30 text-xs">Digitalización · Transferencia tecnológica · Acompañamiento</p>
         </div>
       </div>
     </footer>

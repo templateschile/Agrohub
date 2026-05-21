@@ -5,8 +5,8 @@ const events = [
   {
     date: 'Jun 14, 2025',
     title: 'Taller: Uso de sensores IoT en riego tecnificado',
-    type: 'Capacitacion',
-    location: 'Hub Movil � Zona Norte',
+    type: 'Capacitación',
+    location: 'Hub Móvil — Zona Norte',
     duration: '4 horas',
     spots: 20,
     spotsLeft: 7,
@@ -14,9 +14,9 @@ const events = [
   },
   {
     date: 'Jun 21, 2025',
-    title: 'Demostracion en terreno: IA aplicada al diagnostico agricola',
-    type: 'Demostracion',
-    location: 'Hub Movil � Zona Centro',
+    title: 'Demostración en terreno: IA aplicada al diagnóstico agrícola',
+    type: 'Demostración',
+    location: 'Hub Móvil — Zona Centro',
     duration: '3 horas',
     spots: 15,
     spotsLeft: 3,
@@ -24,7 +24,7 @@ const events = [
   },
   {
     date: 'Jul 5, 2025',
-    title: 'Webinar: Comercializacion B2B para pequenos productores',
+    title: 'Webinar: Comercialización B2B para pequeños productores',
     type: 'Webinar',
     location: 'Online',
     duration: '2 horas',
@@ -34,9 +34,9 @@ const events = [
   },
   {
     date: 'Jul 19, 2025',
-    title: 'Workshop: Gestion de documentos y protocolos en AgroHub',
+    title: 'Workshop: Gestión de documentos y protocolos en AgroHub',
     type: 'Workshop',
-    location: 'Hub Movil � Zona Sur',
+    location: 'Hub Móvil — Zona Sur',
     duration: '3 horas',
     spots: 25,
     spotsLeft: 12,
@@ -44,7 +44,7 @@ const events = [
   },
 ]
 
-const categories = ['Todos', 'Capacitacion', 'Demostracion', 'Webinar', 'Workshop']
+const categories = ['Todos', 'Capacitación', 'Demostración', 'Webinar', 'Workshop']
 
 export default function Eventos() {
   const [ref, visible] = useInView({ threshold: 0.1 })
@@ -62,7 +62,7 @@ export default function Eventos() {
             Aprende en terreno. <span className="text-agro-green-300">Crece con el hub.</span>
           </h1>
           <p className="text-white/65 text-xl max-w-xl leading-relaxed">
-            Talleres, demostraciones y webinars para agricultores, tecnicos y asesores.
+            Talleres, demostraciones y webinars para agricultores, técnicos y asesores.
             El hub se mueve hacia ti.
           </p>
         </div>

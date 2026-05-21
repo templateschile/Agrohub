@@ -18,11 +18,11 @@ export default function ClosingCTA() {
                     className={`relative z-10 max-w-3xl mx-auto px-6 text-center transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
-            La tecnologia al servicio de las personas.{' '}
-            <span className="text-agro-green-300">No al reves.</span>
+            La tecnología al servicio de las personas.{' '}
+            <span className="text-agro-green-300">No al revés.</span>
           </h2>
           <p className="text-white/55 text-lg mb-10 max-w-xl mx-auto">
-            AgroHub digitaliza el conocimiento agricola y lo hace crecer con cada agricultor del territorio.
+            AgroHub digitaliza el conocimiento agrícola y lo hace crecer con cada agricultor del territorio.
           </p>
           <a
             href="#contacto"
@@ -39,7 +39,7 @@ export default function ClosingCTA() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-3">Conversemos</h2>
               <p className="text-gray-500 text-base leading-relaxed mb-8">
-                El primer paso es entender tu territorio y tus necesidades. Diagnostico antes de cualquier instalacion.
+                El primer paso es entender tu territorio y tus necesidades. Diagnóstico antes de cualquier instalación.
               </p>
               <div className="flex flex-col gap-4">
                 {[
@@ -64,7 +64,7 @@ export default function ClosingCTA() {
                 <div className="grid grid-cols-2 gap-4">
                   {[
                     { label: 'Nombre',       ph: 'Juan Perez',          type: 'text' },
-                    { label: 'Organizacion', ph: 'Cooperativa / SAG...', type: 'text' },
+                    { label: 'Organización', ph: 'Cooperativa / SAG...', type: 'text' },
                   ].map(f => (
                     <div key={f.label}>
                       <label className="block text-xs font-medium text-gray-600 mb-1.5">{f.label}</label>
@@ -80,7 +80,7 @@ export default function ClosingCTA() {
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1.5">Mensaje</label>
-                  <textarea rows={3} placeholder="Que territorio? Que desafio?"
+                  <textarea rows={3} placeholder="¿Qué territorio? ¿Qué desafío?"
                     className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400 placeholder-gray-400 resize-none" />
                 </div>
                 <button type="submit"

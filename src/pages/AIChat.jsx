@@ -3,17 +3,17 @@ import { useInView } from '../hooks/useInView'
 import { MessageSquare, BookOpen, Wifi, CheckCircle, Database, Globe } from 'lucide-react'
 
 const sources = [
-  { icon: BookOpen, label: 'Protocolos tecnicos',      desc: 'Documentos validados por agronomos y especialistas.' },
-  { icon: Wifi,     label: 'Sensores en tiempo real',  desc: 'Humedad, temperatura, evapotranspiracion en vivo.' },
+              { icon: BookOpen, label: 'Protocolos técnicos',      desc: 'Documentos validados por agrónomos y especialistas.' },
+  { icon: Wifi,     label: 'Sensores en tiempo real',  desc: 'Humedad, temperatura, evapotranspiración en vivo.' },
   { icon: Database, label: 'Historial del predio',      desc: 'Datos propios acumulados de temporadas anteriores.' },
-  { icon: Globe,    label: 'Fuentes externas',          desc: 'APIs meteorologicas, alertas SAG y datos publicos.' },
+  { icon: Globe,    label: 'Fuentes externas',          desc: 'APIs meteorológicas, alertas SAG y datos públicos.' },
 ]
 
 const useCases = [
-  { q: 'Cuando riego mis tomates esta semana?',    a: 'Riego hoy 12:00 hrs · 50 min. Humedad 28%, lluvia manana 5mm.' },
-  { q: 'Que dosis de fertilizante aplico en maiz?', a: 'Segun historial de suelo: 80 kg/ha de Urea. Aplicar post emergencia.' },
-  { q: 'Hay riesgo de helada este fin de semana?', a: 'Si. Temperatura minima 1°C el sabado. Recomiendo proteccion nocturna.' },
-  { q: 'Como mejoro el rendimiento de mi vid?',    a: 'Deficit hidrico moderado detectado. Ajustar riego y revisar nutricion foliar.' },
+  { q: 'Cuándo riego mis tomates esta semana?',    a: 'Riego hoy 12:00 hrs · 50 min. Humedad 28%, lluvia mañana 5mm.' },
+  { q: '¿Qué dosis de fertilizante aplico en maíz?', a: 'Según historial de suelo: 80 kg/ha de Urea. Aplicar post emergencia.' },
+  { q: '¿Hay riesgo de helada este fin de semana?', a: 'Sí. Temperatura mínima 1°C el sábado. Recomiendo protección nocturna.' },
+  { q: '¿Cómo mejoro el rendimiento de mi vid?',    a: 'Déficit hídrico moderado detectado. Ajustar riego y revisar nutrición foliar.' },
 ]
 
 export default function AIChat() {
@@ -27,14 +27,14 @@ export default function AIChat() {
         <div className="max-w-7xl mx-auto px-6 lg:px-14">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
             <MessageSquare size={13} className="text-agro-green-300" />
-            <span className="text-white/85 text-sm font-medium">AI Chat agricola</span>
+            <span className="text-white/85 text-sm font-medium">AI Chat agrícola</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 max-w-2xl">
             Pregunta como hablas. <span className="text-agro-green-300">Recibe como necesitas.</span>
           </h1>
           <p className="text-white/65 text-xl max-w-xl leading-relaxed">
             El asistente de IA de AgroHub responde con datos reales de tu predio, fuentes validadas
-            y contexto tecnico. Sin tecnicismos innecesarios.
+            y contexto técnico. Sin tecnicismos innecesarios.
           </p>
         </div>
       </section>

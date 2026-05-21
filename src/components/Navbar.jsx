@@ -53,7 +53,7 @@ export default function Navbar() {
               Agro<span className={transparent ? 'text-agro-green-300' : 'text-agro-green-500'}>Hub</span>
             </span>
             <span className={`text-[10px] font-medium tracking-wide ${transparent ? 'text-white/50' : 'text-gray-400'}`}>
-              Centro Demostrativo Movil
+              Centro Demostrativo Móvil
             </span>
           </div>
         </Link>

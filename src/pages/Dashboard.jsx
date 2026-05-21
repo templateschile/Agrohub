@@ -22,12 +22,12 @@ const sensors = [
 ]
 
 const features = [
-  { icon: Wifi,      title: 'Integracion IoT',              desc: 'Conecta tus sensores existentes sin cambiar hardware.',       color: 'text-agro-blue-600',  bg: 'bg-agro-blue-50' },
-  { icon: BarChart2, title: 'Visualizacion en tiempo real', desc: 'Panel interactivo con datos actualizados al instante.',       color: 'text-agro-green-600', bg: 'bg-agro-green-50' },
-  { icon: Bell,      title: 'Alertas inteligentes',         desc: 'Notificaciones cuando el predio necesita atencion.',          color: 'text-rose-500',       bg: 'bg-rose-50' },
-  { icon: Activity,  title: 'Historico de datos',           desc: 'Analisis de tendencias con hasta 2 anos de historial.',       color: 'text-purple-600',     bg: 'bg-purple-50' },
-  { icon: Droplets,  title: 'Gestion hidrica',              desc: 'Calculo de evapotranspiracion y deficit hidrico automatico.', color: 'text-teal-600',       bg: 'bg-teal-50' },
-  { icon: Zap,       title: 'Automatizacion de riego',      desc: 'Integra con controladores y programa riegos desde la app.',   color: 'text-amber-600',      bg: 'bg-amber-50' },
+  { icon: Wifi,      title: 'Integración IoT',              desc: 'Conecta tus sensores existentes sin cambiar hardware.',       color: 'text-agro-blue-600',  bg: 'bg-agro-blue-50' },
+  { icon: BarChart2, title: 'Visualización en tiempo real', desc: 'Panel interactivo con datos actualizados al instante.',       color: 'text-agro-green-600', bg: 'bg-agro-green-50' },
+  { icon: Bell,      title: 'Alertas inteligentes',         desc: 'Notificaciones cuando el predio necesita atención.',          color: 'text-rose-500',       bg: 'bg-rose-50' },
+  { icon: Activity,  title: 'Histórico de datos',           desc: 'Análisis de tendencias con hasta 2 años de historial.',       color: 'text-purple-600',     bg: 'bg-purple-50' },
+  { icon: Droplets,  title: 'Gestión hídrica',              desc: 'Cálculo de evapotranspiración y déficit hídrico automático.', color: 'text-teal-600',       bg: 'bg-teal-50' },
+  { icon: Zap,       title: 'Automatización de riego',      desc: 'Integra con controladores y programa riegos desde la app.',   color: 'text-amber-600',      bg: 'bg-amber-50' },
 ]
 
 export default function Dashboard() {
@@ -93,7 +93,7 @@ export default function Dashboard() {
             <div className="max-w-xl mx-auto text-center mb-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-3">Sensores compatibles</h2>
               <p className="text-gray-500 text-sm">
-                AgroHub se integra con los principales proveedores de sensores agricolas del mundo.
+                AgroHub se integra con los principales proveedores de sensores agrícolas del mundo.
               </p>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
