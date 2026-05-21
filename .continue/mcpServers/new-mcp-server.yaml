@@ -1,0 +1,25 @@
+mcpServers:
+  - name: playwright
+    command: npx
+    args:
+      - -y
+      - "@playwright/mcp@latest"
+
+  - name: context7
+    command: npx
+    args:
+      - -y
+      - "@upstash/context7-mcp"
+
+  - name: shadcn
+    command: npx
+    args:
+      - -y
+      - "shadcn@latest"
+      - "mcp"
+
+  - name: magic-ui
+    command: npx
+    args:
+      - -y
+      - "magicui-mcp"

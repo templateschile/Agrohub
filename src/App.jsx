@@ -1,31 +1,36 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import StatsBar from './components/StatsBar'
-import Problems from './components/Problems'
-import Transformation from './components/Transformation'
-import Platform from './components/Platform'
-import EcosystemSection from './components/EcosystemSection'
-import WaterResilience from './components/WaterResilience'
-import Implementation from './components/Implementation'
-import ClosingCTA from './components/ClosingCTA'
 import Footer from './components/Footer'
 import FloatingCTA from './components/FloatingCTA'
 
+// Pages
+import Home from './pages/Home'
+import Dashboard from './pages/Dashboard'
+import AIChat from './pages/AIChat'
+import Documentos from './pages/Documentos'
+import Eventos from './pages/Eventos'
+import Tienda from './pages/Tienda'
+import Precios from './pages/Precios'
+
 export default function App() {
   return (
-    <div className="min-h-screen">
-      <Navbar />
-      <Hero />
-      <StatsBar />
-      <Problems />
-      <Transformation />
-      <Platform />
-      <EcosystemSection />
-      <WaterResilience />
-      <Implementation />
-      <ClosingCTA />
-      <Footer />
-      <FloatingCTA />
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-1">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/ai-chat" element={<AIChat />} />
+            <Route path="/documentos" element={<Documentos />} />
+            <Route path="/eventos" element={<Eventos />} />
+            <Route path="/tienda" element={<Tienda />} />
+            <Route path="/precios" element={<Precios />} />
+          </Routes>
+        </main>
+        <Footer />
+        <FloatingCTA />
+      </div>
+    </BrowserRouter>
   )
 }

@@ -6,7 +6,6 @@ const HERO_IMAGE = 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449
 export default function Hero() {
   const bgRef = useRef(null)
 
-  /* Parallax on scroll */
   useEffect(() => {
     const el = bgRef.current
     if (!el) return
@@ -20,7 +19,6 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden grain">
-      {/* ── Parallax background ── */}
       <div className="absolute inset-0 overflow-hidden">
         <img
           ref={bgRef}
@@ -31,15 +29,11 @@ export default function Hero() {
           fetchpriority="high"
         />
       </div>
-
-      {/* ── Multi-layer gradient for legibility ── */}
       <div className="absolute inset-0 bg-gradient-to-br from-agro-green-950/90 via-agro-green-900/75 to-agro-green-800/50 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
-      {/* warm vignette */}
       <div className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 80% 70% at 50% 60%, transparent 40%, rgba(0,0,0,0.55) 100%)' }} />
 
-      {/* ── Animated sensor nodes ── */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden>
         <defs>
           <filter id="glow">
@@ -68,38 +62,32 @@ export default function Hero() {
         ))}
       </svg>
 
-      {/* ── Content ── */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-14 pt-32 pb-24">
         <div className="max-w-[680px]">
-
-          {/* Badge */}
           <div className="hero-line-1 inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 mb-8 pulse-badge">
             <span className="w-1.5 h-1.5 bg-agro-green-400 rounded-full" />
             <span className="text-white/85 text-sm font-medium tracking-wide">
-              Centro Demostrativo · Valle de Choapa
+              Centro Demostrativo Movil · Para cualquier agricultor
             </span>
           </div>
 
-          {/* Headline — short, big, high contrast */}
           <h1 className="hero-line-2 font-extrabold leading-[1.05] text-white mb-6"
               style={{ fontSize: 'clamp(2.4rem, 6vw, 4.5rem)' }}>
-            El saber agrícola,{' '}
+            El saber agricola,{' '}
             <span className="text-agro-green-300">
               digitalizado y siempre disponible
             </span>
           </h1>
 
-          {/* Sub — one sentence */}
           <p className="hero-line-3 text-white/70 text-xl leading-relaxed mb-10 max-w-lg">
-            AgroHub centraliza el conocimiento del campo, lo hace conversable y construye
-            un ecosistema que crece con cada agricultor.
+            AgroHub es un hub demostrativo movil que centraliza tecnologia, datos y conocimiento
+            para que cualquier grupo de agricultores optimice su operacion y comercialice sus productos.
           </p>
 
-          {/* CTAs */}
           <div className="hero-line-4 flex flex-wrap gap-4 mb-14">
             <a href="#conversacion"
                className="inline-flex items-center gap-2 bg-agro-green-500 hover:bg-agro-green-400 text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-agro-green-900/40 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl text-base">
-              Ver cómo funciona
+              Ver como funciona
             </a>
             <a href="#contacto"
                className="inline-flex items-center gap-2 bg-white/12 hover:bg-white/20 backdrop-blur-sm border border-white/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-200 hover:-translate-y-0.5 text-base">
@@ -107,12 +95,11 @@ export default function Hero() {
             </a>
           </div>
 
-          {/* 3 anchors */}
           <div className="hero-line-5 flex flex-wrap gap-6 pt-8 border-t border-white/15">
             {[
-              { value: 'Digitalización', label: 'Del campo a la plataforma' },
-              { value: 'Centralización', label: 'Todo el conocimiento unido' },
-              { value: 'Ecosistema', label: 'Crece con cada agricultor' },
+              { value: 'Hub Movil',      label: 'Va donde el agricultor' },
+              { value: 'Centralizacion', label: 'Todo el conocimiento unido' },
+              { value: 'Ecosistema',     label: 'Crece con cada agricultor' },
             ].map(item => (
               <div key={item.value}>
                 <div className="text-agro-green-300 font-bold text-base">{item.value}</div>
@@ -123,13 +110,11 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll cue */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 text-white/40">
         <span className="text-[10px] uppercase tracking-[0.2em] font-medium">Descubrir</span>
         <ArrowDown size={15} className="animate-bounce" />
       </div>
 
-      {/* Bottom fade */}
       <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
     </section>
   )

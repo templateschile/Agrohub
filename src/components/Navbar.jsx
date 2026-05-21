@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 
 const navLinks = [
-  { label: 'El Desafío', href: '#desafio' },
-  { label: 'Centro Demostrativo', href: '#modelo' },
-  { label: 'Plataforma', href: '#plataforma' },
-  { label: 'Marketplace', href: '#marketplace' },
-  { label: 'Agua', href: '#agua' },
-  { label: 'Implementación', href: '#implementacion' },
-  { label: 'Contacto', href: '#contacto' },
+  { label: 'Inicio',         to: '/' },
+  { label: 'Dashboard',      to: '/dashboard' },
+  { label: 'AI Chat',        to: '/ai-chat' },
+  { label: 'Documentos',     to: '/documentos' },
+  { label: 'Eventos',        to: '/eventos' },
+  { label: 'Tienda',         to: '/tienda' },
+  { label: 'Precios',        to: '/precios' },
 ]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const location = useLocation()
+  const isHome = location.pathname === '/'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -21,15 +24,21 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [location.pathname])
+
+  const transparent = isHome && !scrolled
+
   return (
     <nav
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/95 backdrop-blur shadow-sm' : 'bg-transparent'
+        transparent ? 'bg-transparent' : 'bg-white/95 backdrop-blur shadow-sm'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2.5 group">
+        <Link to="/" className="flex items-center gap-2.5 group">
           <div className="w-9 h-9 rounded-xl bg-agro-green-600 flex items-center justify-center shadow">
             <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5">
               <circle cx="16" cy="16" r="6" fill="white" opacity="0.9"/>
@@ -40,42 +49,48 @@ export default function Navbar() {
             </svg>
           </div>
           <div className="flex flex-col leading-none">
-            <span className={`font-bold text-lg tracking-tight transition-colors leading-tight ${scrolled ? 'text-agro-green-700' : 'text-white'}`}>
-              Agro<span className={scrolled ? 'text-agro-green-500' : 'text-agro-green-300'}>Hub</span>{' '}
-              <span className={`text-xs font-semibold tracking-widest uppercase ${scrolled ? 'text-agro-green-400' : 'text-white/60'}`}>UC</span>
+            <span className={`font-bold text-lg tracking-tight transition-colors leading-tight ${transparent ? 'text-white' : 'text-agro-green-700'}`}>
+              Agro<span className={transparent ? 'text-agro-green-300' : 'text-agro-green-500'}>Hub</span>
             </span>
-            <span className={`text-[10px] font-medium tracking-wide ${scrolled ? 'text-gray-400' : 'text-white/50'}`}>Valle de Choapa</span>
+            <span className={`text-[10px] font-medium tracking-wide ${transparent ? 'text-white/50' : 'text-gray-400'}`}>
+              Centro Demostrativo Movil
+            </span>
           </div>
-        </a>
+        </Link>
 
         {/* Desktop links */}
-        <ul className="hidden lg:flex items-center gap-7">
-          {navLinks.map(link => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className={`text-sm font-medium transition-colors hover:text-agro-green-500 ${
-                  scrolled ? 'text-gray-600' : 'text-white/90'
-                }`}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+        <ul className="hidden lg:flex items-center gap-6">
+          {navLinks.map(link => {
+            const active = location.pathname === link.to
+            return (
+              <li key={link.to}>
+                <Link
+                  to={link.to}
+                  className={`text-sm font-medium transition-colors hover:text-agro-green-500 ${
+                    active
+                      ? transparent ? 'text-agro-green-300' : 'text-agro-green-600'
+                      : transparent ? 'text-white/85' : 'text-gray-600'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            )
+          })}
         </ul>
 
         {/* CTA */}
-        <a
-          href="#contacto"
+        <Link
+          to="/precios"
           className="hidden lg:inline-flex items-center gap-2 bg-agro-green-600 hover:bg-agro-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow transition-all duration-200 hover:shadow-md"
         >
-          Comenzar
-        </a>
+          Cotizar
+        </Link>
 
         {/* Mobile toggle */}
         <button
           onClick={() => setMenuOpen(v => !v)}
-          className={`lg:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-gray-700' : 'text-white'}`}
+          className={`lg:hidden p-2 rounded-lg transition-colors ${transparent ? 'text-white' : 'text-gray-700'}`}
         >
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
@@ -85,25 +100,28 @@ export default function Navbar() {
       {menuOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
           <ul className="flex flex-col py-4">
-            {navLinks.map(link => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="block px-6 py-3 text-gray-700 font-medium hover:text-agro-green-600 hover:bg-agro-green-50 transition-colors"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
+            {navLinks.map(link => {
+              const active = location.pathname === link.to
+              return (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className={`block px-6 py-3 font-medium hover:text-agro-green-600 hover:bg-agro-green-50 transition-colors ${
+                      active ? 'text-agro-green-600 bg-agro-green-50' : 'text-gray-700'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              )
+            })}
             <li className="px-6 pt-2">
-              <a
-                href="#contacto"
-                onClick={() => setMenuOpen(false)}
+              <Link
+                to="/precios"
                 className="block text-center bg-agro-green-600 text-white font-semibold py-3 rounded-full"
               >
-                Comenzar
-              </a>
+                Cotizar
+              </Link>
             </li>
           </ul>
         </div>

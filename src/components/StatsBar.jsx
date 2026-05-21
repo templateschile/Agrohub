@@ -29,10 +29,10 @@ function CountUp({ to, suffix = '', duration = 1800 }) {
 }
 
 const stats = [
-  { value: 10, suffix: '+', label: 'Problemáticas resueltas', sub: 'Diagnóstico Valle de Choapa' },
-  { value: 24, suffix: '/7', label: 'Acompañamiento continuo', sub: 'Consultas sin horarios' },
-  { value: 6, suffix: '', label: 'Semanas a operativo', sub: 'Desde el diagnóstico' },
-  { value: 4, suffix: '', label: 'Actores integrados', sub: 'Agricultores, técnicos, instituciones, UC' },
+  { value: 10, suffix: '+', label: 'Problematicas resueltas',   sub: 'Diagnostico agricola integral' },
+  { value: 24, suffix: '/7', label: 'Acompanamiento continuo',  sub: 'Consultas sin horarios' },
+  { value: 6,  suffix: '',   label: 'Semanas a operativo',       sub: 'Desde el diagnostico' },
+  { value: 4,  suffix: '',   label: 'Actores integrados',        sub: 'Agricultores, tecnicos, instituciones, asesores' },
 ]
 
 export default function StatsBar() {
@@ -42,9 +42,7 @@ export default function StatsBar() {
     <section className="py-0 bg-white">
       <div
         ref={ref}
-        className={`max-w-7xl mx-auto px-6 lg:px-14 transition-all duration-700 ${
-          visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-        }`}
+        className={`max-w-7xl mx-auto px-6 lg:px-14 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
       >
         <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-gray-100 border border-gray-100 rounded-2xl shadow-sm bg-white -mt-10 relative z-10">
           {stats.map((s, i) => (
