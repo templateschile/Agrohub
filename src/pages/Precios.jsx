@@ -7,7 +7,7 @@ const PRECIO_NO_API   = 1200000
 const PRECIO_SENSOR   = 200000
 const PRECIO_VISTA    = 100000
 const PRECIO_LICENCIA = 7000000
-const PRECIO_SOPORTE  = 500000
+const PRECIO_SOPORTE  = 5000000
 
 const MODULOS = [
   { id: "dashboard", label: "Dashboard y Sensores",    precio: 2000000 },
@@ -233,10 +233,10 @@ export default function Precios() {
                       </button>
                     ))}
                   </div>
-                  <p className="text-xs text-gray-400 mt-3">Mínimo 1 año. Soporte activo, mejoras iterativas y seguimiento mensual.</p>
+                  <p className="text-xs text-gray-400 mt-3">1 año incluido sin costo extra. Desde año 2: <strong className="text-gray-600">{CLP(PRECIO_SOPORTE)}/año</strong> adicional.</p>
                 </div>
 
-                                                {/* 6. Licencia siempre incluida */}
+                                                                {/* 6. Licencia siempre incluida */}
                 <div className="bg-agro-green-50 border border-agro-green-200 rounded-2xl p-6 shadow-sm">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-3">
@@ -246,8 +246,10 @@ export default function Precios() {
                       <div>
                         <div className="font-bold text-agro-green-900 text-sm mb-1">Licencia compartida — siempre incluida</div>
                         <p className="text-xs text-agro-green-700 leading-relaxed">
-                          Panel admin (Node.js + React) · App móvil (Flutter) · Acceso a la red de hubs.
-                          {' '}<a href="/terminos" target="_blank" className="underline font-semibold">Ver Términos</a>.
+                          Incluye código fuente del panel admin (Node.js + React) y app móvil (Flutter).
+                          Los <strong>datos de cada hub son propiedad exclusiva de ese hub</strong>; cualquier compartición requiere autorización explícita del usuario.
+                          Los features y mejoras del ecosistema se distribuyen mediante <strong>pull requests</strong>, por lo que cada hub puede incorporar actualizaciones disponibles en la red.
+                          {' '}<a href="/terminos" target="_blank" className="underline font-semibold">Ver Términos y Condiciones →</a>
                         </p>
                       </div>
                     </div>

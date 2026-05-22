@@ -1,33 +1,74 @@
-import { Droplets, Cpu, Database, Activity, TrendingUp, Users } from 'lucide-react'
 import { useInView } from '../hooks/useInView'
 
-const problems = [
-  { icon: Droplets,   color: 'text-agro-blue-500', bg: 'bg-agro-blue-50',   title: 'Escasez hídrica',           stat: '4%',   sub: 'monitorea humedad del suelo' },
-  { icon: Activity,   color: 'text-rose-500',       bg: 'bg-rose-50',        title: 'Riego ineficiente',         stat: '<15%', sub: 'usa datos para regar' },
-  { icon: Cpu,        color: 'text-agro-earth-600', bg: 'bg-agro-earth-50',  title: 'Baja adopción tecnológica', stat: '<10%', sub: 'usa plataformas digitales' },
-  { icon: Database,   color: 'text-agro-green-600', bg: 'bg-agro-green-50',  title: 'Información dispersa',      stat: '0',    sub: 'registros centralizados' },
-  { icon: TrendingUp, color: 'text-purple-600',     bg: 'bg-purple-50',      title: 'Sin salida comercial',      stat: '92%',  sub: 'sin estrategia comercial' },
-  { icon: Users,      color: 'text-teal-600',       bg: 'bg-teal-50',        title: 'Actores descoordinados',    stat: '-',    sub: 'sin plataforma común' },
+const DESAFIOS = [
+  {
+    n: '01',
+    problema: 'Información técnica dispersa',
+    solucion: 'Centraliza sensores, alertas, documentos, capacitaciones e historial productivo en una sola herramienta.',
+  },
+  {
+    n: '02',
+    problema: 'Baja alfabetización digital',
+    solucion: 'Diseño simple, lenguaje comprensible y aprendizaje progresivo pensado para agricultores, no para especialistas.',
+  },
+  {
+    n: '03',
+    problema: 'Datos que nadie sabe interpretar',
+    solucion: 'Transforma datos en decisiones: gráficos simples, alertas e IA que dice qué hacer, no solo qué pasó.',
+  },
+  {
+    n: '04',
+    problema: 'Sin acompañamiento post-instalación',
+    solucion: 'Soporte técnico, asesor virtual IA y capacitación continua que acompañan todo el proceso de adopción.',
+  },
+  {
+    n: '05',
+    problema: 'Tecnología desconectada del campo',
+    solucion: 'Diseñada desde la experiencia real: cultivos, tiempos y problemas del agricultor. La tecnología se adapta a la agricultura.',
+  },
+  {
+    n: '06',
+    problema: 'Fuentes de información no validadas',
+    solucion: 'Conecta INIA, ODEPA, FIA, INDAP, CIREN, SAG y Centros Demostrativos en una fuente organizada y validada.',
+  },
+  {
+    n: '07',
+    problema: 'Cálculos manuales y errores de aplicación',
+    solucion: 'Calculadoras integradas de fertilizantes, plaguicidas, herbicidas y conversión de dosis directamente en la app.',
+  },
+  {
+    n: '08',
+    problema: 'Sin canal de comercialización digital',
+    solucion: 'Marketplace B2B que conecta productores con compradores, visibiliza productos y profesionaliza la oferta.',
+  },
+  {
+    n: '09',
+    problema: 'Capacitación desconectada de la práctica',
+    solucion: 'Sensores, datos, IA, marketplace y capacitación integrados: el agricultor aprende usando herramientas reales sobre su propio sistema.',
+  },
+  {
+    n: '10',
+    problema: 'Proyectos que mueren al terminar',
+    solucion: 'Seguimiento permanente, actualización de contenidos, comunidad digital y soporte que evoluciona con el agricultor.',
+  },
 ]
 
-function Card({ p, i }) {
+function Card({ d, i }) {
   const [ref, visible] = useInView({ threshold: 0.1 })
-  const Icon = p.icon
   return (
     <div
       ref={ref}
-      className={`card-hover bg-white border border-gray-100 rounded-2xl p-5 flex gap-4 items-center transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
-      style={{ transitionDelay: `${(i % 3) * 80}ms` }}
+      className={`group bg-white border border-gray-100 rounded-2xl p-5 flex gap-4 transition-all duration-500 hover:shadow-md hover:border-agro-green-200 ${
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+      }`}
+      style={{ transitionDelay: `${(i % 5) * 60}ms` }}
     >
-      <div className={`w-10 h-10 rounded-xl ${p.bg} flex items-center justify-center shrink-0`}>
-        <Icon size={18} className={p.color} />
-      </div>
+      <span className="text-2xl font-black text-agro-green-100 group-hover:text-agro-green-200 transition-colors shrink-0 leading-none mt-0.5 select-none">
+        {d.n}
+      </span>
       <div>
-        <div className="font-semibold text-gray-800 text-sm">{p.title}</div>
-        <div className="flex items-baseline gap-1.5 mt-0.5">
-          <span className={`text-base font-bold ${p.color}`}>{p.stat}</span>
-          <span className="text-gray-400 text-xs">{p.sub}</span>
-        </div>
+        <div className="font-bold text-gray-900 text-sm mb-1">{d.problema}</div>
+        <p className="text-gray-500 text-xs leading-relaxed">{d.solucion}</p>
       </div>
     </div>
   )
@@ -41,27 +82,30 @@ export default function Problems() {
       <div className="max-w-7xl mx-auto px-6 lg:px-14">
         <div
           ref={ref}
-          className={`max-w-xl mx-auto text-center mb-10 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+          className={`max-w-xl mb-12 transition-all duration-700 ${
+            visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}
         >
           <div className="inline-flex items-center gap-2 bg-rose-50 border border-rose-100 rounded-full px-4 py-1.5 mb-4">
-            <span className="text-rose-500 text-sm font-medium">Diagnostico agricola</span>
+            <span className="text-rose-500 text-sm font-medium">Diagnóstico agrícola</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-            Los desafíos que AgroHub resuelve
+            10 desafíos que AgroHub resuelve
           </h2>
+          <p className="text-gray-500 text-base">
+            Cada problema real del agricultor tiene una respuesta concreta en la plataforma.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-          {problems.slice(0, 3).map((p, i) => <Card key={p.title} p={p} i={i} />)}
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {problems.slice(3, 5).map((p, i) => <Card key={p.title} p={p} i={i} />)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+          {DESAFIOS.map((d, i) => <Card key={d.n} d={d} i={i} />)}
+          {/* CTA card */}
           <div className="bg-agro-green-700 rounded-2xl p-5 flex flex-col justify-between">
-            <p className="font-semibold text-white text-sm leading-snug mb-3">
-              Respuesta integrada a cada problemática del territorio agrícola.
+            <p className="font-semibold text-white text-sm leading-snug mb-4">
+              Una sola plataforma que responde a cada problemática del territorio agrícola.
             </p>
             <a href="#modelo" className="text-agro-green-300 text-sm font-semibold hover:text-white transition-colors">
-              Ver el modelo →
+              Ver cómo funciona →
             </a>
           </div>
         </div>
@@ -69,3 +113,4 @@ export default function Problems() {
     </section>
   )
 }
+

@@ -71,17 +71,17 @@ export default function Hero() {
             </span>
           </div>
 
-          <h1 className="hero-line-2 font-extrabold leading-[1.05] text-white mb-6"
-              style={{ fontSize: 'clamp(2.4rem, 6vw, 4.5rem)' }}>
-            El saber agricola,{' '}
+          <h1 className="hero-line-2 font-extrabold leading-[1.08] text-white mb-5"
+              style={{ fontSize: 'clamp(1.75rem, 4vw, 3rem)' }}>
+            El saber agrícola,{' '}
             <span className="text-agro-green-300">
               digitalizado y siempre disponible
             </span>
           </h1>
 
-          <p className="hero-line-3 text-white/70 text-xl leading-relaxed mb-10 max-w-lg">
-            AgroHub es un hub demostrativo móvil que centraliza tecnología, datos y conocimiento
-            para que cualquier grupo de agricultores optimice su operación y comercialice sus productos.
+          <p className="hero-line-3 text-white/75 text-base leading-relaxed mb-8 max-w-lg">
+            AgroHub centraliza tecnología, datos y conocimiento agrícola
+            en una sola plataforma — para cualquier agricultor, en cualquier territorio.
           </p>
 
           <div className="hero-line-4 flex flex-wrap gap-4 mb-14">
