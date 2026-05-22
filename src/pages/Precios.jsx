@@ -1,13 +1,20 @@
 ﻿import { useState, useMemo } from "react"
 import { useInView } from "../hooks/useInView"
-import { Check, DollarSign, ChevronDown, ChevronUp, Info } from "lucide-react"
+import { Check, DollarSign, ChevronDown, ChevronUp, Info, Lock } from "lucide-react"
+
+const PRECIO_API      = 900000
+const PRECIO_NO_API   = 1200000
+const PRECIO_SENSOR   = 200000
+const PRECIO_VISTA    = 100000
+const PRECIO_LICENCIA = 7000000
+const PRECIO_SOPORTE  = 500000
 
 const MODULOS = [
-  { id: "dashboard", label: "Dashboard y Sensores",     precio: 1600000 },
-  { id: "ai",        label: "AI Chat agricola",          precio: 1600000 },
-  { id: "docs",      label: "Documentos",                precio: 1600000 },
-  { id: "eventos",   label: "Eventos y Capacitaciones",  precio: 1600000 },
-  { id: "tienda",    label: "Tienda B2B",                precio: 1600000 },
+  { id: "dashboard", label: "Dashboard y Sensores",    precio: 2000000 },
+  { id: "ai",        label: "AI Chat agricola",         precio: 2000000 },
+  { id: "docs",      label: "Documentos",               precio: 2000000 },
+  { id: "eventos",   label: "Eventos y Capacitaciones", precio: 2000000 },
+  { id: "tienda",    label: "Tienda / Ecommerce",        precio: 5000000 },
 ]
 
 const SENSORES = [
@@ -24,31 +31,24 @@ function CLP(n) {
   return "$" + n.toLocaleString("es-CL")
 }
 
-function calcularPrecio(modulos, fuentesApi, fuentesSinApi, sensores, soporte, licencia, admins, agricultores, asesores) {
-  let base = 0
-
-  const numModulos = modulos.length
-  const descModulo = numModulos >= 4 ? 0.20 : numModulos === 3 ? 0.12 : numModulos === 2 ? 0.06 : 0
+function calcularPrecio(modulos, fuentesApi, fuentesSinApi, sensores, vistasKpi, soporte, admins, agricultores, asesores) {
+  let total = 0
+  const desc = modulos.length === 5 ? 0.20 : 0
   modulos.forEach(id => {
     const m = MODULOS.find(x => x.id === id)
-    if (m) base += m.precio * (1 - descModulo)
+    if (m) total += m.precio * (1 - desc)
   })
-
-  base += fuentesApi * 800000
-  base += fuentesSinApi * 1200000
-  base += sensores.length * PRECIO_SENSOR
-
-  const costoPorAnio = base * 0.18
-  base += costoPorAnio * soporte
-
-  if (licencia) base += 10000000
-
-  const totalUsuarios = admins + agricultores + asesores
-  if (totalUsuarios > 50)  base += 800000
-  if (totalUsuarios > 100) base += 800000
-  if (totalUsuarios > 200) base += 1500000
-
-  return Math.round(base)
+  total += fuentesApi    * PRECIO_API
+  total += fuentesSinApi * PRECIO_NO_API
+  total += sensores.length * PRECIO_SENSOR
+  total += vistasKpi     * PRECIO_VISTA
+  if (soporte > 1) total += (soporte - 1) * PRECIO_SOPORTE
+  total += PRECIO_LICENCIA
+  const u = admins + agricultores + asesores
+  if (u > 50)  total += 800000
+  if (u > 100) total += 800000
+  if (u > 200) total += 1500000
+  return Math.round(total)
 }
 
 function Tooltip({ text }) {
@@ -67,22 +67,22 @@ export default function Precios() {
   const [fuentesApi, setFuentesApi] = useState(5)
   const [fuentesSinApi, setFuentesSinApi] = useState(1)
   const [sensores, setSensores] = useState(["WiseConn / DropControl"])
+  const [vistasKpi, setVistasKpi] = useState(7)
   const [soporte, setSoporte] = useState(1)
-  const [licencia, setLicencia] = useState(true)
   const [admins, setAdmins] = useState(1)
   const [agricultores, setAgricultores] = useState(20)
   const [asesores, setAsesores] = useState(5)
   const [sensoresExpanded, setSensoresExpanded] = useState(false)
 
   const precio = useMemo(
-    () => calcularPrecio(modulos, fuentesApi, fuentesSinApi, sensores, soporte, licencia, admins, agricultores, asesores),
-    [modulos, fuentesApi, fuentesSinApi, sensores, soporte, licencia, admins, agricultores, asesores]
+        () => calcularPrecio(modulos, fuentesApi, fuentesSinApi, sensores, vistasKpi, soporte, admins, agricultores, asesores),
+    [modulos, fuentesApi, fuentesSinApi, sensores, vistasKpi, soporte, admins, agricultores, asesores]
   )
 
   const toggleModulo = id => setModulos(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
   const toggleSensor = s  => setSensores(prev => prev.includes(s)  ? prev.filter(x => x !== s)  : [...prev, s])
 
-  const descModulo = modulos.length >= 4 ? "20%" : modulos.length === 3 ? "12%" : modulos.length === 2 ? "6%" : null
+  const descModulo = modulos.length === 5 ? "20%" : null
 
   const [titleRef, titleVisible] = useInView({ threshold: 0.1 })
 
@@ -119,7 +119,7 @@ export default function Precios() {
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
                   <div className="flex items-center gap-2 mb-1">
                     <h2 className="font-bold text-gray-900 text-base">1. Módulos</h2>
-                    <Tooltip text="Más módulos activos = mayor descuento por módulo. Con 4 o más módulos: 20% off." />
+                    <Tooltip text="Al activar los 5 modulos se aplica un 20% de descuento sobre todos." />
                   </div>
                   {descModulo && (
                     <p className="text-xs text-agro-green-600 font-semibold mb-3">Descuento por volumen: {descModulo}</p>
@@ -204,9 +204,24 @@ export default function Precios() {
                   </div>
                 </div>
 
-                {/* 4. Soporte */}
+                                {/* 4. Vistas KPI */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                  <h2 className="font-bold text-gray-900 text-base mb-4">4. Años de soporte incluido</h2>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h2 className="font-bold text-gray-900 text-base">4. Vistas KPI por sensor</h2>
+                    <Tooltip text="Paneles KPI activos por sensor. Ej: humedad, temperatura, alerta de riego, etc." />
+                  </div>
+                  <p className="text-xs text-gray-400 mb-4">Cada vista es un panel de datos en tiempo real en el dashboard.</p>
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => setVistasKpi(v => Math.max(1, v - 1))} className="w-8 h-8 bg-gray-100 rounded-lg font-bold text-gray-700 hover:bg-gray-200 transition-colors">-</button>
+                    <span className="w-8 text-center font-bold text-gray-900 text-lg">{vistasKpi}</span>
+                    <button onClick={() => setVistasKpi(v => v + 1)} className="w-8 h-8 bg-gray-100 rounded-lg font-bold text-gray-700 hover:bg-gray-200 transition-colors">+</button>
+                  </div>
+                  <p className="text-xs text-gray-400 mt-2">{CLP(PRECIO_VISTA)} por vista &middot; Total: <strong className="text-gray-600">{CLP(vistasKpi * PRECIO_VISTA)}</strong></p>
+                </div>
+
+                {/* 5. Soporte */}
+                <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                  <h2 className="font-bold text-gray-900 text-base mb-4">5. Anos de soporte incluido</h2>
                   <div className="flex gap-3 flex-wrap">
                     {SOPORTE_OPCIONES.map(n => (
                       <button
@@ -221,33 +236,33 @@ export default function Precios() {
                   <p className="text-xs text-gray-400 mt-3">Mínimo 1 año. Soporte activo, mejoras iterativas y seguimiento mensual.</p>
                 </div>
 
-                {/* 5. Licencia */}
-                <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                  <button
-                    onClick={() => setLicencia(v => !v)}
-                    className={`w-full flex items-center justify-between rounded-xl border px-4 py-4 text-left transition-all ${licencia ? "bg-agro-green-50 border-agro-green-400" : "bg-gray-50 border-gray-200 hover:border-gray-300"}`}
-                  >
-                    <div>
-                      <div className="flex items-center gap-2.5">
-                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 ${licencia ? "bg-agro-green-600 border-agro-green-600" : "border-gray-300"}`}>
-                          {licencia && <Check size={11} className="text-white"/>}
-                        </div>
-                        <span className="font-bold text-gray-900 text-sm">5. Licencia compartida del código</span>
+                                                {/* 6. Licencia siempre incluida */}
+                <div className="bg-agro-green-50 border border-agro-green-200 rounded-2xl p-6 shadow-sm">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-agro-green-600 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                        <Lock size={14} className="text-white" />
                       </div>
-                      <p className="text-xs text-gray-500 mt-1.5 ml-7">Incluye acceso al código fuente del front-end, panel de administración y documentación técnica.</p>
+                      <div>
+                        <div className="font-bold text-agro-green-900 text-sm mb-1">Licencia compartida — siempre incluida</div>
+                        <p className="text-xs text-agro-green-700 leading-relaxed">
+                          Panel admin (Node.js + React) · App móvil (Flutter) · Acceso a la red de hubs.
+                          {' '}<a href="/terminos" target="_blank" className="underline font-semibold">Ver Términos</a>.
+                        </p>
+                      </div>
                     </div>
-                    <span className="text-sm font-bold text-gray-700 ml-4 shrink-0">{CLP(PRECIO_LICENCIA)}</span>
-                  </button>
+                    <span className="text-sm font-bold text-agro-green-700 shrink-0">{CLP(PRECIO_LICENCIA)}</span>
+                  </div>
                 </div>
 
-                {/* 6. Usuarios */}
+                {/* 7. Usuarios */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                  <h2 className="font-bold text-gray-900 text-base mb-4">6. Usuarios estimados</h2>
+                  <h2 className="font-bold text-gray-900 text-base mb-4">7. Usuarios estimados</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                     {[
-                      { label: "Admins / Hub managers", val: admins,      set: setAdmins,      hint: "Gestionan la plataforma" },
-                      { label: "Agricultores",           val: agricultores, set: setAgricultores, hint: "Usan la app en terreno" },
-                      { label: "Asesores agrícolas",     val: asesores,    set: setAsesores,    hint: "Técnicos y consultores" },
+                      { label: "Admins / Hub managers", val: admins,       set: setAdmins,       hint: "Gestionan la plataforma" },
+                      { label: "Agricultores",           val: agricultores,  set: setAgricultores, hint: "Usan la app en terreno" },
+                      { label: "Asesores agrícolas",     val: asesores,     set: setAsesores,     hint: "Técnicos y consultores" },
                     ].map(u => (
                       <div key={u.label}>
                         <label className="text-xs font-semibold text-gray-700 mb-1 block">{u.label}</label>
