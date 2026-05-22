@@ -84,9 +84,7 @@ export default function Precios() {
 
   const descModulo = modulos.length === 5 ? "20%" : null
 
-  const [titleRef, titleVisible] = useInView({ threshold: 0.1 })
-
-  return (
+    return (
     <div>
       <section className="pt-32 pb-16 bg-gradient-to-b from-agro-green-900 to-agro-green-800">
         <div className="max-w-7xl mx-auto px-6 lg:px-14">
@@ -104,13 +102,9 @@ export default function Precios() {
         </div>
       </section>
 
-      <section className="py-12 bg-gray-50">
+            <section className="py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6 lg:px-14">
-          <div
-            ref={titleRef}
-            className={`transition-all duration-700 ${titleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
               {/* ---- FORMULARIO COTIZADOR ---- */}
               <div className="lg:col-span-2 flex flex-col gap-6">
@@ -221,7 +215,7 @@ export default function Precios() {
 
                 {/* 5. Soporte */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                  <h2 className="font-bold text-gray-900 text-base mb-4">5. Anos de soporte incluido</h2>
+                  <h2 className="font-bold text-gray-900 text-base mb-4">5. Años de soporte incluido</h2>
                   <div className="flex gap-3 flex-wrap">
                     {SOPORTE_OPCIONES.map(n => (
                       <button
@@ -325,8 +319,7 @@ export default function Precios() {
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
+                      </div>
         </div>
       </section>
     </div>

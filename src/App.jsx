@@ -11,6 +11,7 @@ import Documentos from './pages/Documentos'
 import Eventos from './pages/Eventos'
 import Tienda from './pages/Tienda'
 import Precios from './pages/Precios'
+import Terminos from './pages/Terminos'
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="/eventos" element={<Eventos />} />
             <Route path="/tienda" element={<Tienda />} />
             <Route path="/precios" element={<Precios />} />
+            <Route path="/terminos" element={<Terminos />} />
           </Routes>
         </main>
         <Footer />
