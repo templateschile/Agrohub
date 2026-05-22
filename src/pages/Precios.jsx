@@ -36,7 +36,7 @@ function calcularPrecio(modulos, fuentesApi, fuentesSinApi, sensores, soporte, l
 
   base += fuentesApi * 800000
   base += fuentesSinApi * 1200000
-  base += sensores.length * 700000
+  base += sensores.length * PRECIO_SENSOR
 
   const costoPorAnio = base * 0.18
   base += costoPorAnio * soporte
@@ -157,7 +157,7 @@ export default function Precios() {
                         <span className="w-8 text-center font-bold text-gray-900">{fuentesApi}</span>
                         <button onClick={() => setFuentesApi(v => v+1)} className="w-8 h-8 bg-gray-100 rounded-lg font-bold text-gray-700 hover:bg-gray-200 transition-colors">+</button>
                       </div>
-                      <p className="text-xs text-gray-400 mt-1">{CLP(800000)} por fuente</p>
+                      <p className="text-xs text-gray-400 mt-1">{CLP(PRECIO_API)} por fuente</p>
                     </div>
                     <div>
                       <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
@@ -169,7 +169,7 @@ export default function Precios() {
                         <span className="w-8 text-center font-bold text-gray-900">{fuentesSinApi}</span>
                         <button onClick={() => setFuentesSinApi(v => v+1)} className="w-8 h-8 bg-gray-100 rounded-lg font-bold text-gray-700 hover:bg-gray-200 transition-colors">+</button>
                       </div>
-                      <p className="text-xs text-gray-400 mt-1">{CLP(1200000)} por fuente</p>
+                      <p className="text-xs text-gray-400 mt-1">{CLP(PRECIO_NO_API)} por fuente</p>
                     </div>
                   </div>
                 </div>
@@ -186,7 +186,7 @@ export default function Precios() {
                     </button>
                   </div>
                   {sensores.length > 0 && (
-                    <p className="text-xs text-agro-green-600 font-semibold mb-3">{sensores.length} sensor{sensores.length !== 1 ? "es" : ""} seleccionado{sensores.length !== 1 ? "s" : ""} &middot; {CLP(sensores.length * 700000)}</p>
+                    <p className="text-xs text-agro-green-600 font-semibold mb-3">{sensores.length} sensor{sensores.length !== 1 ? "es" : ""} seleccionado{sensores.length !== 1 ? "s" : ""} &middot; {CLP(sensores.length * PRECIO_SENSOR)}</p>
                   )}
                   <div className={`grid grid-cols-1 sm:grid-cols-2 gap-2 ${!sensoresExpanded ? "max-h-48 overflow-hidden" : ""}`}>
                     {SENSORES.map(s => (
@@ -236,7 +236,7 @@ export default function Precios() {
                       </div>
                       <p className="text-xs text-gray-500 mt-1.5 ml-7">Incluye acceso al código fuente del front-end, panel de administración y documentación técnica.</p>
                     </div>
-                    <span className="text-sm font-bold text-gray-700 ml-4 shrink-0">{CLP(10000000)}</span>
+                    <span className="text-sm font-bold text-gray-700 ml-4 shrink-0">{CLP(PRECIO_LICENCIA)}</span>
                   </button>
                 </div>
 
@@ -278,11 +278,12 @@ export default function Precios() {
                     {modulos.length > 0 && (
                       <div className="flex justify-between"><span className="text-gray-500">Modulos ({modulos.length})</span><span className="font-medium text-gray-800">{descModulo ? `con ${descModulo} off` : ""}</span></div>
                     )}
-                    {fuentesApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes API ({fuentesApi})</span><span className="font-medium text-gray-800">{CLP(fuentesApi*800000)}</span></div>}
-                    {fuentesSinApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes custom ({fuentesSinApi})</span><span className="font-medium text-gray-800">{CLP(fuentesSinApi*1200000)}</span></div>}
-                    {sensores.length > 0 && <div className="flex justify-between"><span className="text-gray-500">Sensores ({sensores.length})</span><span className="font-medium text-gray-800">{CLP(sensores.length*700000)}</span></div>}
-                    <div className="flex justify-between"><span className="text-gray-500">Soporte {soporte} año{soporte>1?"s":""}</span><span className="font-medium text-gray-800">incluido</span></div>
-                    {licencia && <div className="flex justify-between"><span className="text-gray-500">Licencia compartida</span><span className="font-medium text-gray-800">{CLP(10000000)}</span></div>}
+                    {fuentesApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes API ({fuentesApi})</span><span className="font-medium text-gray-800">{CLP(fuentesApi*PRECIO_API)}</span></div>}
+                    {fuentesSinApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes custom ({fuentesSinApi})</span><span className="font-medium text-gray-800">{CLP(fuentesSinApi*PRECIO_NO_API)}</span></div>}
+                    {sensores.length > 0 && <div className="flex justify-between"><span className="text-gray-500">Sensores ({sensores.length})</span><span className="font-medium text-gray-800">{CLP(sensores.length*PRECIO_SENSOR)}</span></div>}
+                    {vistasKpi > 0 && <div className="flex justify-between"><span className="text-gray-500">Vistas KPI ({vistasKpi})</span><span className="font-medium text-gray-800">{CLP(vistasKpi*PRECIO_VISTA)}</span></div>}
+                    <div className="flex justify-between"><span className="text-gray-500">Soporte {soporte} año{soporte>1?"s":""}</span><span className="font-medium text-gray-800">{soporte === 1 ? "incluido" : CLP((soporte-1)*PRECIO_SOPORTE)+" extra"}</span></div>
+                    <div className="flex justify-between"><span className="text-gray-500">Licencia compartida</span><span className="font-medium text-agro-green-700">{CLP(PRECIO_LICENCIA)}</span></div>
                     <div className="flex justify-between"><span className="text-gray-500">Usuarios ({admins+agricultores+asesores})</span><span className="font-medium text-gray-800">incluido</span></div>
                   </div>
 
@@ -314,3 +315,6 @@ export default function Precios() {
     </div>
   )
 }
+
+
+

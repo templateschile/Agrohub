@@ -47,12 +47,14 @@ export default function FloatingCTA() {
           <p className="text-gray-600 text-sm leading-relaxed mb-4">
             ¿Quieres saber cómo AgroHub puede integrarse a tu territorio?
           </p>
-          <a
-            href="#contacto"
+                    <a
+            href="https://wa.me/56987561075?text=Hola%2C%20me%20interesa%20saber%20m%C3%A1s%20sobre%20AgroHub%20para%20mi%20territorio"
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={() => setExpanded(false)}
             className="block w-full text-center bg-agro-green-600 hover:bg-agro-green-700 text-white font-semibold text-sm py-2.5 rounded-xl transition-colors"
           >
-            Contactar ahora →
+            Escribir por WhatsApp →
           </a>
         </div>
       )}

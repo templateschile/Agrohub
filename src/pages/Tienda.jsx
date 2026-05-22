@@ -1,6 +1,6 @@
 ﻿import { useState } from "react"
 import { useInView } from "../hooks/useInView"
-import { ShoppingBag, MapPin, Search, Package, ChevronRight, Leaf, AlertCircle } from "lucide-react"
+import { ShoppingBag, MapPin, Search, Package, Leaf, AlertCircle, Filter, X, MessageCircle } from "lucide-react"
 
 const COMUNAS = [
   "Todas las comunas",
@@ -98,6 +98,14 @@ const productores = [
   },
 ]
 
+function waLink(telefono, nombreProductor, nombreProducto, cupoKg) {
+  const num = telefono.replace(/\D/g, '')
+  const msg = encodeURIComponent(
+    `Hola! Te contacto desde AgroHub. Estoy interesado en ${nombreProducto} de ${nombreProductor}. ¿Tienen disponibilidad del cupo (${cupoKg.toLocaleString('es-CL')} kg)?`
+  )
+  return `https://wa.me/${num}?text=${msg}`
+}
+
 function ProductorCard({ p }) {
   const [ref, visible] = useInView({ threshold: 0.05 })
   const [expanded, setExpanded] = useState(false)
@@ -158,10 +166,22 @@ function ProductorCard({ p }) {
         </div>
       </div>
       <div className="border-t border-gray-50 px-5 py-3 flex items-center justify-between">
-        <span className="text-xs text-gray-400">{p.contacto}</span>
-        <button className="flex items-center gap-1.5 bg-agro-green-600 hover:bg-agro-green-700 text-white text-xs font-semibold px-4 py-2 rounded-full transition-colors">
-          Contactar <ChevronRight size={12}/>
-        </button>
+        <a
+          href={`https://wa.me/${p.contacto.replace(/\D/g,'')}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-gray-400 hover:text-agro-green-600 transition-colors"
+        >
+          {p.contacto}
+        </a>
+        <a
+          href={waLink(p.contacto, p.nombre, p.productos[0]?.nombre || 'cosecha', p.productos[0]?.cupoKg || 0)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 bg-agro-green-600 hover:bg-agro-green-700 text-white text-xs font-semibold px-4 py-2 rounded-full transition-colors"
+        >
+          <MessageCircle size={12}/> WhatsApp
+        </a>
       </div>
     </div>
   )
@@ -172,6 +192,7 @@ export default function Tienda() {
   const [producto, setProducto] = useState("Todos los productos")
   const [busqueda, setBusqueda] = useState("")
   const [soloDisponibles, setSoloDisponibles] = useState(false)
+  const [filtroAbierto, setFiltroAbierto] = useState(false)
 
   const filtrados = productores.filter(p => {
     const matchComuna = comuna === "Todas las comunas" || p.comuna === comuna
@@ -201,9 +222,10 @@ export default function Tienda() {
         </div>
       </section>
 
-      <section className="py-10 bg-gray-50 border-b border-gray-100 sticky top-16 md:top-20 z-30">
+      {/* FILTROS DESKTOP: sticky bar */}
+      <section className="py-4 bg-gray-50 border-b border-gray-100 sticky top-16 md:top-20 z-30 hidden sm:block">
         <div className="max-w-7xl mx-auto px-6 lg:px-14">
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-row gap-3">
             <div className="flex-1 bg-white border border-gray-200 rounded-xl flex items-center gap-3 px-4 py-2.5 shadow-sm">
               <Search size={15} className="text-gray-400 shrink-0" />
               <input
@@ -214,29 +236,77 @@ export default function Tienda() {
                 className="flex-1 text-sm text-gray-700 placeholder-gray-400 outline-none bg-transparent"
               />
             </div>
-            <select
-              value={comuna}
-              onChange={e => setComuna(e.target.value)}
-              className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400 cursor-pointer"
-            >
+            <select value={comuna} onChange={e => setComuna(e.target.value)}
+              className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400 cursor-pointer">
               {COMUNAS.map(c => <option key={c}>{c}</option>)}
             </select>
-            <select
-              value={producto}
-              onChange={e => setProducto(e.target.value)}
-              className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400 cursor-pointer"
-            >
+            <select value={producto} onChange={e => setProducto(e.target.value)}
+              className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400 cursor-pointer">
               {PRODUCTOS.map(p => <option key={p}>{p}</option>)}
             </select>
-            <button
-              onClick={() => setSoloDisponibles(v => !v)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-colors ${soloDisponibles ? "bg-agro-green-600 text-white border-agro-green-600" : "bg-white text-gray-600 border-gray-200 hover:border-agro-green-400"}`}
-            >
+            <button onClick={() => setSoloDisponibles(v => !v)}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-colors ${soloDisponibles ? "bg-agro-green-600 text-white border-agro-green-600" : "bg-white text-gray-600 border-gray-200 hover:border-agro-green-400"}`}>
               <Package size={14}/>Con cupos
             </button>
           </div>
         </div>
       </section>
+
+      {/* FILTROS MOBILE: botón flotante + sheet */}
+      <div className="sm:hidden">
+        {/* Botón flotante */}
+        <button
+          onClick={() => setFiltroAbierto(true)}
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 bg-agro-green-700 text-white font-semibold text-sm px-5 py-3 rounded-full shadow-xl shadow-agro-green-900/40"
+        >
+          <Filter size={15}/>
+          Filtrar
+          {(comuna !== 'Todas las comunas' || producto !== 'Todos los productos' || soloDisponibles || busqueda) &&
+            <span className="w-2 h-2 bg-agro-green-300 rounded-full animate-pulse" />
+          }
+        </button>
+
+        {/* Sheet overlay */}
+        {filtroAbierto && (
+          <div className="fixed inset-0 z-50 flex flex-col justify-end">
+            <div className="absolute inset-0 bg-black/40" onClick={() => setFiltroAbierto(false)} />
+            <div className="relative bg-white rounded-t-3xl px-5 pt-5 pb-10 flex flex-col gap-4 shadow-2xl">
+              <div className="flex items-center justify-between mb-1">
+                <span className="font-bold text-gray-900">Filtros</span>
+                <button onClick={() => setFiltroAbierto(false)} className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <X size={15} className="text-gray-600" />
+                </button>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-xl flex items-center gap-3 px-4 py-2.5">
+                <Search size={15} className="text-gray-400 shrink-0" />
+                <input type="text" placeholder="Buscar productor o comuna..." value={busqueda}
+                  onChange={e => setBusqueda(e.target.value)}
+                  className="flex-1 text-sm text-gray-700 placeholder-gray-400 outline-none" />
+              </div>
+              <select value={comuna} onChange={e => setComuna(e.target.value)}
+                className="border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none">
+                {COMUNAS.map(c => <option key={c}>{c}</option>)}
+              </select>
+              <select value={producto} onChange={e => setProducto(e.target.value)}
+                className="border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none">
+                {PRODUCTOS.map(p => <option key={p}>{p}</option>)}
+              </select>
+              <button onClick={() => setSoloDisponibles(v => !v)}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-colors ${soloDisponibles ? "bg-agro-green-600 text-white border-agro-green-600" : "bg-white text-gray-600 border-gray-200"}`}>
+                <Package size={14}/>Solo con cupos disponibles
+              </button>
+              <button onClick={() => { setComuna('Todas las comunas'); setProducto('Todos los productos'); setBusqueda(''); setSoloDisponibles(false) }}
+                className="text-xs text-gray-400 text-center mt-1 hover:underline">
+                Limpiar filtros
+              </button>
+              <button onClick={() => setFiltroAbierto(false)}
+                className="w-full bg-agro-green-600 hover:bg-agro-green-700 text-white font-bold py-3.5 rounded-xl text-sm transition-colors">
+                Ver {filtrados.length} productor{filtrados.length !== 1 ? 'es' : ''}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
 
       <section className="py-10 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6 lg:px-14">
