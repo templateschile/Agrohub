@@ -1,0 +1,21 @@
+allow:
+  - Read(*)
+  - Search(*)
+  - Grep(*)
+  - Glob(*)
+  - LS(*)
+  - Edit(*)
+  - Write(*)
+  - Bash(*)
+
+exclude:
+  - Bash(sudo*)
+  - Bash(chmod 777*)
+  - Bash(curl*|*sh)
+  - Bash(wget*|*sh)
+  - Bash(*.env*)
+  - Bash(*OPENAI_API_KEY*)
+  - Bash(*ANTHROPIC_API_KEY*)
+  - Bash(*AWS_SECRET_ACCESS_KEY*)
+  - Bash(*AWS_ACCESS_KEY_ID*)
+  - Bash(*GITHUB_TOKEN*)
