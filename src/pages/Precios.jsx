@@ -1,6 +1,6 @@
 ﻿import { useState, useMemo } from "react"
-import { useInView } from "../hooks/useInView"
-import { Check, DollarSign, ChevronDown, ChevronUp, Info, Lock } from "lucide-react"
+import { Check, DollarSign, ChevronDown, ChevronUp, Info, Lock, MessageCircle } from "lucide-react"
+import ContactModal from "../components/ContactModal"
 
 const PRECIO_API      = 900000
 const PRECIO_NO_API   = 1200000
@@ -72,6 +72,7 @@ export default function Precios() {
   const [admins, setAdmins] = useState(1)
   const [agricultores, setAgricultores] = useState(20)
   const [asesores, setAsesores] = useState(5)
+  const [showModal, setShowModal] = useState(false)
   const [sensoresExpanded, setSensoresExpanded] = useState(false)
 
   const precio = useMemo(
@@ -125,13 +126,12 @@ export default function Precios() {
                         onClick={() => toggleModulo(m.id)}
                         className={`flex items-center justify-between rounded-xl border px-4 py-3 text-left transition-all ${modulos.includes(m.id) ? "bg-agro-green-50 border-agro-green-400 text-agro-green-800" : "bg-gray-50 border-gray-100 text-gray-700 hover:border-gray-300"}`}
                       >
-                        <div className="flex items-center gap-2.5">
+                                                <div className="flex items-center gap-2.5">
                           <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 ${modulos.includes(m.id) ? "bg-agro-green-600 border-agro-green-600" : "border-gray-300"}`}>
                             {modulos.includes(m.id) && <Check size={11} className="text-white" />}
                           </div>
                           <span className="text-sm font-medium">{m.label}</span>
                         </div>
-                        <span className="text-xs text-gray-400 shrink-0 ml-2">{CLP(m.precio)}</span>
                       </button>
                     ))}
                   </div>
@@ -151,7 +151,7 @@ export default function Precios() {
                         <span className="w-8 text-center font-bold text-gray-900">{fuentesApi}</span>
                         <button onClick={() => setFuentesApi(v => v+1)} className="w-8 h-8 bg-gray-100 rounded-lg font-bold text-gray-700 hover:bg-gray-200 transition-colors">+</button>
                       </div>
-                      <p className="text-xs text-gray-400 mt-1">{CLP(PRECIO_API)} por fuente</p>
+                      <p className="text-xs text-gray-400 mt-1">Precio según integración</p>
                     </div>
                     <div>
                       <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
@@ -163,7 +163,7 @@ export default function Precios() {
                         <span className="w-8 text-center font-bold text-gray-900">{fuentesSinApi}</span>
                         <button onClick={() => setFuentesSinApi(v => v+1)} className="w-8 h-8 bg-gray-100 rounded-lg font-bold text-gray-700 hover:bg-gray-200 transition-colors">+</button>
                       </div>
-                      <p className="text-xs text-gray-400 mt-1">{CLP(PRECIO_NO_API)} por fuente</p>
+                      <p className="text-xs text-gray-400 mt-1">Precio según desarrollo</p>
                     </div>
                   </div>
                 </div>
@@ -179,8 +179,8 @@ export default function Precios() {
                       {sensoresExpanded ? "Colapsar" : "Ver todos"} {sensoresExpanded ? <ChevronUp size={13}/> : <ChevronDown size={13}/>}
                     </button>
                   </div>
-                  {sensores.length > 0 && (
-                    <p className="text-xs text-agro-green-600 font-semibold mb-3">{sensores.length} sensor{sensores.length !== 1 ? "es" : ""} seleccionado{sensores.length !== 1 ? "s" : ""} &middot; {CLP(sensores.length * PRECIO_SENSOR)}</p>
+                                    {sensores.length > 0 && (
+                    <p className="text-xs text-agro-green-600 font-semibold mb-3">{sensores.length} sensor{sensores.length !== 1 ? "es" : ""} seleccionado{sensores.length !== 1 ? "s" : ""}</p>
                   )}
                   <div className={`grid grid-cols-1 sm:grid-cols-2 gap-2 ${!sensoresExpanded ? "max-h-48 overflow-hidden" : ""}`}>
                     {SENSORES.map(s => (
@@ -210,7 +210,7 @@ export default function Precios() {
                     <span className="w-8 text-center font-bold text-gray-900 text-lg">{vistasKpi}</span>
                     <button onClick={() => setVistasKpi(v => v + 1)} className="w-8 h-8 bg-gray-100 rounded-lg font-bold text-gray-700 hover:bg-gray-200 transition-colors">+</button>
                   </div>
-                  <p className="text-xs text-gray-400 mt-2">{CLP(PRECIO_VISTA)} por vista &middot; Total: <strong className="text-gray-600">{CLP(vistasKpi * PRECIO_VISTA)}</strong></p>
+                  <p className="text-xs text-gray-400 mt-2">{vistasKpi} vistas activas</p>
                 </div>
 
                 {/* 5. Soporte */}
@@ -227,7 +227,7 @@ export default function Precios() {
                       </button>
                     ))}
                   </div>
-                  <p className="text-xs text-gray-400 mt-3">1 año incluido sin costo extra. Desde año 2: <strong className="text-gray-600">{CLP(PRECIO_SOPORTE)}/año</strong> adicional.</p>
+                  <p className="text-xs text-gray-400 mt-3">1 año incluido sin costo extra. Años adicionales con costo.</p>
                 </div>
 
                                                                 {/* 6. Licencia siempre incluida */}
@@ -247,7 +247,7 @@ export default function Precios() {
                         </p>
                       </div>
                     </div>
-                    <span className="text-sm font-bold text-agro-green-700 shrink-0">{CLP(PRECIO_LICENCIA)}</span>
+                    <span className="text-sm font-bold text-agro-green-700 shrink-0">Incluida</span>
                   </div>
                 </div>
 
@@ -280,48 +280,55 @@ export default function Precios() {
                 </div>
               </div>
 
-              {/* ---- PANEL PRECIO (sticky) ---- */}
+                            {/* ---- PANEL PRECIO (sticky) ---- */}
               <div className="lg:col-span-1">
                 <div className="sticky top-28 bg-white border border-gray-100 rounded-2xl p-6 shadow-lg">
-                  <h2 className="font-bold text-gray-900 text-base mb-4">Resumen del cotizador</h2>
+                  <h2 className="font-bold text-gray-900 text-base mb-4">Tu configuracion</h2>
 
                   <div className="flex flex-col gap-2 text-sm mb-5">
                     {modulos.length > 0 && (
-                      <div className="flex justify-between"><span className="text-gray-500">Modulos ({modulos.length})</span><span className="font-medium text-gray-800">{descModulo ? `con ${descModulo} off` : ""}</span></div>
+                      <div className="flex justify-between"><span className="text-gray-500">Modulos ({modulos.length})</span><span className="font-medium text-agro-green-700">{descModulo ? `Desc. ${descModulo}` : ""}</span></div>
                     )}
-                    {fuentesApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes API ({fuentesApi})</span><span className="font-medium text-gray-800">{CLP(fuentesApi*PRECIO_API)}</span></div>}
-                    {fuentesSinApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes custom ({fuentesSinApi})</span><span className="font-medium text-gray-800">{CLP(fuentesSinApi*PRECIO_NO_API)}</span></div>}
-                    {sensores.length > 0 && <div className="flex justify-between"><span className="text-gray-500">Sensores ({sensores.length})</span><span className="font-medium text-gray-800">{CLP(sensores.length*PRECIO_SENSOR)}</span></div>}
-                    {vistasKpi > 0 && <div className="flex justify-between"><span className="text-gray-500">Vistas KPI ({vistasKpi})</span><span className="font-medium text-gray-800">{CLP(vistasKpi*PRECIO_VISTA)}</span></div>}
-                    <div className="flex justify-between"><span className="text-gray-500">Soporte {soporte} año{soporte>1?"s":""}</span><span className="font-medium text-gray-800">{soporte === 1 ? "incluido" : CLP((soporte-1)*PRECIO_SOPORTE)+" extra"}</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">Licencia compartida</span><span className="font-medium text-agro-green-700">{CLP(PRECIO_LICENCIA)}</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">Usuarios ({admins+agricultores+asesores})</span><span className="font-medium text-gray-800">incluido</span></div>
+                    {fuentesApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes API</span><span className="font-medium text-gray-700">{fuentesApi} fuente{fuentesApi>1?"s":""}</span></div>}
+                    {fuentesSinApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes custom</span><span className="font-medium text-gray-700">{fuentesSinApi} fuente{fuentesSinApi>1?"s":""}</span></div>}
+                    {sensores.length > 0 && <div className="flex justify-between"><span className="text-gray-500">Sensores</span><span className="font-medium text-gray-700">{sensores.length} integrado{sensores.length>1?"s":""}</span></div>}
+                    {vistasKpi > 0 && <div className="flex justify-between"><span className="text-gray-500">Vistas KPI</span><span className="font-medium text-gray-700">{vistasKpi}</span></div>}
+                    <div className="flex justify-between"><span className="text-gray-500">Soporte</span><span className="font-medium text-gray-700">{soporte} ano{soporte>1?"s":""}</span></div>
+                    <div className="flex justify-between"><span className="text-gray-500">Licencia compartida</span><span className="font-medium text-agro-green-700">Incluida</span></div>
+                    <div className="flex justify-between"><span className="text-gray-500">Usuarios</span><span className="font-medium text-gray-700">{admins+agricultores+asesores}</span></div>
                   </div>
 
-                  <div className="border-t border-gray-100 pt-4 mb-5">
-                    <div className="flex justify-between items-end">
-                      <span className="text-gray-500 text-sm">Estimado total</span>
-                      <div className="text-right">
-                        <div className="text-2xl font-extrabold text-agro-green-700">{CLP(precio)}</div>
-                        <div className="text-xs text-gray-400">CLP + IVA &middot; unico</div>
-                      </div>
+                  <div className="border-t border-gray-100 pt-4 mb-5 text-center">
+                    <p className="text-xs text-gray-400 mb-1">Precio estimado disponible</p>
+                    <div className="flex items-center justify-center gap-2 text-agro-green-700 font-bold text-lg">
+                      <Lock size={16}/> Solo en propuesta formal
                     </div>
+                    <p className="text-[10px] text-gray-400 mt-1">Te lo enviamos al mail + WhatsApp</p>
                   </div>
 
-                  <a href="#contacto" className="block w-full text-center bg-agro-green-600 hover:bg-agro-green-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm mb-3">
-                    Solicitar propuesta formal
-                  </a>
-                  <a href="https://wa.me/56987561075" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl transition-colors text-sm border border-gray-200">
-                    Hablamos
+                  <button onClick={() => setShowModal(true)} className="block w-full text-center bg-agro-green-600 hover:bg-agro-green-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm mb-3">
+                    Solicitar propuesta con precio
+                  </button>
+                  <a href="https://wa.me/56987561075" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl transition-colors text-sm border border-gray-200">
+                    <MessageCircle size={14}/> Hablamos por WhatsApp
                   </a>
                   <p className="text-[10px] text-gray-400 text-center mt-3 leading-relaxed">
-                    El cotizador es referencial. El precio final se confirma en propuesta formal tras diagnóstico.
+                    El precio final se confirma tras diagnostico tecnico.
                   </p>
                 </div>
               </div>
                       </div>
         </div>
       </section>
+
+      {showModal && (
+        <ContactModal
+          onClose={() => setShowModal(false)}
+          titulo="Solicitar propuesta con precio"
+          subtitulo="Te enviamos el detalle completo con precio al mail y WhatsApp."
+          origen={`Cotizador: ${modulos.length} modulos, ${fuentesApi} APIs, ${sensores.length} sensores, ${admins+agricultores+asesores} usuarios, ${soporte} anos soporte. Total interno: ${CLP(precio)}`}
+        />
+      )}
     </div>
   )
 }

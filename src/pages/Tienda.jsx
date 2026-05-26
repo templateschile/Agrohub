@@ -1,6 +1,7 @@
 ﻿import { useState } from "react"
 import { useInView } from "../hooks/useInView"
 import { ShoppingBag, MapPin, Search, Package, Leaf, AlertCircle, Filter, X, MessageCircle } from "lucide-react"
+import PedidoModal from "../components/PedidoModal"
 
 const COMUNAS = [
   "Todas las comunas",
@@ -106,7 +107,7 @@ function waLink(telefono, nombreProductor, nombreProducto, cupoKg) {
   return `https://wa.me/${num}?text=${msg}`
 }
 
-function ProductorCard({ p }) {
+function ProductorCard({ p, onPedido }) {
   const [ref, visible] = useInView({ threshold: 0.05 })
   const [expanded, setExpanded] = useState(false)
   const disponibles = p.productos.filter(pr => pr.disponible)
@@ -165,23 +166,12 @@ function ProductorCard({ p }) {
           ))}
         </div>
       </div>
-      <div className="border-t border-gray-50 px-5 py-3 flex items-center justify-between">
-        <a
-          href={`https://wa.me/${p.contacto.replace(/\D/g,'')}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs text-gray-400 hover:text-agro-green-600 transition-colors"
-        >
-          {p.contacto}
-        </a>
-        <a
-          href={waLink(p.contacto, p.nombre, p.productos[0]?.nombre || 'cosecha', p.productos[0]?.cupoKg || 0)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1.5 bg-agro-green-600 hover:bg-agro-green-700 text-white text-xs font-semibold px-4 py-2 rounded-full transition-colors"
-        >
-          <MessageCircle size={12}/> WhatsApp
-        </a>
+            <div className="border-t border-gray-50 px-5 py-3 flex items-center justify-end">
+        <button
+          onClick={() => onPedido(p)}
+          className="flex items-center gap-1.5 bg-agro-green-600 hover:bg-agro-green-700 text-white text-xs font-semibold px-4 py-2 rounded-full transition-colors">
+          <MessageCircle size={12}/> Hacer pedido por WA
+        </button>
       </div>
     </div>
   )
@@ -193,6 +183,7 @@ export default function Tienda() {
   const [busqueda, setBusqueda] = useState("")
   const [soloDisponibles, setSoloDisponibles] = useState(false)
   const [filtroAbierto, setFiltroAbierto] = useState(false)
+  const [pedidoProductor, setPedidoProductor] = useState(null)
 
   const filtrados = productores.filter(p => {
     const matchComuna = comuna === "Todas las comunas" || p.comuna === comuna
@@ -322,11 +313,15 @@ export default function Tienda() {
                 <button onClick={() => { setComuna("Todas las comunas"); setProducto("Todos los productos"); setBusqueda(""); setSoloDisponibles(false) }} className="mt-4 text-agro-green-600 text-sm font-semibold hover:underline">Limpiar filtros</button>
               </div>
             : <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-                {filtrados.map(p => <ProductorCard key={p.id} p={p}/>)}
+                {filtrados.map(p => <ProductorCard key={p.id} p={p} onPedido={setPedidoProductor}/>)}
               </div>
           }
         </div>
       </section>
+
+      {pedidoProductor && (
+        <PedidoModal productor={pedidoProductor} onClose={() => setPedidoProductor(null)} />
+      )}
     </div>
   )
 }
