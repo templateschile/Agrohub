@@ -250,12 +250,12 @@ export default function Precios() {
                   </div>
                 </div>
 
-                {/* 4. Sensores */}}
+                                {/* 4. Sensores */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <h2 className="font-bold text-gray-900 text-base">4. Sensores compatibles</h2>
-                      <Tooltip text="Selecciona los sensores que ya tienes o planeas adquirir. El hub se integra con cada uno." />
+                      <h2 className="font-bold text-gray-900 text-base">4. Gestion de sensores a traves de:</h2>
+                      <Tooltip text="Selecciona los gestores de sensores que ya usas o planeas integrar. El hub se conecta con cada plataforma." />
                     </div>
                     <button onClick={() => setSensoresExpanded(v => !v)} className="flex items-center gap-1 text-xs text-agro-green-600 font-semibold">
                       {sensoresExpanded ? "Colapsar" : "Ver todos"} {sensoresExpanded ? <ChevronUp size={13}/> : <ChevronDown size={13}/>}
@@ -346,18 +346,65 @@ export default function Precios() {
                 <div className="sticky top-28 bg-white border border-gray-100 rounded-2xl p-6 shadow-lg">
                   <h2 className="font-bold text-gray-900 text-base mb-4">Tu configuracion</h2>
 
-                                    <div className="flex flex-col gap-2 text-sm mb-5">
-                    {modulos.length > 0 && <div className="flex justify-between"><span className="text-gray-500">Modulos ({modulos.length})</span></div>}
-                    {aiActivo   && <div className="flex justify-between"><span className="text-gray-500">AI Chat</span><span className="font-medium text-gray-700">{modoAi}</span></div>}
-                    {docsActivo && <div className="flex justify-between"><span className="text-gray-500">Docs AI</span><span className="font-medium text-gray-700">{modoDocs}</span></div>}
-                    <div className="flex justify-between"><span className="text-gray-500">Licencia</span><span className="font-medium text-agro-green-700">{LICENCIAS.find(l=>l.id===licencia)?.label}</span></div>
-                    {fuentesApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes API</span><span className="font-medium text-gray-700">{fuentesApi}</span></div>}
-                    {fuentesSinApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes custom</span><span className="font-medium text-gray-700">{fuentesSinApi}</span></div>}
-                    {sensores.length > 0 && <div className="flex justify-between"><span className="text-gray-500">Sensores</span><span className="font-medium text-gray-700">{sensores.length}</span></div>}
-                    {vistasKpi > 0 && <div className="flex justify-between"><span className="text-gray-500">Vistas KPI</span><span className="font-medium text-gray-700">{vistasKpi}</span></div>}
-                    <div className="flex justify-between"><span className="text-gray-500">Soporte</span><span className="font-medium text-gray-700">{soporte} ano{soporte>1?"s":""}</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">Usuarios</span><span className="font-medium text-gray-700">{admins+agricultores+asesores}</span></div>
-                  </div>
+                                    <div className="flex flex-col gap-1.5 text-sm mb-5">
+                                      {modulos.map(id => {
+                                        const m = MODULOS.find(x => x.id === id)
+                                        return m ? (
+                                          <div key={id} className="flex justify-between">
+                                            <span className="text-gray-500 text-xs">{m.label}</span>
+                                            <span className="font-medium text-gray-700 text-xs">{CLP(m.precio)}</span>
+                                          </div>
+                                        ) : null
+                                      })}
+                                      {aiActivo && (
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-500 text-xs">AI Chat ({modoAi})</span>
+                                          <span className="font-medium text-gray-700 text-xs">{CLP(2000000)}</span>
+                                        </div>
+                                      )}
+                                      {docsActivo && (
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-500 text-xs">Docs ({modoDocs})</span>
+                                          <span className="font-medium text-gray-700 text-xs">{CLP(2000000)}</span>
+                                        </div>
+                                      )}
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500 text-xs">Licencia</span>
+                                        <span className="font-medium text-agro-green-700 text-xs">{LICENCIAS.find(l=>l.id===licencia)?.label}</span>
+                                      </div>
+                                      {fuentesApi > 0 && (
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-500 text-xs">APIs ({fuentesApi})</span>
+                                          <span className="font-medium text-gray-700 text-xs">{CLP(fuentesApi*PRECIO_API)}</span>
+                                        </div>
+                                      )}
+                                      {fuentesSinApi > 0 && (
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-500 text-xs">Custom ({fuentesSinApi})</span>
+                                          <span className="font-medium text-gray-700 text-xs">{CLP(fuentesSinApi*PRECIO_NO_API)}</span>
+                                        </div>
+                                      )}
+                                      {sensores.length > 0 && (
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-500 text-xs">Gestores ({sensores.length})</span>
+                                          <span className="font-medium text-gray-700 text-xs">{CLP(sensores.length*PRECIO_SENSOR)}</span>
+                                        </div>
+                                      )}
+                                      {vistasKpi > 0 && (
+                                        <div className="flex justify-between">
+                                          <span className="text-gray-500 text-xs">KPI ({vistasKpi} vistas)</span>
+                                          <span className="font-medium text-gray-700 text-xs">{CLP(vistasKpi*PRECIO_VISTA)}</span>
+                                        </div>
+                                      )}
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500 text-xs">Soporte {soporte} ano{soporte>1?"s":""}</span>
+                                        <span className="font-medium text-gray-700 text-xs">{soporte===1?"Incluido":CLP((soporte-1)*PRECIO_SOPORTE)}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-500 text-xs">Usuarios ({admins+agricultores+asesores})</span>
+                                        <span className="font-medium text-gray-700 text-xs">{admins+agricultores+asesores>200?CLP(3100000):admins+agricultores+asesores>100?CLP(1600000):admins+agricultores+asesores>50?CLP(800000):"Incluidos"}</span>
+                                      </div>
+                                    </div>
 
                   <div className="border-t border-gray-100 pt-4 mb-5 text-center">
                     <p className="text-xs text-gray-400 mb-1">Precio estimado disponible</p>
@@ -387,7 +434,33 @@ export default function Precios() {
           onClose={() => setShowModal(false)}
           titulo="Solicitar propuesta con precio"
           subtitulo="Te enviamos el detalle completo con precio al mail y WhatsApp."
-          origen={`Cotizador: modulos=[${modulos.join(",")}] AI=${aiActivo?modoAi:"off"} Docs=${docsActivo?modoDocs:"off"} Licencia=${licencia} APIs=${fuentesApi} Sensores=${sensores.length} Usuarios=${admins+agricultores+asesores} Soporte=${soporte}a. Total interno: ${CLP(precio)}`}
+          origen={(() => {
+            const lineas = []
+            // Modulos
+            modulos.forEach(id => {
+              const m = MODULOS.find(x => x.id === id)
+              if (m) lineas.push(`✅ ${m.label}: ${CLP(m.precio)}`)
+            })
+            if (aiActivo)   lineas.push(`✅ AI Chat agricola (${modoAi}): ${CLP(2000000)}`)
+            if (docsActivo) lineas.push(`✅ Docs Improvements (${modoDocs}): ${CLP(2000000)}`)
+            // Licencia
+            const lic = LICENCIAS.find(l => l.id === licencia)
+            lineas.push(`📄 Licencia: ${lic?.label} — ${lic?.desc}`)
+            // Fuentes
+            if (fuentesApi > 0)    lineas.push(`🔗 Fuentes API REST (${fuentesApi}): ${CLP(fuentesApi * PRECIO_API)}`)
+            if (fuentesSinApi > 0) lineas.push(`🔧 Fuentes sin API custom (${fuentesSinApi}): ${CLP(fuentesSinApi * PRECIO_NO_API)}`)
+            // Sensores
+            if (sensores.length > 0) lineas.push(`📡 Gestores de sensores (${sensores.length}): ${sensores.join(', ')} — ${CLP(sensores.length * PRECIO_SENSOR)}`)
+            // KPI
+            if (vistasKpi > 0) lineas.push(`📊 Vistas KPI (${vistasKpi}): ${CLP(vistasKpi * PRECIO_VISTA)}`)
+            // Soporte
+            lineas.push(`🛠 Soporte ${soporte} año${soporte>1?'s':''}: ${soporte === 1 ? 'Incluido' : CLP((soporte-1)*PRECIO_SOPORTE) + ' extra'}`)
+            // Usuarios
+            const u = admins + agricultores + asesores
+            lineas.push(`👥 Usuarios: ${u} (${admins} admins, ${agricultores} agricultores, ${asesores} asesores)${u>200?' +$1.500.000':u>100?' +$800.000 x2':u>50?' +$800.000':''}`)
+            lineas.push(`💰 TOTAL ESTIMADO: ${CLP(precio)}`)
+            return lineas.join(' | ')
+          })()}
         />
       )}
     </div>
