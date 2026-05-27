@@ -42,8 +42,8 @@ export default function PedidoModal({ productor, onClose }) {
 
     // WA al proveedor SIN precios
     const lineasWA = pedido.map(p => `- ${p.nombre} (${p.variedad}): ${qtys[p.nombre + "__" + p.variedad].toLocaleString("es-CL")} kg`).join("\n")
-    const msgWA = encodeURIComponent(`Hola ${productor.nombre}! Te contacto desde AgroHub.\n\nSoy ${nombre} y quisiera hacer el siguiente pedido:\n\n${lineasWA}\n\nMi contacto: ${telefono}${email ? ` / ${email}` : ""}\n\n¿Podemos coordinar entrega y pago?`)
-    window.open(`https://wa.me/${productor.contacto.replace(/\D/g, "")}?text=${msgWA}`, "_blank")
+        const msgWA = encodeURIComponent(`Hola! Te contacto desde AgroHub.\n\nSoy ${nombre} y quisiera hacer el siguiente pedido a ${productor.nombre} (${productor.comuna}):\n\n${lineasWA}\n\nMi contacto: ${telefono}${email ? ` / ${email}` : ""}\n\n¿Podemos coordinar?`)
+    window.open(`https://wa.me/56987561075?text=${msgWA}`, "_blank")
 
     setEnviando(false)
     setEnviado(true)

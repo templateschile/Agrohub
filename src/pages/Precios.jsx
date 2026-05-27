@@ -6,15 +6,36 @@ const PRECIO_API      = 900000
 const PRECIO_NO_API   = 1200000
 const PRECIO_SENSOR   = 200000
 const PRECIO_VISTA    = 100000
-const PRECIO_LICENCIA = 7000000
 const PRECIO_SOPORTE  = 5000000
 
 const MODULOS = [
-  { id: "dashboard", label: "Dashboard y Sensores",    precio: 2000000 },
-  { id: "ai",        label: "AI Chat agricola",         precio: 2000000 },
-  { id: "docs",      label: "Documentos",               precio: 2000000 },
-  { id: "eventos",   label: "Eventos y Capacitaciones", precio: 2000000 },
-  { id: "tienda",    label: "Tienda / Ecommerce",        precio: 5000000 },
+  { id: "dashboard", label: "Dashboard y Sensores",   precio: 2000000 },
+  { id: "eventos",   label: "Eventos y Capacitaciones",precio: 2000000 },
+  { id: "tienda",    label: "Tienda / Ecommerce",       precio: 5000000 },
+]
+
+const MODOS_AI   = ["SLM (local)", "Cloud (API)", "Hibrida"]
+const MODOS_DOCS = ["SLM (local)", "Cloud (API)", "Hibrida"]
+
+const LICENCIAS = [
+  {
+    id: "self",
+    label: "Self Hosted",
+    desc: "Licencia compartida + soporte + source admin + source app",
+    badge: "Codigo abierto compartido",
+  },
+  {
+    id: "full",
+    label: "Full Hosted",
+    desc: "Codigo full, licencia propia, 1 solo pago, documentacion completa",
+    badge: "Licencia exclusiva",
+  },
+  {
+    id: "saas",
+    label: "Mes a mes (SaaS)",
+    desc: "Usuario a app AgroHub compartida, sin app propia, sin codigos fuente",
+    badge: "Sin inversion inicial",
+  },
 ]
 
 const SENSORES = [
@@ -31,19 +52,19 @@ function CLP(n) {
   return "$" + n.toLocaleString("es-CL")
 }
 
-function calcularPrecio(modulos, fuentesApi, fuentesSinApi, sensores, vistasKpi, soporte, admins, agricultores, asesores) {
+function calcularPrecio(modulos, aiActivo, docsActivo, fuentesApi, fuentesSinApi, sensores, vistasKpi, soporte, admins, agricultores, asesores) {
   let total = 0
-  const desc = modulos.length === 5 ? 0.20 : 0
   modulos.forEach(id => {
     const m = MODULOS.find(x => x.id === id)
-    if (m) total += m.precio * (1 - desc)
+    if (m) total += m.precio
   })
+  if (aiActivo)   total += 2000000
+  if (docsActivo) total += 2000000
   total += fuentesApi    * PRECIO_API
   total += fuentesSinApi * PRECIO_NO_API
   total += sensores.length * PRECIO_SENSOR
   total += vistasKpi     * PRECIO_VISTA
   if (soporte > 1) total += (soporte - 1) * PRECIO_SOPORTE
-  total += PRECIO_LICENCIA
   const u = admins + agricultores + asesores
   if (u > 50)  total += 800000
   if (u > 100) total += 800000
@@ -63,7 +84,12 @@ function Tooltip({ text }) {
 }
 
 export default function Precios() {
-  const [modulos, setModulos] = useState(["dashboard", "ai", "docs", "eventos", "tienda"])
+  const [modulos, setModulos] = useState(["dashboard", "eventos", "tienda"])
+  const [aiActivo,   setAiActivo]   = useState(true)
+  const [modoAi,     setModoAi]     = useState("Hibrida")
+  const [docsActivo, setDocsActivo] = useState(true)
+  const [modoDocs,   setModoDocs]   = useState("Hibrida")
+  const [licencia,   setLicencia]   = useState("self")
   const [fuentesApi, setFuentesApi] = useState(5)
   const [fuentesSinApi, setFuentesSinApi] = useState(1)
   const [sensores, setSensores] = useState(["WiseConn / DropControl"])
@@ -75,15 +101,15 @@ export default function Precios() {
   const [showModal, setShowModal] = useState(false)
   const [sensoresExpanded, setSensoresExpanded] = useState(false)
 
-  const precio = useMemo(
-        () => calcularPrecio(modulos, fuentesApi, fuentesSinApi, sensores, vistasKpi, soporte, admins, agricultores, asesores),
-    [modulos, fuentesApi, fuentesSinApi, sensores, vistasKpi, soporte, admins, agricultores, asesores]
+    const precio = useMemo(
+    () => calcularPrecio(modulos, aiActivo, docsActivo, fuentesApi, fuentesSinApi, sensores, vistasKpi, soporte, admins, agricultores, asesores),
+    [modulos, aiActivo, docsActivo, fuentesApi, fuentesSinApi, sensores, vistasKpi, soporte, admins, agricultores, asesores]
   )
 
-  const toggleModulo = id => setModulos(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
-  const toggleSensor = s  => setSensores(prev => prev.includes(s)  ? prev.filter(x => x !== s)  : [...prev, s])
+    const toggleModulo = id => setModulos(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
+  const toggleSensor  = s  => setSensores(prev => prev.includes(s)  ? prev.filter(x => x !== s)  : [...prev, s])
 
-  const descModulo = modulos.length === 5 ? "20%" : null
+  const descModulo = null
 
     return (
     <div>
@@ -110,36 +136,92 @@ export default function Precios() {
               {/* ---- FORMULARIO COTIZADOR ---- */}
               <div className="lg:col-span-2 flex flex-col gap-6">
 
-                {/* 1. Modulos */}
+                                {/* 1. Modulos */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h2 className="font-bold text-gray-900 text-base">1. Módulos</h2>
-                    <Tooltip text="Al activar los 5 modulos se aplica un 20% de descuento sobre todos." />
+                  <div className="flex items-center gap-2 mb-4">
+                    <h2 className="font-bold text-gray-900 text-base">1. Modulos</h2>
                   </div>
-                  {descModulo && (
-                    <p className="text-xs text-agro-green-600 font-semibold mb-3">Descuento por volumen: {descModulo}</p>
-                  )}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {MODULOS.map(m => (
-                      <button
-                        key={m.id}
-                        onClick={() => toggleModulo(m.id)}
-                        className={`flex items-center justify-between rounded-xl border px-4 py-3 text-left transition-all ${modulos.includes(m.id) ? "bg-agro-green-50 border-agro-green-400 text-agro-green-800" : "bg-gray-50 border-gray-100 text-gray-700 hover:border-gray-300"}`}
-                      >
-                                                <div className="flex items-center gap-2.5">
-                          <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 ${modulos.includes(m.id) ? "bg-agro-green-600 border-agro-green-600" : "border-gray-300"}`}>
-                            {modulos.includes(m.id) && <Check size={11} className="text-white" />}
+                      <button key={m.id} onClick={() => toggleModulo(m.id)}
+                        className={`flex items-center gap-2.5 rounded-xl border px-4 py-3 text-left transition-all ${modulos.includes(m.id) ? "bg-agro-green-50 border-agro-green-400 text-agro-green-800" : "bg-gray-50 border-gray-100 text-gray-700 hover:border-gray-300"}`}>
+                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 ${modulos.includes(m.id) ? "bg-agro-green-600 border-agro-green-600" : "border-gray-300"}`}>
+                          {modulos.includes(m.id) && <Check size={11} className="text-white" />}
+                        </div>
+                        <span className="text-sm font-medium">{m.label}</span>
+                      </button>
+                    ))}
+
+                    {/* AI Chat */}
+                    <div className={`rounded-xl border px-4 py-3 transition-all ${aiActivo ? "bg-agro-green-50 border-agro-green-400" : "bg-gray-50 border-gray-100"}`}>
+                      <button onClick={() => setAiActivo(v => !v)} className="flex items-center gap-2.5 w-full text-left mb-2">
+                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 ${aiActivo ? "bg-agro-green-600 border-agro-green-600" : "border-gray-300"}`}>
+                          {aiActivo && <Check size={11} className="text-white" />}
+                        </div>
+                        <span className="text-sm font-medium text-gray-900">AI Chat agricola</span>
+                      </button>
+                      {aiActivo && (
+                        <div className="flex gap-1.5 flex-wrap pl-7">
+                          {MODOS_AI.map(m => (
+                            <button key={m} onClick={() => setModoAi(m)}
+                              className={`text-[10px] px-2.5 py-1 rounded-full border font-semibold transition-all ${modoAi === m ? "bg-agro-green-600 text-white border-agro-green-600" : "bg-white text-gray-500 border-gray-200 hover:border-agro-green-400"}`}>
+                              {m}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Docs */}
+                    <div className={`rounded-xl border px-4 py-3 transition-all ${docsActivo ? "bg-agro-green-50 border-agro-green-400" : "bg-gray-50 border-gray-100"}`}>
+                      <button onClick={() => setDocsActivo(v => !v)} className="flex items-center gap-2.5 w-full text-left mb-2">
+                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 ${docsActivo ? "bg-agro-green-600 border-agro-green-600" : "border-gray-300"}`}>
+                          {docsActivo && <Check size={11} className="text-white" />}
+                        </div>
+                        <span className="text-sm font-medium text-gray-900">Docs Improvements</span>
+                      </button>
+                      {docsActivo && (
+                        <div className="flex gap-1.5 flex-wrap pl-7">
+                          {MODOS_DOCS.map(m => (
+                            <button key={m} onClick={() => setModoDocs(m)}
+                              className={`text-[10px] px-2.5 py-1 rounded-full border font-semibold transition-all ${modoDocs === m ? "bg-agro-green-600 text-white border-agro-green-600" : "bg-white text-gray-500 border-gray-200 hover:border-agro-green-400"}`}>
+                              {m}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 1b. Tipo de licencia */}
+                <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                  <div className="flex items-center gap-2 mb-4">
+                    <h2 className="font-bold text-gray-900 text-base">2. Codigo y Licencia</h2>
+                    <Tooltip text="Define como contratas y que propiedad obtienes sobre el codigo." />
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    {LICENCIAS.map(l => (
+                      <button key={l.id} onClick={() => setLicencia(l.id)}
+                        className={`flex items-start gap-3 rounded-xl border px-4 py-3 text-left transition-all ${licencia === l.id ? "bg-agro-green-50 border-agro-green-400" : "bg-gray-50 border-gray-100 hover:border-gray-300"}`}>
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 ${licencia === l.id ? "bg-agro-green-600 border-agro-green-600" : "border-gray-300"}`}>
+                          {licencia === l.id && <div className="w-2 h-2 bg-white rounded-full" />}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-bold text-gray-900">{l.label}</span>
+                            <span className="text-[10px] bg-agro-earth-50 text-agro-earth-700 px-2 py-0.5 rounded-full font-medium">{l.badge}</span>
                           </div>
-                          <span className="text-sm font-medium">{m.label}</span>
+                          <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">{l.desc}</p>
                         </div>
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* 2. Fuentes externas */}
+                {/* 3. Fuentes externas */}}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                  <h2 className="font-bold text-gray-900 text-base mb-4">2. Fuentes externas de información</h2>
+                  <h2 className="font-bold text-gray-900 text-base mb-4">3. Fuentes externas de informacion</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                       <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
@@ -168,11 +250,11 @@ export default function Precios() {
                   </div>
                 </div>
 
-                {/* 3. Sensores */}
+                {/* 4. Sensores */}}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <h2 className="font-bold text-gray-900 text-base">3. Sensores compatibles</h2>
+                      <h2 className="font-bold text-gray-900 text-base">4. Sensores compatibles</h2>
                       <Tooltip text="Selecciona los sensores que ya tienes o planeas adquirir. El hub se integra con cada uno." />
                     </div>
                     <button onClick={() => setSensoresExpanded(v => !v)} className="flex items-center gap-1 text-xs text-agro-green-600 font-semibold">
@@ -198,10 +280,10 @@ export default function Precios() {
                   </div>
                 </div>
 
-                                {/* 4. Vistas KPI */}
+                                {/* 5. Vistas KPI */}}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
                   <div className="flex items-center gap-2 mb-1">
-                    <h2 className="font-bold text-gray-900 text-base">4. Vistas KPI por sensor</h2>
+                    <h2 className="font-bold text-gray-900 text-base">5. Vistas KPI por sensor</h2>
                     <Tooltip text="Paneles KPI activos por sensor. Ej: humedad, temperatura, alerta de riego, etc." />
                   </div>
                   <p className="text-xs text-gray-400 mb-4">Cada vista es un panel de datos en tiempo real en el dashboard.</p>
@@ -213,9 +295,9 @@ export default function Precios() {
                   <p className="text-xs text-gray-400 mt-2">{vistasKpi} vistas activas</p>
                 </div>
 
-                {/* 5. Soporte */}
+                {/* 6. Soporte */}}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                  <h2 className="font-bold text-gray-900 text-base mb-4">5. Años de soporte incluido</h2>
+                  <h2 className="font-bold text-gray-900 text-base mb-4">6. Anos de soporte incluido</h2>
                   <div className="flex gap-3 flex-wrap">
                     {SOPORTE_OPCIONES.map(n => (
                       <button
@@ -228,27 +310,6 @@ export default function Precios() {
                     ))}
                   </div>
                   <p className="text-xs text-gray-400 mt-3">1 año incluido sin costo extra. Años adicionales con costo.</p>
-                </div>
-
-                                                                {/* 6. Licencia siempre incluida */}
-                <div className="bg-agro-green-50 border border-agro-green-200 rounded-2xl p-6 shadow-sm">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-agro-green-600 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                        <Lock size={14} className="text-white" />
-                      </div>
-                      <div>
-                        <div className="font-bold text-agro-green-900 text-sm mb-1">Licencia compartida — siempre incluida</div>
-                        <p className="text-xs text-agro-green-700 leading-relaxed">
-                          Incluye código fuente del panel admin (Node.js + React) y app móvil (Flutter).
-                          Los <strong>datos de cada hub son propiedad exclusiva de ese hub</strong>; cualquier compartición requiere autorización explícita del usuario.
-                          Los features y mejoras del ecosistema se distribuyen mediante <strong>pull requests</strong>, por lo que cada hub puede incorporar actualizaciones disponibles en la red.
-                          {' '}<a href="/terminos" target="_blank" className="underline font-semibold">Ver Términos y Condiciones →</a>
-                        </p>
-                      </div>
-                    </div>
-                    <span className="text-sm font-bold text-agro-green-700 shrink-0">Incluida</span>
-                  </div>
                 </div>
 
                 {/* 7. Usuarios */}
@@ -285,16 +346,16 @@ export default function Precios() {
                 <div className="sticky top-28 bg-white border border-gray-100 rounded-2xl p-6 shadow-lg">
                   <h2 className="font-bold text-gray-900 text-base mb-4">Tu configuracion</h2>
 
-                  <div className="flex flex-col gap-2 text-sm mb-5">
-                    {modulos.length > 0 && (
-                      <div className="flex justify-between"><span className="text-gray-500">Modulos ({modulos.length})</span><span className="font-medium text-agro-green-700">{descModulo ? `Desc. ${descModulo}` : ""}</span></div>
-                    )}
-                    {fuentesApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes API</span><span className="font-medium text-gray-700">{fuentesApi} fuente{fuentesApi>1?"s":""}</span></div>}
-                    {fuentesSinApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes custom</span><span className="font-medium text-gray-700">{fuentesSinApi} fuente{fuentesSinApi>1?"s":""}</span></div>}
-                    {sensores.length > 0 && <div className="flex justify-between"><span className="text-gray-500">Sensores</span><span className="font-medium text-gray-700">{sensores.length} integrado{sensores.length>1?"s":""}</span></div>}
+                                    <div className="flex flex-col gap-2 text-sm mb-5">
+                    {modulos.length > 0 && <div className="flex justify-between"><span className="text-gray-500">Modulos ({modulos.length})</span></div>}
+                    {aiActivo   && <div className="flex justify-between"><span className="text-gray-500">AI Chat</span><span className="font-medium text-gray-700">{modoAi}</span></div>}
+                    {docsActivo && <div className="flex justify-between"><span className="text-gray-500">Docs AI</span><span className="font-medium text-gray-700">{modoDocs}</span></div>}
+                    <div className="flex justify-between"><span className="text-gray-500">Licencia</span><span className="font-medium text-agro-green-700">{LICENCIAS.find(l=>l.id===licencia)?.label}</span></div>
+                    {fuentesApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes API</span><span className="font-medium text-gray-700">{fuentesApi}</span></div>}
+                    {fuentesSinApi > 0 && <div className="flex justify-between"><span className="text-gray-500">Fuentes custom</span><span className="font-medium text-gray-700">{fuentesSinApi}</span></div>}
+                    {sensores.length > 0 && <div className="flex justify-between"><span className="text-gray-500">Sensores</span><span className="font-medium text-gray-700">{sensores.length}</span></div>}
                     {vistasKpi > 0 && <div className="flex justify-between"><span className="text-gray-500">Vistas KPI</span><span className="font-medium text-gray-700">{vistasKpi}</span></div>}
                     <div className="flex justify-between"><span className="text-gray-500">Soporte</span><span className="font-medium text-gray-700">{soporte} ano{soporte>1?"s":""}</span></div>
-                    <div className="flex justify-between"><span className="text-gray-500">Licencia compartida</span><span className="font-medium text-agro-green-700">Incluida</span></div>
                     <div className="flex justify-between"><span className="text-gray-500">Usuarios</span><span className="font-medium text-gray-700">{admins+agricultores+asesores}</span></div>
                   </div>
 
@@ -326,7 +387,7 @@ export default function Precios() {
           onClose={() => setShowModal(false)}
           titulo="Solicitar propuesta con precio"
           subtitulo="Te enviamos el detalle completo con precio al mail y WhatsApp."
-          origen={`Cotizador: ${modulos.length} modulos, ${fuentesApi} APIs, ${sensores.length} sensores, ${admins+agricultores+asesores} usuarios, ${soporte} anos soporte. Total interno: ${CLP(precio)}`}
+          origen={`Cotizador: modulos=[${modulos.join(",")}] AI=${aiActivo?modoAi:"off"} Docs=${docsActivo?modoDocs:"off"} Licencia=${licencia} APIs=${fuentesApi} Sensores=${sensores.length} Usuarios=${admins+agricultores+asesores} Soporte=${soporte}a. Total interno: ${CLP(precio)}`}
         />
       )}
     </div>
