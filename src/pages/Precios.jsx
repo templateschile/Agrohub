@@ -429,37 +429,46 @@ export default function Precios() {
         </div>
       </section>
 
-      {showModal && (
+            {showModal && (
         <ContactModal
           onClose={() => setShowModal(false)}
           titulo="Solicitar propuesta con precio"
           subtitulo="Te enviamos el detalle completo con precio al mail y WhatsApp."
           origen={(() => {
             const lineas = []
-            // Modulos
             modulos.forEach(id => {
               const m = MODULOS.find(x => x.id === id)
               if (m) lineas.push(`✅ ${m.label}: ${CLP(m.precio)}`)
             })
             if (aiActivo)   lineas.push(`✅ AI Chat agricola (${modoAi}): ${CLP(2000000)}`)
             if (docsActivo) lineas.push(`✅ Docs Improvements (${modoDocs}): ${CLP(2000000)}`)
-            // Licencia
             const lic = LICENCIAS.find(l => l.id === licencia)
-            lineas.push(`📄 Licencia: ${lic?.label} — ${lic?.desc}`)
-            // Fuentes
+            lineas.push(`📄 Licencia: ${lic?.label} - ${lic?.desc}`)
             if (fuentesApi > 0)    lineas.push(`🔗 Fuentes API REST (${fuentesApi}): ${CLP(fuentesApi * PRECIO_API)}`)
             if (fuentesSinApi > 0) lineas.push(`🔧 Fuentes sin API custom (${fuentesSinApi}): ${CLP(fuentesSinApi * PRECIO_NO_API)}`)
-            // Sensores
-            if (sensores.length > 0) lineas.push(`📡 Gestores de sensores (${sensores.length}): ${sensores.join(', ')} — ${CLP(sensores.length * PRECIO_SENSOR)}`)
-            // KPI
+            if (sensores.length > 0) lineas.push(`📡 Gestores sensores (${sensores.length}): ${sensores.join(', ')} - ${CLP(sensores.length * PRECIO_SENSOR)}`)
             if (vistasKpi > 0) lineas.push(`📊 Vistas KPI (${vistasKpi}): ${CLP(vistasKpi * PRECIO_VISTA)}`)
-            // Soporte
-            lineas.push(`🛠 Soporte ${soporte} año${soporte>1?'s':''}: ${soporte === 1 ? 'Incluido' : CLP((soporte-1)*PRECIO_SOPORTE) + ' extra'}`)
-            // Usuarios
+            lineas.push(`🛠 Soporte ${soporte} ano${soporte>1?'s':''}: ${soporte === 1 ? 'Incluido' : CLP((soporte-1)*PRECIO_SOPORTE) + ' extra'}`)
             const u = admins + agricultores + asesores
-            lineas.push(`👥 Usuarios: ${u} (${admins} admins, ${agricultores} agricultores, ${asesores} asesores)${u>200?' +$1.500.000':u>100?' +$800.000 x2':u>50?' +$800.000':''}`)
+            lineas.push(`👥 Usuarios: ${u} (${admins} admins, ${agricultores} agricultores, ${asesores} asesores)`)
             lineas.push(`💰 TOTAL ESTIMADO: ${CLP(precio)}`)
             return lineas.join(' | ')
+          })()}
+          whatsappMsg={(() => {
+            const lineas = []
+            modulos.forEach(id => {
+              const m = MODULOS.find(x => x.id === id)
+              if (m) lineas.push(`- ${m.label}`)
+            })
+            if (aiActivo)   lineas.push(`- AI Chat agricola (${modoAi})`)
+            if (docsActivo) lineas.push(`- Docs Improvements (${modoDocs})`)
+            const lic = LICENCIAS.find(l => l.id === licencia)
+            if (fuentesApi > 0)    lineas.push(`- ${fuentesApi} fuente${fuentesApi>1?'s':''} con API REST`)
+            if (fuentesSinApi > 0) lineas.push(`- ${fuentesSinApi} fuente${fuentesSinApi>1?'s':''} sin API (custom)`)
+            if (sensores.length > 0) lineas.push(`- Gestores: ${sensores.join(', ')}`)
+            if (vistasKpi > 0) lineas.push(`- ${vistasKpi} vistas KPI`)
+            const u = admins + agricultores + asesores
+            return `Hola AgroHub! Soy [NOMBRE] ([TEL]).\n\nQuiero una propuesta para un AgroHub con la siguiente configuracion:\n\nMODULOS Y FUNCIONES:\n${lineas.join('\n')}\n\nLICENCIA: ${lic?.label}\nSOPORTE: ${soporte} ano${soporte>1?'s':''}\nUSUARIOS: ${u} (${admins} admins, ${agricultores} agricultores, ${asesores} asesores)\n\nMi email: [EMAIL]\n\nQuedo atento a la propuesta.`
           })()}
         />
       )}

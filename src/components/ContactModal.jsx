@@ -11,7 +11,7 @@ export async function notificar(emailSubject, emailHtml, telegramMsg) {
   } catch (_) {}
 }
 
-export default function ContactModal({ onClose, titulo = "¿Hablamos?", subtitulo = "Te contactamos en menos de 24 hrs.", origen = "" }) {
+export default function ContactModal({ onClose, titulo = "¿Hablamos?", subtitulo = "Te contactamos en menos de 24 hrs.", origen = "", whatsappMsg = "" }) {
   const [nombre,   setNombre]   = useState("")
   const [telefono, setTelefono] = useState("")
   const [email,    setEmail]    = useState("")
@@ -36,8 +36,10 @@ export default function ContactModal({ onClose, titulo = "¿Hablamos?", subtitul
 
     await notificar(asunto, html, telegram)
 
-    const msg = encodeURIComponent(`Hola AgroHub! Mi nombre es ${nombre}. Me gustaría saber más sobre la plataforma para mi territorio.`)
-    window.open(`https://wa.me/56987561075?text=${msg}`, "_blank")
+        const msgFinal = whatsappMsg
+      ? whatsappMsg.replace("[NOMBRE]", nombre).replace("[TEL]", telefono).replace("[EMAIL]", email)
+      : `Hola AgroHub! Mi nombre es ${nombre}. Me gustaria saber mas sobre la plataforma para mi territorio.`
+    window.open(`https://wa.me/56987561075?text=${encodeURIComponent(msgFinal)}`, "_blank")
     setEnviando(false)
     setEnviado(true)
   }
