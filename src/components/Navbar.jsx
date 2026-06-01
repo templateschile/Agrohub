@@ -37,7 +37,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
+        <Link to="/" className="flex items-center gap-2.5 group shrink-0">
           <div className="w-9 h-9 rounded-xl bg-agro-green-600 flex items-center justify-center shadow">
             <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5">
               <circle cx="16" cy="16" r="6" fill="white" opacity="0.9"/>
@@ -58,7 +58,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop links */}
-        <ul className="hidden lg:flex items-center gap-6">
+        <ul className="hidden lg:flex items-center gap-4 xl:gap-6 shrink-0">
           {navLinks.map(link => {
             const active = location.pathname === link.to
             return (
