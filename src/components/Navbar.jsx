@@ -9,7 +9,6 @@ const navLinks = [
   { label: 'Documentos',     to: '/documentos' },
   { label: 'Eventos',        to: '/eventos' },
   { label: 'Tienda',         to: '/tienda' },
-  { label: 'Precios',        to: '/precios' },
 ]
 
 export default function Navbar() {
@@ -79,14 +78,6 @@ export default function Navbar() {
           })}
         </ul>
 
-        {/* CTA */}
-        <Link
-          to="/precios"
-          className="hidden lg:inline-flex items-center gap-2 bg-agro-green-600 hover:bg-agro-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow transition-all duration-200 hover:shadow-md"
-        >
-          Cotizar
-        </Link>
-
         {/* Mobile toggle */}
         <button
           onClick={() => setMenuOpen(v => !v)}
@@ -115,14 +106,6 @@ export default function Navbar() {
                 </li>
               )
             })}
-            <li className="px-6 pt-2">
-              <Link
-                to="/precios"
-                className="block text-center bg-agro-green-600 text-white font-semibold py-3 rounded-full"
-              >
-                Cotizar
-              </Link>
-            </li>
           </ul>
         </div>
       )}
