@@ -9,7 +9,6 @@ const navLinks = [
   { label: 'Documentos',     to: '/documentos' },
   { label: 'Eventos',        to: '/eventos' },
   { label: 'Tienda',         to: '/tienda' },
-  { label: 'Precios',        to: '/precios' },
 ]
 
 export default function Navbar() {
@@ -79,35 +78,13 @@ export default function Navbar() {
           })}
         </ul>
 
-        {/* CTA */}
-        <Link
-          to="/precios"
-          className="hidden lg:inline-flex shrink-0 items-center gap-2 bg-agro-green-600 hover:bg-agro-green-700 text-white text-sm font-semibold px-4 xl:px-5 py-2.5 rounded-full shadow transition-all duration-200 hover:shadow-md"
+        {/* Mobile toggle */}
+        <button
+          onClick={() => setMenuOpen(v => !v)}
+          className={`lg:hidden p-2 rounded-lg transition-colors ${transparent ? 'text-white' : 'text-gray-700'}`}
         >
-          Cotizar
-        </Link>
-
-        <div className="lg:hidden flex items-center gap-2">
-          <Link
-            to="/precios"
-            className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-colors ${
-              transparent
-                ? 'bg-white/10 text-white border border-white/20'
-                : 'bg-agro-green-50 text-agro-green-700 border border-agro-green-100'
-            }`}
-          >
-            Precios
-          </Link>
-
-          {/* Mobile toggle */}
-          <button
-            onClick={() => setMenuOpen(v => !v)}
-            className={`p-2 rounded-lg transition-colors ${transparent ? 'text-white' : 'text-gray-700'}`}
-            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
-          >
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-        </div>
+          {menuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
       </div>
 
       {/* Mobile menu */}
@@ -129,14 +106,6 @@ export default function Navbar() {
                 </li>
               )
             })}
-            <li className="px-6 pt-2">
-              <Link
-                to="/precios"
-                className="block text-center bg-agro-green-600 text-white font-semibold py-3 rounded-full"
-              >
-                Cotizar
-              </Link>
-            </li>
           </ul>
         </div>
       )}
