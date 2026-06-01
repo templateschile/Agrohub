@@ -1,17 +1,11 @@
-﻿import { useState, useMemo } from "react"
+import { useState } from "react"
 import { Check, DollarSign, ChevronDown, ChevronUp, Info, Lock, MessageCircle } from "lucide-react"
 import ContactModal from "../components/ContactModal"
 
-const PRECIO_API      = 900000
-const PRECIO_NO_API   = 1200000
-const PRECIO_SENSOR   = 200000
-const PRECIO_VISTA    = 100000
-const PRECIO_SOPORTE  = 5000000
-
 const MODULOS = [
-  { id: "dashboard", label: "Dashboard y Sensores",   precio: 2000000 },
-  { id: "eventos",   label: "Eventos y Capacitaciones",precio: 2000000 },
-  { id: "tienda",    label: "Tienda / Ecommerce",       precio: 5000000 },
+  { id: "dashboard", label: "Dashboard y Sensores" },
+  { id: "eventos",   label: "Eventos y Capacitaciones" },
+  { id: "tienda",    label: "Tienda / Ecommerce" },
 ]
 
 const MODOS_AI   = ["SLM (local)", "Cloud (API)", "Hibrida"]
@@ -48,30 +42,6 @@ const SENSORES = [
 
 const SOPORTE_OPCIONES = [1,2,3,4,5]
 
-function CLP(n) {
-  return "$" + n.toLocaleString("es-CL")
-}
-
-function calcularPrecio(modulos, aiActivo, docsActivo, fuentesApi, fuentesSinApi, sensores, vistasKpi, soporte, admins, agricultores, asesores) {
-  let total = 0
-  modulos.forEach(id => {
-    const m = MODULOS.find(x => x.id === id)
-    if (m) total += m.precio
-  })
-  if (aiActivo)   total += 2000000
-  if (docsActivo) total += 2000000
-  total += fuentesApi    * PRECIO_API
-  total += fuentesSinApi * PRECIO_NO_API
-  total += sensores.length * PRECIO_SENSOR
-  total += vistasKpi     * PRECIO_VISTA
-  if (soporte > 1) total += (soporte - 1) * PRECIO_SOPORTE
-  const u = admins + agricultores + asesores
-  if (u > 50)  total += 800000
-  if (u > 100) total += 800000
-  if (u > 200) total += 1500000
-  return Math.round(total)
-}
-
 function Tooltip({ text }) {
   return (
     <span className="group relative inline-flex">
@@ -101,15 +71,8 @@ export default function Precios() {
   const [showModal, setShowModal] = useState(false)
   const [sensoresExpanded, setSensoresExpanded] = useState(false)
 
-    const precio = useMemo(
-    () => calcularPrecio(modulos, aiActivo, docsActivo, fuentesApi, fuentesSinApi, sensores, vistasKpi, soporte, admins, agricultores, asesores),
-    [modulos, aiActivo, docsActivo, fuentesApi, fuentesSinApi, sensores, vistasKpi, soporte, admins, agricultores, asesores]
-  )
-
     const toggleModulo = id => setModulos(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
   const toggleSensor  = s  => setSensores(prev => prev.includes(s)  ? prev.filter(x => x !== s)  : [...prev, s])
-
-  const descModulo = null
 
     return (
     <div>
@@ -124,7 +87,7 @@ export default function Precios() {
           </h1>
           <p className="text-white/65 text-xl max-w-xl leading-relaxed">
             Selecciona los módulos, sensores y usuarios que necesitas.
-            El precio se calcula en tiempo real.
+            El cotizador prepara una configuración para propuesta formal.
           </p>
         </div>
       </section>
@@ -219,7 +182,7 @@ export default function Precios() {
                   </div>
                 </div>
 
-                {/* 3. Fuentes externas */}}
+                {/* 3. Fuentes externas */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
                   <h2 className="font-bold text-gray-900 text-base mb-4">3. Fuentes externas de informacion</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -233,7 +196,7 @@ export default function Precios() {
                         <span className="w-8 text-center font-bold text-gray-900">{fuentesApi}</span>
                         <button onClick={() => setFuentesApi(v => v+1)} className="w-8 h-8 bg-gray-100 rounded-lg font-bold text-gray-700 hover:bg-gray-200 transition-colors">+</button>
                       </div>
-                      <p className="text-xs text-gray-400 mt-1">Precio según integración</p>
+                      <p className="text-xs text-gray-400 mt-1">Según integración</p>
                     </div>
                     <div>
                       <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
@@ -245,7 +208,7 @@ export default function Precios() {
                         <span className="w-8 text-center font-bold text-gray-900">{fuentesSinApi}</span>
                         <button onClick={() => setFuentesSinApi(v => v+1)} className="w-8 h-8 bg-gray-100 rounded-lg font-bold text-gray-700 hover:bg-gray-200 transition-colors">+</button>
                       </div>
-                      <p className="text-xs text-gray-400 mt-1">Precio según desarrollo</p>
+                      <p className="text-xs text-gray-400 mt-1">Según desarrollo</p>
                     </div>
                   </div>
                 </div>
@@ -280,7 +243,7 @@ export default function Precios() {
                   </div>
                 </div>
 
-                                {/* 5. Vistas KPI */}}
+                                {/* 5. Vistas KPI */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
                   <div className="flex items-center gap-2 mb-1">
                     <h2 className="font-bold text-gray-900 text-base">5. Vistas KPI por sensor</h2>
@@ -295,7 +258,7 @@ export default function Precios() {
                   <p className="text-xs text-gray-400 mt-2">{vistasKpi} vistas activas</p>
                 </div>
 
-                {/* 6. Soporte */}}
+                {/* 6. Soporte */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
                   <h2 className="font-bold text-gray-900 text-base mb-4">6. Anos de soporte incluido</h2>
                   <div className="flex gap-3 flex-wrap">
@@ -350,64 +313,64 @@ export default function Precios() {
                                       {modulos.map(id => {
                                         const m = MODULOS.find(x => x.id === id)
                                         return m ? (
-                                          <div key={id} className="flex justify-between">
+                                          <div key={id} className="flex justify-between gap-3">
                                             <span className="text-gray-500 text-xs">{m.label}</span>
-                                            <span className="font-medium text-gray-700 text-xs">{CLP(m.precio)}</span>
+                                            <span className="font-medium text-gray-700 text-xs">Seleccionado</span>
                                           </div>
                                         ) : null
                                       })}
                                       {aiActivo && (
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-500 text-xs">AI Chat ({modoAi})</span>
-                                          <span className="font-medium text-gray-700 text-xs">{CLP(2000000)}</span>
+                                        <div className="flex justify-between gap-3">
+                                          <span className="text-gray-500 text-xs">AI Chat</span>
+                                          <span className="font-medium text-gray-700 text-xs">{modoAi}</span>
                                         </div>
                                       )}
                                       {docsActivo && (
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-500 text-xs">Docs ({modoDocs})</span>
-                                          <span className="font-medium text-gray-700 text-xs">{CLP(2000000)}</span>
+                                        <div className="flex justify-between gap-3">
+                                          <span className="text-gray-500 text-xs">Docs</span>
+                                          <span className="font-medium text-gray-700 text-xs">{modoDocs}</span>
                                         </div>
                                       )}
-                                      <div className="flex justify-between">
+                                      <div className="flex justify-between gap-3">
                                         <span className="text-gray-500 text-xs">Licencia</span>
                                         <span className="font-medium text-agro-green-700 text-xs">{LICENCIAS.find(l=>l.id===licencia)?.label}</span>
                                       </div>
                                       {fuentesApi > 0 && (
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-500 text-xs">APIs ({fuentesApi})</span>
-                                          <span className="font-medium text-gray-700 text-xs">{CLP(fuentesApi*PRECIO_API)}</span>
+                                        <div className="flex justify-between gap-3">
+                                          <span className="text-gray-500 text-xs">APIs</span>
+                                          <span className="font-medium text-gray-700 text-xs">{fuentesApi} fuente{fuentesApi>1?"s":""}</span>
                                         </div>
                                       )}
                                       {fuentesSinApi > 0 && (
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-500 text-xs">Custom ({fuentesSinApi})</span>
-                                          <span className="font-medium text-gray-700 text-xs">{CLP(fuentesSinApi*PRECIO_NO_API)}</span>
+                                        <div className="flex justify-between gap-3">
+                                          <span className="text-gray-500 text-xs">Custom</span>
+                                          <span className="font-medium text-gray-700 text-xs">{fuentesSinApi} fuente{fuentesSinApi>1?"s":""}</span>
                                         </div>
                                       )}
                                       {sensores.length > 0 && (
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-500 text-xs">Gestores ({sensores.length})</span>
-                                          <span className="font-medium text-gray-700 text-xs">{CLP(sensores.length*PRECIO_SENSOR)}</span>
+                                        <div className="flex justify-between gap-3">
+                                          <span className="text-gray-500 text-xs">Gestores</span>
+                                          <span className="font-medium text-gray-700 text-xs">{sensores.length} seleccionado{sensores.length>1?"s":""}</span>
                                         </div>
                                       )}
                                       {vistasKpi > 0 && (
-                                        <div className="flex justify-between">
-                                          <span className="text-gray-500 text-xs">KPI ({vistasKpi} vistas)</span>
-                                          <span className="font-medium text-gray-700 text-xs">{CLP(vistasKpi*PRECIO_VISTA)}</span>
+                                        <div className="flex justify-between gap-3">
+                                          <span className="text-gray-500 text-xs">KPI</span>
+                                          <span className="font-medium text-gray-700 text-xs">{vistasKpi} vistas</span>
                                         </div>
                                       )}
-                                      <div className="flex justify-between">
-                                        <span className="text-gray-500 text-xs">Soporte {soporte} ano{soporte>1?"s":""}</span>
-                                        <span className="font-medium text-gray-700 text-xs">{soporte===1?"Incluido":CLP((soporte-1)*PRECIO_SOPORTE)}</span>
+                                      <div className="flex justify-between gap-3">
+                                        <span className="text-gray-500 text-xs">Soporte</span>
+                                        <span className="font-medium text-gray-700 text-xs">{soporte} ano{soporte>1?"s":""}</span>
                                       </div>
-                                      <div className="flex justify-between">
-                                        <span className="text-gray-500 text-xs">Usuarios ({admins+agricultores+asesores})</span>
-                                        <span className="font-medium text-gray-700 text-xs">{admins+agricultores+asesores>200?CLP(3100000):admins+agricultores+asesores>100?CLP(1600000):admins+agricultores+asesores>50?CLP(800000):"Incluidos"}</span>
+                                      <div className="flex justify-between gap-3">
+                                        <span className="text-gray-500 text-xs">Usuarios</span>
+                                        <span className="font-medium text-gray-700 text-xs">{admins+agricultores+asesores}</span>
                                       </div>
                                     </div>
 
                   <div className="border-t border-gray-100 pt-4 mb-5 text-center">
-                    <p className="text-xs text-gray-400 mb-1">Precio estimado disponible</p>
+                    <p className="text-xs text-gray-400 mb-1">Propuesta estimada disponible</p>
                     <div className="flex items-center justify-center gap-2 text-agro-green-700 font-bold text-lg">
                       <Lock size={16}/> Solo en propuesta formal
                     </div>
@@ -415,13 +378,13 @@ export default function Precios() {
                   </div>
 
                   <button onClick={() => setShowModal(true)} className="block w-full text-center bg-agro-green-600 hover:bg-agro-green-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm mb-3">
-                    Solicitar propuesta con precio
+                    Solicitar propuesta
                   </button>
                   <a href="https://wa.me/56987561075" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl transition-colors text-sm border border-gray-200">
                     <MessageCircle size={14}/> Hablamos por WhatsApp
                   </a>
                   <p className="text-[10px] text-gray-400 text-center mt-3 leading-relaxed">
-                    El precio final se confirma tras diagnostico tecnico.
+                    La propuesta final se confirma tras diagnostico tecnico.
                   </p>
                 </div>
               </div>
@@ -432,26 +395,25 @@ export default function Precios() {
             {showModal && (
         <ContactModal
           onClose={() => setShowModal(false)}
-          titulo="Solicitar propuesta con precio"
-          subtitulo="Te enviamos el detalle completo con precio al mail y WhatsApp."
+          titulo="Solicitar propuesta"
+          subtitulo="Te enviamos el detalle de la configuración al mail y WhatsApp."
           origen={(() => {
             const lineas = []
             modulos.forEach(id => {
               const m = MODULOS.find(x => x.id === id)
-              if (m) lineas.push(`✅ ${m.label}: ${CLP(m.precio)}`)
+              if (m) lineas.push(`✅ ${m.label}`)
             })
-            if (aiActivo)   lineas.push(`✅ AI Chat agricola (${modoAi}): ${CLP(2000000)}`)
-            if (docsActivo) lineas.push(`✅ Docs Improvements (${modoDocs}): ${CLP(2000000)}`)
+            if (aiActivo)   lineas.push(`✅ AI Chat agricola (${modoAi})`)
+            if (docsActivo) lineas.push(`✅ Docs Improvements (${modoDocs})`)
             const lic = LICENCIAS.find(l => l.id === licencia)
-            lineas.push(`📄 Licencia: ${lic?.label} - ${lic?.desc}`)
-            if (fuentesApi > 0)    lineas.push(`🔗 Fuentes API REST (${fuentesApi}): ${CLP(fuentesApi * PRECIO_API)}`)
-            if (fuentesSinApi > 0) lineas.push(`🔧 Fuentes sin API custom (${fuentesSinApi}): ${CLP(fuentesSinApi * PRECIO_NO_API)}`)
-            if (sensores.length > 0) lineas.push(`📡 Gestores sensores (${sensores.length}): ${sensores.join(', ')} - ${CLP(sensores.length * PRECIO_SENSOR)}`)
-            if (vistasKpi > 0) lineas.push(`📊 Vistas KPI (${vistasKpi}): ${CLP(vistasKpi * PRECIO_VISTA)}`)
-            lineas.push(`🛠 Soporte ${soporte} ano${soporte>1?'s':''}: ${soporte === 1 ? 'Incluido' : CLP((soporte-1)*PRECIO_SOPORTE) + ' extra'}`)
+            lineas.push(`📄 Licencia: ${lic?.label}`)
+            if (fuentesApi > 0)    lineas.push(`🔗 Fuentes API REST: ${fuentesApi}`)
+            if (fuentesSinApi > 0) lineas.push(`🔧 Fuentes sin API custom: ${fuentesSinApi}`)
+            if (sensores.length > 0) lineas.push(`📡 Gestores sensores: ${sensores.join(', ')}`)
+            if (vistasKpi > 0) lineas.push(`📊 Vistas KPI: ${vistasKpi}`)
+            lineas.push(`🛠 Soporte: ${soporte} ano${soporte>1?'s':''}`)
             const u = admins + agricultores + asesores
             lineas.push(`👥 Usuarios: ${u} (${admins} admins, ${agricultores} agricultores, ${asesores} asesores)`)
-            lineas.push(`💰 TOTAL ESTIMADO: ${CLP(precio)}`)
             return lineas.join(' | ')
           })()}
           whatsappMsg={(() => {
