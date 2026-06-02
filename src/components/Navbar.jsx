@@ -38,7 +38,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
+        <Link to="/" className="flex items-center gap-2.5 group shrink-0">
           <div className="w-9 h-9 rounded-xl bg-agro-green-600 flex items-center justify-center shadow">
             <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5">
               <circle cx="16" cy="16" r="6" fill="white" opacity="0.9"/>
@@ -59,7 +59,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop links */}
-        <ul className="hidden lg:flex items-center gap-6">
+        <ul className="hidden xl:flex items-center gap-6 shrink-0">
           {navLinks.map(link => {
             const active = location.pathname === link.to
             return (
@@ -82,23 +82,37 @@ export default function Navbar() {
         {/* CTA */}
         <Link
           to="/precios"
-          className="hidden lg:inline-flex items-center gap-2 bg-agro-green-600 hover:bg-agro-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow transition-all duration-200 hover:shadow-md"
+          className="hidden xl:inline-flex shrink-0 items-center gap-2 bg-agro-green-600 hover:bg-agro-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow transition-all duration-200 hover:shadow-md"
         >
-          Cotizar
+          Cotizador
         </Link>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setMenuOpen(v => !v)}
-          className={`lg:hidden p-2 rounded-lg transition-colors ${transparent ? 'text-white' : 'text-gray-700'}`}
-        >
-          {menuOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        <div className="xl:hidden flex items-center gap-2">
+          <Link
+            to="/precios"
+            className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-colors ${
+              transparent
+                ? 'bg-white/10 text-white border border-white/20'
+                : 'bg-agro-green-50 text-agro-green-700 border border-agro-green-100'
+            }`}
+          >
+            Precios / Cotizador
+          </Link>
+
+          {/* Mobile toggle */}
+          <button
+            onClick={() => setMenuOpen(v => !v)}
+            className={`p-2 rounded-lg transition-colors ${transparent ? 'text-white' : 'text-gray-700'}`}
+            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          >
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
+        <div className="xl:hidden bg-white border-t border-gray-100 shadow-lg">
           <ul className="flex flex-col py-4">
             {navLinks.map(link => {
               const active = location.pathname === link.to
@@ -120,7 +134,7 @@ export default function Navbar() {
                 to="/precios"
                 className="block text-center bg-agro-green-600 text-white font-semibold py-3 rounded-full"
               >
-                Cotizar
+                Cotizador
               </Link>
             </li>
           </ul>
