@@ -89,7 +89,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
+        <div className="xl:hidden bg-white border-t border-gray-100 shadow-lg">
           <ul className="flex flex-col py-4">
             {navLinks.map(link => {
               const active = location.pathname === link.to
