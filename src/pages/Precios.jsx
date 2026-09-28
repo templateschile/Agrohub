@@ -260,7 +260,7 @@ export default function Precios() {
 
                 {/* 6. Soporte */}
                 <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                  <h2 className="font-bold text-gray-900 text-base mb-4">6. Anos de soporte incluido</h2>
+                  <h2 className="font-bold text-gray-900 text-base mb-4">6. Años de soporte incluido</h2>
                   <div className="flex gap-3 flex-wrap">
                     {SOPORTE_OPCIONES.map(n => (
                       <button

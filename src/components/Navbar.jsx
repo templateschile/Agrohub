@@ -9,6 +9,7 @@ const navLinks = [
   { label: 'Documentos',     to: '/documentos' },
   { label: 'Eventos',        to: '/eventos' },
   { label: 'Tienda',         to: '/tienda' },
+  { label: 'Precios',        to: '/precios' },
 ]
 
 export default function Navbar() {
