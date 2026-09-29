@@ -3,7 +3,7 @@ import { Check, ClipboardCheck, ChevronDown, ChevronUp, Info, Lightbulb, ShieldC
 import { enviarLead, emailValido } from "../lib/lead"
 import {
   CULTIVOS, MODELOS_PRODUCTIVOS, APOYOS_PRODUCTORES, TIPOS_RIEGO, PRIORIDADES, REGISTROS,
-  SENSORES, SENSOR_DESTACADO, MODULOS, LICENCIAS, ETAPAS, estadoInicial,
+  SENSORES, MODULOS, LICENCIAS, ETAPAS, estadoInicial,
   conAsociados, haAsociadas, resumenRespuestas, avance, insights,
 } from "../lib/evaluacion"
 
@@ -240,10 +240,7 @@ export default function Evaluacion() {
               <Paso n={6} titulo="Gestión de sensores" ayuda="Marca la tecnología que ya usas o que te interesa integrar.">
                 <div className={`grid grid-cols-1 sm:grid-cols-2 gap-2 ${!verSensores ? "max-h-40 overflow-hidden" : ""}`}>
                   {SENSORES.map(s => (
-                    <Chip key={s} activo={r.sensores.includes(s)} onClick={() => toggle("sensores")(s)}
-                      extra={s === SENSOR_DESTACADO && <span className="text-[10px] bg-agro-green-600 text-white px-2 py-0.5 rounded-full font-semibold">Recomendado</span>}>
-                      {s}
-                    </Chip>
+                    <Chip key={s} activo={r.sensores.includes(s)} onClick={() => toggle("sensores")(s)}>{s}</Chip>
                   ))}
                 </div>
                 <button type="button" onClick={() => setVerSensores(v => !v)} className="flex items-center gap-1 text-xs text-agro-green-600 font-semibold mt-3">
