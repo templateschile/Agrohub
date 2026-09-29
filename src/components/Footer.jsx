@@ -1,4 +1,4 @@
-﻿import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
@@ -36,9 +36,7 @@ export default function Footer() {
         <div className="border-t border-white/10 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-white/30 text-xs">&copy; 2025 AgroHub &middot; Chile</p>
           <p className="text-white/40 text-xs">
-            <a href="tel:+56987561075" className="hover:text-white/70 transition-colors">+56 9 8756 1075</a>
-            {' &middot; '}
-            <a href="mailto:contacto@agrohub.cl" className="hover:text-white/70 transition-colors">contacto@agrohub.cl</a>
+            <a href="/#contacto" className="hover:text-white/70 transition-colors">Contacto</a>
           </p>
           <p className="text-white/30 text-xs">Digitalización · Transferencia tecnológica · Acompañamiento</p>
         </div>

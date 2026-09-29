@@ -1,6 +1,6 @@
 ﻿import { useState } from "react"
 import { useInView } from "../hooks/useInView"
-import { ShoppingBag, MapPin, Search, Package, Leaf, AlertCircle, Filter, X, MessageCircle } from "lucide-react"
+import { ShoppingBag, MapPin, Search, Package, Leaf, AlertCircle, Filter, X } from "lucide-react"
 import PedidoModal from "../components/PedidoModal"
 
 const COMUNAS = [
@@ -99,14 +99,6 @@ const productores = [
   },
 ]
 
-function waLink(telefono, nombreProductor, nombreProducto, cupoKg) {
-  const num = telefono.replace(/\D/g, '')
-  const msg = encodeURIComponent(
-    `Hola! Te contacto desde AgroHub. Estoy interesado en ${nombreProducto} de ${nombreProductor}. ¿Tienen disponibilidad del cupo (${cupoKg.toLocaleString('es-CL')} kg)?`
-  )
-  return `https://wa.me/${num}?text=${msg}`
-}
-
 function ProductorCard({ p, onPedido }) {
   const [ref, visible] = useInView({ threshold: 0.05 })
   const [expanded, setExpanded] = useState(false)
@@ -170,7 +162,7 @@ function ProductorCard({ p, onPedido }) {
         <button
           onClick={() => onPedido(p)}
           className="flex items-center gap-1.5 bg-agro-green-600 hover:bg-agro-green-700 text-white text-xs font-semibold px-4 py-2 rounded-full transition-colors">
-          <MessageCircle size={12}/> Hacer pedido por WA
+          <ShoppingBag size={12}/> Hacer pedido
         </button>
       </div>
     </div>

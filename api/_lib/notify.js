@@ -1,0 +1,66 @@
+import nodemailer from 'nodemailer'
+
+const lista = v => (v || '').split(',').map(s => s.trim()).filter(Boolean)
+
+export const escapar = s => String(s ?? '')
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+
+// Destinatarios por variables de entorno (el repo es publico):
+//   NOTIFY_TO         correos que reciben el aviso (separados por coma)
+//   NOTIFY_BCC        copia oculta (separados por coma)
+//   TELEGRAM_CHAT_ID  uno o varios chat IDs (separados por coma)
+export async function notificar({ asunto, html, texto }) {
+  const errors = []
+  const results = {}
+
+  const smtpUser = process.env.SMTP_USER
+  const smtpPass = process.env.SMTP_PASS
+  if (!smtpUser || !smtpPass) {
+    errors.push('email: faltan variables SMTP_USER / SMTP_PASS')
+  } else {
+    try {
+      const transporter = nodemailer.createTransport({
+        host:   process.env.SMTP_HOST || 'smtp.gmail.com',
+        port:   Number(process.env.SMTP_PORT) || 465,
+        secure: true,
+        auth: { user: smtpUser, pass: smtpPass },
+      })
+      const to = lista(process.env.NOTIFY_TO)
+      await transporter.sendMail({
+        from:    process.env.SMTP_FROM || smtpUser,
+        to:      to.length ? to : smtpUser,
+        bcc:     lista(process.env.NOTIFY_BCC),
+        subject: asunto,
+        html,
+      })
+      results.email = 'ok'
+    } catch (e) {
+      errors.push('email: ' + e.message)
+    }
+  }
+
+  const botToken = process.env.TELEGRAM_BOT_TOKEN
+  const chatIds  = lista(process.env.TELEGRAM_CHAT_ID)
+  if (!botToken || !chatIds.length) {
+    errors.push('telegram: faltan variables TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID')
+  } else {
+    for (const chatId of chatIds) {
+      try {
+        // Sin parse_mode para evitar errores por HTML invalido
+        const tgRes = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId, text: texto.slice(0, 4000) }),
+        })
+        const tgJson = await tgRes.json()
+        if (tgJson.ok) results[`telegram:${chatId}`] = 'ok'
+        else errors.push(`telegram ${chatId}: ${tgJson.description}`)
+      } catch (e) {
+        errors.push(`telegram ${chatId}: ${e.message}`)
+      }
+    }
+  }
+
+  return { results, errors }
+}

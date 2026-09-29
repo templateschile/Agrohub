@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import FloatingCTA from './components/FloatingCTA'
@@ -12,28 +12,38 @@ import Eventos from './pages/Eventos'
 import Tienda from './pages/Tienda'
 import Evaluacion from './pages/Evaluacion'
 import Terminos from './pages/Terminos'
+import Admin from './pages/Admin'
 
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/ai-chat" element={<AIChat />} />
-            <Route path="/documentos" element={<Documentos />} />
-            <Route path="/eventos" element={<Eventos />} />
-            <Route path="/tienda" element={<Tienda />} />
-            <Route path="/evaluacion" element={<Evaluacion />} />
-            <Route path="/precios" element={<Navigate to="/evaluacion" replace />} />
-            <Route path="/terminos" element={<Terminos />} />
-          </Routes>
-        </main>
-        <Footer />
-        <FloatingCTA />
-      </div>
+      <Sitio />
     </BrowserRouter>
+  )
+}
+
+function Sitio() {
+  // El admin va sin menu, footer ni boton flotante del sitio publico
+  if (useLocation().pathname.startsWith('/admin')) return <Admin />
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/ai-chat" element={<AIChat />} />
+          <Route path="/documentos" element={<Documentos />} />
+          <Route path="/eventos" element={<Eventos />} />
+          <Route path="/tienda" element={<Tienda />} />
+          <Route path="/evaluacion" element={<Evaluacion />} />
+          <Route path="/precios" element={<Navigate to="/evaluacion" replace />} />
+          <Route path="/terminos" element={<Terminos />} />
+        </Routes>
+      </main>
+      <Footer />
+      <FloatingCTA />
+    </div>
   )
 }

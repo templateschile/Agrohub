@@ -1,4 +1,8 @@
+import { useState } from "react"
+import ContactModal from "../components/ContactModal"
+
 export default function Terminos() {
+  const [showModal, setShowModal] = useState(false)
   return (
     <div className="min-h-screen bg-gray-50">
       <section className="pt-32 pb-16 bg-gradient-to-b from-agro-green-900 to-agro-green-800">
@@ -109,14 +113,12 @@ export default function Terminos() {
             <p className="text-sm leading-relaxed">
               Para consultas sobre estos términos, licencias o condiciones comerciales:
             </p>
-            <a
-              href="https://wa.me/56987561075"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => setShowModal(true)}
               className="inline-flex items-center gap-2 mt-3 bg-agro-green-600 hover:bg-agro-green-700 text-white font-semibold text-sm px-5 py-2.5 rounded-full transition-colors"
             >
-              Contactar por WhatsApp →
-            </a>
+              Escríbenos →
+            </button>
           </div>
 
           <div className="border-t border-gray-100 pt-6 text-xs text-gray-400">
@@ -125,6 +127,7 @@ export default function Terminos() {
 
         </div>
       </section>
+      {showModal && <ContactModal onClose={() => setShowModal(false)} />}
     </div>
   )
 }
