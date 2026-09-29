@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { useSearchParams } from "react-router-dom"
-import { Lock, LogOut, RefreshCw, Save, Printer, Copy, RotateCcw, Bold, Italic, Heading2, List, Highlighter, Search } from "lucide-react"
+import { Lock, LogOut, RefreshCw, Save, Printer, Copy, RotateCcw, Bold, Italic, Heading2, List, Highlighter, Search, Mail } from "lucide-react"
 import { generarPropuesta } from "../lib/propuesta"
 import Correo from "./admin/Correo"
 import Cuentas from "./admin/Cuentas"
@@ -49,7 +49,7 @@ function Login({ onLogin, error }) {
   )
 }
 
-function Editor({ lead, clave, onGuardado }) {
+function Editor({ lead, clave, onGuardado, onEscribir }) {
   const docRef = useRef(null)
   const [estado, setEstado] = useState(lead.estado)
   const [notas, setNotas] = useState(lead.notas || "")
@@ -106,9 +106,16 @@ function Editor({ lead, clave, onGuardado }) {
               {[c.cargo, c.email && <a key="e" href={`mailto:${c.email}`} className="text-agro-green-700 underline">{c.email}</a>, c.telefono].filter(Boolean).reduce((a, x, i) => i ? [...a, " · ", x] : [x], [])}
             </p>
           </div>
+          <div className="flex items-center gap-2">
+          {c.email && (
+            <button onClick={() => onEscribir(c)} className="inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-lg bg-agro-green-600 hover:bg-agro-green-700 text-white">
+              <Mail size={14} /> Escribir correo
+            </button>
+          )}
           <select value={estado} onChange={e => setEstado(e.target.value)} className="border border-gray-200 rounded-lg px-3 py-2 text-sm">
             {ESTADOS.map(s => <option key={s}>{s}</option>)}
           </select>
+          </div>
         </div>
         {lead.mensaje && <p className="mt-3 text-sm text-gray-700 bg-gray-50 rounded-xl p-3 whitespace-pre-wrap">{lead.mensaje}</p>}
         {lead.resumen?.length > 0 && (
@@ -201,7 +208,10 @@ export default function Admin() {
         </div>
       </header>
 
-      {tab === "correo" && <div className="max-w-7xl mx-auto px-4 md:px-6 py-6"><Correo clave={clave} /></div>}
+      {tab === "correo" && <div className="max-w-7xl mx-auto px-4 md:px-6 py-6">
+        <Correo clave={clave} casillaUrl={params.get("casilla")} onCasilla={email => setParams({ tab: "correo", casilla: email }, { replace: true })}
+          nuevoPara={params.get("para") ? { para: params.get("para"), nombre: params.get("nombre"), empresa: params.get("empresa") } : null} />
+      </div>}
       {tab === "cuentas" && <div className="max-w-7xl mx-auto px-4 md:px-6 py-6"><Cuentas clave={clave} /></div>}
       {tab === "evaluaciones" && <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
         <aside className="no-print">
@@ -233,7 +243,8 @@ export default function Admin() {
 
         <main>
           {seleccionado ? (
-            <Editor key={seleccionado.id} lead={seleccionado} clave={clave} onGuardado={actualizar} />
+            <Editor key={seleccionado.id} lead={seleccionado} clave={clave} onGuardado={actualizar}
+              onEscribir={c => setParams({ tab: "correo", para: c.email, nombre: c.nombre || "", empresa: c.empresa || "" })} />
           ) : (
             <div className="bg-white border border-dashed border-gray-200 rounded-2xl p-10 text-center text-sm text-gray-400 no-print">
               Selecciona una evaluación para ver sus respuestas y editar la propuesta de diagnóstico previo.

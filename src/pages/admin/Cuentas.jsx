@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Plus, Eye, EyeOff, Copy, Trash2, Save, ExternalLink, KeyRound, Search, X, Mail, PlugZap, ChevronDown, ChevronUp } from "lucide-react"
+import { Plus, Eye, EyeOff, Copy, Trash2, Save, ExternalLink, KeyRound, Search, X, Mail, PlugZap, ChevronDown, ChevronUp, Inbox } from "lucide-react"
 import { adminApi, FIRMAS_OPCIONES } from "../../lib/adminApi"
 
 const inputCls = "w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400"
@@ -80,7 +80,7 @@ const SUGERIDAS = [
   { user: "contacto@compararepuestos.cl", from: "AgroHub <contacto@compararepuestos.cl>",              firma: "marcos" },
 ]
 
-function Casilla({ c, principal, clave, onCambio, servidor }) {
+function Casilla({ c, principal, clave, onCambio, servidor, claveDe }) {
   const [f, setF] = useState(c)
   const [pass, setPass] = useState("")
   const [ver, setVer] = useState(false)
@@ -118,7 +118,14 @@ function Casilla({ c, principal, clave, onCambio, servidor }) {
           {principal
             ? <span className="text-[11px] px-2 py-0.5 rounded-full font-semibold bg-agro-green-50 text-agro-green-700">Principal · avisos automáticos</span>
             : !nueva && <button onClick={hacerPrincipal} className="text-[11px] font-semibold text-gray-500 hover:text-agro-green-700">Usar para avisos</button>}
-          {!nueva && !c.tieneClave && <span className="text-[11px] px-2 py-0.5 rounded-full font-semibold bg-amber-50 text-amber-700">Falta contraseña</span>}
+          {!nueva && !c.tieneClave && (c.usaCompartida
+            ? <span className="text-[11px] px-2 py-0.5 rounded-full font-semibold bg-agro-blue-50 text-agro-blue-800">Usa la clave de {claveDe}</span>
+            : <span className="text-[11px] px-2 py-0.5 rounded-full font-semibold bg-amber-50 text-amber-700">Falta contraseña</span>)}
+          {!nueva && (c.tieneClave || c.usaCompartida) && (
+            <a href={`/admin?tab=correo&casilla=${encodeURIComponent(c.user)}`} className="inline-flex items-center gap-1 text-[11px] font-semibold text-agro-green-700 hover:underline">
+              <Inbox size={12} /> Abrir buzón
+            </a>
+          )}
           {!nueva && <button onClick={borrar} className="p-1 text-gray-400 hover:text-red-500" title="Quitar"><Trash2 size={14} /></button>}
         </div>
       </div>
@@ -131,7 +138,7 @@ function Casilla({ c, principal, clave, onCambio, servidor }) {
           <label className="text-[11px] font-semibold text-gray-600">Contraseña de la casilla</label>
           <div className="relative">
             <input value={pass} onChange={e => setPass(e.target.value)} type={ver ? "text" : "password"} autoComplete="new-password"
-              placeholder={c.tieneClave ? "•••••••• (guardada; escribe para cambiarla)" : "Escribe la contraseña"} className={`${inputCls} pr-9`} />
+              placeholder={c.tieneClave ? "•••••••• (guardada; escribe para cambiarla)" : c.usaCompartida ? `Igual a ${claveDe} (escribe para usar otra)` : "Escribe la contraseña"} className={`${inputCls} pr-9`} />
             <button type="button" onClick={() => setVer(v => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400">{ver ? <EyeOff size={15} /> : <Eye size={15} />}</button>
           </div>
         </div>
@@ -164,7 +171,7 @@ function Casilla({ c, principal, clave, onCambio, servidor }) {
       )}
       <div className="flex flex-wrap items-center justify-end gap-2 mt-4">
         {estado && <span className="text-xs text-gray-500 mr-auto">{estado}</span>}
-        <button onClick={probar} disabled={!f.user || (!pass && !c.tieneClave)}
+        <button onClick={probar} disabled={!f.user || (!pass && !c.tieneClave && !c.usaCompartida)}
           className="inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40">
           <PlugZap size={14} /> Probar conexión
         </button>
@@ -198,9 +205,9 @@ function Casillas({ clave }) {
           Avisos automáticos: {datos.origen === "admin" ? "casilla principal" : "variables de Vercel"}
         </span>
       </div>
-      <p className="text-xs text-gray-500 -mt-1">Servidor de compararepuestos.cl precargado ({datos.servidor.host}). Solo escribe la contraseña de cada casilla. En la pestaña Correo eliges desde cuál enviar y se usa su firma.</p>
-      {datos.casillas.map(c => <Casilla key={c.id + (c.tieneClave ? "1" : "0")} c={c} principal={c.id === datos.principal} clave={clave} onCambio={cambio} servidor={datos.servidor} />)}
-      {nueva && <Casilla key="nueva" c={nueva} principal={false} clave={clave} onCambio={cambio} servidor={datos.servidor} />}
+      <p className="text-xs text-gray-500 -mt-1">Servidor de compararepuestos.cl precargado ({datos.servidor.host}). Las casillas sin contraseña propia usan la de {datos.claveCompartidaDe || "cristian@agrohubs.cl"}. Cada una tiene su link “Abrir buzón”; en Correo eliges desde cuál enviar y se usa su firma.</p>
+      {datos.casillas.map(c => <Casilla key={c.id + (c.tieneClave ? "1" : "0")} c={c} principal={c.id === datos.principal} clave={clave} onCambio={cambio} servidor={datos.servidor} claveDe={datos.claveCompartidaDe} />)}
+      {nueva && <Casilla key="nueva" c={{ ...nueva, usaCompartida: Boolean(datos.claveCompartidaDe) }} principal={false} clave={clave} onCambio={cambio} servidor={datos.servidor} claveDe={datos.claveCompartidaDe} />}
       {!nueva && (
         <div className="flex flex-wrap gap-2">
           {faltan.map(s => (

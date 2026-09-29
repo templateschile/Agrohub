@@ -1,20 +1,41 @@
 import { useCallback, useEffect, useState } from "react"
 import { Inbox, Send, RefreshCw, PenSquare, Reply, Paperclip, X } from "lucide-react"
 import { adminApi, FIRMAS_OPCIONES } from "../../lib/adminApi"
+import { PLANTILLAS, aplicarPlantilla } from "../../lib/plantillas"
+import { firmaHtml } from "../../lib/firmas"
 
 const fecha = iso => iso ? new Date(iso).toLocaleString("es-CL", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) : ""
 const inputCls = "w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400"
 const citar = m => `\n\n\nEl ${fecha(m.fecha)}, ${m.de} escribió:\n` + (m.texto || "").split("\n").map(l => "> " + l).join("\n")
 
-function Redactar({ clave, casilla, inicial, onCerrar, onEnviado }) {
+function Redactar({ clave, casillas, casillaId, setCasillaId, inicial, onCerrar, onEnviado }) {
+  const casilla = casillas.find(c => c.id === casillaId)
   const [f, setF] = useState({ para: "", cc: "", asunto: "", cuerpo: "", firma: casilla?.firma ?? "marcos", ...inicial })
+  const [plantilla, setPlantilla] = useState("")
   const [estado, setEstado] = useState("")
   const set = k => e => setF(p => ({ ...p, [k]: e.target.value }))
+  const vars = inicial?.vars || {}
+
+  // Al cambiar la casilla, la firma pasa a ser la de esa casilla
+  const cambiarDesde = id => {
+    setCasillaId(id)
+    const c = casillas.find(x => x.id === id)
+    setF(p => ({ ...p, firma: c?.firma ?? p.firma }))
+  }
+  const usarPlantilla = id => {
+    setPlantilla(id)
+    const p = PLANTILLAS.find(x => x.id === id)
+    if (!p) return
+    if ((f.cuerpo.trim() || f.asunto.trim()) && !inicial?.responderA && !confirm("¿Reemplazar el asunto y el texto actuales por la plantilla?")) return
+    const { asunto, cuerpo } = aplicarPlantilla(p, vars)
+    // En una respuesta se conserva el asunto "Re:" y la cita del correo original
+    setF(prev => inicial?.responderA ? { ...prev, cuerpo: cuerpo + prev.cuerpo } : { ...prev, asunto, cuerpo })
+  }
 
   const enviar = async () => {
     setEstado("Enviando...")
     try {
-      await adminApi(clave, "correo", { method: "POST", body: { ...f, casilla: casilla?.id } })
+      await adminApi(clave, "correo", { method: "POST", body: { ...f, casilla: casillaId } })
       onEnviado()
     } catch (e) { setEstado(e.message) }
   }
@@ -25,19 +46,42 @@ function Redactar({ clave, casilla, inicial, onCerrar, onEnviado }) {
         <h3 className="font-bold text-gray-900">{inicial?.responderA ? "Responder" : "Nuevo correo"}</h3>
         <button onClick={onCerrar} className="text-gray-400 hover:text-gray-600"><X size={18} /></button>
       </div>
-      {casilla && <p className="text-xs text-gray-500">Desde: <b className="text-gray-700">{casilla.from || casilla.user}</b></p>}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label className="text-[11px] font-semibold text-gray-600">Desde</label>
+          <select value={casillaId} onChange={e => cambiarDesde(e.target.value)} className={inputCls}>
+            {casillas.map(c => <option key={c.id} value={c.id}>{c.from || c.user}</option>)}
+          </select>
+          {casillas.length < 2 && <p className="text-[10px] text-gray-400 mt-1">Para enviar desde otra casilla, agrégala en <a href="/admin?tab=cuentas" className="underline">Cuentas</a>.</p>}
+        </div>
+        <div>
+          <label className="text-[11px] font-semibold text-gray-600">Plantilla</label>
+          <select value={plantilla} onChange={e => usarPlantilla(e.target.value)} className={inputCls}>
+            <option value="">Sin plantilla</option>
+            {PLANTILLAS.map(p => <option key={p.id} value={p.id}>{p.nombre}</option>)}
+          </select>
+        </div>
+      </div>
       <input value={f.para} onChange={set("para")} placeholder="Para (separa con coma)" className={inputCls} />
       <input value={f.cc} onChange={set("cc")} placeholder="CC (opcional)" className={inputCls} />
       <input value={f.asunto} onChange={set("asunto")} placeholder="Asunto" className={inputCls} />
       <textarea value={f.cuerpo} onChange={set("cuerpo")} rows={12} placeholder="Escribe tu mensaje..." className={`${inputCls} resize-y`} />
+      {/\[[^\]]+\]/.test(f.cuerpo + f.asunto) && <p className="text-[11px] text-amber-700">Hay textos entre [corchetes] por completar antes de enviar.</p>}
+      <div>
+        <div className="flex items-center gap-3 mb-1">
+          <label className="text-[11px] font-semibold text-gray-600">Firma</label>
+          <select value={f.firma} onChange={set("firma")} className="border border-gray-200 rounded-lg px-2 py-1 text-xs">
+            {FIRMAS_OPCIONES.map(([id, n]) => <option key={id} value={id}>{n}</option>)}
+          </select>
+        </div>
+        {f.firma
+          ? <div className="border border-dashed border-gray-200 rounded-xl px-4 pb-3 bg-gray-50/50" dangerouslySetInnerHTML={{ __html: firmaHtml(f.firma, window.location.origin) }} />
+          : <p className="text-xs text-gray-400">El correo sale sin firma.</p>}
+      </div>
       <div className="flex flex-wrap items-center gap-3">
-        <label className="text-xs text-gray-600">Firma:</label>
-        <select value={f.firma} onChange={set("firma")} className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm">
-          {FIRMAS_OPCIONES.map(([id, n]) => <option key={id} value={id}>{n}</option>)}
-        </select>
         <div className="flex-1" />
         {estado && <span className="text-xs text-gray-500">{estado}</span>}
-        <button onClick={enviar} disabled={!f.para.trim() || !f.asunto.trim() || estado === "Enviando..."}
+        <button onClick={enviar} disabled={!casillaId || !f.para.trim() || !f.asunto.trim() || estado === "Enviando..."}
           className="inline-flex items-center gap-1.5 bg-agro-green-600 hover:bg-agro-green-700 disabled:opacity-40 text-white text-sm font-semibold px-4 py-2 rounded-lg">
           <Send size={14} /> Enviar
         </button>
@@ -46,7 +90,7 @@ function Redactar({ clave, casilla, inicial, onCerrar, onEnviado }) {
   )
 }
 
-export default function Correo({ clave }) {
+export default function Correo({ clave, nuevoPara, casillaUrl, onCasilla }) {
   const [casillas, setCasillas] = useState(null)
   const [casillaId, setCasillaId] = useState("")
   const [carpetas, setCarpetas] = useState([])
@@ -61,12 +105,17 @@ export default function Correo({ clave }) {
   // Casillas con contraseña guardada; parte en la principal
   useEffect(() => {
     adminApi(clave, "config").then(r => {
-      const utiles = r.casillas.filter(c => c.tieneClave)
+      const utiles = r.casillas.filter(c => c.tieneClave || c.usaCompartida)
       setCasillas(utiles)
-      setCasillaId((utiles.find(c => c.id === r.principal) || utiles[0])?.id || "")
+      // Link directo: /admin?tab=correo&casilla=<email>
+      setCasillaId((utiles.find(c => c.user === casillaUrl) || utiles.find(c => c.id === r.principal) || utiles[0])?.id || "")
     }).catch(() => setCasillas([]))
   }, [clave])
-  const casilla = casillas?.find(c => c.id === casillaId)
+
+  // Abierto desde una evaluacion: redactar dirigido a ese cliente
+  useEffect(() => {
+    if (nuevoPara?.para) setRedactar({ para: nuevoPara.para, vars: { nombre: nuevoPara.nombre || "", empresa: nuevoPara.empresa || "" } })
+  }, [nuevoPara?.para])
 
   const cargar = useCallback(async () => {
     if (casillas === null) return
@@ -97,13 +146,14 @@ export default function Correo({ clave }) {
   const responder = m => setRedactar({
     para: m.deEmail, asunto: /^re:/i.test(m.asunto) ? m.asunto : `Re: ${m.asunto}`,
     cuerpo: citar(m), responderA: m.messageId, referencias: m.referencias,
+    vars: { nombre: (m.de || "").replace(/<.*>/, "").replace(/"/g, "").trim() },
   })
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-6">
       <aside>
-        {casillas?.length > 1 && (
-          <select value={casillaId} onChange={e => { setCasillaId(e.target.value); setCarpeta("INBOX"); setAbierto(null); setRedactar(null) }}
+        {casillas?.length > 0 && (
+          <select value={casillaId} onChange={e => { setCasillaId(e.target.value); setCarpeta("INBOX"); setAbierto(null); setRedactar(null); onCasilla?.(casillas.find(c => c.id === e.target.value)?.user) }}
             className="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm bg-white mb-2 font-semibold">
             {casillas.map(c => <option key={c.id} value={c.id}>{c.user}</option>)}
           </select>
@@ -141,7 +191,7 @@ export default function Correo({ clave }) {
 
       <main>
         {redactar ? (
-          <Redactar key={casillaId + JSON.stringify(redactar)} clave={clave} casilla={casilla} inicial={redactar} onCerrar={() => setRedactar(null)} onEnviado={() => { setRedactar(null); cargar() }} />
+          <Redactar key={JSON.stringify(redactar)} clave={clave} casillas={casillas || []} casillaId={casillaId} setCasillaId={setCasillaId} inicial={redactar} onCerrar={() => setRedactar(null)} onEnviado={() => { setRedactar(null); cargar() }} />
         ) : abierto ? (
           <div className="bg-white border border-gray-100 rounded-2xl shadow-sm">
             <div className="p-5 border-b border-gray-100">
