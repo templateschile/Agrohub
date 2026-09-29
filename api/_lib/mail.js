@@ -44,11 +44,22 @@ const desdeVercel = () => ({
   origen: 'vercel',
 })
 
-// Casilla pedida por id; sin id, la principal. Si no hay ninguna con clave, se usa Vercel.
+// Clave compartida: las casillas sin clave propia usan la de cristian@agrohubs.cl
+// (o, si no esta, la de la principal). Todas viven en el mismo hosting.
+export const CASILLA_CLAVE_COMPARTIDA = 'cristian@agrohubs.cl'
+export function claveCompartida({ casillas, principal }) {
+  const fuente = casillas.find(c => c.user === CASILLA_CLAVE_COMPARTIDA && c.pass)
+    || casillas.find(c => c.id === principal && c.pass)
+    || casillas.find(c => c.pass)
+  return fuente?.pass || ''
+}
+
+// Casilla pedida por id (o por email); sin id, la principal. Si no hay ninguna usable, se usa Vercel.
 export async function configCorreo(id) {
-  const { casillas, principal } = await leerCasillas()
-  const conClave = casillas.filter(c => c.user && c.pass)
-  const c = conClave.find(x => x.id === id) || conClave.find(x => x.id === principal) || conClave[0]
+  const datos = await leerCasillas()
+  const compartida = claveCompartida(datos)
+  const usables = datos.casillas.filter(c => c.user).map(c => ({ ...c, pass: c.pass || compartida })).filter(c => c.pass)
+  const c = usables.find(x => x.id === id || x.user === id) || usables.find(x => x.id === datos.principal) || usables[0]
   return c ? { ...SERVIDOR_POR_DEFECTO, ...c, origen: 'admin' } : desdeVercel()
 }
 
@@ -70,39 +81,10 @@ export const imapConfig = cfg => ({
   logger: false,
 })
 
-// Firmas del equipo (HTML para correos). El logo es PNG porque Gmail y Outlook no muestran SVG.
-// `whatsapp`: numero en formato internacional sin "+" (vacio = no se muestra)
-const SITIO = process.env.SITE_URL || 'https://www.agrohubs.cl'
-export const FIRMAS = {
-  marcos:   { nombre: 'Marcos Contreras',  cargo: 'Agricultura Digital y Transferencia Tecnológica', email: 'marcos@agrohubs.cl',   whatsapp: '56963731824' },
-  cristian: { nombre: 'Cristián Betteley', cargo: 'Tech Lead · Plataforma y Datos',                 email: 'cristian@agrohubs.cl', whatsapp: '56987561075' },
-  equipo:   { nombre: 'Equipo AgroHub',    cargo: 'Cotizaciones',                                   email: 'cotizaciones@agrohubs.cl', whatsapp: '' },
-}
-
-const whatsappVisible = n => `+${n.slice(0, 2)} ${n.slice(2, 3)} ${n.slice(3, 7)} ${n.slice(7)}`
-
-export function firmaHtml(id = 'marcos') {
-  const f = FIRMAS[id] || FIRMAS.marcos
-  const wa = f.whatsapp
-    ? `<div>📱 <a href="https://wa.me/${f.whatsapp}" style="color:#2d7325;text-decoration:none">WhatsApp ${whatsappVisible(f.whatsapp)}</a></div>`
-    : ''
-  return `
-<table cellpadding="0" cellspacing="0" style="font-family:Arial,sans-serif;font-size:13px;color:#374151;margin-top:18px">
-  <tr>
-    <td style="padding-right:14px;border-right:3px solid #2d7325;vertical-align:middle">
-      <img src="${SITIO}/logo-email.png" width="56" height="56" alt="AgroHub" style="display:block;border-radius:12px">
-    </td>
-    <td style="padding-left:14px;line-height:1.5;vertical-align:middle">
-      <div style="font-size:15px;font-weight:bold;color:#111827">${escapar(f.nombre)}</div>
-      <div style="color:#6b7280">${escapar(f.cargo)}</div>
-      <div style="font-weight:bold;color:#245b1e">Agro<span style="color:#3d9132">Hub</span> <span style="font-weight:normal;color:#9ca3af;font-size:11px">· Centro Demostrativo Móvil</span></div>
-      ${wa}
-      <div>✉️ <a href="mailto:${f.email}" style="color:#2d7325;text-decoration:none">${f.email}</a></div>
-      <div>🌐 <a href="${SITIO}" style="color:#2d7325;text-decoration:none">www.agrohubs.cl</a></div>
-    </td>
-  </tr>
-</table>`
-}
+// Firmas: modulo compartido con el admin (vista previa al redactar)
+import { FIRMAS, firmaHtml as firmaBase } from '../../src/lib/firmas.js'
+export { FIRMAS }
+export const firmaHtml = id => firmaBase(id, process.env.SITE_URL || 'https://www.agrohubs.cl')
 
 // Agradecimiento al cliente que envio el formulario, firmado por Marcos
 export async function enviarGracias(cfg, { nombre, email, tipo }) {
