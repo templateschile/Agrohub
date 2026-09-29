@@ -1,17 +1,27 @@
+import { randomUUID } from 'node:crypto'
 import nodemailer from 'nodemailer'
 import { ImapFlow } from 'imapflow'
 import { autorizar } from './_lib/auth.js'
 import { storeConfigurado } from './_lib/store.js'
 import { cifradoConfigurado } from './_lib/cifrado.js'
-import { CORREO_POR_DEFECTO, leerConfigGuardada, guardarConfig, configCorreo, imapConfig } from './_lib/mail.js'
+import { SERVIDOR_POR_DEFECTO, FIRMAS, leerCasillas, guardarCasillas, configCorreo, imapConfig } from './_lib/mail.js'
 
-const limpio = b => ({
-  host:     String(b.host || CORREO_POR_DEFECTO.host).trim(),
-  port:     Number(b.port) || CORREO_POR_DEFECTO.port,
-  imapPort: Number(b.imapPort) || CORREO_POR_DEFECTO.imapPort,
-  user:     String(b.user || '').trim(),
-  from:     String(b.from || '').trim(),
-})
+const sinClave = ({ pass, ...c }) => ({ ...c, tieneClave: Boolean(pass) })
+
+function limpia(b, anterior) {
+  const user = String(b.user || '').trim().toLowerCase()
+  return {
+    id:       anterior?.id || randomUUID(),
+    host:     String(b.host || SERVIDOR_POR_DEFECTO.host).trim(),
+    port:     Number(b.port) || SERVIDOR_POR_DEFECTO.port,
+    imapPort: Number(b.imapPort) || SERVIDOR_POR_DEFECTO.imapPort,
+    user,
+    from:     String(b.from || '').trim() || `AgroHub <${user}>`,
+    firma:    FIRMAS[b.firma] ? b.firma : '',
+    // Sin clave nueva se conserva la guardada
+    pass:     b.pass ? String(b.pass) : anterior?.pass || '',
+  }
+}
 
 async function probar(cfg) {
   const r = {}
@@ -27,35 +37,52 @@ async function probar(cfg) {
   return r
 }
 
-// Configuracion de la casilla que usa el sitio (avisos, agradecimientos y pestana Correo).
-// La contraseña nunca se devuelve al navegador.
+// Casillas de correo del equipo (enviar/recibir desde el admin, avisos y agradecimientos).
+// Las contraseñas nunca se devuelven al navegador.
 export default async function handler(req, res) {
   if (!(await autorizar(req, res))) return
   if (!storeConfigurado() || !cifradoConfigurado()) return res.status(503).json({ ok: false, error: 'Falta la base de datos o VAULT_KEY en Vercel' })
 
   try {
-    if (req.method === 'GET') {
-      const g = await leerConfigGuardada()
+    const datos = await leerCasillas()
+    const responder = async () => {
       const activa = await configCorreo()
-      const { pass, ...sinClave } = g || { ...CORREO_POR_DEFECTO, pass: '' }
-      return res.json({ ok: true, config: sinClave, tieneClave: Boolean(g?.pass), origen: activa.origen })
+      res.json({ ok: true, casillas: datos.casillas.map(sinClave), principal: datos.principal, origen: activa.origen, servidor: SERVIDOR_POR_DEFECTO })
     }
 
-    const b = req.body || {}
-    const anterior = await leerConfigGuardada()
-    const cfg = { ...limpio(b), pass: b.pass ? String(b.pass) : anterior?.pass || '' }
-    if (!cfg.from) cfg.from = `AgroHub <${cfg.user}>`
+    if (req.method === 'GET') return responder()
 
+    const b = req.body || {}
+
+    // Probar credenciales sin enviar correos (con la clave escrita o la guardada)
     if (req.method === 'POST') {
+      const cfg = limpia(b, datos.casillas.find(c => c.id === b.id))
       if (!cfg.user || !cfg.pass) return res.status(400).json({ ok: false, error: 'Falta usuario o contraseña' })
       return res.json({ ok: true, prueba: await probar(cfg) })
     }
 
     if (req.method === 'PUT') {
-      if (!cfg.user) return res.status(400).json({ ok: false, error: 'Falta el usuario (email)' })
-      await guardarConfig(cfg)
-      const { pass, ...sinClave } = cfg
-      return res.json({ ok: true, config: sinClave, tieneClave: Boolean(pass) })
+      if (b.principal) {
+        if (!datos.casillas.some(c => c.id === b.principal)) return res.status(404).json({ ok: false })
+        datos.principal = b.principal
+      } else {
+        const anterior = datos.casillas.find(c => c.id === b.id)
+        const cfg = limpia(b, anterior)
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cfg.user)) return res.status(400).json({ ok: false, error: 'La casilla debe ser un email' })
+        if (!anterior && datos.casillas.some(c => c.user === cfg.user)) return res.status(409).json({ ok: false, error: 'Esa casilla ya está agregada' })
+        datos.casillas = anterior ? datos.casillas.map(c => c.id === cfg.id ? cfg : c) : [...datos.casillas, cfg]
+        if (!datos.principal) datos.principal = cfg.id
+      }
+      await guardarCasillas(datos)
+      return responder()
+    }
+
+    if (req.method === 'DELETE') {
+      const id = String(req.query.id || '')
+      datos.casillas = datos.casillas.filter(c => c.id !== id)
+      if (datos.principal === id) datos.principal = datos.casillas[0]?.id || ''
+      await guardarCasillas(datos)
+      return responder()
     }
 
     res.status(405).end()
