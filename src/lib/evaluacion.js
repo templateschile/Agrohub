@@ -5,12 +5,54 @@
 export const NO_SE = "No sé"
 
 // ── Paso 1: estado actual ────────────────────────────────────────
+// Orden: palto, arándano, tomate y limonero primero; luego por relevancia en el mercado chileno
 export const CULTIVOS = [
-  "Tomate industrial", "Hortalizas", "Frutales de carozo", "Frutales de pepita",
-  "Cerezos", "Nogales y almendros", "Berries", "Vides / Viñas",
-  "Cítricos y paltos", "Remolacha", "Cereales y granos", "Semilleros",
-  "Praderas y forrajes", "Flores / Viveros",
+  "Palto", "Arándano", "Tomate", "Limonero",
+  "Cerezo", "Uva de mesa", "Vid vinífera", "Nogal", "Manzano", "Avellano europeo",
+  "Ciruelo", "Kiwi", "Mandarino y naranjo", "Olivo", "Almendro", "Peral",
+  "Frambuesa y frutilla", "Hortalizas", "Papa", "Maíz", "Trigo y cereales",
+  "Remolacha", "Semilleros", "Praderas y forrajes", "Flores / Viveros",
 ]
+
+export const FORMAS_FERTILIZACION = [
+  "Fertirriego por goteo", "Al voleo manual", "Abonadora / trompo con tractor",
+  "Localizado al trasplante o siembra", "Foliar con pulverizador", "Dron",
+  "Aplicación aérea (avión / helicóptero)", "Enmiendas orgánicas (guano, compost)", NO_SE,
+]
+
+export const FORMAS_APLICACION = [
+  "Pulverizador de barra", "Nebulizador / turbonebulizador", "Bomba de espalda",
+  "Dron", "Aplicación aérea", "Por el riego (quimigación)", NO_SE,
+]
+
+export const ANALISIS = ["Suelo", "Foliar", "Agua de riego", "Solución de fertirriego", "Fruto / calidad de cosecha", "Ninguno", NO_SE]
+
+// ── Tomate: preguntas que aparecen solo si se marca el cultivo ────
+export const TOMATE_TIPOS = ["Industrial (pasta / concentrado)", "Consumo fresco al aire libre", "Invernadero"]
+
+export const TOMATE_ESTABLECIMIENTO = [
+  { id: "trasplante", label: "Trasplante de almácigo" },
+  { id: "siembra",    label: "Siembra directa" },
+  { id: "ambos",      label: "Ambos" },
+  { id: "nose",       label: NO_SE },
+]
+
+export const TOMATE_COSECHA = [
+  { id: "mecanizada", label: "Mecanizada" },
+  { id: "manual",     label: "Manual" },
+  { id: "ambas",      label: "Ambas" },
+  { id: "nose",       label: NO_SE },
+]
+
+export const TOMATE_PROBLEMAS = [
+  "Polilla del tomate (Tuta absoluta)", "Gusano del fruto (Helicoverpa)", "Mosquita blanca",
+  "Nematodos", "Tizón tardío (Phytophthora)", "Tizón temprano (Alternaria)", "Oídio",
+  "Cancro bacteriano (Clavibacter)", "Peca / mancha bacteriana", "Virosis",
+  "Pudrición apical", "Golpe de sol", "Partidura de fruto", "Madurez dispareja a cosecha",
+  "Bajo °Brix en recepción", "Malezas (correhuela, chufa)", NO_SE,
+]
+
+export const TOMATE_RECEPCION = ["°Brix", "Color", "pH", "Defectos y daño", "Mohos", "Descuentos / rechazos por carga", NO_SE]
 
 export const MODELOS_PRODUCTIVOS = [
   { id: "propio",   label: "Solo campos propios",        desc: "Producimos toda la superficie con equipo propio" },
@@ -130,9 +172,12 @@ export const ETAPAS = [
 // Los numeros usan null para "No sé"
 export const estadoInicial = {
   // Paso 1
-  cultivos: [], otroCultivo: "", hectareas: 100, zonas: 1,
-  modelo: "propio", haPropias: 50, productores: 10, apoyos: [],
+  cultivos: [], otroCultivo: "", hectareas: 5000, zonas: 1,
+  modelo: "propio", haPropias: 2000, productores: 10, apoyos: [],
+  tomateTipos: [], tomateEstablecimiento: "", tomateDensidad: 30000, tomateCosecha: "",
+  tomateVariedad: "", tomateProblemas: [], tomateRecepcion: [],
   riegos: [], registros: [],
+  productos: [], fertilizacion: [], aplicacion: [], analisis: [],
   tieneSensores: "", marcas: [], otraMarca: "", cantidadSensores: 5, variables: [],
   verData: [], quienRevisa: "", conectividad: "",
   // Paso 2
@@ -145,6 +190,8 @@ export const estadoInicial = {
 // ── Helpers ──────────────────────────────────────────────────────
 export const listaCultivos = r => [...(r.cultivos || []), ...(r.otroCultivo?.trim() ? [r.otroCultivo.trim()] : [])]
 export const listaMarcas = r => [...(r.marcas || []), ...(r.otraMarca?.trim() ? [r.otraMarca.trim()] : [])]
+export const cultivaTomate = r => (r.cultivos || []).includes("Tomate")
+export const tomateIndustrial = r => cultivaTomate(r) && (r.tomateTipos || []).includes(TOMATE_TIPOS[0])
 export const conAsociados = r => r.modelo === "asociado" || r.modelo === "mixto"
 export const haAsociadas = r => r.modelo === "asociado" ? r.hectareas : Math.max(0, (r.hectareas || 0) - (r.haPropias || 0))
 export const modeloLabel = r => MODELOS_PRODUCTIVOS.find(m => m.id === r.modelo)?.label || ""
@@ -168,7 +215,20 @@ export function resumenRespuestas(r) {
     add("Productores asociados", fmt(r.productores))
     add("Apoyo a productores", lista(r.apoyos))
   }
+  if (cultivaTomate(r)) {
+    add("Tomate · tipo", lista(r.tomateTipos))
+    add("Tomate · establecimiento", etiqueta(TOMATE_ESTABLECIMIENTO, r.tomateEstablecimiento))
+    add("Tomate · densidad (plantas/ha)", fmt(r.tomateDensidad))
+    add("Tomate · cosecha", etiqueta(TOMATE_COSECHA, r.tomateCosecha))
+    add("Tomate · híbrido/variedad", r.tomateVariedad?.trim())
+    add("Tomate · problemas", lista(r.tomateProblemas))
+    if (tomateIndustrial(r)) add("Tomate · qué castiga la planta en recepción", lista(r.tomateRecepcion))
+  }
   add("Riego", lista(r.riegos))
+  add("Cómo fertiliza", lista(r.fertilizacion))
+  add("Cómo aplica fitosanitarios", lista(r.aplicacion))
+  add("Análisis que realiza", lista(r.analisis))
+  add("Productos que usa", lista(r.productos))
   add("Registros actuales", lista(r.registros))
   add("¿Tiene sensores?", siNo(r.tieneSensores))
   if (r.tieneSensores === "si") {
@@ -205,7 +265,17 @@ export function puntosNoSabe(r) {
   if (r.hectareas == null) p.push("Superficie total")
   if (r.zonas == null) p.push("Número de zonas o predios")
   if (conAsociados(r) && r.productores == null) p.push("Número de productores asociados")
+  if (cultivaTomate(r)) {
+    if (r.tomateEstablecimiento === "nose") p.push("Tomate: sistema de establecimiento")
+    if (r.tomateDensidad == null) p.push("Tomate: densidad de plantación")
+    if (r.tomateCosecha === "nose") p.push("Tomate: sistema de cosecha")
+    noSeEn(r.tomateProblemas, "Tomate: principales problemas sanitarios y de calidad")
+    if (tomateIndustrial(r)) noSeEn(r.tomateRecepcion, "Tomate: parámetros de castigo en recepción")
+  }
   noSeEn(r.riegos, "Tipo de riego")
+  noSeEn(r.fertilizacion, "Forma de fertilización")
+  noSeEn(r.aplicacion, "Forma de aplicación de fitosanitarios")
+  noSeEn(r.analisis, "Análisis de suelo, foliar y agua")
   noSeEn(r.registros, "Cómo se registran las labores")
   if (r.tieneSensores === "nose") p.push("Si existen sensores instalados")
   if (r.tieneSensores === "si") {
@@ -237,6 +307,7 @@ export function puntosNoSabe(r) {
 export function avance(r) {
   const hechas = [
     listaCultivos(r).length > 0, r.riegos.length > 0, r.registros.length > 0,
+    r.fertilizacion.length > 0, r.productos.length > 0,
     Boolean(r.tieneSensores), Boolean(r.conectividad),
     r.prioridades.length > 0, Boolean(r.masSensores), r.comoVer.length > 0, Boolean(r.plazo),
     Object.keys(r.modulos).length >= 3, Boolean(r.licencia),
@@ -244,8 +315,52 @@ export function avance(r) {
   return Math.round(100 * hechas.filter(Boolean).length / hechas.length)
 }
 
-const CULTIVOS_AGROINDUSTRIA = ["Tomate industrial", "Remolacha", "Semilleros"]
-const CULTIVOS_FRUTALES = ["Frutales de carozo", "Frutales de pepita", "Cerezos", "Nogales y almendros", "Berries", "Vides / Viñas", "Cítricos y paltos"]
+const CULTIVOS_AGROINDUSTRIA = ["Remolacha", "Semilleros"]
+const CULTIVOS_FRUTALES = ["Uva de mesa", "Vid vinífera", "Nogal", "Manzano", "Avellano europeo", "Ciruelo", "Kiwi", "Mandarino y naranjo", "Olivo", "Almendro", "Peral"]
+
+// Recomendaciones especificas por especie (orden = orden de aparicion)
+const INSIGHT_CULTIVO = {
+  "Palto": "El palto es muy sensible a la asfixia radicular y a la salinidad: sondas a dos profundidades muestran si el agua se queda en la zona de raíces o se pierde por percolación.",
+  "Arándano": "En arándano mandan el pH y la conductividad del agua y del bulbo mojado: monitorearlos evita bloqueos de hierro y manganeso, sobre todo en maceta o sustrato.",
+  "Limonero": "En limonero, el estrés hídrico controlado y las alertas de helada en invierno marcan la diferencia en floración y calibre.",
+  "Cerezo": "En cerezo, el riesgo está en heladas de floración y lluvias cerca de cosecha (partidura): alertas con horas de anticipación permiten activar control o cubiertas a tiempo.",
+}
+
+// Recomendaciones de tomate: se activan segun el detalle que entrega el usuario
+function insightsTomate(r) {
+  const out = []
+  const industrial = tomateIndustrial(r)
+  if (industrial) {
+    out.push({ titulo: "Tomate industrial: °Brix sin perder kilos",
+      texto: "El corte de riego antes de cosecha sube el °Brix, pero hecho a ciegas castiga el rendimiento. Con humedad de suelo por cuartel se decide cuándo y cuánto cortar en cada campo." })
+    out.push({ titulo: "Fecha de cosecha y entrega a planta",
+      texto: "Los grados-día acumulados desde el trasplante permiten estimar la cosecha de cada cuartel y escalonar las entregas según la capacidad diaria de la planta." })
+  }
+  if (r.tomateCosecha === "mecanizada" || r.tomateCosecha === "ambas") {
+    out.push({ titulo: "Cosecha mecanizada",
+      texto: "La cosecha única exige madurez concentrada: el seguimiento del % de fruto rojo y sobremaduro por cuartel define el día óptimo de entrada de la cosechadora." })
+  }
+  const pb = r.tomateProblemas || []
+  if (pb.includes("Polilla del tomate (Tuta absoluta)")) {
+    out.push({ titulo: "Tuta absoluta", texto: "Trampas de feromona registradas en la app por cuartel permiten aplicar solo sobre el umbral y rotar modos de acción para no generar resistencia." })
+  }
+  if (pb.includes("Tizón tardío (Phytophthora)")) {
+    out.push({ titulo: "Tizón tardío", texto: "Con humedad relativa y temperatura de estaciones locales se calculan las horas de riesgo y se adelanta la aplicación preventiva antes de la infección." })
+  }
+  if (pb.includes("Pudrición apical")) {
+    out.push({ titulo: "Pudrición apical", texto: "Suele estar más ligada a riegos irregulares y al transporte de calcio que a falta de calcio en el suelo: la humedad de suelo constante es parte de la solución." })
+  }
+  if (pb.includes("Bajo °Brix en recepción") || (industrial && (r.tomateRecepcion || []).length)) {
+    out.push({ titulo: "Del potrero a la romana", texto: "Cruzar el °Brix, el color y los descuentos de cada carga con el riego y la fertilización de su cuartel muestra qué manejo paga y cuál no." })
+  }
+  if ((r.tomateTipos || []).includes("Invernadero")) {
+    out.push({ titulo: "Tomate en invernadero", texto: "Temperatura, humedad y déficit de presión de vapor (DPV) al interior definen cuaja y enfermedades: el monitoreo continuo guía la ventilación y el riego." })
+  }
+  if (!out.length) {
+    out.push({ titulo: "Tomate", texto: "Cuéntanos tipo de tomate, cosecha y problemas principales: con eso ajustamos riego, nutrición y alertas a tu ciclo." })
+  }
+  return out
+}
 
 const INSIGHT_PRIORIDAD = {
   "Rendimiento (t/ha)":                  "Comparamos sectores y campos para encontrar dónde se pierde rendimiento y por qué.",
@@ -268,12 +383,23 @@ export function insights(r) {
     out.push({ titulo: "Tu red de productores",
       texto: `Con ${plural(r.productores, "productor", "productores")} asociados, AgroHub centraliza el seguimiento de cada campo y lo que se les entrega, con tu equipo técnico como extensionistas.` })
   }
+  if (cultivaTomate(r)) out.push(...insightsTomate(r))
+  Object.entries(INSIGHT_CULTIVO).forEach(([c, texto]) => cultivos.includes(c) && out.push({ titulo: c, texto }))
   if (cultivos.some(c => CULTIVOS_AGROINDUSTRIA.includes(c))) {
     out.push({ titulo: "Del campo a la planta",
-      texto: "En cultivos para agroindustria, conectar las prácticas de cada campo con lo que se mide en recepción (Brix, pH, rechazos) muestra qué manejo da mejores resultados." })
+      texto: "En cultivos para agroindustria, conectar las prácticas de cada campo con lo que se mide en recepción muestra qué manejo da mejores resultados." })
   }
   if (cultivos.some(c => CULTIVOS_FRUTALES.includes(c))) {
     out.push({ titulo: "Frutales", texto: "Estaciones y sensores permiten anticipar heladas y ajustar el riego por sector durante la temporada." })
+  }
+  if (r.fertilizacion.includes("Dron") || r.aplicacion.includes("Dron")) {
+    out.push({ titulo: "Aplicaciones con dron", texto: "Registramos cada vuelo con su polígono, dosis y producto: queda la trazabilidad por cuartel sin papeleo extra." })
+  }
+  if (r.fertilizacion.includes("Fertirriego por goteo") && !r.analisis.includes("Solución de fertirriego")) {
+    out.push({ titulo: "Fertirriego", texto: "Medir la conductividad y el pH de la solución que sale por el gotero es la forma más barata de confirmar que la dosis programada llega a la planta." })
+  }
+  if (r.analisis.includes("Ninguno")) {
+    out.push({ titulo: "Análisis", texto: "Un análisis de suelo y agua al inicio es la línea base para medir después el efecto de cada cambio." })
   }
   if (r.riegos.some(x => x === "Goteo" || x === "Microaspersión")) {
     out.push({ titulo: "Riego tecnificado", texto: "Ya tienes la base: con sondas de humedad de suelo se decide cuándo y cuánto regar con datos, sector por sector." })

@@ -1,6 +1,6 @@
 // Genera el borrador editable de la "Propuesta de Diagnóstico Previo" a partir de un lead.
 // Los textos entre [corchetes] resaltados son para completar en el admin.
-import { ETAPAS, LICENCIAS, NO_SE, listaCultivos, listaMarcas, conAsociados, haAsociadas, modeloLabel, modulosPorInteres, puntosNoSabe } from "./evaluacion"
+import { ETAPAS, LICENCIAS, NO_SE, TOMATE_ESTABLECIMIENTO, TOMATE_COSECHA, cultivaTomate, tomateIndustrial, listaCultivos, listaMarcas, conAsociados, haAsociadas, modeloLabel, modulosPorInteres, puntosNoSabe } from "./evaluacion"
 
 const esc = s => String(s ?? "")
   .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
@@ -19,6 +19,7 @@ export function generarPropuesta(lead) {
 
   let situacion = `<li>${completar("antecedentes de la operación")}</li>`
   let sensores = ""
+  let tomate = ""
   let objetivos = `<li>${completar("objetivos acordados con el cliente")}</li>`
   let modulosSi = [], modulosNoSe = [], noSabe = []
   let licencia = ""
@@ -30,9 +31,25 @@ export function generarPropuesta(lead) {
       item("Modelo productivo", `${modeloLabel(r)}${r.modelo === "mixto" ? ` (${fmt(r.haPropias)} ha propias y ${fmt(haAsociadas(r))} ha con productores)` : ""}`),
       asociados ? item("Productores asociados", `${fmt(r.productores)}${r.apoyos?.length ? `, a quienes se entrega: ${r.apoyos.join(", ").toLowerCase()}` : ""}`) : "",
       item("Riego", lista(r.riegos)),
+      item("Fertilización", lista(r.fertilizacion)),
+      item("Aplicación de fitosanitarios", lista(r.aplicacion)),
+      item("Análisis que realiza", lista(r.analisis)),
+      item("Productos que utiliza", lista(r.productos)),
       item("Registro actual de labores", lista(r.registros)),
       item("Conectividad en campo", { buena: "buena en todo el campo", parcial: "solo en algunos sectores", sin: "sin señal en el campo", nose: NO_SE }[r.conectividad]),
     ].join("")
+
+    if (cultivaTomate(r)) {
+      tomate = [
+        item("Tipo", lista(r.tomateTipos)),
+        item("Establecimiento", TOMATE_ESTABLECIMIENTO.find(x => x.id === r.tomateEstablecimiento)?.label),
+        item("Densidad", r.tomateDensidad == null ? NO_SE : `${fmt(r.tomateDensidad)} plantas/ha`),
+        item("Cosecha", TOMATE_COSECHA.find(x => x.id === r.tomateCosecha)?.label),
+        item("Híbrido / variedad", r.tomateVariedad?.trim()),
+        item("Problemas principales", lista(r.tomateProblemas)),
+        tomateIndustrial(r) ? item("Descuentos en recepción", lista(r.tomateRecepcion)) : "",
+      ].join("")
+    }
 
     if (r.tieneSensores === "si") {
       sensores = [
@@ -72,6 +89,7 @@ export function generarPropuesta(lead) {
 <h2>1. Situación actual</h2>
 <p>Según la información entregada en la evaluación AgroHub:</p>
 <ul>${situacion}</ul>
+${tomate ? `<p><b>Cultivo de tomate:</b></p><ul>${tomate}</ul>` : ""}
 ${sensores ? `<p><b>Sensores y datos:</b></p><ul>${sensores}</ul>` : ""}
 ${lead.mensaje ? `<p><b>Comentario del cliente:</b> ${esc(lead.mensaje)}</p>` : ""}
 
