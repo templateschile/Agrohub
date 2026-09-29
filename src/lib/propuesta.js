@@ -121,7 +121,7 @@ ${modulosTal.length ? `<p><b>Módulos a evaluar en conjunto:</b> ${esc(modulosTa
 <p>Se incluye una visita a terreno de ${completar("N° de días")} a ${zonas.length ? esc(zonas.map(z => z.nombre).join(", ")) : completar("zonas / predios a visitar")}, con:</p>
 <ul>
   <li>Marcos Contreras — Agricultura digital y transferencia tecnológica</li>
-  <li>Cristián Betteley — ${completar("rol")}</li>
+  <li>Cristián Betteley — Tech Lead · Plataforma y Datos</li>
   <li>${completar("especialista adicional, ej. riego / sensores")}</li>
 </ul>
 <p>Durante la visita se realizará:</p>
