@@ -1,14 +1,19 @@
 import { useState } from "react"
 import { Check, ClipboardCheck, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Info, Lightbulb, ShieldCheck, Clock, Send, CheckCircle, ArrowRight } from "lucide-react"
 import { enviarLead, emailValido } from "../lib/lead"
+import { PRODUCTOS_AGRO } from "../lib/productosAgro"
+import MultiSelectBusqueda from "../components/MultiSelectBusqueda"
 import {
   NO_SE, CULTIVOS, MODELOS_PRODUCTIVOS, APOYOS_PRODUCTORES, TIPOS_RIEGO, REGISTROS, SI_NO,
+  FORMAS_FERTILIZACION, FORMAS_APLICACION, ANALISIS,
+  TOMATE_TIPOS, TOMATE_ESTABLECIMIENTO, TOMATE_COSECHA, TOMATE_PROBLEMAS, TOMATE_RECEPCION, cultivaTomate, tomateIndustrial,
   MARCAS_SENSORES, VARIABLES_SENSORES, VER_DATA, QUIEN_REVISA, CONECTIVIDAD,
   PRIORIDADES, COMO_QUIERE_VER, PLAZOS, INTERES, MODULOS, MODOS_IA, FUENTES, LICENCIAS, ETAPAS,
   estadoInicial, conAsociados, haAsociadas, resumenRespuestas, puntosNoSabe, avance, insights,
 } from "../lib/evaluacion"
 
 const MAX_PRIORIDADES = 3
+const CULTIVOS_VISIBLES = 8
 const MARCAS = [...MARCAS_SENSORES, "No sé la marca"]
 const PASOS = [
   { titulo: "Estado actual", desc: "Qué tienes hoy" },
@@ -129,6 +134,7 @@ export default function Evaluacion() {
   const [r, setR] = useState(estadoInicial)
   const [contacto, setContacto] = useState({ nombre: "", empresa: "", cargo: "", email: "", telefono: "", mensaje: "", website: "" })
   const [verMarcas, setVerMarcas] = useState(false)
+  const [verCultivos, setVerCultivos] = useState(false)
   const [estado, setEstado] = useState("editando")
 
   const set = k => v => setR(prev => ({ ...prev, [k]: v }))
@@ -235,17 +241,56 @@ export default function Evaluacion() {
               {paso === 0 && <>
                 <Bloque titulo="Tu cultivo y superficie">
                   <Pregunta label="Elige tu tipo de cultivo (puedes marcar varios)">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                      {CULTIVOS.map(c => <Chip key={c} activo={r.cultivos.includes(c)} onClick={() => toggle("cultivos")(c)}>{c}</Chip>)}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {CULTIVOS.filter((c, i) => verCultivos || i < CULTIVOS_VISIBLES || r.cultivos.includes(c)).map(c => (
+                        <Chip key={c} activo={r.cultivos.includes(c)} onClick={() => toggle("cultivos")(c)}>{c}</Chip>
+                      ))}
                     </div>
+                    <button type="button" onClick={() => setVerCultivos(v => !v)} className="flex items-center gap-1 text-xs text-agro-green-600 font-semibold mt-2">
+                      {verCultivos ? "Ver menos" : `Ver los ${CULTIVOS.length} cultivos`} {verCultivos ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+                    </button>
                     <input type="text" value={r.otroCultivo} onChange={e => set("otroCultivo")(e.target.value)}
-                      placeholder="Otro cultivo (ej: quínoa, lúpulo, olivos)" className={`${inputCls} mt-3`} />
+                      placeholder="Otro cultivo (ej: quínoa, lúpulo, pistacho)" className={`${inputCls} mt-3`} />
                   </Pregunta>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <Pregunta label="Hectáreas totales"><Contador val={r.hectareas} set={set("hectareas")} /></Pregunta>
                     <Pregunta label="Zonas o predios" tooltip="Zonas productivas o predios separados geográficamente."><Contador val={r.zonas} set={set("zonas")} min={1} /></Pregunta>
                   </div>
                 </Bloque>
+
+                {cultivaTomate(r) && (
+                  <Bloque titulo="Tu tomate" ayuda="Unas preguntas específicas para entender tu ciclo de tomate.">
+                    <Pregunta label="¿Qué tipo de tomate produces?">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        {TOMATE_TIPOS.map(x => <Chip key={x} activo={r.tomateTipos.includes(x)} onClick={() => toggle("tomateTipos")(x)}>{x}</Chip>)}
+                      </div>
+                    </Pregunta>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <Pregunta label="Establecimiento"><Opciones opciones={TOMATE_ESTABLECIMIENTO} valor={r.tomateEstablecimiento} set={set("tomateEstablecimiento")} /></Pregunta>
+                      <Pregunta label="Cosecha"><Opciones opciones={TOMATE_COSECHA} valor={r.tomateCosecha} set={set("tomateCosecha")} /></Pregunta>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <Pregunta label="Densidad de plantación (plantas/ha)" tooltip="Aproximada. Si varía entre campos, pon la más común.">
+                        <Contador val={r.tomateDensidad} set={set("tomateDensidad")} />
+                      </Pregunta>
+                      <Pregunta label="Híbrido o variedad principal">
+                        <input type="text" value={r.tomateVariedad} onChange={e => set("tomateVariedad")(e.target.value)} placeholder="Ej: H3402, H1015" className={inputCls} />
+                      </Pregunta>
+                    </div>
+                    <Pregunta label="¿Qué problemas te han costado más en las últimas temporadas?">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {TOMATE_PROBLEMAS.map(x => <Chip key={x} activo={r.tomateProblemas.includes(x)} onClick={() => toggle("tomateProblemas")(x)}>{x}</Chip>)}
+                      </div>
+                    </Pregunta>
+                    {tomateIndustrial(r) && (
+                      <Pregunta label="En la recepción de la planta, ¿qué te genera más descuentos?">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                          {TOMATE_RECEPCION.map(x => <Chip key={x} activo={r.tomateRecepcion.includes(x)} onClick={() => toggle("tomateRecepcion")(x)}>{x}</Chip>)}
+                        </div>
+                      </Pregunta>
+                    )}
+                  </Bloque>
+                )}
 
                 <Bloque titulo="Modelo productivo">
                   <div className="flex flex-col gap-3">
@@ -269,10 +314,29 @@ export default function Evaluacion() {
                   </>}
                 </Bloque>
 
-                <Bloque titulo="Riego y registros">
+                <Bloque titulo="Manejo del cultivo">
                   <Pregunta label="¿Cómo riegas?">
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {TIPOS_RIEGO.map(x => <Chip key={x} activo={r.riegos.includes(x)} onClick={() => toggle("riegos")(x)}>{x}</Chip>)}
+                    </div>
+                  </Pregunta>
+                  <Pregunta label="¿Cómo fertilizas?">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      {FORMAS_FERTILIZACION.map(x => <Chip key={x} activo={r.fertilizacion.includes(x)} onClick={() => toggle("fertilizacion")(x)}>{x}</Chip>)}
+                    </div>
+                  </Pregunta>
+                  <Pregunta label="¿Cómo aplicas fitosanitarios?">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {FORMAS_APLICACION.map(x => <Chip key={x} activo={r.aplicacion.includes(x)} onClick={() => toggle("aplicacion")(x)}>{x}</Chip>)}
+                    </div>
+                  </Pregunta>
+                  <Pregunta label="¿Qué productos usas?" tooltip="Fertilizantes, enmiendas y fitosanitarios por ingrediente activo. Si no está en la lista, escríbelo y agrégalo.">
+                    <MultiSelectBusqueda grupos={PRODUCTOS_AGRO} valor={r.productos} onChange={set("productos")}
+                      placeholder="Busca por nombre o tipo: urea, nitrato, mancozeb, herbicida..." />
+                  </Pregunta>
+                  <Pregunta label="¿Qué análisis haces durante la temporada?">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {ANALISIS.map(x => <Chip key={x} activo={r.analisis.includes(x)} onClick={() => toggle("analisis")(x)}>{x}</Chip>)}
                     </div>
                   </Pregunta>
                   <Pregunta label="¿Cómo registran hoy las labores y datos de campo?">
