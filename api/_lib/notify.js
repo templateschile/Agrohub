@@ -1,4 +1,4 @@
-import { transporte, remitente, smtpConfigurado } from './mail.js'
+import { transporte, remitente, smtpConfigurado, configCorreo } from './mail.js'
 export { escapar } from './mail.js'
 
 const lista = v => (v || '').split(',').map(s => s.trim()).filter(Boolean)
@@ -11,14 +11,15 @@ export async function notificar({ asunto, html, texto }) {
   const errors = []
   const results = {}
 
-  if (!smtpConfigurado()) {
-    errors.push('email: faltan variables SMTP_USER / SMTP_PASS')
+  const cfg = await configCorreo()
+  if (!smtpConfigurado(cfg)) {
+    errors.push('email: falta configurar la casilla (admin > Cuentas > Correo del sitio)')
   } else {
     try {
       const to = lista(process.env.NOTIFY_TO)
-      await transporte().sendMail({
-        from:    remitente(),
-        to:      to.length ? to : process.env.SMTP_USER,
+      await transporte(cfg).sendMail({
+        from:    remitente(cfg),
+        to:      to.length ? to : cfg.user,
         bcc:     lista(process.env.NOTIFY_BCC),
         subject: asunto,
         html,
