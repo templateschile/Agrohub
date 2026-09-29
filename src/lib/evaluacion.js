@@ -29,7 +29,7 @@ export const PRIORIDADES = [
 
 export const REGISTROS = ["WhatsApp", "Planillas Excel", "Cuaderno de campo", "Software / ERP agrícola", "No llevamos registros"]
 
-export const SENSOR_DESTACADO = "HSTI (Francia)"
+export const SENSOR_DESTACADO = "HSTI"
 
 export const SENSORES = [
   SENSOR_DESTACADO, "WiseConn / DropControl", "CropX", "METER Group / ZENTRA Cloud", "Sencrop",
