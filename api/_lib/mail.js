@@ -31,7 +31,7 @@ export const imapConfig = () => ({
 const SITIO = process.env.SITE_URL || 'https://www.agrohubs.cl'
 export const FIRMAS = {
   marcos:   { nombre: 'Marcos Contreras',  cargo: 'Agricultura Digital y Transferencia Tecnológica', email: 'marcos@agrohubs.cl',   whatsapp: '56963731824' },
-  cristian: { nombre: 'Cristián Betteley', cargo: 'AgroHub',                                        email: 'cristian@agrohubs.cl', whatsapp: '' },
+  cristian: { nombre: 'Cristián Betteley', cargo: 'Tech Lead · Plataforma y Datos',                 email: 'cristian@agrohubs.cl', whatsapp: '56987561075' },
 }
 
 const whatsappVisible = n => `+${n.slice(0, 2)} ${n.slice(2, 3)} ${n.slice(3, 7)} ${n.slice(7)}`
