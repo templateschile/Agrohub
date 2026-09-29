@@ -12,34 +12,44 @@ const CLAVE_CONFIG = 'config:correo'
 
 // Valores por defecto: mismo servidor Namecheap que compararepuestos.cl (el certificado es
 // *.web-hosting.com, por eso no se usa mail.agrohubs.cl como host)
-export const CORREO_POR_DEFECTO = {
-  host: 'premium224.web-hosting.com', port: 465, imapPort: 993,
-  user: 'cristian@agrohubs.cl', from: 'AgroHub <cristian@agrohubs.cl>',
-}
+export const SERVIDOR_POR_DEFECTO = { host: 'premium224.web-hosting.com', port: 465, imapPort: 993 }
 
-export async function leerConfigGuardada() {
-  if (!storeConfigurado() || !cifradoConfigurado()) return null
+// Casillas guardadas: { casillas: [{ id, user, from, pass, firma, host, port, imapPort }], principal }
+// La principal envia los avisos automaticos y el agradecimiento al cliente.
+export async function leerCasillas() {
+  const vacio = { casillas: [], principal: '' }
+  if (!storeConfigurado() || !cifradoConfigurado()) return vacio
   const raw = await redis(['GET', CLAVE_CONFIG]).catch(() => null)
-  if (!raw) return null
-  try { return JSON.parse(descifrar(raw)) } catch { return null }
+  if (!raw) return vacio
+  let d
+  try { d = JSON.parse(descifrar(raw)) } catch { return vacio }
+  // Formato anterior: una sola casilla en la raiz
+  if (d.user && !d.casillas) return { casillas: [{ id: 'c1', firma: 'cristian', ...d }], principal: 'c1' }
+  return { casillas: d.casillas || [], principal: d.principal || d.casillas?.[0]?.id || '' }
 }
 
-export async function guardarConfig(cfg) {
-  await redis(['SET', CLAVE_CONFIG, cifrar(JSON.stringify(cfg))])
+export async function guardarCasillas(datos) {
+  await redis(['SET', CLAVE_CONFIG, cifrar(JSON.stringify(datos))])
 }
 
-export async function configCorreo() {
-  const g = await leerConfigGuardada()
-  if (g?.user && g?.pass) return { ...g, origen: 'admin' }
-  return {
-    host: process.env.SMTP_HOST || CORREO_POR_DEFECTO.host,
-    port: Number(process.env.SMTP_PORT) || 465,
-    imapPort: Number(process.env.IMAP_PORT) || 993,
-    user: process.env.SMTP_USER || '',
-    pass: process.env.SMTP_PASS || '',
-    from: process.env.SMTP_FROM || process.env.SMTP_USER || '',
-    origen: 'vercel',
-  }
+const desdeVercel = () => ({
+  id: 'vercel',
+  host: process.env.SMTP_HOST || SERVIDOR_POR_DEFECTO.host,
+  port: Number(process.env.SMTP_PORT) || 465,
+  imapPort: Number(process.env.IMAP_PORT) || 993,
+  user: process.env.SMTP_USER || '',
+  pass: process.env.SMTP_PASS || '',
+  from: process.env.SMTP_FROM || process.env.SMTP_USER || '',
+  firma: 'marcos',
+  origen: 'vercel',
+})
+
+// Casilla pedida por id; sin id, la principal. Si no hay ninguna con clave, se usa Vercel.
+export async function configCorreo(id) {
+  const { casillas, principal } = await leerCasillas()
+  const conClave = casillas.filter(c => c.user && c.pass)
+  const c = conClave.find(x => x.id === id) || conClave.find(x => x.id === principal) || conClave[0]
+  return c ? { ...SERVIDOR_POR_DEFECTO, ...c, origen: 'admin' } : desdeVercel()
 }
 
 export const smtpConfigurado = cfg => Boolean(cfg?.user && cfg?.pass)
@@ -66,6 +76,7 @@ const SITIO = process.env.SITE_URL || 'https://www.agrohubs.cl'
 export const FIRMAS = {
   marcos:   { nombre: 'Marcos Contreras',  cargo: 'Agricultura Digital y Transferencia Tecnológica', email: 'marcos@agrohubs.cl',   whatsapp: '56963731824' },
   cristian: { nombre: 'Cristián Betteley', cargo: 'Tech Lead · Plataforma y Datos',                 email: 'cristian@agrohubs.cl', whatsapp: '56987561075' },
+  equipo:   { nombre: 'Equipo AgroHub',    cargo: 'Cotizaciones',                                   email: 'cotizaciones@agrohubs.cl', whatsapp: '' },
 }
 
 const whatsappVisible = n => `+${n.slice(0, 2)} ${n.slice(2, 3)} ${n.slice(3, 7)} ${n.slice(7)}`

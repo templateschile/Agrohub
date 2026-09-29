@@ -2,7 +2,7 @@ import { ImapFlow } from 'imapflow'
 import { simpleParser } from 'mailparser'
 import MailComposer from 'nodemailer/lib/mail-composer/index.js'
 import { autorizar } from './_lib/auth.js'
-import { transporte, remitente, imapConfig, smtpConfigurado, configCorreo, firmaHtml, escapar } from './_lib/mail.js'
+import { transporte, remitente, imapConfig, smtpConfigurado, configCorreo, firmaHtml, escapar, FIRMAS } from './_lib/mail.js'
 
 const LIMITE = 40
 
@@ -93,8 +93,8 @@ async function enviar(cfg, { para, cc, asunto, cuerpo, firma, responderA, refere
 
 export default async function handler(req, res) {
   if (!(await autorizar(req, res))) return
-  const cfg = await configCorreo()
-  if (!smtpConfigurado(cfg)) return res.status(503).json({ ok: false, error: 'Falta configurar la casilla en Cuentas > Correo del sitio' })
+  const cfg = await configCorreo(String(req.query.casilla || req.body?.casilla || ''))
+  if (!smtpConfigurado(cfg)) return res.status(503).json({ ok: false, error: 'Falta configurar una casilla en Cuentas > Casillas de correo' })
 
   try {
     if (req.method === 'GET') {
@@ -107,7 +107,7 @@ export default async function handler(req, res) {
         const mensaje = await leer(cfg, carpeta, Number(req.query.uid))
         return mensaje ? res.json({ ok: true, mensaje }) : res.status(404).json({ ok: false })
       }
-      return res.json({ ok: true, mensajes: await listar(cfg, carpeta), casilla: cfg.user })
+      return res.json({ ok: true, mensajes: await listar(cfg, carpeta), casilla: cfg.user, casillaId: cfg.id })
     }
 
     if (req.method === 'POST') {
@@ -118,7 +118,8 @@ export default async function handler(req, res) {
         para, cc: String(b.cc || '').trim(),
         asunto: String(b.asunto).slice(0, 300),
         cuerpo: String(b.cuerpo || '').slice(0, 50000),
-        firma: ['marcos', 'cristian'].includes(b.firma) ? b.firma : '',
+        // Sin firma elegida se usa la de la casilla; "" = sin firma
+        firma: b.firma === undefined ? cfg.firma : FIRMAS[b.firma] ? b.firma : '',
         responderA: b.responderA || '', referencias: Array.isArray(b.referencias) ? b.referencias.slice(0, 20) : [],
       })
       return res.json({ ok: true, messageId: id })

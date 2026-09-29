@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Plus, Eye, EyeOff, Copy, Trash2, Save, ExternalLink, KeyRound, Search, X, Mail, PlugZap, ChevronDown, ChevronUp } from "lucide-react"
-import { adminApi } from "../../lib/adminApi"
+import { adminApi, FIRMAS_OPCIONES } from "../../lib/adminApi"
 
 const inputCls = "w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400"
 const VACIA = { servicio: "", url: "", usuario: "", clave: "", notas: "" }
@@ -73,26 +73,24 @@ function Tarjeta({ c, onEditar, onBorrar, aviso }) {
   )
 }
 
-const CASILLAS = ["cristian@agrohubs.cl", "marcos@agrohubs.cl", "contacto@compararepuestos.cl"]
+const SUGERIDAS = [
+  { user: "marcos@agrohubs.cl",           from: "Marcos Contreras · AgroHub <marcos@agrohubs.cl>",     firma: "marcos" },
+  { user: "cristian@agrohubs.cl",         from: "Cristián Betteley · AgroHub <cristian@agrohubs.cl>",  firma: "cristian" },
+  { user: "cotizaciones@agrohubs.cl",     from: "AgroHub Cotizaciones <cotizaciones@agrohubs.cl>",     firma: "equipo" },
+  { user: "contacto@compararepuestos.cl", from: "AgroHub <contacto@compararepuestos.cl>",              firma: "marcos" },
+]
 
-// Casilla que usa el sitio para avisos, agradecimientos y la pestana Correo
-function CorreoSitio({ clave }) {
-  const [f, setF] = useState(null)
+function Casilla({ c, principal, clave, onCambio, servidor }) {
+  const [f, setF] = useState(c)
   const [pass, setPass] = useState("")
   const [ver, setVer] = useState(false)
   const [avanzado, setAvanzado] = useState(false)
-  const [info, setInfo] = useState({ tieneClave: false, origen: "" })
   const [estado, setEstado] = useState("")
   const [prueba, setPrueba] = useState(null)
-
-  useEffect(() => {
-    adminApi(clave, "config").then(r => { setF(r.config); setInfo({ tieneClave: r.tieneClave, origen: r.origen }) })
-      .catch(e => setEstado(e.message))
-  }, [clave])
-
-  if (!f) return estado ? <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{estado}</p> : null
+  const nueva = !c.id
   const set = k => e => setF(p => ({ ...p, [k]: e.target.value }))
-  const cuerpo = () => ({ ...f, from: f.from || `AgroHub <${f.user}>`, pass })
+  const cuerpo = () => ({ ...f, pass })
+  const ok = v => v === "ok"
 
   const probar = async () => {
     setEstado("Probando conexión..."); setPrueba(null)
@@ -101,49 +99,61 @@ function CorreoSitio({ clave }) {
   }
   const guardar = async () => {
     setEstado("Guardando...")
-    try {
-      const r = await adminApi(clave, "config", { method: "PUT", body: cuerpo() })
-      setF(r.config); setInfo({ tieneClave: r.tieneClave, origen: r.tieneClave ? "admin" : info.origen }); setPass(""); setEstado("Guardado ✓")
-    } catch (e) { setEstado(e.message) }
+    try { onCambio(await adminApi(clave, "config", { method: "PUT", body: cuerpo() })); setPass(""); setEstado("Guardado ✓") }
+    catch (e) { setEstado(e.message) }
   }
-  const ok = v => v === "ok"
+  const hacerPrincipal = async () => {
+    try { onCambio(await adminApi(clave, "config", { method: "PUT", body: { principal: c.id } })) } catch (e) { setEstado(e.message) }
+  }
+  const borrar = async () => {
+    if (!confirm(`¿Quitar la casilla ${c.user}?`)) return
+    try { onCambio(await adminApi(clave, "config", { method: "DELETE", query: { id: c.id } })) } catch (e) { setEstado(e.message) }
+  }
 
   return (
-    <div className="bg-white border-2 border-agro-green-200 rounded-2xl p-5">
-      <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
-        <h3 className="font-bold text-gray-900 flex items-center gap-2"><Mail size={16} className="text-agro-green-600" /> Correo del sitio</h3>
-        <span className={`text-[11px] px-2 py-0.5 rounded-full font-semibold ${info.origen === "admin" ? "bg-agro-green-50 text-agro-green-700" : "bg-amber-50 text-amber-700"}`}>
-          {info.origen === "admin" ? "En uso: esta configuración" : "En uso: variables de Vercel"}
-        </span>
+    <div className={`bg-white rounded-2xl p-5 border-2 ${principal ? "border-agro-green-300" : "border-gray-100"}`}>
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <p className="font-bold text-gray-900 flex items-center gap-2"><Mail size={15} className="text-agro-green-600" /> {nueva ? "Nueva casilla" : c.user}</p>
+        <div className="flex items-center gap-2">
+          {principal
+            ? <span className="text-[11px] px-2 py-0.5 rounded-full font-semibold bg-agro-green-50 text-agro-green-700">Principal · avisos automáticos</span>
+            : !nueva && <button onClick={hacerPrincipal} className="text-[11px] font-semibold text-gray-500 hover:text-agro-green-700">Usar para avisos</button>}
+          {!nueva && !c.tieneClave && <span className="text-[11px] px-2 py-0.5 rounded-full font-semibold bg-amber-50 text-amber-700">Falta contraseña</span>}
+          {!nueva && <button onClick={borrar} className="p-1 text-gray-400 hover:text-red-500" title="Quitar"><Trash2 size={14} /></button>}
+        </div>
       </div>
-      <p className="text-xs text-gray-500 mb-4">Casilla desde la que salen los avisos, el agradecimiento al cliente y los correos de la pestaña Correo. Servidor precargado igual que compararepuestos.cl: solo falta la contraseña.</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="text-[11px] font-semibold text-gray-600">Casilla (usuario)</label>
-          <input list="casillas" value={f.user} onChange={set("user")} className={inputCls} />
-          <datalist id="casillas">{CASILLAS.map(c => <option key={c} value={c} />)}</datalist>
+          <input value={f.user} onChange={set("user")} disabled={!nueva} className={`${inputCls} disabled:bg-gray-50`} />
         </div>
         <div>
           <label className="text-[11px] font-semibold text-gray-600">Contraseña de la casilla</label>
           <div className="relative">
             <input value={pass} onChange={e => setPass(e.target.value)} type={ver ? "text" : "password"} autoComplete="new-password"
-              placeholder={info.tieneClave ? "•••••••• (guardada; escribe para cambiarla)" : "Escribe la contraseña"} className={`${inputCls} pr-9`} />
+              placeholder={c.tieneClave ? "•••••••• (guardada; escribe para cambiarla)" : "Escribe la contraseña"} className={`${inputCls} pr-9`} />
             <button type="button" onClick={() => setVer(v => !v)} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400">{ver ? <EyeOff size={15} /> : <Eye size={15} />}</button>
           </div>
         </div>
-        <div className="sm:col-span-2">
-          <label className="text-[11px] font-semibold text-gray-600">Remitente (cómo lo ve el cliente)</label>
+        <div>
+          <label className="text-[11px] font-semibold text-gray-600">Remitente (cómo lo ve quien recibe)</label>
           <input value={f.from} onChange={set("from")} placeholder={`AgroHub <${f.user}>`} className={inputCls} />
+        </div>
+        <div>
+          <label className="text-[11px] font-semibold text-gray-600">Firma por defecto</label>
+          <select value={f.firma} onChange={set("firma")} className={inputCls}>
+            {FIRMAS_OPCIONES.map(([id, n]) => <option key={id} value={id}>{n}</option>)}
+          </select>
         </div>
       </div>
       <button type="button" onClick={() => setAvanzado(v => !v)} className="flex items-center gap-1 text-xs text-gray-500 font-semibold mt-3">
-        Servidor {avanzado ? <ChevronUp size={13} /> : <ChevronDown size={13} />} <span className="font-normal text-gray-400">{f.host} · SMTP {f.port} · IMAP {f.imapPort}</span>
+        Servidor {avanzado ? <ChevronUp size={13} /> : <ChevronDown size={13} />} <span className="font-normal text-gray-400">{f.host || servidor.host} · SMTP {f.port || servidor.port} · IMAP {f.imapPort || servidor.imapPort}</span>
       </button>
       {avanzado && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
-          <input value={f.host} onChange={set("host")} placeholder="Servidor" className={inputCls} />
-          <input value={f.port} onChange={set("port")} placeholder="Puerto SMTP" className={inputCls} />
-          <input value={f.imapPort} onChange={set("imapPort")} placeholder="Puerto IMAP" className={inputCls} />
+          <input value={f.host || ""} onChange={set("host")} placeholder={servidor.host} className={inputCls} />
+          <input value={f.port || ""} onChange={set("port")} placeholder={`SMTP ${servidor.port}`} className={inputCls} />
+          <input value={f.imapPort || ""} onChange={set("imapPort")} placeholder={`IMAP ${servidor.imapPort}`} className={inputCls} />
         </div>
       )}
       {prueba && (
@@ -154,7 +164,7 @@ function CorreoSitio({ clave }) {
       )}
       <div className="flex flex-wrap items-center justify-end gap-2 mt-4">
         {estado && <span className="text-xs text-gray-500 mr-auto">{estado}</span>}
-        <button onClick={probar} disabled={!f.user || (!pass && !info.tieneClave)}
+        <button onClick={probar} disabled={!f.user || (!pass && !c.tieneClave)}
           className="inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40">
           <PlugZap size={14} /> Probar conexión
         </button>
@@ -163,6 +173,48 @@ function CorreoSitio({ clave }) {
           <Save size={14} /> Guardar
         </button>
       </div>
+    </div>
+  )
+}
+
+// Casillas del equipo: cada una envia y recibe desde la pestana Correo con su firma
+function Casillas({ clave }) {
+  const [datos, setDatos] = useState(null)
+  const [nueva, setNueva] = useState(null)
+  const [error, setError] = useState("")
+
+  useEffect(() => { adminApi(clave, "config").then(setDatos).catch(e => setError(e.message)) }, [clave])
+  if (error) return <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>
+  if (!datos) return null
+
+  const cambio = d => { setDatos(d); setNueva(null) }
+  const faltan = SUGERIDAS.filter(s => !datos.casillas.some(c => c.user === s.user))
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h3 className="font-bold text-gray-900">Casillas de correo</h3>
+        <span className={`text-[11px] px-2 py-0.5 rounded-full font-semibold ${datos.origen === "admin" ? "bg-agro-green-50 text-agro-green-700" : "bg-amber-50 text-amber-700"}`}>
+          Avisos automáticos: {datos.origen === "admin" ? "casilla principal" : "variables de Vercel"}
+        </span>
+      </div>
+      <p className="text-xs text-gray-500 -mt-1">Servidor de compararepuestos.cl precargado ({datos.servidor.host}). Solo escribe la contraseña de cada casilla. En la pestaña Correo eliges desde cuál enviar y se usa su firma.</p>
+      {datos.casillas.map(c => <Casilla key={c.id + (c.tieneClave ? "1" : "0")} c={c} principal={c.id === datos.principal} clave={clave} onCambio={cambio} servidor={datos.servidor} />)}
+      {nueva && <Casilla key="nueva" c={nueva} principal={false} clave={clave} onCambio={cambio} servidor={datos.servidor} />}
+      {!nueva && (
+        <div className="flex flex-wrap gap-2">
+          {faltan.map(s => (
+            <button key={s.user} onClick={() => setNueva({ ...s, host: "", port: "", imapPort: "" })}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg border border-dashed border-agro-green-300 text-agro-green-700 hover:bg-agro-green-50">
+              <Plus size={13} /> {s.user}
+            </button>
+          ))}
+          <button onClick={() => setNueva({ user: "", from: "", firma: "", host: "", port: "", imapPort: "" })}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg border border-dashed border-gray-300 text-gray-600 hover:bg-gray-50">
+            <Plus size={13} /> Otra casilla
+          </button>
+        </div>
+      )}
     </div>
   )
 }
@@ -197,7 +249,7 @@ export default function Cuentas({ clave }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <CorreoSitio clave={clave} />
+      <Casillas clave={clave} />
       <div className="flex flex-wrap items-center gap-3 mt-2">
         <button onClick={() => setEditando({})} className="inline-flex items-center gap-1.5 bg-agro-green-600 hover:bg-agro-green-700 text-white text-sm font-semibold px-3 py-2 rounded-lg">
           <Plus size={14} /> Nueva cuenta

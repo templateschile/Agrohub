@@ -10,3 +10,11 @@ export async function adminApi(clave, ruta, { method = "GET", query, body } = {}
   if (!res.ok) throw Object.assign(new Error(json.error || `Error ${res.status}`), { status: res.status })
   return json
 }
+
+// Firmas disponibles al enviar (deben coincidir con FIRMAS en api/_lib/mail.js)
+export const FIRMAS_OPCIONES = [
+  ["marcos", "Marcos Contreras"],
+  ["cristian", "Cristián Betteley"],
+  ["equipo", "Equipo AgroHub · Cotizaciones"],
+  ["", "Sin firma"],
+]
