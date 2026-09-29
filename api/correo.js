@@ -2,12 +2,12 @@ import { ImapFlow } from 'imapflow'
 import { simpleParser } from 'mailparser'
 import MailComposer from 'nodemailer/lib/mail-composer/index.js'
 import { autorizar } from './_lib/auth.js'
-import { transporte, remitente, imapConfig, smtpConfigurado, firmaHtml, escapar } from './_lib/mail.js'
+import { transporte, remitente, imapConfig, smtpConfigurado, configCorreo, firmaHtml, escapar } from './_lib/mail.js'
 
 const LIMITE = 40
 
-async function conImap(fn) {
-  const client = new ImapFlow(imapConfig())
+async function conImap(cfg, fn) {
+  const client = new ImapFlow(imapConfig(cfg))
   await client.connect()
   try { return await fn(client) } finally { await client.logout().catch(() => {}) }
 }
@@ -17,8 +17,8 @@ async function carpetaEnviados(client) {
   return (carpetas.find(c => c.specialUse === '\\Sent') || carpetas.find(c => /sent|enviados/i.test(c.path)))?.path
 }
 
-async function listar(carpeta) {
-  return conImap(async client => {
+async function listar(cfg, carpeta) {
+  return conImap(cfg, async client => {
     const lock = await client.getMailboxLock(carpeta)
     try {
       const total = client.mailbox.exists
@@ -42,8 +42,8 @@ async function listar(carpeta) {
   })
 }
 
-async function leer(carpeta, uid) {
-  return conImap(async client => {
+async function leer(cfg, carpeta, uid) {
+  return conImap(cfg, async client => {
     const lock = await client.getMailboxLock(carpeta)
     try {
       const m = await client.fetchOne(String(uid), { source: true }, { uid: true })
@@ -68,10 +68,10 @@ async function leer(carpeta, uid) {
   })
 }
 
-async function enviar({ para, cc, asunto, cuerpo, firma, responderA, referencias }) {
+async function enviar(cfg, { para, cc, asunto, cuerpo, firma, responderA, referencias }) {
   const html = `<div style="font-family:Arial,sans-serif;font-size:14px;color:#1f2937;line-height:1.6">${escapar(cuerpo).replace(/\n/g, '<br>')}</div>${firma ? firmaHtml(firma) : ''}`
   const mail = {
-    from: remitente(),
+    from: remitente(cfg),
     to: para,
     cc: cc || undefined,
     subject: asunto,
@@ -79,11 +79,11 @@ async function enviar({ para, cc, asunto, cuerpo, firma, responderA, referencias
     text: cuerpo,
     ...(responderA ? { inReplyTo: responderA, references: [...(referencias || []), responderA] } : {}),
   }
-  const info = await transporte().sendMail(mail)
+  const info = await transporte(cfg).sendMail(mail)
   // Copia en "Enviados" (el SMTP no la guarda solo); si falla, el envio igual se hizo
   try {
     const raw = await new MailComposer({ ...mail, messageId: info.messageId }).compile().build()
-    await conImap(async client => {
+    await conImap(cfg, async client => {
       const enviados = await carpetaEnviados(client)
       if (enviados) await client.append(enviados, raw, ['\\Seen'])
     })
@@ -93,27 +93,28 @@ async function enviar({ para, cc, asunto, cuerpo, firma, responderA, referencias
 
 export default async function handler(req, res) {
   if (!(await autorizar(req, res))) return
-  if (!smtpConfigurado()) return res.status(503).json({ ok: false, error: 'Faltan SMTP_USER / SMTP_PASS en Vercel' })
+  const cfg = await configCorreo()
+  if (!smtpConfigurado(cfg)) return res.status(503).json({ ok: false, error: 'Falta configurar la casilla en Cuentas > Correo del sitio' })
 
   try {
     if (req.method === 'GET') {
       const carpeta = String(req.query.carpeta || 'INBOX')
       if (req.query.carpetas) {
-        const lista = await conImap(c => c.list())
+        const lista = await conImap(cfg, c => c.list())
         return res.json({ ok: true, carpetas: lista.map(c => ({ path: c.path, nombre: c.name, especial: c.specialUse || '' })) })
       }
       if (req.query.uid) {
-        const mensaje = await leer(carpeta, Number(req.query.uid))
+        const mensaje = await leer(cfg, carpeta, Number(req.query.uid))
         return mensaje ? res.json({ ok: true, mensaje }) : res.status(404).json({ ok: false })
       }
-      return res.json({ ok: true, mensajes: await listar(carpeta), casilla: process.env.SMTP_USER })
+      return res.json({ ok: true, mensajes: await listar(cfg, carpeta), casilla: cfg.user })
     }
 
     if (req.method === 'POST') {
       const b = req.body || {}
       const para = String(b.para || '').trim()
       if (!para || !String(b.asunto || '').trim()) return res.status(400).json({ ok: false, error: 'Falta destinatario o asunto' })
-      const id = await enviar({
+      const id = await enviar(cfg, {
         para, cc: String(b.cc || '').trim(),
         asunto: String(b.asunto).slice(0, 300),
         cuerpo: String(b.cuerpo || '').slice(0, 50000),

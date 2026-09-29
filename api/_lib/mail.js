@@ -1,28 +1,62 @@
-// Correo saliente (SMTP) y entrante (IMAP) de la casilla configurada en Vercel.
+// Correo saliente (SMTP) y entrante (IMAP). La configuracion se toma del admin
+// (pestana Cuentas > Correo del sitio, guardada cifrada) y, si no existe, de Vercel.
 import nodemailer from 'nodemailer'
+import { redis, storeConfigurado } from './store.js'
+import { cifrar, descifrar, cifradoConfigurado } from './cifrado.js'
 
 export const escapar = s => String(s ?? '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;').replace(/'/g, '&#39;')
 
-export const smtpConfigurado = () => Boolean(process.env.SMTP_USER && process.env.SMTP_PASS)
+const CLAVE_CONFIG = 'config:correo'
 
-export function transporte() {
-  return nodemailer.createTransport({
-    host:   process.env.SMTP_HOST || 'smtp.gmail.com',
-    port:   Number(process.env.SMTP_PORT) || 465,
-    secure: (Number(process.env.SMTP_PORT) || 465) === 465,
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-  })
+// Valores por defecto: mismo servidor Namecheap que compararepuestos.cl (el certificado es
+// *.web-hosting.com, por eso no se usa mail.agrohubs.cl como host)
+export const CORREO_POR_DEFECTO = {
+  host: 'premium224.web-hosting.com', port: 465, imapPort: 993,
+  user: 'cristian@agrohubs.cl', from: 'AgroHub <cristian@agrohubs.cl>',
 }
 
-export const remitente = () => process.env.SMTP_FROM || process.env.SMTP_USER
+export async function leerConfigGuardada() {
+  if (!storeConfigurado() || !cifradoConfigurado()) return null
+  const raw = await redis(['GET', CLAVE_CONFIG]).catch(() => null)
+  if (!raw) return null
+  try { return JSON.parse(descifrar(raw)) } catch { return null }
+}
 
-export const imapConfig = () => ({
-  host: process.env.IMAP_HOST || process.env.SMTP_HOST,
-  port: Number(process.env.IMAP_PORT) || 993,
+export async function guardarConfig(cfg) {
+  await redis(['SET', CLAVE_CONFIG, cifrar(JSON.stringify(cfg))])
+}
+
+export async function configCorreo() {
+  const g = await leerConfigGuardada()
+  if (g?.user && g?.pass) return { ...g, origen: 'admin' }
+  return {
+    host: process.env.SMTP_HOST || CORREO_POR_DEFECTO.host,
+    port: Number(process.env.SMTP_PORT) || 465,
+    imapPort: Number(process.env.IMAP_PORT) || 993,
+    user: process.env.SMTP_USER || '',
+    pass: process.env.SMTP_PASS || '',
+    from: process.env.SMTP_FROM || process.env.SMTP_USER || '',
+    origen: 'vercel',
+  }
+}
+
+export const smtpConfigurado = cfg => Boolean(cfg?.user && cfg?.pass)
+
+export const transporte = cfg => nodemailer.createTransport({
+  host: cfg.host, port: Number(cfg.port) || 465,
+  secure: (Number(cfg.port) || 465) === 465,
+  auth: { user: cfg.user, pass: cfg.pass },
+})
+
+export const remitente = cfg => cfg.from || cfg.user
+
+export const imapConfig = cfg => ({
+  host: cfg.imapHost || cfg.host,
+  port: Number(cfg.imapPort) || 993,
   secure: true,
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+  auth: { user: cfg.user, pass: cfg.pass },
   logger: false,
 })
 
@@ -60,7 +94,7 @@ export function firmaHtml(id = 'marcos') {
 }
 
 // Agradecimiento al cliente que envio el formulario, firmado por Marcos
-export async function enviarGracias({ nombre, email, tipo }) {
+export async function enviarGracias(cfg, { nombre, email, tipo }) {
   const primer = String(nombre || '').trim().split(/\s+/)[0] || ''
   const que = tipo === 'evaluacion' ? 'tu evaluación' : tipo === 'pedido' ? 'tu pedido' : 'tu mensaje'
   const html = `
@@ -71,8 +105,8 @@ export async function enviarGracias({ nombre, email, tipo }) {
   <p>Saludos cordiales,</p>
   ${firmaHtml('marcos')}
 </div>`
-  await transporte().sendMail({
-    from: remitente(),
+  await transporte(cfg).sendMail({
+    from: remitente(cfg),
     to: email,
     replyTo: FIRMAS.marcos.email,
     subject: `Gracias por ${que} · AgroHub`,
