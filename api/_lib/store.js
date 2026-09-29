@@ -7,7 +7,7 @@ const clave = id => `lead:${id}`
 
 export const storeConfigurado = () => Boolean(URL && TOKEN)
 
-async function redis(cmd) {
+export async function redis(cmd) {
   const res = await fetch(URL, {
     method: 'POST',
     headers: { Authorization: `Bearer ${TOKEN}` },
@@ -42,3 +42,14 @@ export async function listarLeads(max = 200) {
   const raws = await redis(['MGET', ...ids.map(clave)])
   return raws.filter(Boolean).map(r => JSON.parse(r))
 }
+
+// Boveda de cuentas: hash "boveda" con cada entrada cifrada (ver cifrado.js)
+const BOVEDA = 'boveda'
+export async function listarBoveda() {
+  const plano = await redis(['HGETALL', BOVEDA]) || []
+  const out = []
+  for (let i = 0; i < plano.length; i += 2) out.push({ id: plano[i], paquete: plano[i + 1] })
+  return out
+}
+export const guardarBoveda = (id, paquete) => redis(['HSET', BOVEDA, id, paquete])
+export const borrarBoveda = id => redis(['HDEL', BOVEDA, id])

@@ -1,19 +1,10 @@
-import { timingSafeEqual } from 'node:crypto'
 import { listarLeads, obtenerLead, actualizarLead, storeConfigurado } from './_lib/store.js'
+import { autorizar } from './_lib/auth.js'
 
 const ESTADOS = ['nueva', 'en revisión', 'propuesta enviada', 'ganada', 'descartada']
 
-function autorizado(req) {
-  const clave = process.env.ADMIN_PASSWORD
-  const recibido = (req.headers.authorization || '').replace(/^Bearer /, '')
-  if (!clave || !recibido) return false
-  const a = Buffer.from(clave), b = Buffer.from(recibido)
-  return a.length === b.length && timingSafeEqual(a, b)
-}
-
 export default async function handler(req, res) {
-  res.setHeader('Cache-Control', 'no-store')
-  if (!autorizado(req)) return res.status(401).json({ ok: false, error: 'Clave incorrecta' })
+  if (!(await autorizar(req, res))) return
   if (!storeConfigurado()) return res.status(503).json({ ok: false, error: 'Base de datos no configurada en Vercel' })
 
   try {

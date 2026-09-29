@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, useCallback } from "react"
 import { useSearchParams } from "react-router-dom"
 import { Lock, LogOut, RefreshCw, Save, Printer, Copy, RotateCcw, Bold, Italic, Heading2, List, Highlighter, Search } from "lucide-react"
 import { generarPropuesta } from "../lib/propuesta"
+import Correo from "./admin/Correo"
+import Cuentas from "./admin/Cuentas"
 
 const ESTADOS = ["nueva", "en revisión", "propuesta enviada", "ganada", "descartada"]
 const COLOR_ESTADO = {
@@ -13,6 +15,7 @@ const COLOR_ESTADO = {
 }
 const TIPO = { evaluacion: "Evaluación", contacto: "Contacto", pedido: "Pedido" }
 const CLAVE_SESION = "agrohub_admin"
+const PESTANAS = [["evaluaciones", "Evaluaciones"], ["correo", "Correo"], ["cuentas", "Cuentas"]]
 
 const leerClave = () => { try { return sessionStorage.getItem(CLAVE_SESION) || "" } catch { return "" } }
 const guardarClave = v => { try { v ? sessionStorage.setItem(CLAVE_SESION, v) : sessionStorage.removeItem(CLAVE_SESION) } catch { /* sin storage */ } }
@@ -149,6 +152,7 @@ export default function Admin() {
   const [filtro, setFiltro] = useState("")
   const [params, setParams] = useSearchParams()
   const idSel = params.get("id")
+  const tab = params.get("tab") || "evaluaciones"
 
   const cargar = useCallback(async (k = clave) => {
     if (!k) return
@@ -181,15 +185,25 @@ export default function Admin() {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-agro-green-900 text-white no-print">
         <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-          <span className="font-bold">AgroHub · Admin</span>
+          <div className="flex items-center gap-5">
+            <span className="font-bold">AgroHub · Admin</span>
+            <nav className="flex gap-1 text-sm">
+              {PESTANAS.map(([id, label]) => (
+                <button key={id} onClick={() => setParams(id === "evaluaciones" ? {} : { tab: id })}
+                  className={`px-3 py-1.5 rounded-lg transition-colors ${tab === id ? "bg-white/15 text-white font-semibold" : "text-white/70 hover:text-white"}`}>{label}</button>
+              ))}
+            </nav>
+          </div>
           <div className="flex items-center gap-4 text-sm">
-            <button onClick={() => cargar()} className="flex items-center gap-1.5 text-white/80 hover:text-white"><RefreshCw size={14} className={cargando ? "animate-spin" : ""} /> Actualizar</button>
+            {tab === "evaluaciones" && <button onClick={() => cargar()} className="flex items-center gap-1.5 text-white/80 hover:text-white"><RefreshCw size={14} className={cargando ? "animate-spin" : ""} /> Actualizar</button>}
             <button onClick={() => { guardarClave(""); setClave(""); setLeads(null) }} className="flex items-center gap-1.5 text-white/80 hover:text-white"><LogOut size={14} /> Salir</button>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
+      {tab === "correo" && <div className="max-w-7xl mx-auto px-4 md:px-6 py-6"><Correo clave={clave} /></div>}
+      {tab === "cuentas" && <div className="max-w-7xl mx-auto px-4 md:px-6 py-6"><Cuentas clave={clave} /></div>}
+      {tab === "evaluaciones" && <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
         <aside className="no-print">
           <div className="relative mb-3">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -226,7 +240,7 @@ export default function Admin() {
             </div>
           )}
         </main>
-      </div>
+      </div>}
     </div>
   )
 }

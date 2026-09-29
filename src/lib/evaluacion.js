@@ -1,11 +1,11 @@
-// Preguntas del formulario de evaluacion (3 pasos + contacto), resumen para el aviso,
-// reglas del "diagnostico preliminar" y lista de lo que el cliente respondio "No sé".
-// Se comparten entre la pagina publica y el admin (generador de propuesta).
+// Preguntas del formulario de evaluacion (3 pasos + contacto), resumen para el aviso
+// y reglas del "diagnostico preliminar". Se comparten entre la pagina publica y el admin.
+// Toda pregunta ofrece "Otros" con texto libre (no hay opcion "No sé").
 
-export const NO_SE = "No sé"
+export const OTROS = "Otros"
 
 // ── Paso 1: estado actual ────────────────────────────────────────
-// Orden: palto, arándano, tomate y limonero primero; luego por relevancia en el mercado chileno
+// Orden: palto, arandano, tomate y limonero primero; luego por relevancia en el mercado chileno
 export const CULTIVOS = [
   "Palto", "Arándano", "Tomate", "Limonero",
   "Cerezo", "Uva de mesa", "Vid vinífera", "Nogal", "Manzano", "Avellano europeo",
@@ -13,46 +13,6 @@ export const CULTIVOS = [
   "Frambuesa y frutilla", "Hortalizas", "Papa", "Maíz", "Trigo y cereales",
   "Remolacha", "Semilleros", "Praderas y forrajes", "Flores / Viveros",
 ]
-
-export const FORMAS_FERTILIZACION = [
-  "Fertirriego por goteo", "Al voleo manual", "Abonadora / trompo con tractor",
-  "Localizado al trasplante o siembra", "Foliar con pulverizador", "Dron",
-  "Aplicación aérea (avión / helicóptero)", "Enmiendas orgánicas (guano, compost)", NO_SE,
-]
-
-export const FORMAS_APLICACION = [
-  "Pulverizador de barra", "Nebulizador / turbonebulizador", "Bomba de espalda",
-  "Dron", "Aplicación aérea", "Por el riego (quimigación)", NO_SE,
-]
-
-export const ANALISIS = ["Suelo", "Foliar", "Agua de riego", "Solución de fertirriego", "Fruto / calidad de cosecha", "Ninguno", NO_SE]
-
-// ── Tomate: preguntas que aparecen solo si se marca el cultivo ────
-export const TOMATE_TIPOS = ["Industrial (pasta / concentrado)", "Consumo fresco al aire libre", "Invernadero"]
-
-export const TOMATE_ESTABLECIMIENTO = [
-  { id: "trasplante", label: "Trasplante de almácigo" },
-  { id: "siembra",    label: "Siembra directa" },
-  { id: "ambos",      label: "Ambos" },
-  { id: "nose",       label: NO_SE },
-]
-
-export const TOMATE_COSECHA = [
-  { id: "mecanizada", label: "Mecanizada" },
-  { id: "manual",     label: "Manual" },
-  { id: "ambas",      label: "Ambas" },
-  { id: "nose",       label: NO_SE },
-]
-
-export const TOMATE_PROBLEMAS = [
-  "Polilla del tomate (Tuta absoluta)", "Gusano del fruto (Helicoverpa)", "Mosquita blanca",
-  "Nematodos", "Tizón tardío (Phytophthora)", "Tizón temprano (Alternaria)", "Oídio",
-  "Cancro bacteriano (Clavibacter)", "Peca / mancha bacteriana", "Virosis",
-  "Pudrición apical", "Golpe de sol", "Partidura de fruto", "Madurez dispareja a cosecha",
-  "Bajo °Brix en recepción", "Malezas (correhuela, chufa)", NO_SE,
-]
-
-export const TOMATE_RECEPCION = ["°Brix", "Color", "pH", "Defectos y daño", "Mohos", "Descuentos / rechazos por carga", NO_SE]
 
 export const MODELOS_PRODUCTIVOS = [
   { id: "propio",   label: "Solo campos propios",        desc: "Producimos toda la superficie con equipo propio" },
@@ -62,19 +22,61 @@ export const MODELOS_PRODUCTIVOS = [
 
 export const APOYOS_PRODUCTORES = [
   "Semillas / plantines", "Fertilizantes y fitosanitarios", "Equipos de riego",
-  "Financiamiento / anticipos", "Maquinaria y cosecha", "Asistencia técnica",
+  "Financiamiento / anticipos", "Maquinaria y cosecha", "Asistencia técnica", OTROS,
 ]
 
-export const TIPOS_RIEGO = ["Goteo", "Surco / tendido", "Aspersión / pivote", "Microaspersión", "Secano", NO_SE]
+export const TIPOS_RIEGO = ["Goteo", "Surco / tendido", "Aspersión / pivote", "Microaspersión", "Secano", OTROS]
 
-export const REGISTROS = ["WhatsApp", "Planillas Excel", "Cuaderno de campo", "Software / ERP agrícola", "No llevamos registros", NO_SE]
+export const FORMAS_FERTILIZACION = [
+  "Fertirriego por goteo", "Al voleo manual", "Abonadora / trompo con tractor",
+  "Localizado al trasplante o siembra", "Foliar con pulverizador", "Dron",
+  "Aplicación aérea (avión / helicóptero)", "Enmiendas orgánicas (guano, compost)", OTROS,
+]
 
+export const FORMAS_APLICACION = [
+  "Pulverizador de barra", "Nebulizador / turbonebulizador", "Bomba de espalda",
+  "Dron", "Aplicación aérea", "Por el riego (quimigación)", OTROS,
+]
+
+export const ANALISIS = ["Suelo", "Foliar", "Agua de riego", "Solución de fertirriego", "Fruto / calidad de cosecha", "Ninguno", OTROS]
+
+export const REGISTROS = ["WhatsApp", "Planillas Excel", "Cuaderno de campo", "Software / ERP agrícola", "No llevamos registros", OTROS]
+
+// Seleccion unica: "otro" abre un campo de texto
 export const SI_NO = [
   { id: "si",   label: "Sí" },
   { id: "no",   label: "No" },
-  { id: "nose", label: NO_SE },
+  { id: "otro", label: OTROS },
 ]
 
+// ── Tomate: preguntas que aparecen solo si se marca el cultivo ────
+export const TOMATE_TIPOS = ["Industrial (pasta / concentrado)", "Consumo fresco al aire libre", "Invernadero", OTROS]
+
+export const TOMATE_ESTABLECIMIENTO = [
+  { id: "trasplante", label: "Trasplante de almácigo" },
+  { id: "siembra",    label: "Siembra directa" },
+  { id: "ambos",      label: "Ambos" },
+  { id: "otro",       label: OTROS },
+]
+
+export const TOMATE_COSECHA = [
+  { id: "mecanizada", label: "Mecanizada" },
+  { id: "manual",     label: "Manual" },
+  { id: "ambas",      label: "Ambas" },
+  { id: "otro",       label: OTROS },
+]
+
+export const TOMATE_PROBLEMAS = [
+  "Polilla del tomate (Tuta absoluta)", "Gusano del fruto (Helicoverpa)", "Mosquita blanca",
+  "Nematodos", "Tizón tardío (Phytophthora)", "Tizón temprano (Alternaria)", "Oídio",
+  "Cancro bacteriano (Clavibacter)", "Peca / mancha bacteriana", "Virosis",
+  "Pudrición apical", "Golpe de sol", "Partidura de fruto", "Madurez dispareja a cosecha",
+  "Bajo °Brix en recepción", "Malezas (correhuela, chufa)", OTROS,
+]
+
+export const TOMATE_RECEPCION = ["°Brix", "Color", "pH", "Defectos y daño", "Mohos", "Descuentos / rechazos por carga", OTROS]
+
+// ── Sensores ─────────────────────────────────────────────────────
 export const MARCAS_SENSORES = [
   "HSTI", "WiseConn / DropControl", "CropX", "METER Group / ZENTRA Cloud", "Sencrop",
   "Pessl Instruments / METOS", "Davis Instruments / WeatherLink", "Sensoterr",
@@ -85,47 +87,55 @@ export const MARCAS_SENSORES = [
 
 export const VARIABLES_SENSORES = [
   "Humedad de suelo", "Clima / estación meteorológica", "Caudal y presión de riego",
-  "Heladas / temperatura", "Nutrientes / conductividad (EC)", "Imágenes satelitales o drones", NO_SE,
+  "Heladas / temperatura", "Nutrientes / conductividad (EC)", "Imágenes satelitales o drones", OTROS,
 ]
 
 export const VER_DATA = [
   "App o web del proveedor", "Planillas / exporto a Excel", "Nos llegan reportes de un asesor",
-  "Tenemos los sensores pero no revisamos la data", NO_SE,
+  "Tenemos los sensores pero no revisamos la data", OTROS,
 ]
 
-export const QUIEN_REVISA = ["Gerencia", "Jefe de campo / administrador", "Asesor externo", "Nadie en particular", NO_SE]
+export const QUIEN_REVISA = [
+  { id: "gerencia",  label: "Gerencia" },
+  { id: "jefe",      label: "Jefe de campo / administrador" },
+  { id: "asesor",    label: "Asesor externo" },
+  { id: "nadie",     label: "Nadie en particular" },
+  { id: "otro",      label: OTROS },
+]
 
 export const CONECTIVIDAD = [
   { id: "buena",   label: "Buena en todo el campo" },
   { id: "parcial", label: "Solo en algunos sectores" },
   { id: "sin",     label: "Sin señal en el campo" },
-  { id: "nose",    label: NO_SE },
+  { id: "otro",    label: OTROS },
 ]
 
-// ── Paso 2: que buscas ───────────────────────────────────────────
+// ── Paso 2: que buscas (con puntaje 1 a 5) ───────────────────────
 export const PRIORIDADES = [
   "Rendimiento (t/ha)", "Calidad (Brix, calibre, pH)", "Ahorro de agua",
   "Reducir costos", "Trazabilidad campo a planta", "Coordinación de cosecha",
-  "Sanidad y alertas tempranas", "Adopción tecnológica de productores", "Aún no lo tengo claro",
+  "Sanidad y alertas tempranas", "Adopción tecnológica de productores",
 ]
+
+export const MEDIR = VARIABLES_SENSORES.filter(v => v !== OTROS)
 
 export const COMO_QUIERE_VER = [
   "Un panel central con todos los campos", "Alertas en el celular", "Reportes periódicos por email",
-  "Comparar campos o productores", NO_SE,
+  "Comparar campos o productores", "Reuniones semanales con el experto",
 ]
 
 export const PLAZOS = [
   { id: "temporada",  label: "Esta temporada" },
   { id: "proxima",    label: "Próxima temporada" },
   { id: "explorando", label: "Solo estoy explorando" },
-  { id: "nose",       label: NO_SE },
+  { id: "otro",       label: OTROS },
 ]
 
 // ── Paso 3: modulos ──────────────────────────────────────────────
 export const INTERES = [
-  { id: "si",   label: "Me sirve" },
-  { id: "no",   label: "No lo necesito" },
-  { id: "nose", label: NO_SE },
+  { id: "si",    label: "Me sirve" },
+  { id: "tal",   label: "Tal vez" },
+  { id: "no",    label: "No lo necesito" },
 ]
 
 export const MODULOS = [
@@ -149,16 +159,33 @@ export const MODOS_IA = [
   { id: "SLM (local)", desc: "Corre en tu servidor; los datos no salen de la empresa." },
   { id: "Cloud (API)", desc: "Más potente, requiere internet." },
   { id: "Híbrida",     desc: "Local para lo sensible, nube para lo demás." },
-  { id: NO_SE,         desc: "Lo definimos juntos." },
+  { id: OTROS,         desc: "Cuéntanos qué necesitas." },
 ]
 
-export const FUENTES = ["INIA", "INDAP", "FAO", "SAG", "ODEPA", "Clima (DMC / Agromet)", "CIREN", NO_SE]
+export const FUENTES = ["INIA", "INDAP", "FAO", "SAG", "ODEPA", "Clima (DMC / Agromet)", "CIREN", OTROS]
 
 export const LICENCIAS = [
   { id: "self", label: "Self Hosted",      desc: "Licencia compartida + soporte + código fuente admin y app", badge: "Código compartido" },
   { id: "full", label: "Full Hosted",      desc: "Código completo, licencia propia, un solo pago, documentación completa", badge: "Licencia exclusiva" },
   { id: "saas", label: "Mes a mes (SaaS)", desc: "Usuarios en la app AgroHub compartida, sin app propia", badge: "Sin inversión inicial" },
-  { id: "nose", label: NO_SE,              desc: "Te explicamos las opciones en el diagnóstico" },
+  { id: "otro", label: OTROS,              desc: "Cuéntanos qué modelo te acomoda" },
+]
+
+// Traspaso tecnico incluido cuando el cliente opera su propia instancia
+export const TRASPASO_TI = [
+  "Onboarding técnico del equipo TI y capacitación para la migración a su infraestructura (cloud u on-premise).",
+  "Handover de código fuente: repositorios, ramas, pipeline CI/CD y guía de despliegue.",
+  "Documentación de arquitectura, modelo de datos, APIs y variables de entorno.",
+  "Migración de datos, configuración de backups, monitoreo y logs.",
+  "Transferencia de conocimiento en sesiones de pair programming y runbooks de operación.",
+]
+export const requiereTraspaso = r => r.licencia === "self" || r.licencia === "full"
+
+export const USUARIOS = [
+  { id: "admins",        label: "Administradores",       hint: "Gestionan la plataforma" },
+  { id: "agricultores",  label: "Agricultores",          hint: "Usan la app en terreno" },
+  { id: "asesores",      label: "Asesores / técnicos",   hint: "Acompañan a productores" },
+  { id: "capacitadores", label: "Capacitadores por zona", hint: "Forman a otros usuarios" },
 ]
 
 export const ETAPAS = [
@@ -169,22 +196,28 @@ export const ETAPAS = [
   { titulo: "Plataforma AgroHub",           texto: "Monitoreo centralizado, trazabilidad y conocimiento en un solo lugar." },
 ]
 
-// Los numeros usan null para "No sé"
+export const nuevaZona = n => ({ nombre: `Zona ${n}`, hectareas: 0, agricultores: 0 })
+
+// `otros` guarda el texto de cada "Otros" por clave de pregunta
 export const estadoInicial = {
   // Paso 1
-  cultivos: [], otroCultivo: "", hectareas: 5000, zonas: 1,
+  cultivos: [], otroCultivo: "", hectareas: 5000,
+  zonas: [{ nombre: "Zona 1", hectareas: 5000, agricultores: 10 }],
   modelo: "propio", haPropias: 2000, productores: 10, apoyos: [],
   tomateTipos: [], tomateEstablecimiento: "", tomateDensidad: 30000, tomateCosecha: "",
   tomateVariedad: "", tomateProblemas: [], tomateRecepcion: [],
-  riegos: [], registros: [],
-  productos: [], fertilizacion: [], aplicacion: [], analisis: [],
+  riegos: [], programadorRiego: "", programadorFerti: "",
+  fertilizacion: [], aplicacion: [], analisis: [], productos: [], registros: [],
   tieneSensores: "", marcas: [], otraMarca: "", cantidadSensores: 5, variables: [],
   verData: [], quienRevisa: "", conectividad: "",
-  // Paso 2
-  prioridades: [], masSensores: "", medirMas: [], comoVer: [], plazo: "", capacitacion: "",
+  // Paso 2 (puntajes 1-5 por opcion)
+  prioridades: {}, masSensores: "", medir: {}, comoVer: {}, plazo: "", capacitacion: "",
+  puntajeOtros: {},
   // Paso 3
-  modulos: {}, modoAi: NO_SE, modoDocs: NO_SE, fuentes: [], otrasFuentes: "",
-  vistasKpi: 7, licencia: "", soporte: 1, admins: 1, agricultores: 20, asesores: 5,
+  modulos: {}, modoAi: "Híbrida", modoDocs: "Híbrida", fuentes: [], otrasFuentes: "",
+  vistasKpi: 7, licencia: "", soporte: 1, admins: 1, agricultores: 20, asesores: 5, capacitadores: 3,
+  // Textos de "Otros"
+  otros: {},
 }
 
 // ── Helpers ──────────────────────────────────────────────────────
@@ -196,120 +229,93 @@ export const conAsociados = r => r.modelo === "asociado" || r.modelo === "mixto"
 export const haAsociadas = r => r.modelo === "asociado" ? r.hectareas : Math.max(0, (r.hectareas || 0) - (r.haPropias || 0))
 export const modeloLabel = r => MODELOS_PRODUCTIVOS.find(m => m.id === r.modelo)?.label || ""
 export const modulosPorInteres = (r, interes) => MODULOS.filter(m => r.modulos?.[m.id] === interes)
-const siNo = v => SI_NO.find(x => x.id === v)?.label || ""
-const etiqueta = (lista, v) => lista.find(x => x.id === v)?.label || ""
-const fmt = n => n == null ? NO_SE : Number(n).toLocaleString("es-CL")
-const plural = (n, s, p = s + "s") => n == null ? `${NO_SE} ${p}` : `${fmt(n)} ${n === 1 ? s : p}`
+const fmt = n => Number(n || 0).toLocaleString("es-CL")
+
+// Lista multiple: reemplaza "Otros" por el texto que escribio el usuario
+export const conOtros = (r, k) => (r[k] || []).map(x => x === OTROS ? `Otros: ${r.otros?.[k]?.trim() || "sin detalle"}` : x)
+// Seleccion unica
+export const unica = (r, k, opciones) => r[k] === "otro"
+  ? `Otros: ${r.otros?.[k]?.trim() || "sin detalle"}`
+  : opciones.find(o => o.id === r[k])?.label || ""
+// Puntajes: "Rendimiento 5/5, Agua 4/5" ordenado de mayor a menor, incluye el "Otros" puntuado
+export function puntajes(r, k) {
+  const base = Object.entries(r[k] || {}).filter(([, v]) => v > 0)
+  const otro = r.otros?.[k]?.trim()
+  if (otro && r.puntajeOtros?.[k] > 0) base.push([`Otros: ${otro}`, r.puntajeOtros[k]])
+  return base.sort((a, b) => b[1] - a[1])
+}
+const txtPuntajes = (r, k) => puntajes(r, k).map(([n, v]) => `${n} ${v}/5`).join(", ")
 const lista = a => a?.length ? a.join(", ") : ""
-const usaModulo = (r, id) => r.modulos?.[id] === "si" || r.modulos?.[id] === "nose"
+
+export const totalHaZonas = r => (r.zonas || []).reduce((a, z) => a + (Number(z.hectareas) || 0), 0)
+export const totalAgricultoresZonas = r => (r.zonas || []).reduce((a, z) => a + (Number(z.agricultores) || 0), 0)
 
 // Lineas legibles con todas las respuestas (para el aviso y el admin)
 export function resumenRespuestas(r) {
   const l = []
   const add = (titulo, v) => v && l.push(`${titulo}: ${v}`)
   add("Cultivos", lista(listaCultivos(r)) || "sin especificar")
-  add("Superficie", `${fmt(r.hectareas)} ha en ${plural(r.zonas, "zona")}`)
+  add("Superficie total", `${fmt(r.hectareas)} ha`)
+  ;(r.zonas || []).forEach(z => add(`Zona ${z.nombre || "sin nombre"}`, `${fmt(z.hectareas)} ha · ${fmt(z.agricultores)} agricultores`))
   add("Modelo", modeloLabel(r))
   if (r.modelo === "mixto") add("Hectáreas", `${fmt(r.haPropias)} propias + ${fmt(haAsociadas(r))} con productores`)
   if (conAsociados(r)) {
     add("Productores asociados", fmt(r.productores))
-    add("Apoyo a productores", lista(r.apoyos))
+    add("Apoyo a productores", lista(conOtros(r, "apoyos")))
   }
   if (cultivaTomate(r)) {
-    add("Tomate · tipo", lista(r.tomateTipos))
-    add("Tomate · establecimiento", etiqueta(TOMATE_ESTABLECIMIENTO, r.tomateEstablecimiento))
+    add("Tomate · tipo", lista(conOtros(r, "tomateTipos")))
+    add("Tomate · establecimiento", unica(r, "tomateEstablecimiento", TOMATE_ESTABLECIMIENTO))
     add("Tomate · densidad (plantas/ha)", fmt(r.tomateDensidad))
-    add("Tomate · cosecha", etiqueta(TOMATE_COSECHA, r.tomateCosecha))
+    add("Tomate · cosecha", unica(r, "tomateCosecha", TOMATE_COSECHA))
     add("Tomate · híbrido/variedad", r.tomateVariedad?.trim())
-    add("Tomate · problemas", lista(r.tomateProblemas))
-    if (tomateIndustrial(r)) add("Tomate · qué castiga la planta en recepción", lista(r.tomateRecepcion))
+    add("Tomate · problemas", lista(conOtros(r, "tomateProblemas")))
+    if (tomateIndustrial(r)) add("Tomate · descuentos en recepción", lista(conOtros(r, "tomateRecepcion")))
   }
-  add("Riego", lista(r.riegos))
-  add("Cómo fertiliza", lista(r.fertilizacion))
-  add("Cómo aplica fitosanitarios", lista(r.aplicacion))
-  add("Análisis que realiza", lista(r.analisis))
+  add("Riego", lista(conOtros(r, "riegos")))
+  add("Programador de riego", r.programadorRiego?.trim())
+  add("Programador de fertirriego", r.programadorFerti?.trim())
+  add("Cómo fertiliza", lista(conOtros(r, "fertilizacion")))
+  add("Cómo aplica fitosanitarios", lista(conOtros(r, "aplicacion")))
+  add("Análisis que realiza", lista(conOtros(r, "analisis")))
   add("Productos que usa", lista(r.productos))
-  add("Registros actuales", lista(r.registros))
-  add("¿Tiene sensores?", siNo(r.tieneSensores))
+  add("Registros actuales", lista(conOtros(r, "registros")))
+  add("¿Tiene sensores?", unica(r, "tieneSensores", SI_NO))
   if (r.tieneSensores === "si") {
     add("Marcas", lista(listaMarcas(r)))
     add("Cantidad aprox. de sensores", fmt(r.cantidadSensores))
-    add("Qué miden", lista(r.variables))
-    add("Cómo ve la data", lista(r.verData))
-    add("Quién la revisa", r.quienRevisa)
+    add("Qué miden", lista(conOtros(r, "variables")))
+    add("Cómo ve la data", lista(conOtros(r, "verData")))
+    add("Quién la revisa", unica(r, "quienRevisa", QUIEN_REVISA))
   }
-  add("Conectividad en campo", etiqueta(CONECTIVIDAD, r.conectividad))
-  add("Prioridades", lista(r.prioridades))
-  add("¿Quiere más sensores?", siNo(r.masSensores))
-  if (r.masSensores === "si") add("Quiere medir", lista(r.medirMas))
-  add("Cómo quiere ver la información", lista(r.comoVer))
-  add("Plazo", etiqueta(PLAZOS, r.plazo))
-  add("¿Capacitar equipo como extensionistas?", siNo(r.capacitacion))
+  add("Conectividad en campo", unica(r, "conectividad", CONECTIVIDAD))
+  add("Qué quiere mejorar", txtPuntajes(r, "prioridades"))
+  add("¿Quiere más sensores?", unica(r, "masSensores", SI_NO))
+  add("Qué quiere medir", txtPuntajes(r, "medir"))
+  add("Cómo quiere ver la información", txtPuntajes(r, "comoVer"))
+  add("Plazo", unica(r, "plazo", PLAZOS))
+  add("¿Formar extensionistas?", unica(r, "capacitacion", SI_NO))
   add("Módulos que le sirven", lista(modulosPorInteres(r, "si").map(m => m.label)))
+  add("Módulos que tal vez", lista(modulosPorInteres(r, "tal").map(m => m.label)))
   add("Módulos que no necesita", lista(modulosPorInteres(r, "no").map(m => m.label)))
-  add("Módulos que no sabe", lista(modulosPorInteres(r, "nose").map(m => m.label)))
-  if (usaModulo(r, "ai")) add("Modo AI Chat", r.modoAi)
-  if (usaModulo(r, "docs")) add("Modo biblioteca", r.modoDocs)
-  if (usaModulo(r, "fuentes")) add("Fuentes externas", lista([...(r.fuentes || []), ...(r.otrasFuentes?.trim() ? [r.otrasFuentes.trim()] : [])]))
-  if (usaModulo(r, "dashboard")) add("Vistas KPI", fmt(r.vistasKpi))
-  add("Licencia", LICENCIAS.find(x => x.id === r.licencia)?.label)
-  add("Soporte", plural(r.soporte, "año"))
-  add("Usuarios", `${fmt(r.admins)} admins, ${fmt(r.agricultores)} agricultores, ${fmt(r.asesores)} asesores`)
+  const usa = id => ["si", "tal"].includes(r.modulos?.[id])
+  if (usa("ai")) add("Modo AI Chat", r.modoAi === OTROS ? `Otros: ${r.otros?.modoAi || ""}` : r.modoAi)
+  if (usa("docs")) add("Modo biblioteca", r.modoDocs === OTROS ? `Otros: ${r.otros?.modoDocs || ""}` : r.modoDocs)
+  if (usa("fuentes")) add("Fuentes externas", lista([...conOtros(r, "fuentes"), ...(r.otrasFuentes?.trim() ? [r.otrasFuentes.trim()] : [])]))
+  if (usa("dashboard")) add("Vistas KPI", fmt(r.vistasKpi))
+  add("Licencia", unica(r, "licencia", LICENCIAS))
+  if (requiereTraspaso(r)) add("Incluye", "capacitación para migración y traspaso técnico de fuentes")
+  add("Soporte", `${fmt(r.soporte)} año(s)`)
+  add("Usuarios", USUARIOS.map(u => `${fmt(r[u.id])} ${u.label.toLowerCase()}`).join(", "))
   return l
 }
 
-// Todo lo que el cliente respondio "No sé": se convierte en puntos a definir en el diagnostico
-export function puntosNoSabe(r) {
-  const p = []
-  const noSeEn = (arr, titulo) => arr?.includes(NO_SE) && p.push(titulo)
-  if (r.hectareas == null) p.push("Superficie total")
-  if (r.zonas == null) p.push("Número de zonas o predios")
-  if (conAsociados(r) && r.productores == null) p.push("Número de productores asociados")
-  if (cultivaTomate(r)) {
-    if (r.tomateEstablecimiento === "nose") p.push("Tomate: sistema de establecimiento")
-    if (r.tomateDensidad == null) p.push("Tomate: densidad de plantación")
-    if (r.tomateCosecha === "nose") p.push("Tomate: sistema de cosecha")
-    noSeEn(r.tomateProblemas, "Tomate: principales problemas sanitarios y de calidad")
-    if (tomateIndustrial(r)) noSeEn(r.tomateRecepcion, "Tomate: parámetros de castigo en recepción")
-  }
-  noSeEn(r.riegos, "Tipo de riego")
-  noSeEn(r.fertilizacion, "Forma de fertilización")
-  noSeEn(r.aplicacion, "Forma de aplicación de fitosanitarios")
-  noSeEn(r.analisis, "Análisis de suelo, foliar y agua")
-  noSeEn(r.registros, "Cómo se registran las labores")
-  if (r.tieneSensores === "nose") p.push("Si existen sensores instalados")
-  if (r.tieneSensores === "si") {
-    if (r.marcas?.includes("No sé la marca")) p.push("Marca de los sensores instalados")
-    if (r.cantidadSensores == null) p.push("Cantidad de sensores instalados")
-    noSeEn(r.variables, "Qué miden los sensores actuales")
-    noSeEn(r.verData, "Cómo se visualiza la data de los sensores")
-    if (r.quienRevisa === NO_SE) p.push("Quién revisa la data")
-  }
-  if (r.conectividad === "nose") p.push("Conectividad en el campo")
-  if (r.prioridades?.includes("Aún no lo tengo claro")) p.push("Prioridades de mejora")
-  if (r.masSensores === "nose") p.push("Necesidad de sensores adicionales")
-  noSeEn(r.medirMas, "Qué variables adicionales medir")
-  noSeEn(r.comoVer, "Cómo quiere ver la información")
-  if (r.plazo === "nose") p.push("Plazo de implementación")
-  if (r.capacitacion === "nose") p.push("Formación de extensionistas")
-  modulosPorInteres(r, "nose").forEach(m => p.push(`Utilidad del módulo ${m.label}`))
-  if (usaModulo(r, "ai") && r.modoAi === NO_SE) p.push("Modo de operación del AI Chat")
-  if (usaModulo(r, "docs") && r.modoDocs === NO_SE) p.push("Modo de operación de la biblioteca")
-  if (usaModulo(r, "fuentes")) noSeEn(r.fuentes, "Fuentes externas a integrar")
-  if (usaModulo(r, "dashboard") && r.vistasKpi == null) p.push("Cantidad de vistas KPI")
-  if (r.licencia === "nose") p.push("Tipo de licencia")
-  if (r.soporte == null) p.push("Años de soporte")
-  if ([r.admins, r.agricultores, r.asesores].some(v => v == null)) p.push("Número de usuarios por rol")
-  return p
-}
-
-// Porcentaje de avance: preguntas principales respondidas (un "No sé" cuenta como respuesta)
+// Porcentaje de avance: preguntas principales respondidas
 export function avance(r) {
   const hechas = [
-    listaCultivos(r).length > 0, r.riegos.length > 0, r.registros.length > 0,
-    r.fertilizacion.length > 0, r.productos.length > 0,
+    listaCultivos(r).length > 0, r.riegos.length > 0, r.fertilizacion.length > 0, r.registros.length > 0,
     Boolean(r.tieneSensores), Boolean(r.conectividad),
-    r.prioridades.length > 0, Boolean(r.masSensores), r.comoVer.length > 0, Boolean(r.plazo),
+    puntajes(r, "prioridades").length > 0, Boolean(r.masSensores), puntajes(r, "comoVer").length > 0, Boolean(r.plazo),
     Object.keys(r.modulos).length >= 3, Boolean(r.licencia),
   ]
   return Math.round(100 * hechas.filter(Boolean).length / hechas.length)
@@ -318,7 +324,6 @@ export function avance(r) {
 const CULTIVOS_AGROINDUSTRIA = ["Remolacha", "Semilleros"]
 const CULTIVOS_FRUTALES = ["Uva de mesa", "Vid vinífera", "Nogal", "Manzano", "Avellano europeo", "Ciruelo", "Kiwi", "Mandarino y naranjo", "Olivo", "Almendro", "Peral"]
 
-// Recomendaciones especificas por especie (orden = orden de aparicion)
 const INSIGHT_CULTIVO = {
   "Palto": "El palto es muy sensible a la asfixia radicular y a la salinidad: sondas a dos profundidades muestran si el agua se queda en la zona de raíces o se pierde por percolación.",
   "Arándano": "En arándano mandan el pH y la conductividad del agua y del bulbo mojado: monitorearlos evita bloqueos de hierro y manganeso, sobre todo en maceta o sustrato.",
@@ -326,7 +331,17 @@ const INSIGHT_CULTIVO = {
   "Cerezo": "En cerezo, el riesgo está en heladas de floración y lluvias cerca de cosecha (partidura): alertas con horas de anticipación permiten activar control o cubiertas a tiempo.",
 }
 
-// Recomendaciones de tomate: se activan segun el detalle que entrega el usuario
+const INSIGHT_PRIORIDAD = {
+  "Rendimiento (t/ha)":                  "Comparamos sectores y campos para encontrar dónde se pierde rendimiento y por qué.",
+  "Calidad (Brix, calibre, pH)":         "Relacionamos riego, nutrición y clima con la calidad que llega a planta.",
+  "Ahorro de agua":                      "Regar según la humedad real del suelo, no por calendario, es la vía más directa para ahorrar agua.",
+  "Reducir costos":                      "Identificamos aplicaciones y riegos que se pueden ajustar sin afectar la producción.",
+  "Trazabilidad campo a planta":         "Registro de labores e insumos por cuartel, conectado con la recepción.",
+  "Coordinación de cosecha":             "Datos de madurez y clima para planificar cosecha y entregas con anticipación.",
+  "Sanidad y alertas tempranas":         "Alertas por clima (heladas, riesgo de enfermedades) antes de que el problema se vea en el campo.",
+  "Adopción tecnológica de productores": "Formamos técnicos referentes que acompañan a los productores: la tecnología se adopta cuando alguien cercano la usa.",
+}
+
 function insightsTomate(r) {
   const out = []
   const industrial = tomateIndustrial(r)
@@ -362,35 +377,33 @@ function insightsTomate(r) {
   return out
 }
 
-const INSIGHT_PRIORIDAD = {
-  "Rendimiento (t/ha)":                  "Comparamos sectores y campos para encontrar dónde se pierde rendimiento y por qué.",
-  "Calidad (Brix, calibre, pH)":         "Relacionamos riego, nutrición y clima con la calidad que llega a planta.",
-  "Ahorro de agua":                      "Regar según la humedad real del suelo, no por calendario, es la vía más directa para ahorrar agua.",
-  "Reducir costos":                      "Identificamos aplicaciones y riegos que se pueden ajustar sin afectar la producción.",
-  "Trazabilidad campo a planta":         "Registro de labores e insumos por cuartel, conectado con la recepción.",
-  "Coordinación de cosecha":             "Datos de madurez y clima para planificar cosecha y entregas con anticipación.",
-  "Sanidad y alertas tempranas":         "Alertas por clima (heladas, riesgo de enfermedades) antes de que el problema se vea en el campo.",
-  "Adopción tecnológica de productores": "Formamos técnicos referentes que acompañan a los productores: la tecnología se adopta cuando alguien cercano la usa.",
-  "Aún no lo tengo claro":               "Está bien: el diagnóstico sirve justamente para priorizar dónde está la mayor oportunidad.",
-}
-
 // Recomendaciones que se muestran en vivo mientras el usuario responde
 export function insights(r) {
   const out = []
   const cultivos = listaCultivos(r)
+  const zonas = r.zonas?.length || 0
 
   if (conAsociados(r)) {
     out.push({ titulo: "Tu red de productores",
-      texto: `Con ${plural(r.productores, "productor", "productores")} asociados, AgroHub centraliza el seguimiento de cada campo y lo que se les entrega, con tu equipo técnico como extensionistas.` })
+      texto: `Con ${fmt(r.productores)} productores asociados, AgroHub centraliza el seguimiento de cada campo y lo que se les entrega, con tu equipo técnico como extensionistas.` })
   }
   if (cultivaTomate(r)) out.push(...insightsTomate(r))
   Object.entries(INSIGHT_CULTIVO).forEach(([c, texto]) => cultivos.includes(c) && out.push({ titulo: c, texto }))
   if (cultivos.some(c => CULTIVOS_AGROINDUSTRIA.includes(c))) {
-    out.push({ titulo: "Del campo a la planta",
-      texto: "En cultivos para agroindustria, conectar las prácticas de cada campo con lo que se mide en recepción muestra qué manejo da mejores resultados." })
+    out.push({ titulo: "Del campo a la planta", texto: "En cultivos para agroindustria, conectar las prácticas de cada campo con lo que se mide en recepción muestra qué manejo da mejores resultados." })
   }
   if (cultivos.some(c => CULTIVOS_FRUTALES.includes(c))) {
     out.push({ titulo: "Frutales", texto: "Estaciones y sensores permiten anticipar heladas y ajustar el riego por sector durante la temporada." })
+  }
+  if (r.riegos.some(x => x === "Goteo" || x === "Microaspersión")) {
+    out.push({ titulo: "Riego tecnificado", texto: "Ya tienes la base: con sondas de humedad de suelo se decide cuándo y cuánto regar con datos, sector por sector." })
+  } else if (r.riegos.includes("Surco / tendido")) {
+    out.push({ titulo: "Riego por surco", texto: "Medir humedad de suelo y caudal es el primer paso para detectar sobrerriego y justificar tecnificar." })
+  } else if (r.riegos.includes("Secano")) {
+    out.push({ titulo: "Secano", texto: "El clima manda: estaciones meteorológicas y pronóstico local ayudan a decidir siembra, aplicaciones y cosecha." })
+  }
+  if (r.programadorRiego?.trim() || r.programadorFerti?.trim()) {
+    out.push({ titulo: "Tu programador", texto: "Revisamos si tu programador permite integración (API, Modbus o exportación): así las alertas y la ejecución del riego quedan conectadas." })
   }
   if (r.fertilizacion.includes("Dron") || r.aplicacion.includes("Dron")) {
     out.push({ titulo: "Aplicaciones con dron", texto: "Registramos cada vuelo con su polígono, dosis y producto: queda la trazabilidad por cuartel sin papeleo extra." })
@@ -401,14 +414,6 @@ export function insights(r) {
   if (r.analisis.includes("Ninguno")) {
     out.push({ titulo: "Análisis", texto: "Un análisis de suelo y agua al inicio es la línea base para medir después el efecto de cada cambio." })
   }
-  if (r.riegos.some(x => x === "Goteo" || x === "Microaspersión")) {
-    out.push({ titulo: "Riego tecnificado", texto: "Ya tienes la base: con sondas de humedad de suelo se decide cuándo y cuánto regar con datos, sector por sector." })
-  } else if (r.riegos.includes("Surco / tendido")) {
-    out.push({ titulo: "Riego por surco", texto: "Medir humedad de suelo y caudal es el primer paso para detectar sobrerriego y justificar tecnificar." })
-  } else if (r.riegos.includes("Secano")) {
-    out.push({ titulo: "Secano", texto: "El clima manda: estaciones meteorológicas y pronóstico local ayudan a decidir siembra, aplicaciones y cosecha." })
-  }
-
   if (r.tieneSensores === "si") {
     if (r.verData.includes("Tenemos los sensores pero no revisamos la data")) {
       out.push({ titulo: "Tus sensores", texto: "Es muy común: hay sensores, pero la data no llega a quien decide. Un panel único con alertas simples hace que se use." })
@@ -419,30 +424,28 @@ export function insights(r) {
     }
   } else if (r.tieneSensores === "no") {
     out.push({ titulo: "Sin sensores aún", texto: "Partimos con pocos puntos bien ubicados en sitios representativos, y crecemos según resultados." })
-  } else if (r.tieneSensores === "nose") {
-    out.push({ titulo: "Sensores", texto: "En la visita revisamos qué hay instalado y si se puede aprovechar." })
   }
   if (r.conectividad === "sin" || r.conectividad === "parcial") {
     out.push({ titulo: "Conectividad", texto: "Hay sensores con transmisión de largo alcance (LoRa) o satelital para sectores sin señal celular." })
   }
-
-  if (r.zonas > 1 || r.hectareas >= 500) {
+  if (zonas > 1 || r.hectareas >= 500) {
     out.push({ titulo: "Escala",
-      texto: `Con ${fmt(r.hectareas)} ha${r.zonas > 1 ? ` en ${r.zonas} zonas` : ""}, conviene partir con un piloto en sitios representativos, medir resultados y luego escalar.` })
+      texto: `Con ${fmt(r.hectareas)} ha${zonas > 1 ? ` en ${zonas} zonas` : ""}, conviene partir con un piloto en sitios representativos, medir resultados y luego escalar.` })
   }
   if (r.registros.includes("No llevamos registros")) {
     out.push({ titulo: "Registros", texto: "Partimos por lo básico: una bitácora simple de labores en el celular." })
   } else if (r.registros.some(x => ["WhatsApp", "Cuaderno de campo", "Planillas Excel"].includes(x))) {
     out.push({ titulo: "Registros", texto: "Digitalizamos lo que ya haces, sin cambiar hábitos: registro desde el celular en pocos toques." })
   }
-  r.prioridades.forEach(p => INSIGHT_PRIORIDAD[p] && out.push({ titulo: p, texto: INSIGHT_PRIORIDAD[p] }))
-  if (r.capacitacion === "si") {
-    out.push({ titulo: "Extensionistas", texto: "Formamos a tu equipo para que acompañe a otros: así la adopción se sostiene cuando nos vamos." })
+  puntajes(r, "prioridades").filter(([, v]) => v >= 4).forEach(([p]) => INSIGHT_PRIORIDAD[p] && out.push({ titulo: p, texto: INSIGHT_PRIORIDAD[p] }))
+  if ((r.comoVer?.["Reuniones semanales con el experto"] || 0) >= 4) {
+    out.push({ titulo: "Reuniones con el experto", texto: "Una revisión semanal de tus datos con un especialista convierte los paneles en decisiones concretas para la semana." })
   }
-
-  const noSe = puntosNoSabe(r).length
-  if (noSe > 0) {
-    out.push({ titulo: `${noSe} punto${noSe > 1 ? "s" : ""} por definir`, texto: "Lo que marcaste como “No sé” lo resolvemos juntos en el diagnóstico. No necesitas tener todo claro para empezar." })
+  if (r.capacitacion === "si" || r.capacitadores > 0) {
+    out.push({ titulo: "Extensionistas", texto: "Formamos a tus capacitadores por zona para que acompañen a otros: así la adopción se sostiene cuando nos vamos." })
+  }
+  if (requiereTraspaso(r)) {
+    out.push({ titulo: "Traspaso técnico", texto: "Con licencia propia incluimos onboarding de tu equipo TI, handover del código y soporte a la migración." })
   }
   return out
 }
