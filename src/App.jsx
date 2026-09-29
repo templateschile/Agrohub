@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import FloatingCTA from './components/FloatingCTA'
@@ -10,7 +10,7 @@ import AIChat from './pages/AIChat'
 import Documentos from './pages/Documentos'
 import Eventos from './pages/Eventos'
 import Tienda from './pages/Tienda'
-import Precios from './pages/Precios'
+import Evaluacion from './pages/Evaluacion'
 import Terminos from './pages/Terminos'
 
 export default function App() {
@@ -26,7 +26,8 @@ export default function App() {
             <Route path="/documentos" element={<Documentos />} />
             <Route path="/eventos" element={<Eventos />} />
             <Route path="/tienda" element={<Tienda />} />
-            <Route path="/precios" element={<Precios />} />
+            <Route path="/evaluacion" element={<Evaluacion />} />
+            <Route path="/precios" element={<Navigate to="/evaluacion" replace />} />
             <Route path="/terminos" element={<Terminos />} />
           </Routes>
         </main>

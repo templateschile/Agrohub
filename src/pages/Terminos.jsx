@@ -95,9 +95,9 @@ export default function Terminos() {
 
           {/* 7 */}
           <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-3">7. Cotizador referencial</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-3">7. Evaluación referencial</h2>
             <p className="text-sm leading-relaxed">
-              Los valores mostrados en el cotizador de <a href="/precios" className="text-agro-green-600 underline font-medium">agrohubs.cl/precios</a> son
+              Las configuraciones y valores de la evaluación en <a href="/evaluacion" className="text-agro-green-600 underline font-medium">agrohubs.cl/evaluacion</a> son
               referenciales. El precio definitivo se confirma en una propuesta formal, tras diagnóstico
               técnico del territorio y requerimientos específicos del hub.
             </p>
