@@ -1,5 +1,8 @@
 import { useInView } from '../hooks/useInView'
-import { ArrowRight, Mail, Phone } from 'lucide-react'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { ArrowRight, ClipboardCheck, ShieldCheck, Clock, CheckCircle } from 'lucide-react'
+import { enviarLead, emailValido } from '../lib/lead'
 
 const BG = 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1800&q=80&auto=format'
 
@@ -43,55 +46,92 @@ export default function ClosingCTA() {
               </p>
               <div className="flex flex-col gap-4">
                 {[
-                  { icon: Mail,  label: 'Email',              value: 'contacto@agrohub.cl' },
-                  { icon: Phone, label: 'Telefono / WhatsApp', value: '+56 9 8756 1075' },
-                ].map(({ icon: Icon, label, value }) => (
-                  <div key={label} className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-agro-green-50 border border-agro-green-100 rounded-xl flex items-center justify-center">
+                  { icon: ClipboardCheck, titulo: 'Diagnóstico sin compromiso', texto: 'Primero entendemos tu operación; después proponemos.' },
+                  { icon: ShieldCheck,    titulo: 'Tus datos son confidenciales', texto: 'Solo los usa nuestro equipo para contactarte.' },
+                  { icon: Clock,          titulo: 'Respuesta en 24 horas hábiles', texto: 'Te escribe una persona del equipo, no un bot.' },
+                ].map(({ icon: Icon, titulo, texto }) => (
+                  <div key={titulo} className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-agro-green-50 border border-agro-green-100 rounded-xl flex items-center justify-center shrink-0">
                       <Icon size={17} className="text-agro-green-600" />
                     </div>
                     <div>
-                      <div className="text-xs text-gray-400">{label}</div>
-                      <div className="text-gray-800 font-medium text-sm">{value}</div>
+                      <div className="text-gray-800 font-medium text-sm">{titulo}</div>
+                      <div className="text-xs text-gray-400">{texto}</div>
                     </div>
                   </div>
                 ))}
               </div>
+              <Link to="/evaluacion" className="inline-flex items-center gap-2 mt-8 text-agro-green-700 font-semibold text-sm hover:underline">
+                ¿Prefieres evaluar tu operación en 3 minutos? <ArrowRight size={14} />
+              </Link>
             </div>
 
             <div className="bg-white border border-gray-100 rounded-2xl p-7 shadow-sm">
-              <form className="flex flex-col gap-4" onSubmit={e => e.preventDefault()}>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { label: 'Nombre',       ph: 'Juan Perez',          type: 'text' },
-                    { label: 'Organización', ph: 'Cooperativa / SAG...', type: 'text' },
-                  ].map(f => (
-                    <div key={f.label}>
-                      <label className="block text-xs font-medium text-gray-600 mb-1.5">{f.label}</label>
-                      <input type={f.type} placeholder={f.ph}
-                        className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400 placeholder-gray-400" />
-                    </div>
-                  ))}
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1.5">Email</label>
-                  <input type="email" placeholder="juan@ejemplo.cl"
-                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400 placeholder-gray-400" />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1.5">Mensaje</label>
-                  <textarea rows={3} placeholder="¿Qué territorio? ¿Qué desafío?"
-                    className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400 placeholder-gray-400 resize-none" />
-                </div>
-                <button type="submit"
-                  className="w-full bg-agro-green-600 hover:bg-agro-green-700 text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm">
-                  Enviar <ArrowRight size={15} />
-                </button>
-              </form>
+              <FormContacto />
             </div>
           </div>
         </div>
       </section>
     </>
+  )
+}
+
+const inputCls = 'w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400 placeholder-gray-400'
+
+function FormContacto() {
+  const [f, setF] = useState({ nombre: '', empresa: '', email: '', mensaje: '', website: '' })
+  const [estado, setEstado] = useState('editando')
+  const set = k => e => setF(prev => ({ ...prev, [k]: e.target.value }))
+  const valido = f.nombre.trim() && emailValido(f.email)
+
+  const enviar = async e => {
+    e.preventDefault()
+    if (!valido) return
+    setEstado('enviando')
+    const ok = await enviarLead({
+      tipo: 'contacto',
+      contacto: { nombre: f.nombre, empresa: f.empresa, email: f.email },
+      mensaje: f.mensaje, website: f.website,
+    })
+    setEstado(ok ? 'enviado' : 'error')
+  }
+
+  if (estado === 'enviado') {
+    return (
+      <div className="text-center py-8">
+        <CheckCircle size={44} className="text-agro-green-500 mx-auto mb-3" />
+        <h3 className="font-bold text-gray-900 text-lg mb-1">¡Mensaje recibido!</h3>
+        <p className="text-gray-500 text-sm">Te contactaremos dentro de las próximas 24 horas hábiles.</p>
+      </div>
+    )
+  }
+
+  return (
+    <form className="flex flex-col gap-4" onSubmit={enviar}>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1.5">Nombre *</label>
+          <input value={f.nombre} onChange={set('nombre')} placeholder="Juan Pérez" className={inputCls} />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1.5">Organización</label>
+          <input value={f.empresa} onChange={set('empresa')} placeholder="Empresa / Cooperativa" className={inputCls} />
+        </div>
+      </div>
+      <div>
+        <label className="block text-xs font-medium text-gray-600 mb-1.5">Email *</label>
+        <input type="email" value={f.email} onChange={set('email')} placeholder="juan@ejemplo.cl" className={inputCls} />
+      </div>
+      <div>
+        <label className="block text-xs font-medium text-gray-600 mb-1.5">Mensaje</label>
+        <textarea rows={3} value={f.mensaje} onChange={set('mensaje')} placeholder="¿Qué territorio? ¿Qué desafío?" className={`${inputCls} resize-none`} />
+      </div>
+      <input value={f.website} onChange={set('website')} tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
+      {estado === 'error' && <p className="text-xs text-red-600">No pudimos enviar tu mensaje. Inténtalo nuevamente en unos minutos.</p>}
+      <button type="submit" disabled={!valido || estado === 'enviando'}
+        className="w-full bg-agro-green-600 hover:bg-agro-green-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm">
+        {estado === 'enviando' ? 'Enviando...' : 'Enviar'} <ArrowRight size={15} />
+      </button>
+    </form>
   )
 }

@@ -179,10 +179,10 @@ export default function EcosystemDiagram() {
             Leer Términos y Condiciones <ArrowRight size={14} />
           </a>
           <a
-            href="/precios"
+            href="/evaluacion"
             className="inline-flex items-center gap-2 bg-agro-green-600 hover:bg-agro-green-500 text-white font-semibold text-sm px-6 py-3 rounded-full transition-colors"
           >
-            Ver cotizador <ArrowRight size={14} />
+            Evalúa tu operación <ArrowRight size={14} />
           </a>
         </div>
       </div>

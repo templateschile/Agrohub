@@ -53,9 +53,9 @@ const modules = [
     color: "text-amber-600",
     bg: "bg-amber-50",
     border: "border-amber-100",
-    title: "Precios y Cotizador",
-    desc: "Conoce los planes disponibles y cotiza tu AgroHub personalizado según tus necesidades.",
-    href: "/precios",
+    title: "Evaluación AgroHub",
+    desc: "Cuéntanos tu cultivo y tu operación, y diseñamos un AgroHub modular a tu medida.",
+    href: "/evaluacion",
   },
 ]
 
