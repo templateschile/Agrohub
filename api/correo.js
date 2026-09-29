@@ -97,12 +97,13 @@ async function leer(cfg, carpeta, uid) {
   })
 }
 
-async function enviar(cfg, { para, cc, asunto, cuerpo, firma, responderA, referencias, adjuntos }) {
+async function enviar(cfg, { para, cc, cco, asunto, cuerpo, firma, responderA, referencias, adjuntos }) {
   const html = `<div style="font-family:Arial,sans-serif;font-size:14px;color:#1f2937;line-height:1.6">${escapar(cuerpo).replace(/\n/g, '<br>')}</div>${firma ? firmaHtml(firma) : ''}`
   const mail = {
     from: remitente(cfg),
     to: para,
     cc: cc || undefined,
+    bcc: cco || undefined,
     subject: asunto,
     html,
     text: cuerpo,
@@ -112,7 +113,9 @@ async function enviar(cfg, { para, cc, asunto, cuerpo, firma, responderA, refere
   const info = await transporte(cfg).sendMail(mail)
   // Copia en "Enviados" (el SMTP no la guarda solo); si falla, el envio igual se hizo
   try {
-    const raw = await new MailComposer({ ...mail, messageId: info.messageId }).compile().build()
+    const nodo = new MailComposer({ ...mail, messageId: info.messageId }).compile()
+    nodo.keepBcc = true // la copia propia conserva a quien iba la copia oculta
+    const raw = await nodo.build()
     await conImap(cfg, async client => {
       const enviados = await carpetaEnviados(client)
       if (enviados) await client.append(enviados, raw, ['\\Seen'])
@@ -151,7 +154,7 @@ export default async function handler(req, res) {
       const adjuntos = leerAdjuntos(b.adjuntos)
       const id = await enviar(cfg, {
         adjuntos,
-        para, cc: String(b.cc || '').trim(),
+        para, cc: String(b.cc || '').trim(), cco: String(b.cco || '').trim(),
         asunto: String(b.asunto).slice(0, 300),
         cuerpo: String(b.cuerpo || '').slice(0, 50000),
         // Sin firma elegida se usa la de la casilla; "" = sin firma

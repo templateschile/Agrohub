@@ -3,7 +3,30 @@
 // lo que va entre [corchetes] se completa a mano antes de enviar.
 // La firma no va aqui: se agrega sola segun la casilla elegida.
 
+// Se carga sola al redactar un correo nuevo (no en respuestas)
+export const PLANTILLA_POR_DEFECTO = "reunion"
+
 export const PLANTILLAS = [
+  {
+    id: "reunion",
+    nombre: "Coordinar reunión con el equipo (por defecto)",
+    asunto: "AgroHubs × {empresa} · coordinemos una reunión",
+    cuerpo: `Hola {nombre}
+
+Gracias por tu interés en AgroHubs. Nos gustaría reunirnos con tu equipo agrícola y técnico para entender cómo trabajan hoy y dónde ven las mayores oportunidades de mejora.
+
+La idea es una conversación de 60 minutos: te presentamos brevemente el enfoque de AgroHubs y, sobre todo, escuchamos sus prioridades. Con eso diseñamos un diagnóstico previo y una propuesta modular a la medida de {empresa}.
+
+Para aprovechar mejor la reunión, pueden completar antes esta evaluación de 5 minutos: https://www.agrohubs.cl/evaluacion
+
+¿Me compartes dos o tres horarios posibles para la próxima semana?
+
+Adjunto pdf que explica un poco más lo que son los Hubs y la web https://www.agrohubs.cl
+
+Aquí link: https://drive.google.com/file/d/1PrjbHsHy06YzVuKLXgMDk-bg63HNwWj3/view?usp=drive_link
+
+Un abrazo,`,
+  },
   {
     id: "evaluacion",
     nombre: "Respuesta a evaluación recibida",
@@ -21,22 +44,6 @@ Te propongo una reunión de 45 minutos para conocer mejor tu operación y defini
 Si prefieres otro momento, dime y lo coordinamos.
 
 Saludos,`,
-  },
-  {
-    id: "reunion",
-    nombre: "Coordinar reunión con el equipo",
-    asunto: "AgroHubs × {empresa} · coordinemos una reunión",
-    cuerpo: `Hola {nombre}:
-
-Gracias por tu interés en AgroHubs. Nos gustaría reunirnos con tu equipo agrícola y técnico para entender cómo trabajan hoy y dónde ven las mayores oportunidades de mejora.
-
-La idea es una conversación de 60 minutos: te presentamos brevemente el enfoque de AgroHubs y, sobre todo, escuchamos sus prioridades. Con eso diseñamos un diagnóstico previo y una propuesta modular a la medida de {empresa}.
-
-Para aprovechar mejor la reunión, pueden completar antes esta evaluación de 5 minutos: https://www.agrohubs.cl/evaluacion
-
-¿Me compartes dos o tres horarios posibles para la próxima semana?
-
-Un abrazo,`,
   },
   {
     id: "propuesta",
