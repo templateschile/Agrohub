@@ -4,9 +4,9 @@ import { enviarGracias, smtpConfigurado, configCorreo } from './_lib/mail.js'
 import { guardarLead, storeConfigurado } from './_lib/store.js'
 
 const TIPOS = {
-  evaluacion: 'Nueva evaluación AgroHub',
-  contacto:   'Nuevo contacto AgroHub',
-  pedido:     'Nuevo pedido Tienda AgroHub',
+  evaluacion: 'Nueva evaluación AgroHubs',
+  contacto:   'Nuevo contacto AgroHubs',
+  pedido:     'Nuevo pedido Tienda AgroHubs',
 }
 
 const texto = (v, max = 300) => String(v ?? '').trim().slice(0, max)

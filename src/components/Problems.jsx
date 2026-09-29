@@ -90,7 +90,7 @@ export default function Problems() {
             <span className="text-rose-500 text-sm font-medium">Diagnóstico agrícola</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-            10 desafíos que AgroHub resuelve
+            10 desafíos que AgroHubs resuelve
           </h2>
           <p className="text-gray-500 text-base">
             Cada problema real del agricultor tiene una respuesta concreta en la plataforma.

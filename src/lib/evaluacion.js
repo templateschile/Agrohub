@@ -167,7 +167,7 @@ export const FUENTES = ["INIA", "INDAP", "FAO", "SAG", "ODEPA", "Clima (DMC / Ag
 export const LICENCIAS = [
   { id: "self", label: "Self Hosted",      desc: "Licencia compartida + soporte + código fuente admin y app", badge: "Código compartido" },
   { id: "full", label: "Full Hosted",      desc: "Código completo, licencia propia, un solo pago, documentación completa", badge: "Licencia exclusiva" },
-  { id: "saas", label: "Mes a mes (SaaS)", desc: "Usuarios en la app AgroHub compartida, sin app propia", badge: "Sin inversión inicial" },
+  { id: "saas", label: "Mes a mes (SaaS)", desc: "Usuarios en la app AgroHubs compartida, sin app propia", badge: "Sin inversión inicial" },
   { id: "otro", label: OTROS,              desc: "Cuéntanos qué modelo te acomoda" },
 ]
 
@@ -193,7 +193,7 @@ export const ETAPAS = [
   { titulo: "Propuesta modular",            texto: "Kit tecnológico a tu medida: tomas solo lo que te sirve." },
   { titulo: "Instalación y capacitación",   texto: "Instalamos sensores y herramientas, y capacitamos en terreno." },
   { titulo: "Seguimiento y extensionistas", texto: "Acompañamos la adopción y formamos referentes en tu equipo." },
-  { titulo: "Plataforma AgroHub",           texto: "Monitoreo centralizado, trazabilidad y conocimiento en un solo lugar." },
+  { titulo: "Plataforma AgroHubs",           texto: "Monitoreo centralizado, trazabilidad y conocimiento en un solo lugar." },
 ]
 
 export const nuevaZona = n => ({ nombre: `Zona ${n}`, hectareas: 0, agricultores: 0 })
@@ -385,7 +385,7 @@ export function insights(r) {
 
   if (conAsociados(r)) {
     out.push({ titulo: "Tu red de productores",
-      texto: `Con ${fmt(r.productores)} productores asociados, AgroHub centraliza el seguimiento de cada campo y lo que se les entrega, con tu equipo técnico como extensionistas.` })
+      texto: `Con ${fmt(r.productores)} productores asociados, AgroHubs centraliza el seguimiento de cada campo y lo que se les entrega, con tu equipo técnico como extensionistas.` })
   }
   if (cultivaTomate(r)) out.push(...insightsTomate(r))
   Object.entries(INSIGHT_CULTIVO).forEach(([c, texto]) => cultivos.includes(c) && out.push({ titulo: c, texto }))
@@ -418,7 +418,7 @@ export function insights(r) {
     if (r.verData.includes("Tenemos los sensores pero no revisamos la data")) {
       out.push({ titulo: "Tus sensores", texto: "Es muy común: hay sensores, pero la data no llega a quien decide. Un panel único con alertas simples hace que se use." })
     } else if (listaMarcas(r).length > 1) {
-      out.push({ titulo: "Tus sensores", texto: `Usas ${listaMarcas(r).length} marcas distintas: AgroHub las reúne en un solo panel en vez de revisar una app por proveedor.` })
+      out.push({ titulo: "Tus sensores", texto: `Usas ${listaMarcas(r).length} marcas distintas: AgroHubs las reúne en un solo panel en vez de revisar una app por proveedor.` })
     } else {
       out.push({ titulo: "Tus sensores", texto: "Aprovechamos lo que ya tienes instalado: lo integramos antes de sumar equipos nuevos." })
     }

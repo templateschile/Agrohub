@@ -16,7 +16,7 @@ export default function Footer() {
               </svg>
             </div>
             <div>
-              <div className="font-bold text-lg leading-tight">AgroHub</div>
+              <div className="font-bold text-lg leading-tight">AgroHubs</div>
               <div className="text-white/50 text-xs">Centro Demostrativo Móvil</div>
             </div>
           </div>
@@ -34,7 +34,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-white/30 text-xs">&copy; 2025 AgroHub &middot; Chile</p>
+          <p className="text-white/30 text-xs">&copy; 2025 AgroHubs &middot; Chile</p>
           <p className="text-white/40 text-xs">
             <a href="/#contacto" className="hover:text-white/70 transition-colors">Contacto</a>
           </p>

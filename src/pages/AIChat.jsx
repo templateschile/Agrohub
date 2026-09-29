@@ -33,7 +33,7 @@ export default function AIChat() {
             Pregunta como hablas. <span className="text-agro-green-300">Recibe como necesitas.</span>
           </h1>
           <p className="text-white/65 text-xl max-w-xl leading-relaxed">
-            El asistente de IA de AgroHub responde con datos reales de tu predio, fuentes validadas
+            El asistente de IA de AgroHubs responde con datos reales de tu predio, fuentes validadas
             y contexto técnico. Sin tecnicismos innecesarios.
           </p>
         </div>
@@ -98,7 +98,7 @@ export default function AIChat() {
                       <span className="text-gray-800 text-sm">{c.q}</span>
                     </div>
                     <div className="flex items-start gap-2">
-                      <span className="text-xs font-semibold text-agro-green-600 uppercase tracking-wide shrink-0 pt-0.5">AgroHub</span>
+                      <span className="text-xs font-semibold text-agro-green-600 uppercase tracking-wide shrink-0 pt-0.5">AgroHubs</span>
                       <span className="text-gray-600 text-sm leading-relaxed">{c.a}</span>
                     </div>
                   </div>

@@ -34,7 +34,7 @@ const events = [
   },
   {
     date: 'Jul 19, 2025',
-    title: 'Workshop: Gestión de documentos y protocolos en AgroHub',
+    title: 'Workshop: Gestión de documentos y protocolos en AgroHubs',
     type: 'Workshop',
     location: 'Hub Móvil — Zona Sur',
     duration: '3 horas',

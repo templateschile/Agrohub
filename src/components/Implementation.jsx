@@ -147,7 +147,7 @@ export default function Implementation() {
           <div>
             <h3 className="font-semibold text-agro-green-900 text-lg mb-1">El acompañamiento no termina</h3>
             <p className="text-agro-green-700 leading-relaxed">
-              A diferencia de los proyectos tradicionales, AgroHub no tiene una fecha de cierre.
+              A diferencia de los proyectos tradicionales, AgroHubs no tiene una fecha de cierre.
               El soporte continúa activo y el modelo crece con el territorio.
             </p>
           </div>

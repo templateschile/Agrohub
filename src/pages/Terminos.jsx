@@ -11,7 +11,7 @@ export default function Terminos() {
             Términos y Condiciones
           </h1>
           <p className="text-white/65 text-base">
-            Licencia compartida AgroHub · Versión 1.0 · Vigente desde 2025
+            Licencia compartida AgroHubs · Versión 1.0 · Vigente desde 2025
           </p>
         </div>
       </section>
@@ -23,12 +23,12 @@ export default function Terminos() {
           <div>
             <h2 className="text-lg font-bold text-gray-900 mb-3">1. Propiedad de los datos</h2>
             <p className="text-sm leading-relaxed">
-              Los datos generados, almacenados o procesados dentro de cada AgroHub son propiedad
-              exclusiva del hub que los originó. AgroHub no reclama ningún derecho sobre la información
+              Los datos generados, almacenados o procesados dentro de cada hub de AgroHubs son propiedad
+              exclusiva del hub que los originó. AgroHubs no reclama ningún derecho sobre la información
               productiva, climática, de sensores o comercial de cada organización.
             </p>
             <p className="text-sm leading-relaxed mt-3">
-              Cualquier compartición de datos entre hubs, con terceros o con la red AgroHub requiere
+              Cualquier compartición de datos entre hubs, con terceros o con la red AgroHubs requiere
               autorización expresa, consciente y por escrito del usuario responsable del hub. No existe
               compartición automática ni implícita de ningún dato.
             </p>
@@ -38,14 +38,14 @@ export default function Terminos() {
           <div>
             <h2 className="text-lg font-bold text-gray-900 mb-3">2. Licencia del código fuente</h2>
             <p className="text-sm leading-relaxed">
-              La licencia otorgada al contratar AgroHub incluye acceso al código fuente del panel de
+              La licencia otorgada al contratar AgroHubs incluye acceso al código fuente del panel de
               administración (Node.js + React) y de la aplicación móvil (Flutter). Este acceso es de uso
               interno para el hub contratante.
             </p>
             <p className="text-sm leading-relaxed mt-3">
               Está permitido adaptar la interfaz, agregar contenido propio y configurar integraciones
               específicas del territorio. No está permitido redistribuir, revender o sublicenciar el
-              código base a terceros sin autorización escrita del equipo AgroHub.
+              código base a terceros sin autorización escrita del equipo AgroHubs.
             </p>
           </div>
 
@@ -53,7 +53,7 @@ export default function Terminos() {
           <div>
             <h2 className="text-lg font-bold text-gray-900 mb-3">3. Mejoras y actualizaciones del ecosistema</h2>
             <p className="text-sm leading-relaxed">
-              Los features, mejoras y nuevas funcionalidades desarrolladas para la red AgroHub se
+              Los features, mejoras y nuevas funcionalidades desarrolladas para la red AgroHubs se
               distribuyen mediante <strong>pull requests</strong> al repositorio compartido. Cada hub
               puede optar por incorporar estas actualizaciones de forma voluntaria, siempre que mantenga
               compatibilidad con la arquitectura base.
@@ -61,7 +61,7 @@ export default function Terminos() {
             <p className="text-sm leading-relaxed mt-3">
               Los desarrollos adicionales realizados por un hub que modifiquen el núcleo del sistema
               sin seguir el proceso de pull request implican la pérdida del soporte técnico garantizado
-              por AgroHub sobre las versiones afectadas.
+              por AgroHubs sobre las versiones afectadas.
             </p>
           </div>
 
@@ -122,7 +122,7 @@ export default function Terminos() {
           </div>
 
           <div className="border-t border-gray-100 pt-6 text-xs text-gray-400">
-            Última actualización: enero 2025 · AgroHub · agrohubs.cl
+            Última actualización: enero 2025 · AgroHubs · agrohubs.cl
           </div>
 
         </div>

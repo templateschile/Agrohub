@@ -74,10 +74,10 @@ function Tarjeta({ c, onEditar, onBorrar, aviso }) {
 }
 
 const SUGERIDAS = [
-  { user: "marcos@agrohubs.cl",           from: "Marcos Contreras · AgroHub <marcos@agrohubs.cl>",     firma: "marcos" },
-  { user: "cristian@agrohubs.cl",         from: "Cristián Betteley · AgroHub <cristian@agrohubs.cl>",  firma: "cristian" },
-  { user: "cotizaciones@agrohubs.cl",     from: "AgroHub Cotizaciones <cotizaciones@agrohubs.cl>",     firma: "equipo" },
-  { user: "contacto@compararepuestos.cl", from: "AgroHub <contacto@compararepuestos.cl>",              firma: "marcos" },
+  { user: "marcos@agrohubs.cl",           from: "Marcos Contreras · AgroHubs <marcos@agrohubs.cl>",     firma: "marcos" },
+  { user: "cristian@agrohubs.cl",         from: "Cristián Betteley · AgroHubs <cristian@agrohubs.cl>",  firma: "cristian" },
+  { user: "cotizaciones@agrohubs.cl",     from: "AgroHubs Cotizaciones <cotizaciones@agrohubs.cl>",     firma: "equipo" },
+  { user: "contacto@compararepuestos.cl", from: "AgroHubs <contacto@compararepuestos.cl>",              firma: "marcos" },
 ]
 
 function Casilla({ c, principal, clave, onCambio, servidor, claveDe }) {
@@ -144,7 +144,7 @@ function Casilla({ c, principal, clave, onCambio, servidor, claveDe }) {
         </div>
         <div>
           <label className="text-[11px] font-semibold text-gray-600">Remitente (cómo lo ve quien recibe)</label>
-          <input value={f.from} onChange={set("from")} placeholder={`AgroHub <${f.user}>`} className={inputCls} />
+          <input value={f.from} onChange={set("from")} placeholder={`AgroHubs <${f.user}>`} className={inputCls} />
         </div>
         <div>
           <label className="text-[11px] font-semibold text-gray-600">Firma por defecto</label>

@@ -93,7 +93,7 @@ export default function Dashboard() {
             <div className="max-w-xl mx-auto text-center mb-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-3">Sensores compatibles</h2>
               <p className="text-gray-500 text-sm">
-                AgroHub se integra con los principales proveedores de sensores agrícolas del mundo.
+                AgroHubs se integra con los principales proveedores de sensores agrícolas del mundo.
               </p>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">

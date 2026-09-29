@@ -142,7 +142,7 @@ export default function PedidoModal({ productor, onClose }) {
               className="w-full flex items-center justify-center gap-2 bg-agro-green-600 hover:bg-agro-green-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl text-sm transition-colors">
               <Send size={15} />{enviando ? "Enviando..." : "Enviar pedido"}
             </button>
-            <p className="text-[10px] text-gray-400 text-center">AgroHub coordina el pedido con el proveedor.</p>
+            <p className="text-[10px] text-gray-400 text-center">AgroHubs coordina el pedido con el proveedor.</p>
           </div>
         )}
       </div>

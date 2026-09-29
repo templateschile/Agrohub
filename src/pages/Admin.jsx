@@ -38,7 +38,7 @@ function Login({ onLogin, error }) {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <form onSubmit={e => { e.preventDefault(); onLogin(clave) }} className="bg-white border border-gray-100 rounded-2xl shadow-lg p-8 w-full max-w-sm">
         <div className="w-11 h-11 rounded-xl bg-agro-green-600 flex items-center justify-center mb-4"><Lock size={18} className="text-white" /></div>
-        <h1 className="font-bold text-gray-900 text-xl mb-1">Admin AgroHub</h1>
+        <h1 className="font-bold text-gray-900 text-xl mb-1">Admin AgroHubs</h1>
         <p className="text-sm text-gray-500 mb-5">Evaluaciones, contactos y propuestas.</p>
         <input type="password" value={clave} onChange={e => setClave(e.target.value)} placeholder="Clave de administrador" autoFocus
           className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400" />
@@ -176,7 +176,7 @@ export default function Admin() {
     setCargando(false)
   }, [clave])
 
-  useEffect(() => { document.title = "Admin · AgroHub" }, [])
+  useEffect(() => { document.title = "Admin · AgroHubs" }, [])
   useEffect(() => { if (clave && !leads) cargar() }, [clave, leads, cargar])
 
   if (!clave || (!leads && error)) {
@@ -193,7 +193,7 @@ export default function Admin() {
       <header className="bg-agro-green-900 text-white no-print">
         <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-5">
-            <span className="font-bold">AgroHub · Admin</span>
+            <span className="font-bold">AgroHubs · Admin</span>
             <nav className="flex gap-1 text-sm">
               {PESTANAS.map(([id, label]) => (
                 <button key={id} onClick={() => setParams(id === "evaluaciones" ? {} : { tab: id })}

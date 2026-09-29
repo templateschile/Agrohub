@@ -53,8 +53,8 @@ const modules = [
     color: "text-amber-600",
     bg: "bg-amber-50",
     border: "border-amber-100",
-    title: "Evaluación AgroHub",
-    desc: "Cuéntanos tu cultivo y tu operación, y diseñamos un AgroHub modular a tu medida.",
+    title: "Evaluación AgroHubs",
+    desc: "Cuéntanos tu cultivo y tu operación, y diseñamos una solución AgroHubs modular a tu medida.",
     href: "/evaluacion",
   },
 ]

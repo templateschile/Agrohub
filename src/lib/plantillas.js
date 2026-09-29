@@ -7,10 +7,10 @@ export const PLANTILLAS = [
   {
     id: "evaluacion",
     nombre: "Respuesta a evaluación recibida",
-    asunto: "Tu evaluación AgroHub · próximos pasos",
+    asunto: "Tu evaluación AgroHubs · próximos pasos",
     cuerpo: `Hola {nombre}:
 
-Gracias por completar la evaluación de AgroHub. Revisamos tus respuestas y vemos oportunidades concretas para {empresa}, especialmente en [tema principal: riego, calidad, trazabilidad, seguimiento de productores].
+Gracias por completar la evaluación de AgroHubs. Revisamos tus respuestas y vemos oportunidades concretas para {empresa}, especialmente en [tema principal: riego, calidad, trazabilidad, seguimiento de productores].
 
 Te propongo una reunión de 45 minutos para conocer mejor tu operación y definir el alcance de un diagnóstico previo en terreno. ¿Te acomoda alguno de estos horarios?
 
@@ -25,12 +25,12 @@ Saludos,`,
   {
     id: "reunion",
     nombre: "Coordinar reunión con el equipo",
-    asunto: "AgroHub × {empresa} · coordinemos una reunión",
+    asunto: "AgroHubs × {empresa} · coordinemos una reunión",
     cuerpo: `Hola {nombre}:
 
-Gracias por tu interés en AgroHub. Nos gustaría reunirnos con tu equipo agrícola y técnico para entender cómo trabajan hoy y dónde ven las mayores oportunidades de mejora.
+Gracias por tu interés en AgroHubs. Nos gustaría reunirnos con tu equipo agrícola y técnico para entender cómo trabajan hoy y dónde ven las mayores oportunidades de mejora.
 
-La idea es una conversación de 60 minutos: te presentamos brevemente el enfoque de AgroHub y, sobre todo, escuchamos sus prioridades. Con eso diseñamos un diagnóstico previo y una propuesta modular a la medida de {empresa}.
+La idea es una conversación de 60 minutos: te presentamos brevemente el enfoque de AgroHubs y, sobre todo, escuchamos sus prioridades. Con eso diseñamos un diagnóstico previo y una propuesta modular a la medida de {empresa}.
 
 Para aprovechar mejor la reunión, pueden completar antes esta evaluación de 5 minutos: https://www.agrohubs.cl/evaluacion
 
@@ -63,7 +63,7 @@ Te confirmo la visita de diagnóstico:
 - Fecha: [fecha]
 - Hora de llegada: [hora]
 - Lugar: [predio / dirección]
-- Equipo AgroHub: [nombres]
+- Equipo AgroHubs: [nombres]
 
 Para aprovechar la jornada, te pedimos tener a mano, si es posible:
 - Mapa o listado de predios y cuarteles.
@@ -99,10 +99,10 @@ Saludos,`,
   {
     id: "seguimiento",
     nombre: "Seguimiento (sin respuesta)",
-    asunto: "Seguimiento · AgroHub y {empresa}",
+    asunto: "Seguimiento · AgroHubs y {empresa}",
     cuerpo: `Hola {nombre}:
 
-Te escribo para retomar nuestra conversación sobre AgroHub para {empresa}. Sé que la temporada tiene muchas urgencias, así que te propongo algo simple: una llamada de 20 minutos para ver si tiene sentido avanzar con el diagnóstico previo.
+Te escribo para retomar nuestra conversación sobre AgroHubs para {empresa}. Sé que la temporada tiene muchas urgencias, así que te propongo algo simple: una llamada de 20 minutos para ver si tiene sentido avanzar con el diagnóstico previo.
 
 ¿Te acomoda [día y hora]? Si no es buen momento, dime cuándo te escribo de nuevo.
 
@@ -111,7 +111,7 @@ Saludos,`,
   {
     id: "cotizacion",
     nombre: "Envío de cotización",
-    asunto: "Cotización AgroHub · {empresa}",
+    asunto: "Cotización AgroHubs · {empresa}",
     cuerpo: `Hola {nombre}:
 
 Adjuntamos la cotización solicitada para {empresa}.
@@ -129,7 +129,7 @@ Saludos,`,
   {
     id: "contacto",
     nombre: "Respuesta a contacto desde la web",
-    asunto: "Gracias por escribirnos · AgroHub",
+    asunto: "Gracias por escribirnos · AgroHubs",
     cuerpo: `Hola {nombre}:
 
 Gracias por escribirnos a través de agrohubs.cl. Para orientarte mejor, ¿me cuentas brevemente qué cultivo tienes, cuántas hectáreas y qué te gustaría mejorar?
