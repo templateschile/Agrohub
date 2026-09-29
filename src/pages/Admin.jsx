@@ -4,6 +4,7 @@ import { Lock, LogOut, RefreshCw, Save, Printer, Copy, RotateCcw, Bold, Italic, 
 import { generarPropuesta } from "../lib/propuesta"
 import Correo from "./admin/Correo"
 import Cuentas from "./admin/Cuentas"
+import Seguimiento from "./admin/Seguimiento"
 
 const ESTADOS = ["nueva", "en revisión", "propuesta enviada", "ganada", "descartada"]
 const COLOR_ESTADO = {
@@ -15,7 +16,7 @@ const COLOR_ESTADO = {
 }
 const TIPO = { evaluacion: "Evaluación", contacto: "Contacto", pedido: "Pedido" }
 const CLAVE_SESION = "agrohub_admin"
-const PESTANAS = [["evaluaciones", "Evaluaciones"], ["correo", "Correo"], ["cuentas", "Cuentas"]]
+const PESTANAS = [["evaluaciones", "Evaluaciones"], ["correo", "Correo"], ["seguimiento", "Seguimiento"], ["cuentas", "Cuentas"]]
 
 const leerClave = () => { try { return sessionStorage.getItem(CLAVE_SESION) || "" } catch { return "" } }
 const guardarClave = v => { try { v ? sessionStorage.setItem(CLAVE_SESION, v) : sessionStorage.removeItem(CLAVE_SESION) } catch { /* sin storage */ } }
@@ -212,6 +213,7 @@ export default function Admin() {
         <Correo clave={clave} casillaUrl={params.get("casilla")} onCasilla={email => setParams({ tab: "correo", casilla: email }, { replace: true })}
           nuevoPara={params.get("para") ? { para: params.get("para"), nombre: params.get("nombre"), empresa: params.get("empresa") } : null} />
       </div>}
+      {tab === "seguimiento" && <div className="max-w-7xl mx-auto px-4 md:px-6 py-6"><Seguimiento clave={clave} /></div>}
       {tab === "cuentas" && <div className="max-w-7xl mx-auto px-4 md:px-6 py-6"><Cuentas clave={clave} /></div>}
       {tab === "evaluaciones" && <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
         <aside className="no-print">

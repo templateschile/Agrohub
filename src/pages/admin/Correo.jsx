@@ -25,6 +25,7 @@ function Redactar({ clave, casillas, casillaId, setCasillaId, ccoPorDefecto, ini
     ...(porDefecto ? aplicarPlantilla(PLANTILLAS.find(p => p.id === PLANTILLA_POR_DEFECTO), inicial?.vars) : {}),
   }))
   const [plantilla, setPlantilla] = useState(porDefecto ? PLANTILLA_POR_DEFECTO : "")
+  const [rastrear, setRastrear] = useState(true)
   const [archivos, setArchivos] = useState([])
   const totalBytes = archivos.reduce((t, a) => t + a.size, 0)
   const [estado, setEstado] = useState("")
@@ -51,7 +52,7 @@ function Redactar({ clave, casillas, casillaId, setCasillaId, ccoPorDefecto, ini
     setEstado("Enviando...")
     try {
       const adjuntos = await Promise.all(archivos.map(async a => ({ nombre: a.name, tipo: a.type, base64: await aBase64(a) })))
-      await adminApi(clave, "correo", { method: "POST", body: { ...f, casilla: casillaId, adjuntos } })
+      await adminApi(clave, "correo", { method: "POST", body: { ...f, casilla: casillaId, adjuntos, rastrear } })
       onEnviado()
     } catch (e) { setEstado(e.message) }
   }
@@ -116,6 +117,10 @@ function Redactar({ clave, casillas, casillaId, setCasillaId, ccoPorDefecto, ini
           : <p className="text-xs text-gray-400">El correo sale sin firma.</p>}
       </div>
       <div className="flex flex-wrap items-center gap-3">
+        <label className="inline-flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
+          <input type="checkbox" checked={rastrear} onChange={e => setRastrear(e.target.checked)} className="accent-agro-green-600" />
+          Rastrear apertura y clics <span className="text-gray-400">(ver en Seguimiento)</span>
+        </label>
         <div className="flex-1" />
         {estado && <span className="text-xs text-gray-500">{estado}</span>}
         <button onClick={enviar} disabled={!casillaId || !f.para.trim() || !f.asunto.trim() || totalBytes > MAX_BYTES || estado === "Enviando..."}
