@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { Inbox, Send, RefreshCw, PenSquare, Reply, Paperclip, X, Download } from "lucide-react"
 import { adminApi, FIRMAS_OPCIONES } from "../../lib/adminApi"
-import { PLANTILLAS, aplicarPlantilla } from "../../lib/plantillas"
+import { PLANTILLAS, PLANTILLA_POR_DEFECTO, aplicarPlantilla } from "../../lib/plantillas"
 import { firmaHtml } from "../../lib/firmas"
 
 const fecha = iso => iso ? new Date(iso).toLocaleString("es-CL", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) : ""
@@ -16,10 +16,15 @@ const aBase64 = archivo => new Promise((ok, mal) => {
 })
 const citar = m => `\n\n\nEl ${fecha(m.fecha)}, ${m.de} escribió:\n` + (m.texto || "").split("\n").map(l => "> " + l).join("\n")
 
-function Redactar({ clave, casillas, casillaId, setCasillaId, inicial, onCerrar, onEnviado }) {
+function Redactar({ clave, casillas, casillaId, setCasillaId, ccoPorDefecto, inicial, onCerrar, onEnviado }) {
   const casilla = casillas.find(c => c.id === casillaId)
-  const [f, setF] = useState({ para: "", cc: "", asunto: "", cuerpo: "", firma: casilla?.firma ?? "marcos", ...inicial })
-  const [plantilla, setPlantilla] = useState("")
+  // Correo nuevo: parte con la plantilla por defecto; en respuestas se deja la cita
+  const porDefecto = !inicial?.responderA && !inicial?.cuerpo
+  const [f, setF] = useState(() => ({
+    para: "", cc: "", cco: ccoPorDefecto || "", asunto: "", cuerpo: "", firma: casilla?.firma ?? "marcos", ...inicial,
+    ...(porDefecto ? aplicarPlantilla(PLANTILLAS.find(p => p.id === PLANTILLA_POR_DEFECTO), inicial?.vars) : {}),
+  }))
+  const [plantilla, setPlantilla] = useState(porDefecto ? PLANTILLA_POR_DEFECTO : "")
   const [archivos, setArchivos] = useState([])
   const totalBytes = archivos.reduce((t, a) => t + a.size, 0)
   const [estado, setEstado] = useState("")
@@ -74,7 +79,10 @@ function Redactar({ clave, casillas, casillaId, setCasillaId, inicial, onCerrar,
         </div>
       </div>
       <input value={f.para} onChange={set("para")} placeholder="Para (separa con coma)" className={inputCls} />
-      <input value={f.cc} onChange={set("cc")} placeholder="CC (opcional)" className={inputCls} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <input value={f.cc} onChange={set("cc")} placeholder="CC (opcional)" className={inputCls} />
+        <input value={f.cco} onChange={set("cco")} placeholder="CCO · copia oculta (opcional)" className={inputCls} />
+      </div>
       <input value={f.asunto} onChange={set("asunto")} placeholder="Asunto" className={inputCls} />
       <textarea value={f.cuerpo} onChange={set("cuerpo")} rows={12} placeholder="Escribe tu mensaje..." className={`${inputCls} resize-y`} />
       <div>
@@ -122,6 +130,7 @@ function Redactar({ clave, casillas, casillaId, setCasillaId, inicial, onCerrar,
 export default function Correo({ clave, nuevoPara, casillaUrl, onCasilla }) {
   const [casillas, setCasillas] = useState(null)
   const [casillaId, setCasillaId] = useState("")
+  const [ccoPorDefecto, setCcoPorDefecto] = useState("")
   const [carpetas, setCarpetas] = useState([])
   const [carpeta, setCarpeta] = useState("INBOX")
   const [mensajes, setMensajes] = useState(null)
@@ -134,6 +143,7 @@ export default function Correo({ clave, nuevoPara, casillaUrl, onCasilla }) {
   // Casillas con contraseña guardada; parte en la principal
   useEffect(() => {
     adminApi(clave, "config").then(r => {
+      setCcoPorDefecto(r.ccoPorDefecto || "")
       const utiles = r.casillas.filter(c => c.tieneClave || c.usaCompartida)
       setCasillas(utiles)
       // Link directo: /admin?tab=correo&casilla=<email>
@@ -230,8 +240,10 @@ export default function Correo({ clave, nuevoPara, casillaUrl, onCasilla }) {
       </aside>
 
       <main>
-        {redactar ? (
-          <Redactar key={JSON.stringify(redactar)} clave={clave} casillas={casillas || []} casillaId={casillaId} setCasillaId={setCasillaId} inicial={redactar} onCerrar={() => setRedactar(null)} onEnviado={() => { setRedactar(null); cargar() }} />
+        {redactar && casillas === null ? (
+          <p className="text-sm text-gray-400">Cargando casillas...</p>
+        ) : redactar ? (
+          <Redactar key={JSON.stringify(redactar)} clave={clave} casillas={casillas || []} casillaId={casillaId} setCasillaId={setCasillaId} ccoPorDefecto={ccoPorDefecto} inicial={redactar} onCerrar={() => setRedactar(null)} onEnviado={() => { setRedactar(null); cargar() }} />
         ) : abierto ? (
           <div className="bg-white border border-gray-100 rounded-2xl shadow-sm">
             <div className="p-5 border-b border-gray-100">

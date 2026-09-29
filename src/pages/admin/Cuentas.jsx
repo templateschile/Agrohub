@@ -184,6 +184,24 @@ function Casilla({ c, principal, clave, onCambio, servidor, claveDe }) {
   )
 }
 
+function CcoPorDefecto({ valor, onGuardar }) {
+  const [v, setV] = useState(valor)
+  const [ok, setOk] = useState(false)
+  useEffect(() => setV(valor), [valor])
+  return (
+    <div className="bg-white border border-gray-100 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-end gap-3">
+      <div className="flex-1">
+        <label className="text-[11px] font-semibold text-gray-600">CCO por defecto (copia oculta en todos los correos que envías desde el admin)</label>
+        <input value={v} onChange={e => { setV(e.target.value); setOk(false) }} placeholder="correo1@..., correo2@..." className={inputCls} />
+      </div>
+      <button onClick={async () => { await onGuardar(v); setOk(true) }} disabled={v === valor}
+        className="inline-flex items-center gap-1.5 bg-agro-green-600 hover:bg-agro-green-700 disabled:opacity-40 text-white text-sm font-semibold px-4 py-2 rounded-lg shrink-0">
+        <Save size={14} /> {ok ? "Guardado ✓" : "Guardar"}
+      </button>
+    </div>
+  )
+}
+
 // Casillas del equipo: cada una envia y recibe desde la pestana Correo con su firma
 function Casillas({ clave }) {
   const [datos, setDatos] = useState(null)
@@ -195,6 +213,9 @@ function Casillas({ clave }) {
   if (!datos) return null
 
   const cambio = d => { setDatos(d); setNueva(null) }
+  const guardarCco = async valor => {
+    try { cambio(await adminApi(clave, "config", { method: "PUT", body: { ccoPorDefecto: valor } })) } catch (e) { setError(e.message) }
+  }
   const faltan = SUGERIDAS.filter(s => !datos.casillas.some(c => c.user === s.user))
 
   return (
@@ -206,6 +227,7 @@ function Casillas({ clave }) {
         </span>
       </div>
       <p className="text-xs text-gray-500 -mt-1">Servidor de compararepuestos.cl precargado ({datos.servidor.host}). Las casillas sin contraseña propia usan la de {datos.claveCompartidaDe || "cristian@agrohubs.cl"}. Cada una tiene su link “Abrir buzón”; en Correo eliges desde cuál enviar y se usa su firma.</p>
+      <CcoPorDefecto valor={datos.ccoPorDefecto || ""} onGuardar={guardarCco} />
       {datos.casillas.map(c => <Casilla key={c.id + (c.tieneClave ? "1" : "0")} c={c} principal={c.id === datos.principal} clave={clave} onCambio={cambio} servidor={datos.servidor} claveDe={datos.claveCompartidaDe} />)}
       {nueva && <Casilla key="nueva" c={{ ...nueva, usaCompartida: Boolean(datos.claveCompartidaDe) }} principal={false} clave={clave} onCambio={cambio} servidor={datos.servidor} claveDe={datos.claveCompartidaDe} />}
       {!nueva && (

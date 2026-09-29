@@ -14,6 +14,14 @@ const SEMILLA = [
   { user: 'marcos@agrohubs.cl',       from: 'Marcos Contreras · AgroHubs <marcos@agrohubs.cl>', firma: 'marcos' },
   { user: 'cotizaciones@agrohubs.cl', from: 'AgroHubs Cotizaciones <cotizaciones@agrohubs.cl>', firma: 'equipo' },
 ]
+// Copia oculta que se precarga en todos los correos del admin. Se guarda en la base (editable
+// en Cuentas); si nunca se edito, se usa CCO_POR_DEFECTO de Vercel (el repo es publico).
+const CLAVE_CCO = 'config:cco'
+async function leerCcoPorDefecto() {
+  const v = await redis(['GET', CLAVE_CCO]).catch(() => null)
+  return v ?? (process.env.CCO_POR_DEFECTO || '')
+}
+
 async function sembrar(datos) {
   if (!datos.casillas.length) return false
   if (await redis(['SET', 'config:casillas:semilla:v1', '1', 'NX']) !== 'OK') return false
@@ -63,7 +71,7 @@ export default async function handler(req, res) {
     const responder = async () => {
       const activa = await configCorreo()
       const compartida = claveCompartida(datos)
-      res.json({ ok: true, casillas: datos.casillas.map(sinClave(compartida)), principal: datos.principal, origen: activa.origen, servidor: SERVIDOR_POR_DEFECTO, claveCompartidaDe: compartida ? CASILLA_CLAVE_COMPARTIDA : '' })
+      res.json({ ok: true, casillas: datos.casillas.map(sinClave(compartida)), principal: datos.principal, origen: activa.origen, servidor: SERVIDOR_POR_DEFECTO, claveCompartidaDe: compartida ? CASILLA_CLAVE_COMPARTIDA : '', ccoPorDefecto: await leerCcoPorDefecto() })
     }
 
     if (req.method === 'GET') {
@@ -82,6 +90,10 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'PUT') {
+      if (typeof b.ccoPorDefecto === 'string') {
+        await redis(['SET', CLAVE_CCO, b.ccoPorDefecto.split(',').map(x => x.trim()).filter(Boolean).join(', ').slice(0, 500)])
+        return responder()
+      }
       if (b.principal) {
         if (!datos.casillas.some(c => c.id === b.principal)) return res.status(404).json({ ok: false })
         datos.principal = b.principal
