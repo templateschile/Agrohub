@@ -255,10 +255,10 @@ export default function Evaluacion() {
         <div className="max-w-7xl mx-auto px-6 lg:px-14">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-4">
             <ClipboardCheck size={13} className="text-agro-green-300" />
-            <span className="text-white/85 text-sm font-medium">Evaluación AgroHub · 5 minutos</span>
+            <span className="text-white/85 text-sm font-medium">Evaluación AgroHubs · 5 minutos</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-3 max-w-3xl">
-            Evalúa tu operación, <span className="text-agro-green-300">diseñamos tu AgroHub</span>
+            Evalúa tu operación, <span className="text-agro-green-300">diseñamos tu solución AgroHubs</span>
           </h1>
           <p className="text-white/65 text-lg max-w-2xl leading-relaxed mb-5">
             Cuéntanos qué tienes y qué buscas. Si tu caso no calza con las opciones, marca <b className="text-white/85">“Otros”</b> y escríbelo.
@@ -533,7 +533,7 @@ export default function Evaluacion() {
                     <div className="h-full bg-agro-green-500 transition-all duration-500" style={{ width: `${pct}%` }} />
                   </div>
                   {recomendaciones.length === 0 ? (
-                    <p className="text-sm text-gray-500 leading-relaxed">A medida que respondas, aquí verás cómo AgroHub puede ayudar a tu operación.</p>
+                    <p className="text-sm text-gray-500 leading-relaxed">A medida que respondas, aquí verás cómo AgroHubs puede ayudar a tu operación.</p>
                   ) : (
                     <ul className="flex flex-col gap-3 max-h-[46vh] overflow-y-auto pr-1">
                       {recomendaciones.map(x => (

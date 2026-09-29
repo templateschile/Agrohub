@@ -98,10 +98,10 @@ export function generarPropuesta(lead) {
 <h1>Propuesta de Diagnóstico Previo</h1>
 <p><b>${esc(empresa)}</b><br>${esc(fecha)}</p>
 <p><b>Preparado para:</b> ${esc(c.nombre)}${c.cargo ? `, ${esc(c.cargo)}` : ""}${c.empresa ? ` · ${esc(c.empresa)}` : ""}<br>
-<b>Preparado por:</b> AgroHub · Marcos Contreras y Cristián Betteley</p>
+<b>Preparado por:</b> AgroHubs · Marcos Contreras y Cristián Betteley</p>
 
 <h2>1. Situación actual</h2>
-<p>Según la información entregada en la evaluación AgroHub:</p>
+<p>Según la información entregada en la evaluación AgroHubs:</p>
 <ul>${situacion}</ul>
 ${tablaZonas}
 ${tomate ? `<p><b>Cultivo de tomate:</b></p><ul>${tomate}</ul>` : ""}
@@ -163,6 +163,6 @@ ${traspaso ? `<p><b>Traspaso técnico (licencia ${esc(licencia)}):</b> incluye c
 </ol>
 
 <p>Quedamos atentos a sus comentarios.</p>
-<p><b>Equipo AgroHub</b><br>www.agrohubs.cl</p>
+<p><b>Equipo AgroHubs</b><br>www.agrohubs.cl</p>
 `.trim()
 }

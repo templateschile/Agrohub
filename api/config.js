@@ -11,8 +11,8 @@ const sinClave = compartida => ({ pass, ...c }) => ({ ...c, tieneClave: Boolean(
 
 // Casillas del equipo que se crean una sola vez, sin clave propia (usan la compartida)
 const SEMILLA = [
-  { user: 'marcos@agrohubs.cl',       from: 'Marcos Contreras · AgroHub <marcos@agrohubs.cl>', firma: 'marcos' },
-  { user: 'cotizaciones@agrohubs.cl', from: 'AgroHub Cotizaciones <cotizaciones@agrohubs.cl>', firma: 'equipo' },
+  { user: 'marcos@agrohubs.cl',       from: 'Marcos Contreras · AgroHubs <marcos@agrohubs.cl>', firma: 'marcos' },
+  { user: 'cotizaciones@agrohubs.cl', from: 'AgroHubs Cotizaciones <cotizaciones@agrohubs.cl>', firma: 'equipo' },
 ]
 async function sembrar(datos) {
   if (!datos.casillas.length) return false
@@ -31,7 +31,7 @@ function limpia(b, anterior) {
     port:     Number(b.port) || SERVIDOR_POR_DEFECTO.port,
     imapPort: Number(b.imapPort) || SERVIDOR_POR_DEFECTO.imapPort,
     user,
-    from:     String(b.from || '').trim() || `AgroHub <${user}>`,
+    from:     String(b.from || '').trim() || `AgroHubs <${user}>`,
     firma:    FIRMAS[b.firma] ? b.firma : '',
     // Sin clave nueva se conserva la guardada
     pass:     b.pass ? String(b.pass) : anterior?.pass || '',

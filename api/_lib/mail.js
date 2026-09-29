@@ -24,8 +24,10 @@ export async function leerCasillas() {
   let d
   try { d = JSON.parse(descifrar(raw)) } catch { return vacio }
   // Formato anterior: una sola casilla en la raiz
-  if (d.user && !d.casillas) return { casillas: [{ id: 'c1', firma: 'cristian', ...d }], principal: 'c1' }
-  return { casillas: d.casillas || [], principal: d.principal || d.casillas?.[0]?.id || '' }
+  if (d.user && !d.casillas) return { casillas: [{ id: 'c1', firma: 'cristian', ...d, from: String(d.from || '').replace(/AgroHub(?![\w])/g, 'AgroHubs') }], principal: 'c1' }
+  // Remitentes guardados antes del cambio de marca AgroHub -> AgroHubs
+  const casillas = (d.casillas || []).map(c => ({ ...c, from: String(c.from || '').replace(/AgroHub(?![\w])/g, 'AgroHubs') }))
+  return { casillas, principal: d.principal || d.casillas?.[0]?.id || '' }
 }
 
 export async function guardarCasillas(datos) {
@@ -102,7 +104,7 @@ export async function enviarGracias(cfg, { nombre, email, tipo }) {
     from: remitente(cfg),
     to: email,
     replyTo: FIRMAS.marcos.email,
-    subject: `Gracias por ${que} · AgroHub`,
+    subject: `Gracias por ${que} · AgroHubs`,
     html,
   })
 }

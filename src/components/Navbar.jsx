@@ -50,7 +50,7 @@ export default function Navbar() {
           </div>
           <div className="flex flex-col leading-none">
             <span className={`font-bold text-lg tracking-tight transition-colors leading-tight ${transparent ? 'text-white' : 'text-agro-green-700'}`}>
-              Agro<span className={transparent ? 'text-agro-green-300' : 'text-agro-green-500'}>Hub</span>
+              Agro<span className={transparent ? 'text-agro-green-300' : 'text-agro-green-500'}>Hubs</span>
             </span>
             <span className={`text-[10px] font-medium tracking-wide ${transparent ? 'text-white/50' : 'text-gray-400'}`}>
               Centro Demostrativo Móvil

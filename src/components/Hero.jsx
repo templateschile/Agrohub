@@ -80,7 +80,7 @@ export default function Hero() {
           </h1>
 
           <p className="hero-line-3 text-white/75 text-base leading-relaxed mb-8 max-w-lg">
-            AgroHub centraliza tecnología, datos y conocimiento agrícola
+            AgroHubs centraliza tecnología, datos y conocimiento agrícola
             en una sola plataforma — para cualquier agricultor, en cualquier territorio.
           </p>
 

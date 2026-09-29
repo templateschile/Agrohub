@@ -15,6 +15,6 @@ export async function adminApi(clave, ruta, { method = "GET", query, body } = {}
 export const FIRMAS_OPCIONES = [
   ["marcos", "Marcos Contreras"],
   ["cristian", "Cristián Betteley"],
-  ["equipo", "Equipo AgroHub · Cotizaciones"],
+  ["equipo", "Equipo AgroHubs · Cotizaciones"],
   ["", "Sin firma"],
 ]

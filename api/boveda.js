@@ -18,7 +18,7 @@ const SEMILLA = [
   { servicio: 'Correo contacto@compararepuestos.cl',  url: `https://${SERVIDOR}:2096`, usuario: 'contacto@compararepuestos.cl',  notas: NOTAS_CORREO },
   { servicio: 'cPanel Namecheap (agrohubs.cl y compararepuestos.cl)', url: `https://${SERVIDOR}:2083`, usuario: '', notas: 'Administración de casillas, DNS y hosting.' },
   { servicio: 'Vercel · equipo Oladigital', url: 'https://vercel.com/oladigital/agrohub', usuario: 'cbetteley', notas: 'Proyecto agrohub (www.agrohubs.cl). Variables en Settings > Environment Variables.' },
-  { servicio: 'Telegram · bot de avisos AgroHub', url: 'https://t.me/BotFather', usuario: '', notas: 'Token del bot (TELEGRAM_BOT_TOKEN en Vercel) y grupo de avisos -5276464173.' },
+  { servicio: 'Telegram · bot de avisos AgroHubs', url: 'https://t.me/BotFather', usuario: '', notas: 'Token del bot (TELEGRAM_BOT_TOKEN en Vercel) y grupo de avisos -5276464173.' },
 ]
 
 async function sembrar() {

@@ -83,7 +83,7 @@ export default function EcosystemDiagram() {
         >
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-4 py-1.5 mb-5">
             <Globe size={13} className="text-agro-green-300" />
-            <span className="text-white/85 text-sm font-medium">Red de hubs AgroHub</span>
+            <span className="text-white/85 text-sm font-medium">Red de hubs AgroHubs</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Un ecosistema vivo de hubs interconectados

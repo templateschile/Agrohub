@@ -10,7 +10,7 @@ const escapar = s => String(s ?? '')
 export const FIRMAS = {
   marcos:   { nombre: 'Marcos Contreras',  cargo: 'Agricultura Digital y Transferencia Tecnológica', email: 'marcos@agrohubs.cl',   whatsapp: '56963731824' },
   cristian: { nombre: 'Cristián Betteley', cargo: 'Tech Lead · Plataforma y Datos',                 email: 'cristian@agrohubs.cl', whatsapp: '56987561075' },
-  equipo:   { nombre: 'Equipo AgroHub',    cargo: 'Cotizaciones',                                   email: 'cotizaciones@agrohubs.cl', whatsapp: '' },
+  equipo:   { nombre: 'Equipo AgroHubs',    cargo: 'Cotizaciones',                                   email: 'cotizaciones@agrohubs.cl', whatsapp: '' },
 }
 
 const whatsappVisible = n => `+${n.slice(0, 2)} ${n.slice(2, 3)} ${n.slice(3, 7)} ${n.slice(7)}`
@@ -24,7 +24,7 @@ export function firmaHtml(id = 'marcos', SITIO = 'https://www.agrohubs.cl') {
 <table cellpadding="0" cellspacing="0" style="font-family:Arial,sans-serif;font-size:13px;color:#374151;margin-top:18px">
   <tr>
     <td style="padding-right:14px;border-right:3px solid #2d7325;vertical-align:middle;width:150px">
-      <img src="${SITIO}/logo-firma.png" width="150" height="42" alt="AgroHub · Centro Demostrativo Móvil" style="display:block;width:150px;height:42px;max-width:150px;border:0">
+      <img src="${SITIO}/logo-firma.png" width="150" height="42" alt="AgroHubs · Centro Demostrativo Móvil" style="display:block;width:150px;height:42px;max-width:150px;border:0">
     </td>
     <td style="padding-left:14px;line-height:1.5;vertical-align:middle">
       <div style="font-size:15px;font-weight:bold;color:#111827">${escapar(f.nombre)}</div>

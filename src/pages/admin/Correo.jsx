@@ -1,17 +1,27 @@
 import { useCallback, useEffect, useState } from "react"
-import { Inbox, Send, RefreshCw, PenSquare, Reply, Paperclip, X } from "lucide-react"
+import { Inbox, Send, RefreshCw, PenSquare, Reply, Paperclip, X, Download } from "lucide-react"
 import { adminApi, FIRMAS_OPCIONES } from "../../lib/adminApi"
 import { PLANTILLAS, aplicarPlantilla } from "../../lib/plantillas"
 import { firmaHtml } from "../../lib/firmas"
 
 const fecha = iso => iso ? new Date(iso).toLocaleString("es-CL", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) : ""
 const inputCls = "w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400"
+const MAX_BYTES = 3 * 1024 * 1024
+const tamano = n => n > 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`
+const aBase64 = archivo => new Promise((ok, mal) => {
+  const r = new FileReader()
+  r.onload = () => ok(String(r.result).split(",")[1] || "")
+  r.onerror = mal
+  r.readAsDataURL(archivo)
+})
 const citar = m => `\n\n\nEl ${fecha(m.fecha)}, ${m.de} escribió:\n` + (m.texto || "").split("\n").map(l => "> " + l).join("\n")
 
 function Redactar({ clave, casillas, casillaId, setCasillaId, inicial, onCerrar, onEnviado }) {
   const casilla = casillas.find(c => c.id === casillaId)
   const [f, setF] = useState({ para: "", cc: "", asunto: "", cuerpo: "", firma: casilla?.firma ?? "marcos", ...inicial })
   const [plantilla, setPlantilla] = useState("")
+  const [archivos, setArchivos] = useState([])
+  const totalBytes = archivos.reduce((t, a) => t + a.size, 0)
   const [estado, setEstado] = useState("")
   const set = k => e => setF(p => ({ ...p, [k]: e.target.value }))
   const vars = inicial?.vars || {}
@@ -35,7 +45,8 @@ function Redactar({ clave, casillas, casillaId, setCasillaId, inicial, onCerrar,
   const enviar = async () => {
     setEstado("Enviando...")
     try {
-      await adminApi(clave, "correo", { method: "POST", body: { ...f, casilla: casillaId } })
+      const adjuntos = await Promise.all(archivos.map(async a => ({ nombre: a.name, tipo: a.type, base64: await aBase64(a) })))
+      await adminApi(clave, "correo", { method: "POST", body: { ...f, casilla: casillaId, adjuntos } })
       onEnviado()
     } catch (e) { setEstado(e.message) }
   }
@@ -66,6 +77,24 @@ function Redactar({ clave, casillas, casillaId, setCasillaId, inicial, onCerrar,
       <input value={f.cc} onChange={set("cc")} placeholder="CC (opcional)" className={inputCls} />
       <input value={f.asunto} onChange={set("asunto")} placeholder="Asunto" className={inputCls} />
       <textarea value={f.cuerpo} onChange={set("cuerpo")} rows={12} placeholder="Escribe tu mensaje..." className={`${inputCls} resize-y`} />
+      <div>
+        <label className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+          <Paperclip size={13} /> Adjuntar archivos
+          <input type="file" multiple className="hidden"
+            onChange={e => { const nuevos = [...e.target.files]; setArchivos(prev => [...prev, ...nuevos]); e.target.value = "" }} />
+        </label>
+        {archivos.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-2">
+            {archivos.map((a, i) => (
+              <span key={i} className="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-xs pl-2.5 pr-1 py-1 rounded-full">
+                {a.name} · {tamano(a.size)}
+                <button type="button" onClick={() => setArchivos(prev => prev.filter((_, j) => j !== i))} className="p-0.5 rounded-full hover:bg-gray-200" aria-label={`Quitar ${a.name}`}><X size={11} /></button>
+              </span>
+            ))}
+          </div>
+        )}
+        {totalBytes > MAX_BYTES && <p className="text-[11px] text-red-600 mt-1">Los adjuntos suman {tamano(totalBytes)}; el máximo es 3 MB. Para archivos grandes, comparte un link (Drive, WeTransfer).</p>}
+      </div>
       {/\[[^\]]+\]/.test(f.cuerpo + f.asunto) && <p className="text-[11px] text-amber-700">Hay textos entre [corchetes] por completar antes de enviar.</p>}
       <div>
         <div className="flex items-center gap-3 mb-1">
@@ -81,7 +110,7 @@ function Redactar({ clave, casillas, casillaId, setCasillaId, inicial, onCerrar,
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex-1" />
         {estado && <span className="text-xs text-gray-500">{estado}</span>}
-        <button onClick={enviar} disabled={!casillaId || !f.para.trim() || !f.asunto.trim() || estado === "Enviando..."}
+        <button onClick={enviar} disabled={!casillaId || !f.para.trim() || !f.asunto.trim() || totalBytes > MAX_BYTES || estado === "Enviando..."}
           className="inline-flex items-center gap-1.5 bg-agro-green-600 hover:bg-agro-green-700 disabled:opacity-40 text-white text-sm font-semibold px-4 py-2 rounded-lg">
           <Send size={14} /> Enviar
         </button>
@@ -141,6 +170,17 @@ export default function Correo({ clave, nuevoPara, casillaUrl, onCasilla }) {
       setAbierto(r.mensaje)
       setMensajes(prev => prev.map(x => x.uid === m.uid ? { ...x, leido: true } : x))
     } catch (e) { setAbierto({ ...m, error: e.message }) }
+  }
+
+  const descargar = async (uid, indice) => {
+    try {
+      const { adjunto } = await adminApi(clave, "correo", { query: { carpeta, uid, adjunto: indice, casilla: casillaId } })
+      const bytes = Uint8Array.from(atob(adjunto.base64), c => c.charCodeAt(0))
+      const url = URL.createObjectURL(new Blob([bytes], { type: adjunto.tipo }))
+      const a = document.createElement("a")
+      a.href = url; a.download = adjunto.nombre; a.click()
+      setTimeout(() => URL.revokeObjectURL(url), 1000)
+    } catch (e) { alert(`No se pudo descargar: ${e.message}`) }
   }
 
   const responder = m => setRedactar({
@@ -207,7 +247,15 @@ export default function Correo({ clave, nuevoPara, casillaUrl, onCasilla }) {
               {abierto.para && <p className="text-xs text-gray-500">Para: {abierto.para}{abierto.cc ? ` · CC: ${abierto.cc}` : ""}</p>}
               <p className="text-[11px] text-gray-400">{fecha(abierto.fecha)}</p>
               {abierto.adjuntos?.length > 0 && (
-                <p className="text-xs text-gray-500 mt-2 flex items-center gap-1 flex-wrap"><Paperclip size={12} /> {abierto.adjuntos.map(a => a.nombre).join(", ")}</p>
+                <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                  <Paperclip size={12} className="text-gray-400" />
+                  {abierto.adjuntos.map((a, i) => (
+                    <button key={i} onClick={() => descargar(abierto.uid, i)}
+                      className="inline-flex items-center gap-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 rounded-full">
+                      <Download size={11} /> {a.nombre || `adjunto ${i + 1}`}{a.tamano ? ` · ${tamano(a.tamano)}` : ""}
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
             {abierto.cargando ? <p className="p-5 text-sm text-gray-400">Cargando...</p> : abierto.error ? <p className="p-5 text-sm text-red-600">{abierto.error}</p> : abierto.html ? (

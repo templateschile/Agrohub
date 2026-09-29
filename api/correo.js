@@ -42,6 +42,35 @@ async function listar(cfg, carpeta) {
   })
 }
 
+// Adjunto de un correo recibido, en base64 para descargarlo desde el admin
+async function adjunto(cfg, carpeta, uid, indice) {
+  return conImap(cfg, async client => {
+    const lock = await client.getMailboxLock(carpeta)
+    try {
+      const m = await client.fetchOne(String(uid), { source: true }, { uid: true })
+      if (!m) return null
+      const a = (await simpleParser(m.source)).attachments?.[indice]
+      return a ? { nombre: a.filename || `adjunto-${indice + 1}`, tipo: a.contentType, base64: a.content.toString('base64') } : null
+    } finally { lock.release() }
+  })
+}
+
+// Adjuntos al enviar: llegan en base64 dentro del JSON. Vercel acepta ~4,5 MB por request,
+// por eso el total queda en 3 MB (el base64 pesa un tercio mas).
+const MAX_ADJUNTOS = 10
+const MAX_BYTES = 3 * 1024 * 1024
+function leerAdjuntos(lista) {
+  if (!Array.isArray(lista) || !lista.length) return []
+  if (lista.length > MAX_ADJUNTOS) throw Object.assign(new Error(`Máximo ${MAX_ADJUNTOS} adjuntos`), { status: 413 })
+  const out = lista.map(a => ({
+    filename: String(a.nombre || 'archivo').slice(0, 200),
+    contentType: String(a.tipo || 'application/octet-stream').slice(0, 100),
+    content: Buffer.from(String(a.base64 || ''), 'base64'),
+  }))
+  if (out.reduce((t, a) => t + a.content.length, 0) > MAX_BYTES) throw Object.assign(new Error('Los adjuntos superan 3 MB en total'), { status: 413 })
+  return out
+}
+
 async function leer(cfg, carpeta, uid) {
   return conImap(cfg, async client => {
     const lock = await client.getMailboxLock(carpeta)
@@ -68,7 +97,7 @@ async function leer(cfg, carpeta, uid) {
   })
 }
 
-async function enviar(cfg, { para, cc, asunto, cuerpo, firma, responderA, referencias }) {
+async function enviar(cfg, { para, cc, asunto, cuerpo, firma, responderA, referencias, adjuntos }) {
   const html = `<div style="font-family:Arial,sans-serif;font-size:14px;color:#1f2937;line-height:1.6">${escapar(cuerpo).replace(/\n/g, '<br>')}</div>${firma ? firmaHtml(firma) : ''}`
   const mail = {
     from: remitente(cfg),
@@ -78,6 +107,7 @@ async function enviar(cfg, { para, cc, asunto, cuerpo, firma, responderA, refere
     html,
     text: cuerpo,
     ...(responderA ? { inReplyTo: responderA, references: [...(referencias || []), responderA] } : {}),
+    attachments: adjuntos,
   }
   const info = await transporte(cfg).sendMail(mail)
   // Copia en "Enviados" (el SMTP no la guarda solo); si falla, el envio igual se hizo
@@ -103,6 +133,10 @@ export default async function handler(req, res) {
         const lista = await conImap(cfg, c => c.list())
         return res.json({ ok: true, carpetas: lista.map(c => ({ path: c.path, nombre: c.name, especial: c.specialUse || '' })) })
       }
+      if (req.query.uid && req.query.adjunto !== undefined) {
+        const a = await adjunto(cfg, carpeta, Number(req.query.uid), Number(req.query.adjunto))
+        return a ? res.json({ ok: true, adjunto: a }) : res.status(404).json({ ok: false })
+      }
       if (req.query.uid) {
         const mensaje = await leer(cfg, carpeta, Number(req.query.uid))
         return mensaje ? res.json({ ok: true, mensaje }) : res.status(404).json({ ok: false })
@@ -114,7 +148,9 @@ export default async function handler(req, res) {
       const b = req.body || {}
       const para = String(b.para || '').trim()
       if (!para || !String(b.asunto || '').trim()) return res.status(400).json({ ok: false, error: 'Falta destinatario o asunto' })
+      const adjuntos = leerAdjuntos(b.adjuntos)
       const id = await enviar(cfg, {
+        adjuntos,
         para, cc: String(b.cc || '').trim(),
         asunto: String(b.asunto).slice(0, 300),
         cuerpo: String(b.cuerpo || '').slice(0, 50000),
@@ -127,6 +163,7 @@ export default async function handler(req, res) {
 
     res.status(405).end()
   } catch (e) {
+    if (e.status === 413) return res.status(413).json({ ok: false, error: e.message })
     console.error('correo', e)
     res.status(500).json({ ok: false, error: e.authenticationFailed ? 'La casilla rechazó el usuario o la contraseña' : `Error de correo: ${e.message}` })
   }
