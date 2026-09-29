@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { notificar, escapar } from './_lib/notify.js'
+import { enviarGracias, smtpConfigurado } from './_lib/mail.js'
 import { guardarLead, storeConfigurado } from './_lib/store.js'
 
 const TIPOS = {
@@ -75,6 +76,12 @@ export default async function handler(req, res) {
   ].filter(Boolean).join('\n')
 
   const { errors } = await notificar({ asunto: `${TIPOS[tipo]} — ${nombreEmpresa}`, html, texto: tg })
+
+  // Agradecimiento al cliente (solo a quien envio el formulario)
+  if (smtpConfigurado() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contacto.email)) {
+    try { await enviarGracias({ nombre: contacto.nombre, email: contacto.email, tipo }) }
+    catch (e) { errors.push('gracias: ' + e.message) }
+  }
   if (errors.length) console.error('notify', errors)
 
   res.status(200).json({ ok: true, guardado })

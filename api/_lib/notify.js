@@ -1,10 +1,7 @@
-import nodemailer from 'nodemailer'
+import { transporte, remitente, smtpConfigurado } from './mail.js'
+export { escapar } from './mail.js'
 
 const lista = v => (v || '').split(',').map(s => s.trim()).filter(Boolean)
-
-export const escapar = s => String(s ?? '')
-  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-  .replace(/"/g, '&quot;').replace(/'/g, '&#39;')
 
 // Destinatarios por variables de entorno (el repo es publico):
 //   NOTIFY_TO         correos que reciben el aviso (separados por coma)
@@ -14,22 +11,14 @@ export async function notificar({ asunto, html, texto }) {
   const errors = []
   const results = {}
 
-  const smtpUser = process.env.SMTP_USER
-  const smtpPass = process.env.SMTP_PASS
-  if (!smtpUser || !smtpPass) {
+  if (!smtpConfigurado()) {
     errors.push('email: faltan variables SMTP_USER / SMTP_PASS')
   } else {
     try {
-      const transporter = nodemailer.createTransport({
-        host:   process.env.SMTP_HOST || 'smtp.gmail.com',
-        port:   Number(process.env.SMTP_PORT) || 465,
-        secure: true,
-        auth: { user: smtpUser, pass: smtpPass },
-      })
       const to = lista(process.env.NOTIFY_TO)
-      await transporter.sendMail({
-        from:    process.env.SMTP_FROM || smtpUser,
-        to:      to.length ? to : smtpUser,
+      await transporte().sendMail({
+        from:    remitente(),
+        to:      to.length ? to : process.env.SMTP_USER,
         bcc:     lista(process.env.NOTIFY_BCC),
         subject: asunto,
         html,

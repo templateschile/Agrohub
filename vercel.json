@@ -31,5 +31,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/correo.js": {
+      "maxDuration": 30
+    }
+  }
 }
