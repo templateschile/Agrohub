@@ -54,6 +54,7 @@ async function probar(cfg) {
   } catch (e) { r.smtp = e.message }
   try {
     const c = new ImapFlow(imapConfig(cfg))
+    c.on('error', () => {})
     await c.connect(); await c.logout()
     r.imap = 'ok'
   } catch (e) { r.imap = e.authenticationFailed ? 'Usuario o contraseña incorrectos' : e.message }

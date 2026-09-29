@@ -30,6 +30,17 @@ export async function notificar({ asunto, html, texto }) {
     }
   }
 
+  const tg = await enviarTelegram(texto)
+  Object.assign(results, tg.results)
+  errors.push(...tg.errors)
+
+  return { results, errors }
+}
+
+// Mensaje a todos los chats de TELEGRAM_CHAT_ID
+export async function enviarTelegram(texto) {
+  const errors = []
+  const results = {}
   const botToken = process.env.TELEGRAM_BOT_TOKEN
   const chatIds  = lista(process.env.TELEGRAM_CHAT_ID)
   if (!botToken || !chatIds.length) {

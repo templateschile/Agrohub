@@ -2,12 +2,15 @@ import { ImapFlow } from 'imapflow'
 import { simpleParser } from 'mailparser'
 import MailComposer from 'nodemailer/lib/mail-composer/index.js'
 import { autorizar } from './_lib/auth.js'
+import { storeConfigurado } from './_lib/store.js'
+import { nuevoId, crearSeguimiento, listarSeguimiento, cuerpoHtml, pixelHtml } from './_lib/seguimiento.js'
 import { transporte, remitente, imapConfig, smtpConfigurado, configCorreo, firmaHtml, escapar, FIRMAS } from './_lib/mail.js'
 
 const LIMITE = 40
 
 async function conImap(cfg, fn) {
   const client = new ImapFlow(imapConfig(cfg))
+  client.on('error', e => console.error('imap', e.message)) // sin listener, un error de socket tumba la funcion
   await client.connect()
   try { return await fn(client) } finally { await client.logout().catch(() => {}) }
 }
@@ -97,23 +100,36 @@ async function leer(cfg, carpeta, uid) {
   })
 }
 
-async function enviar(cfg, { para, cc, cco, asunto, cuerpo, firma, responderA, referencias, adjuntos }) {
-  const html = `<div style="font-family:Arial,sans-serif;font-size:14px;color:#1f2937;line-height:1.6">${escapar(cuerpo).replace(/\n/g, '<br>')}</div>${firma ? firmaHtml(firma) : ''}`
-  const mail = {
+async function enviar(cfg, { para, cc, cco, asunto, cuerpo, firma, responderA, referencias, adjuntos, rastrear }) {
+  const envolver = cuerpoHtmlListo => `<div style="font-family:Arial,sans-serif;font-size:14px;color:#1f2937;line-height:1.6">${cuerpoHtmlListo}</div>${firma ? firmaHtml(firma) : ''}`
+  const id = rastrear && storeConfigurado() ? nuevoId() : null
+  // Version sin rastreo: copia oculta y copia en Enviados (sus aperturas no cuentan como del cliente)
+  const htmlLimpio = envolver(cuerpoHtml(cuerpo, null))
+  const base = {
     from: remitente(cfg),
     to: para,
     cc: cc || undefined,
-    bcc: cco || undefined,
     subject: asunto,
-    html,
     text: cuerpo,
     ...(responderA ? { inReplyTo: responderA, references: [...(referencias || []), responderA] } : {}),
     attachments: adjuntos,
   }
-  const info = await transporte(cfg).sendMail(mail)
+  const t = transporte(cfg)
+  let info
+  if (id) {
+    info = await t.sendMail({ ...base, html: envolver(cuerpoHtml(cuerpo, id)) + pixelHtml(id) })
+    if (cco) {
+      // Mismo correo (mismos encabezados To/Cc) entregado solo a la copia oculta, sin pixel
+      const destinos = cco.split(',').map(x => x.trim()).filter(Boolean)
+      await t.sendMail({ ...base, html: htmlLimpio, envelope: { from: cfg.user, to: destinos } })
+    }
+    await crearSeguimiento(id, { casilla: cfg.user, desde: remitente(cfg), para, cc: cc || '', asunto, enviado: new Date().toISOString(), messageId: info.messageId })
+  } else {
+    info = await t.sendMail({ ...base, bcc: cco || undefined, html: htmlLimpio })
+  }
   // Copia en "Enviados" (el SMTP no la guarda solo); si falla, el envio igual se hizo
   try {
-    const nodo = new MailComposer({ ...mail, messageId: info.messageId }).compile()
+    const nodo = new MailComposer({ ...base, bcc: cco || undefined, html: htmlLimpio, messageId: info.messageId }).compile()
     nodo.keepBcc = true // la copia propia conserva a quien iba la copia oculta
     const raw = await nodo.build()
     await conImap(cfg, async client => {
@@ -136,6 +152,9 @@ export default async function handler(req, res) {
         const lista = await conImap(cfg, c => c.list())
         return res.json({ ok: true, carpetas: lista.map(c => ({ path: c.path, nombre: c.name, especial: c.specialUse || '' })) })
       }
+      if (req.query.seguimiento) {
+        return res.json({ ok: true, envios: storeConfigurado() ? await listarSeguimiento() : [] })
+      }
       if (req.query.uid && req.query.adjunto !== undefined) {
         const a = await adjunto(cfg, carpeta, Number(req.query.uid), Number(req.query.adjunto))
         return a ? res.json({ ok: true, adjunto: a }) : res.status(404).json({ ok: false })
@@ -154,6 +173,7 @@ export default async function handler(req, res) {
       const adjuntos = leerAdjuntos(b.adjuntos)
       const id = await enviar(cfg, {
         adjuntos,
+        rastrear: b.rastrear !== false,
         para, cc: String(b.cc || '').trim(), cco: String(b.cco || '').trim(),
         asunto: String(b.asunto).slice(0, 300),
         cuerpo: String(b.cuerpo || '').slice(0, 50000),
