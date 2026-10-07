@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
+import { Wordmark } from './HubMark'
 
 const navLinks = [
   { label: 'Inicio',         to: '/' },
@@ -37,25 +38,9 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-16 md:h-20">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-          <div className="w-9 h-9 rounded-xl bg-agro-green-600 flex items-center justify-center shadow">
-            <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5">
-              <circle cx="16" cy="16" r="6" fill="white" opacity="0.9"/>
-              <path d="M16 4 C16 4 10 8 10 16" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M16 4 C16 4 22 8 22 16" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M6 20 C8 24 12 28 16 28" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M26 20 C24 24 20 28 16 28" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-            </svg>
-          </div>
-          <div className="flex flex-col leading-none">
-            <span className={`font-bold text-lg tracking-tight transition-colors leading-tight ${transparent ? 'text-white' : 'text-agro-green-700'}`}>
-              Agro<span className={transparent ? 'text-agro-green-300' : 'text-agro-green-500'}>Hubs</span>
-            </span>
-            <span className={`text-[10px] font-medium tracking-wide ${transparent ? 'text-white/50' : 'text-gray-400'}`}>
-              Centro Demostrativo Móvil
-            </span>
-          </div>
+        {/* Logo (el mismo de admin.agrohubs.cl) */}
+        <Link to="/" className="group shrink-0" aria-label="AgroHubs, inicio">
+          <Wordmark oscuro={transparent} />
         </Link>
 
         {/* Desktop links */}
