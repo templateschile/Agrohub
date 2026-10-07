@@ -2,6 +2,24 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
+  "redirects": [
+    {
+      "source": "/admin",
+      "has": [{ "type": "query", "key": "id", "value": "(?<id>.+)" }],
+      "destination": "https://admin.agrohubs.cl/site/propuestas?id=:id",
+      "permanent": false
+    },
+    {
+      "source": "/admin",
+      "destination": "https://admin.agrohubs.cl/",
+      "permanent": false
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "https://admin.agrohubs.cl/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/:path*",
@@ -14,15 +32,6 @@
   ],
   "headers": [
     {
-      "source": "/admin(.*)",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        }
-      ]
-    },
-    {
       "source": "/api/(.*)",
       "headers": [
         {
@@ -31,10 +40,5 @@
         }
       ]
     }
-  ],
-  "functions": {
-    "api/correo.js": {
-      "maxDuration": 30
-    }
-  }
+  ]
 }

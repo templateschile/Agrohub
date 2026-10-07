@@ -12,7 +12,7 @@ import Eventos from './pages/Eventos'
 import Tienda from './pages/Tienda'
 import Evaluacion from './pages/Evaluacion'
 import Terminos from './pages/Terminos'
-import Admin from './pages/Admin'
+import RedirigirAdmin from './pages/RedirigirAdmin'
 
 export default function App() {
   return (
@@ -23,8 +23,8 @@ export default function App() {
 }
 
 function Sitio() {
-  // El admin va sin menu, footer ni boton flotante del sitio publico
-  if (useLocation().pathname.startsWith('/admin')) return <Admin />
+  // El admin se movio a admin.agrohubs.cl (panel de la plataforma): /admin redirige alla
+  if (useLocation().pathname.startsWith('/admin')) return <RedirigirAdmin />
 
   return (
     <div className="min-h-screen flex flex-col">
