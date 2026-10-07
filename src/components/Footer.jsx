@@ -1,25 +1,12 @@
 import { Link } from 'react-router-dom'
+import { Wordmark } from './HubMark'
 
 export default function Footer() {
   return (
     <footer className="bg-agro-green-900 text-white py-12">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
-              <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5">
-                <circle cx="16" cy="16" r="6" fill="white" opacity="0.9"/>
-                <path d="M16 4 C16 4 10 8 10 16" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                <path d="M16 4 C16 4 22 8 22 16" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                <path d="M6 20 C8 24 12 28 16 28" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                <path d="M26 20 C24 24 20 28 16 28" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
-            </div>
-            <div>
-              <div className="font-bold text-lg leading-tight">AgroHubs</div>
-              <div className="text-white/50 text-xs">Centro Demostrativo Móvil</div>
-            </div>
-          </div>
+          <Wordmark oscuro />
 
           <p className="text-white/50 text-sm text-center max-w-md">
             Conocimiento que se comparte · Tecnología que acompaña · Decisiones que transforman.
