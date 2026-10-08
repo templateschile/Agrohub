@@ -13,6 +13,8 @@ import Tienda from './pages/Tienda'
 import Evaluacion from './pages/Evaluacion'
 import Terminos from './pages/Terminos'
 import RedirigirAdmin from './pages/RedirigirAdmin'
+import Modulos from './pages/Modulos'
+import ModuloPagina from './pages/ModuloPagina'
 
 export default function App() {
   return (
@@ -37,6 +39,12 @@ function Sitio() {
           <Route path="/documentos" element={<Documentos />} />
           <Route path="/eventos" element={<Eventos />} />
           <Route path="/tienda" element={<Tienda />} />
+          <Route path="/modulos" element={<Modulos />} />
+          <Route path="/drones" element={<ModuloPagina slug="drones" />} />
+          <Route path="/recomendaciones" element={<ModuloPagina slug="recomendaciones" />} />
+          <Route path="/clima" element={<ModuloPagina slug="clima" />} />
+          <Route path="/fuentes" element={<ModuloPagina slug="fuentes" />} />
+          <Route path="/calculadoras" element={<ModuloPagina slug="calculadoras" />} />
           <Route path="/evaluacion" element={<Evaluacion />} />
           <Route path="/precios" element={<Navigate to="/evaluacion" replace />} />
           <Route path="/terminos" element={<Terminos />} />
