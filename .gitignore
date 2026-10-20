@@ -4,3 +4,11 @@ dist/
 .env.local
 .DS_Store
 *.log
+
+# Generado por scripts/build-apis.mjs (directorio de APIs)
+public/apis/
+public/apis.html
+public/llms.txt
+public/llms-full.txt
+public/sitemap.xml
+public/robots.txt

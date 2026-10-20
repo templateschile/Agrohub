@@ -30,6 +30,9 @@ export default function Footer() {
             <Link to="/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
             <Link to="/tienda" className="hover:text-white transition-colors">Tienda</Link>
             <Link to="/evaluacion" className="hover:text-white transition-colors">Evaluación</Link>
+            {/* Directorio estático (HTML generado en el build): enlace normal, no del router */}
+            <a href="/apis" className="hover:text-white transition-colors">APIs agro</a>
+            <a href="/apis/radar" className="hover:text-white transition-colors">Radar de APIs</a>
           </nav>
         </div>
 
