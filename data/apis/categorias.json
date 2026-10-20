@@ -1,0 +1,20 @@
+[
+  { "slug": "clima-y-meteorologia", "nombre": "Clima y meteorología", "descripcion": "Pronósticos, observaciones de estaciones y reanálisis climático para decidir riego, cosecha, aplicaciones y protección contra heladas.", "icono": "cloud" },
+  { "slug": "satelite-y-teledeteccion", "nombre": "Satélite y teledetección", "descripcion": "Imágenes Sentinel, Landsat y Planet, índices de vegetación (NDVI, NDRE) y analítica por cuartel para ver el estado del cultivo desde el espacio.", "icono": "satellite" },
+  { "slug": "suelo-y-agua", "nombre": "Suelo y agua", "descripcion": "Bases de datos de suelos, humedad de suelo satelital, evapotranspiración y datos hidrológicos para el balance hídrico del predio.", "icono": "droplet" },
+  { "slug": "riego-y-control", "nombre": "Riego y control", "descripcion": "Controladores y plataformas de riego tecnificado que exponen telemetría y programación de turnos.", "icono": "valve" },
+  { "slug": "sensores-iot", "nombre": "Sensores e IoT", "descripcion": "Estaciones meteorológicas, sondas de suelo, redes LoRaWAN y plataformas IoT que entregan lecturas en tiempo casi real.", "icono": "sensor" },
+  { "slug": "maquinaria-y-telematica", "nombre": "Maquinaria y telemática", "descripcion": "APIs de fabricantes (John Deere, CNH, CLAAS, Trimble) y agregadores que exponen mapas de siembra, aplicación y cosecha.", "icono": "tractor" },
+  { "slug": "gestion-predial", "nombre": "Gestión predial (FMIS)", "descripcion": "Cuadernos de campo y software de gestión agrícola con APIs para cuarteles, labores, insumos y cosechas.", "icono": "clipboard" },
+  { "slug": "modelos-y-agronomia", "nombre": "Modelos y agronomía", "descripcion": "Modelos de cultivo, plagas y enfermedades, identificación por imagen y bases de conocimiento agronómico.", "icono": "leaf" },
+  { "slug": "mercados-y-precios", "nombre": "Mercados y precios", "descripcion": "Precios mayoristas, futuros de commodities y comercio exterior para planificar la comercialización.", "icono": "chart" },
+  { "slug": "datos-publicos-y-estadisticas", "nombre": "Datos públicos y estadísticas", "descripcion": "Portales de datos abiertos y estadísticas oficiales (ODEPA, INE, FAO, USDA, Eurostat) accesibles por API.", "icono": "database" },
+  { "slug": "geodatos-y-territorio", "nombre": "Geodatos y territorio", "descripcion": "Servicios geoespaciales (ArcGIS, WMS/WFS, STAC) con catastro frutícola, suelos, propiedades rurales e incendios.", "icono": "map" },
+  { "slug": "ganaderia-y-acuicultura", "nombre": "Ganadería y acuicultura", "descripcion": "Monitoreo animal, gestión de rebaño, ordeña y acuicultura con APIs de integración.", "icono": "cow" },
+  { "slug": "trazabilidad-y-certificacion", "nombre": "Trazabilidad y certificación", "descripcion": "Registros oficiales, estándares EPCIS, certificaciones y cumplimiento (EUDR, GLOBALG.A.P.).", "icono": "tag" },
+  { "slug": "sostenibilidad-y-carbono", "nombre": "Sostenibilidad y carbono", "descripcion": "Huella de carbono, MRV, deforestación y métricas de sostenibilidad para reportes y mercados verdes.", "icono": "globe" },
+  { "slug": "documentos-y-conocimiento", "nombre": "Documentos y conocimiento", "descripcion": "Bibliotecas técnicas, búsqueda full-text y fuentes documentales validadas para el productor.", "icono": "book" },
+  { "slug": "ia-y-asistentes", "nombre": "IA y asistentes", "descripcion": "Modelos de lenguaje y servicios de IA usados para el chat agrícola y la mejora de contenidos.", "icono": "sparkles" },
+  { "slug": "agregadores-y-estandares", "nombre": "Agregadores y estándares", "descripcion": "APIs que unifican varias fuentes y los estándares (ADAPT, ISOXML, AGROVOC, NGSI-LD, STAC) que permiten interoperar.", "icono": "layers" },
+  { "slug": "plataforma-y-servicios", "nombre": "Plataforma y servicios", "descripcion": "Pagos, notificaciones push, búsqueda, comercio y monitoreo: los servicios que sostienen la app y el panel.", "icono": "server" }
+]
