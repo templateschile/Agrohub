@@ -1,5 +1,5 @@
 // Gráficos SVG estáticos: radar tecnológico (anillos × cuadrantes) y radar de puntajes por API.
-import { APIS, CUADRANTES, ANILLO, cuad, esc, accesibilidad } from './lib.mjs'
+import { APIS, CUADRANTES, ANILLO, ANILLO_CORTO, cuad, esc, accesibilidad } from './lib.mjs'
 
 const RINGS = ['adoptar', 'probar', 'evaluar', 'resistir']
 const BANDS = [[0, 0.3], [0.3, 0.52], [0.52, 0.86], [0.86, 1]]
@@ -18,10 +18,10 @@ export const radarNum = Object.fromEntries(RADAR_ITEMS.map((it) => [it.a.slug, i
 export function techRadarSvg({ size = 720, highlight = null } = {}) {
   const W = size, cx = W / 2, cy = W / 2, R = W / 2 - 40
   const out = []
-  out.push(`<svg class="radar" viewBox="0 0 ${W} ${W}" width="100%" role="img" aria-labelledby="radar-t radar-d"><title id="radar-t">Radar tecnológico de APIs agro de AgroHubs</title><desc id="radar-d">${APIS.length} APIs agrícolas ubicadas en cuatro cuadrantes (clima, suelo y agua; satélite y territorio; campo conectado; mercados, datos y plataforma) y cuatro anillos (adoptar, probar, evaluar, resistir).</desc>`)
+  out.push(`<svg class="radar" viewBox="0 0 ${W} ${W}" width="100%" role="img" aria-labelledby="radar-t radar-d"><title id="radar-t">Mapa de APIs agro de AgroHubs</title><desc id="radar-d">${APIS.length} APIs agrícolas ubicadas en cuatro cuadrantes (clima, suelo y agua; satélite y mapas; sensores, riego y maquinaria; precios, datos y herramientas) y cuatro niveles: lista para usar, próxima a conectarse, disponible a pedido y no recomendada.</desc>`)
   BANDS.slice().reverse().forEach(([, o], i) => out.push(`<circle cx="${cx}" cy="${cy}" r="${(o * R).toFixed(1)}" fill="${i % 2 ? '#ffffff' : '#f6faf4'}" stroke="#dcefd8"/>`))
   out.push(`<line x1="${cx - R}" x2="${cx + R}" y1="${cy}" y2="${cy}" stroke="#b9dfb1"/><line y1="${cy - R}" y2="${cy + R}" x1="${cx}" x2="${cx}" stroke="#b9dfb1"/>`)
-  RINGS.forEach((k, i) => out.push(`<text x="${cx + 5}" y="${(cy - (BANDS[i][0] + (BANDS[i][1] - BANDS[i][0]) / 2) * R).toFixed(1)}" dy="0.35em" font-size="12" fill="#5b6b57">${ANILLO[k]}</text>`))
+  RINGS.forEach((k, i) => out.push(`<text x="${cx + 5}" y="${(cy - (BANDS[i][0] + (BANDS[i][1] - BANDS[i][0]) / 2) * R).toFixed(1)}" dy="0.35em" font-size="12" fill="#5b6b57">${ANILLO_CORTO[k]}</text>`))
   const corners = [[10, 18, 'start'], [W - 10, 18, 'end'], [10, W - 10, 'start'], [W - 10, W - 10, 'end']]
   CUADRANTES.forEach((q, i) => out.push(`<text x="${corners[i][0]}" y="${corners[i][1]}" text-anchor="${corners[i][2]}" font-size="14" font-weight="700" fill="${q.color}">${esc(q.nombre)}</text>`))
 
@@ -53,8 +53,8 @@ export function techRadarSvg({ size = 720, highlight = null } = {}) {
 /** Radar de puntajes de una API: relevancia, popularidad, Chile, LatAm y accesibilidad de costo. */
 export function scoreRadarSvg(a, size = 300) {
   const axes = [
-    ['Relevancia', a.ranking.relevancia], ['Popularidad', a.ranking.popularidad], ['Chile', a.ranking.chile],
-    ['LatAm', a.ranking.latam], ['Costo accesible', accesibilidad(a)]
+    ['Recomendación', a.ranking.relevancia], ['Uso mundial', a.ranking.popularidad], ['Chile', a.ranking.chile],
+    ['Latinoamérica', a.ranking.latam], ['Precio accesible', accesibilidad(a)]
   ]
   const W = size + 200, H = size + 40, cx = W / 2, cy = H / 2 + 4, R = size / 2 - 10
   const pt = (i, v) => {
