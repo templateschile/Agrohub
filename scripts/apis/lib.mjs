@@ -205,6 +205,7 @@ ${body}
   <div class="wrap foot-base"><span>&copy; ${UPDATED.slice(0, 4)} AgroHubs · Chile</span><span>Directorio actualizado el ${fechaLarga(UPDATED)}</span></div>
 </footer>
 ${script}
+<script src="/apis/asesor.js" defer></script>
 </body>
 </html>
 `

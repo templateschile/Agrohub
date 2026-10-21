@@ -133,7 +133,7 @@ const serviceLd = {
   <p class="eyebrow">Integraciones · Chile y Latinoamérica</p>
   <h1>Conecta tu software con las fuentes de datos del agro</h1>
   <p class="lead">${total} APIs y herramientas explicadas en simple: clima, satélite, suelo, riego, sensores, precios y trazabilidad. Para cada una te contamos qué entrega, cuánto cuesta y cómo conectarla. AgroHubs las une en una sola API.</p>
-  <p class="hero-ctas"><a class="btn btn-cta" href="${COTIZAR}">Cotiza tu integración</a><a class="btn btn-onink" href="#fuentes">Ver las fuentes</a></p>
+  <p class="hero-ctas"><a class="btn btn-cta" href="${COTIZAR}">Cotiza tu integración</a><a class="btn btn-onink" href="#asesor-ia" data-asesor>Pregúntale al asesor</a></p>
   <dl class="kpis">
     <div><dt>Fuentes y herramientas</dt><dd>${total}</dd></div>
     <div><dt>Gratuitas</dt><dd>${gratis}</dd></div>
@@ -141,6 +141,14 @@ const serviceLd = {
     <div><dt>Ya conectadas en AgroHubs</dt><dd>${conectadas}</dd></div>
   </dl>
 </div></section>
+
+<section class="wrap block asesor-home" id="asesor-ia" aria-labelledby="asesor-ia-t">
+  <h2 id="asesor-ia-t">Dime qué quieres y te digo qué APIs ocupar</h2>
+  <p class="muted">Describe tu proyecto en una frase. El asesor te recomienda las fuentes y te deja la cotización lista para agendar una reunión.</p>
+  <form class="asesor-inline" data-asesor-form><label class="sr" for="asesor-home-campo">Qué necesitas</label>
+    <input id="asesor-home-campo" maxlength="1500" placeholder="Ej.: quiero alertas de heladas y programar el riego de mis paltos">
+    <button class="btn-cta" type="submit">Recomiéndame APIs</button></form>
+</section>
 
 <section class="wrap block" id="como-funciona">
   <h2>Cómo funciona</h2>
@@ -258,16 +266,24 @@ ${cta()}`
 }
 
 // ── /apis/cotizar ──
+// Feriados de Chile (para proponer la reunión en días hábiles)
+const FERIADOS_CL = [
+  '2026-01-01', '2026-04-03', '2026-04-04', '2026-05-01', '2026-05-21', '2026-06-21', '2026-06-29', '2026-07-16', '2026-08-15',
+  '2026-09-18', '2026-09-19', '2026-10-12', '2026-10-31', '2026-11-01', '2026-12-08', '2026-12-25',
+  '2027-01-01', '2027-03-26', '2027-03-27', '2027-05-01', '2027-05-21', '2027-06-21', '2027-06-28', '2027-07-16', '2027-08-15',
+  '2027-09-18', '2027-09-19', '2027-10-11', '2027-10-31', '2027-11-01', '2027-12-08', '2027-12-25'
+]
 {
   const opciones = sortedBy('relevancia').map((a) => `<option value="${esc(a.slug)}">${esc(a.nombre)}</option>`).join('')
   const nombres = JSON.stringify(Object.fromEntries(APIS.map((a) => [a.slug, a.nombre]))).replace(/</g, '\\u003c')
   const body = `<section class="hero slim"><div class="wrap">
   ${crumbs([['Inicio', '/'], ['APIs agro', '/apis'], ['Cotiza tu integración', COTIZAR]])}
   <h1>Cotiza la integración de tu software</h1>
-  <p class="lead">Cuéntanos qué sistema tienes y qué fuentes quieres conectar. Te respondemos con una propuesta de integración a la medida.</p>
+  <p class="lead">Cuéntanos qué sistema tienes y qué fuentes quieres conectar. Te respondemos con una propuesta a la medida y conversamos en una reunión corta.</p>
 </div></section>
 <section class="wrap block cols">
   <div class="main">
+    <p id="f-aviso" class="aviso" hidden></p>
     <form id="cotizar" class="form" novalidate>
       <div class="row2">
         <label>Nombre<span aria-hidden="true"> *</span><input id="f-nombre" name="nombre" autocomplete="name" required></label>
@@ -279,15 +295,30 @@ ${cta()}`
       </div>
       <label>Cargo<input id="f-cargo" name="cargo" autocomplete="organization-title"></label>
       <label>¿Qué software o sistema quieres conectar?<input id="f-software" name="software" placeholder="Por ejemplo: ERP propio, app de riego, plataforma de trazabilidad"></label>
-      <label>Fuentes que te interesan<select id="f-fuentes" name="fuentes" multiple size="8">${opciones}</select><span class="hint">Mantén presionado Ctrl (o Cmd en Mac) para elegir varias.</span></label>
+      <div class="elegidas" id="f-elegidas" hidden><span class="lbl">APIs seleccionadas</span><ul></ul></div>
+      <label>Fuentes que te interesan<select id="f-fuentes" name="fuentes" multiple size="8">${opciones}</select><span class="hint">Mantén presionado Ctrl (o Cmd en Mac) para elegir varias. ¿No sabes cuáles? <a href="#asesor" data-asesor>Pregúntale al asesor</a>.</span></label>
       <label>Cuéntanos tu caso<textarea id="f-mensaje" name="mensaje" rows="5" placeholder="Qué datos necesitas, para cuántos predios o usuarios, y cómo los usarías"></textarea></label>
       <label>¿Para cuándo lo necesitas?<select id="f-plazo" name="plazo"><option value="">Elige una opción</option><option>Lo antes posible</option><option>En 1 a 3 meses</option><option>En 3 a 6 meses</option><option>Estoy explorando</option></select></label>
+      <fieldset class="reunion" id="f-reunion">
+        <legend>Agenda una reunión de 30 minutos</legend>
+        <p class="hint">Te proponemos el primer horario disponible (hora de Chile). Lo confirmamos por correo.</p>
+        <div id="f-slots" class="slots"><noscript><p class="hint">Activa JavaScript para elegir horario, o indícalo en el mensaje.</p></noscript></div>
+        <label class="slot"><input type="radio" name="reunion" value="otra"> Prefiero otro día</label>
+        <div class="row2" id="f-otra" hidden>
+          <label>Día<input id="f-otra-dia" type="date"></label>
+          <label>Hora<select id="f-otra-hora"><option>08:15</option><option>13:00</option></select></label>
+        </div>
+        <label class="slot"><input type="radio" name="reunion" value="no"> Por ahora no, solo quiero la cotización</label>
+      </fieldset>
       <label class="hp" aria-hidden="true">Sitio web<input id="f-website" name="website" tabindex="-1" autocomplete="off"></label>
-      <button class="btn btn-cta" type="submit" id="f-enviar">Enviar solicitud de cotización</button>
+      <button class="btn btn-cta" type="submit" id="f-enviar">Enviar y agendar reunión</button>
       <p id="f-estado" class="estado" role="status" aria-live="polite"></p>
     </form>
   </div>
   <aside class="side"><div class="card sticky">
+    <h2 class="h3">¿No sabes qué fuentes elegir?</h2>
+    <p class="small">Cuéntale al asesor qué quieres lograr y te deja las APIs seleccionadas en este formulario.</p>
+    <button type="button" class="btn-ghost as-lanzar" data-asesor>Pregúntale al asesor</button>
     <h2 class="h3">Qué incluye la integración</h2>
     <ul class="check"><li>Conexión con las fuentes que elijas</li><li>Datos en un solo formato y una sola API</li><li>Gestión de accesos y claves con cada proveedor</li><li>Mantenimiento cuando un proveedor cambia</li></ul>
     <h2 class="h3">¿Prefieres escribirnos?</h2>
@@ -297,9 +328,49 @@ ${cta()}`
   const script = `<script>
 (function(){
   var NOMBRES=${nombres};
+  var FERIADOS=${JSON.stringify(FERIADOS_CL)};
+  var HORAS=['08:15','13:00'];
   var f=document.getElementById('cotizar'), est=document.getElementById('f-estado'), sel=document.getElementById('f-fuentes');
-  var api=new URLSearchParams(location.search).get('api');
-  if(api&&NOMBRES[api]){[].forEach.call(sel.options,function(o){if(o.value===api)o.selected=true});}
+  var qs=new URLSearchParams(location.search);
+  var pedidas=(qs.get('apis')||qs.get('api')||'').split(',').map(function(s){return s.trim()}).filter(function(s){return NOMBRES[s]});
+  var origen=qs.get('origen')==='asesor'?'asesor':(qs.get('api')?'ficha':'directorio');
+  var necesidad=(qs.get('necesidad')||'').slice(0,600);
+
+  // ── APIs preseleccionadas ──
+  var caja=document.getElementById('f-elegidas'), lista=caja.querySelector('ul');
+  function marcadas(){return [].filter.call(sel.options,function(o){return o.selected}).map(function(o){return o.value})}
+  function pintar(){
+    var m=marcadas();caja.hidden=!m.length;
+    lista.innerHTML=m.map(function(s){return '<li>'+NOMBRES[s].replace(/[&<>]/g,'')+' <button type="button" data-quitar="'+s+'" aria-label="Quitar '+NOMBRES[s].replace(/["&<>]/g,'')+'">×</button></li>'}).join('');
+  }
+  [].forEach.call(sel.options,function(o){if(pedidas.indexOf(o.value)>=0)o.selected=true});
+  // las elegidas primero, para que se vean sin desplazarse
+  pedidas.slice().reverse().forEach(function(s){var o=[].find.call(sel.options,function(x){return x.value===s});if(o)sel.insertBefore(o,sel.firstChild)});
+  sel.addEventListener('change',pintar);
+  lista.addEventListener('click',function(e){var s=e.target.getAttribute('data-quitar');if(!s)return;[].forEach.call(sel.options,function(o){if(o.value===s)o.selected=false});pintar()});
+  pintar();
+  if(necesidad){document.getElementById('f-mensaje').value='Lo que necesito: '+necesidad+'\\n\\n'}
+  if(origen==='asesor'&&pedidas.length){var av=document.getElementById('f-aviso');av.hidden=false;av.textContent='Te dejamos seleccionadas las '+pedidas.length+' APIs que recomendó el asesor. Completa tus datos y elige el horario de la reunión.'}
+
+  // ── Reunión: 2 días hábiles después de hoy (hora de Chile), a las 08:15 o 13:00 ──
+  function hoyCL(){try{return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Santiago',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}catch(e){return new Date().toISOString().slice(0,10)}}
+  function iso(d){return d.toISOString().slice(0,10)}
+  function habil(s){var d=new Date(s+'T12:00:00Z').getUTCDay();return d!==0&&d!==6&&FERIADOS.indexOf(s)<0}
+  function sumarHabiles(s,n){var d=new Date(s+'T12:00:00Z');while(n>0){d.setUTCDate(d.getUTCDate()+1);if(habil(iso(d)))n--}return iso(d)}
+  var DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  function larga(s){var d=new Date(s+'T12:00:00Z');return DIAS[d.getUTCDay()]+' '+d.getUTCDate()+' de '+MESES[d.getUTCMonth()]}
+  var dia=sumarHabiles(hoyCL(),2), azar=HORAS[Math.floor(Math.random()*HORAS.length)];
+  document.getElementById('f-slots').innerHTML=HORAS.map(function(h){return '<label class="slot"><input type="radio" name="reunion" value="'+dia+' '+h+'"'+(h===azar?' checked':'')+'> <b>'+larga(dia)+'</b>, '+h+' hrs <span class="disp">Disponible</span></label>'}).join('');
+  var otra=document.getElementById('f-otra'), otraDia=document.getElementById('f-otra-dia');
+  otraDia.min=dia;otraDia.value=sumarHabiles(dia,1);
+  f.addEventListener('change',function(e){if(e.target.name==='reunion')otra.hidden=e.target.value!=='otra'});
+  function reunion(){
+    var r=(f.querySelector('input[name=reunion]:checked')||{}).value||'no';
+    if(r==='no')return null;
+    if(r==='otra')return {fecha:otraDia.value,hora:document.getElementById('f-otra-hora').value,propuesta:false};
+    var p=r.split(' ');return {fecha:p[0],hora:p[1],propuesta:true};
+  }
+
   var DESTINOS=['/api/lead','https://api.agrohubs.cl/api/v1/site/leads'];
   function enviar(i,datos){
     if(i>=DESTINOS.length)return Promise.resolve(false);
@@ -313,17 +384,21 @@ ${cta()}`
     var v=function(id){return document.getElementById(id).value.trim()};
     var email=v('f-email');
     if(!v('f-nombre')||!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){est.className='estado error';est.textContent='Escribe tu nombre y un email válido para poder responderte.';return}
-    var fuentes=[].filter.call(sel.options,function(o){return o.selected}).map(function(o){return NOMBRES[o.value]||o.value});
-    var resumen=['Origen: directorio de APIs ('+(api?'/apis/'+api:'/apis/cotizar')+')'];
+    var rn=reunion();
+    if(rn&&(!rn.fecha||rn.fecha<dia||!habil(rn.fecha))){est.className='estado error';est.textContent='Elige un día hábil desde el '+larga(dia)+' (no fines de semana ni feriados).';return}
+    var slugs=marcadas(), fuentes=slugs.map(function(s){return NOMBRES[s]||s});
+    var resumen=['Origen: '+(origen==='asesor'?'asesor IA del directorio de APIs':'directorio de APIs ('+(pedidas.length===1?'/apis/'+pedidas[0]:'/apis/cotizar')+')')];
     if(v('f-software'))resumen.push('Software: '+v('f-software'));
     if(fuentes.length)resumen.push('Fuentes: '+fuentes.join(', '));
     if(v('f-plazo'))resumen.push('Plazo: '+v('f-plazo'));
+    resumen.push(rn?'Reunión: '+larga(rn.fecha)+' de '+rn.fecha.slice(0,4)+' a las '+rn.hora+' (hora de Chile), por confirmar':'Reunión: no por ahora');
     var datos={tipo:'contacto',website:v('f-website'),contacto:{nombre:v('f-nombre'),empresa:v('f-empresa'),cargo:v('f-cargo'),email:email,telefono:v('f-telefono')},
-      mensaje:'Cotización de integración de software.\\n'+resumen.join('\\n')+(v('f-mensaje')?'\\n\\n'+v('f-mensaje'):''),resumen:resumen};
+      mensaje:'Cotización de integración de software.\\n'+resumen.join('\\n')+(v('f-mensaje')?'\\n\\n'+v('f-mensaje'):''),resumen:resumen,
+      respuestas:{origen:origen,apis:slugs,necesidad:necesidad||null,reunion:rn?{fecha:rn.fecha,hora:rn.hora,zona:'America/Santiago',duracion_min:30}:null}};
     var b=document.getElementById('f-enviar');b.disabled=true;est.className='estado';est.textContent='Enviando…';
     enviar(0,datos).then(function(ok){
       b.disabled=false;
-      if(ok){f.reset();est.className='estado ok';est.textContent='¡Listo! Recibimos tu solicitud y te escribiremos pronto a '+email+'.'}
+      if(ok){f.reset();pintar();est.className='estado ok';est.textContent='¡Listo! Recibimos tu solicitud. '+(rn?'Te escribiremos a '+email+' para confirmar la reunión del '+larga(rn.fecha)+' a las '+rn.hora+'.':'Te escribiremos pronto a '+email+'.')}
       else{est.className='estado error';est.textContent='No pudimos enviar el formulario. Escríbenos a cotizaciones@agrohubs.cl y te respondemos.'}
     });
   });
@@ -331,7 +406,7 @@ ${cta()}`
 </script>`
   html(COTIZAR, page({
     path: COTIZAR, title: 'Cotiza la integración de tu software con datos agrícolas | AgroHubs',
-    description: 'Conecta tu sistema con clima, satélite, sensores, riego, precios y más fuentes agrícolas en una sola API. Cuéntanos tu caso y te enviamos una propuesta.',
+    description: 'Conecta tu sistema con clima, satélite, sensores, riego, precios y más fuentes agrícolas en una sola API. Cuéntanos tu caso, agenda una reunión y te enviamos una propuesta.',
     body, script, jsonld: [serviceLd, breadcrumbLd([['Inicio', '/'], ['APIs agro', '/apis'], ['Cotiza tu integración', COTIZAR]])]
   }))
 }
@@ -592,6 +667,18 @@ write('llms-full.txt', [llms, ...sortedBy('relevancia').map((a) => readFileSync(
 
 // ── CSS ──
 write('apis/apis.css', readFileSync(join(ROOT, 'scripts', 'apis', 'apis.css'), 'utf8'))
+
+// ── Asesor (chat): catálogo compacto + recomendador por reglas de respaldo ──
+{
+  const ASESOR_URLS = (process.env.APIS_ASESOR_URL || 'https://app.agrohubs.cl/api/v1/hub/asesor,https://api.agrohubs.cl/api/v1/hub/asesor').split(',').map((u) => u.trim()).filter(Boolean)
+  const compacto = APIS.map((a) => ({ s: a.slug, n: a.nombre, r: a.resumen, p: a.pais, c: a.categorias, u: a.casos_de_uso, q: (a.que_entrega || []).slice(0, 4), k: a.ranking.relevancia }))
+  const reco = readFileSync(join(ROOT, 'scripts', 'apis', 'recomendador.cjs'), 'utf8')
+  const js = readFileSync(join(ROOT, 'scripts', 'apis', 'asesor.client.js'), 'utf8')
+    .replace('__CATALOGO__', () => JSON.stringify(compacto).replace(/</g, '\\u003c'))
+    .replace('__URLS__', () => JSON.stringify(ASESOR_URLS))
+    .replace('__RECOMENDADOR__', () => reco)
+  write('apis/asesor.js', js)
+}
 
 // ── sitemap.xml y robots.txt ──
 const spa = ['/', '/dashboard', '/ai-chat', '/documentos', '/eventos', '/tienda', '/evaluacion', '/terminos']

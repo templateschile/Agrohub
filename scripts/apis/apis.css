@@ -198,3 +198,62 @@ th[scope="row"] { position: static; width: 40%; font-weight: 600; }
 .hero .chip.ring-probar { background: #dbeffe; color: #1e4aac; border-color: #bfe0fd; }
 .hero .chip.ring-evaluar { background: #f2e9d8; color: #7d4f27; border-color: #e5d0ac; }
 .hero .chip.ring-resistir { background: #fde4e0; color: #9b2a1d; border-color: #f6c3bb; }
+
+/* cotizar: APIs elegidas y reunión */
+.aviso { background: var(--g50); border: 1px solid var(--g200); color: var(--g900); padding: .8rem 1rem; border-radius: 12px; font-weight: 600; max-width: 44rem; }
+.elegidas .lbl { display: block; font-weight: 600; font-size: .92rem; color: var(--g900); margin-bottom: .35rem; }
+.elegidas ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }
+.elegidas li { display: inline-flex; align-items: center; gap: .3rem; background: var(--g50); border: 1px solid var(--g200); border-radius: 999px; padding: .25rem .35rem .25rem .75rem; font-size: .85rem; font-weight: 600; color: var(--g700); max-width: 100%; }
+.elegidas button { border: 0; background: #fff; color: var(--g700); width: 1.5rem; height: 1.5rem; border-radius: 50%; cursor: pointer; font-size: 1rem; line-height: 1; }
+.reunion { border: 1px solid var(--g200); border-radius: 14px; padding: 1rem 1.1rem; margin: 0; display: grid; gap: .55rem; min-width: 0; }
+.reunion legend { font-weight: 800; color: var(--g900); padding: 0 .4rem; }
+.reunion .hint { margin: 0; }
+.slots { display: grid; gap: .5rem; }
+.form .slot { display: flex; align-items: center; gap: .55rem; font-weight: 500; padding: .6rem .8rem; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; flex-wrap: wrap; }
+.form .slot input { width: auto; margin: 0; accent-color: var(--g600); }
+.form .slot:has(input:checked) { border-color: var(--g500); background: var(--g50); }
+.slot .disp { margin-left: auto; font-size: .75rem; font-weight: 700; color: var(--g600); background: #fff; border: 1px solid var(--g200); border-radius: 999px; padding: .1rem .55rem; }
+.as-lanzar { width: 100%; background: #fff; color: var(--g700); cursor: pointer; font: inherit; font-weight: 700; }
+
+/* asesor en /apis */
+.asesor-home { background: var(--soft); border: 1px solid var(--line); border-radius: 18px; padding: 1.2rem clamp(1rem, 3vw, 2rem) 1.4rem; margin-top: 2rem; }
+.asesor-home h2 { margin-top: .4rem; }
+.asesor-inline { display: flex; gap: .6rem; flex-wrap: wrap; }
+.asesor-inline input { flex: 1 1 18rem; min-width: 0; font: inherit; padding: .75rem 1rem; border: 1px solid var(--g200); border-radius: 999px; background: #fff; }
+.asesor-inline input:focus-visible { outline: 2px solid var(--g500); outline-offset: 1px; }
+
+/* widget de chat */
+.as-abrir { position: fixed; right: 16px; bottom: 16px; z-index: 40; display: inline-flex; align-items: center; gap: .5rem; padding: .8rem 1.1rem; border: 0; border-radius: 999px; background: var(--g900); color: #fff; font: inherit; font-weight: 700; box-shadow: 0 8px 24px #183c1540; cursor: pointer; }
+.as-abrir:hover { background: var(--g700); }
+.as-abrir:focus-visible { outline: 2px solid #e8eca0; outline-offset: 3px; }
+.as-abierto .as-abrir { display: none; }
+.as-panel { position: fixed; right: 16px; bottom: 16px; z-index: 41; width: min(26rem, calc(100vw - 32px)); height: min(40rem, calc(100vh - 32px)); height: min(40rem, calc(100dvh - 32px)); display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 18px 48px #183c1533; overflow: hidden; }
+.as-panel[hidden] { display: none; }
+.as-head { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .8rem 1rem; background: var(--g900); color: #fff; }
+.as-head b { display: block; }
+.as-head small { display: block; color: #cfe6c9; font-size: .78rem; }
+.as-cerrar { border: 0; background: #ffffff1a; color: #fff; width: 2rem; height: 2rem; border-radius: 50%; font-size: 1.3rem; line-height: 1; cursor: pointer; flex: none; }
+.as-log { flex: 1; overflow-y: auto; padding: .9rem; display: flex; flex-direction: column; gap: .6rem; background: var(--soft); }
+.as-msg { max-width: 92%; padding: .6rem .8rem; border-radius: 14px; font-size: .92rem; overflow-wrap: anywhere; }
+.as-msg p { margin: 0 0 .4rem; }
+.as-msg p:last-child { margin-bottom: 0; }
+.as-bot { background: #fff; border: 1px solid var(--line); align-self: flex-start; }
+.as-user { background: var(--g600); color: #fff; align-self: flex-end; }
+.as-espera { color: var(--muted); font-style: italic; }
+.as-apis { list-style: none; margin: .5rem 0; padding: 0; display: grid; gap: .5rem; }
+.as-apis li { border: 1px solid var(--g100); border-radius: 10px; padding: .5rem .6rem; font-size: .85rem; }
+.as-apis label { display: flex; gap: .4rem; align-items: center; cursor: pointer; color: var(--g900); }
+.as-apis input { accent-color: var(--g600); }
+.as-apis span { display: block; color: var(--muted); margin: .2rem 0 .1rem; }
+.as-apis a { font-size: .8rem; font-weight: 600; }
+.as-ir { display: block; text-align: center; margin: .4rem 0; font-size: .9rem; padding: .7rem 1rem; }
+.as-fuente { font-size: .75rem; color: var(--muted); }
+.as-sug { display: flex; gap: .35rem; overflow-x: auto; padding: .5rem .8rem; border-top: 1px solid var(--line); background: #fff; scrollbar-width: thin; }
+.as-sug button { flex: none; border: 1px solid var(--g200); background: var(--g50); color: var(--g700); border-radius: 999px; padding: .3rem .7rem; font: inherit; font-size: .8rem; font-weight: 600; cursor: pointer; }
+.as-form { display: flex; gap: .5rem; padding: .6rem .8rem .8rem; background: #fff; }
+.as-form textarea { flex: 1; min-width: 0; resize: none; font: inherit; font-size: .92rem; padding: .55rem .7rem; border: 1px solid var(--g200); border-radius: 12px; }
+.as-form textarea:focus-visible { outline: 2px solid var(--g500); outline-offset: 1px; }
+.as-enviar { border: 0; border-radius: 12px; background: var(--g600); color: #fff; font: inherit; font-weight: 700; padding: 0 .9rem; cursor: pointer; }
+.as-enviar:disabled { opacity: .6; cursor: wait; }
+@media (max-width: 480px) { .as-panel { right: 0; bottom: 0; width: 100vw; height: 100dvh; border-radius: 0; } .as-abrir span { display: none; } .as-abrir { padding: .9rem; } }
+@media print { .as-abrir, .as-panel { display: none !important; } }
