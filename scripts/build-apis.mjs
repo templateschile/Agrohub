@@ -623,7 +623,16 @@ CASOS.forEach((t) => listPage('caso', t))
 write('apis/catalogo.json', JSON.stringify({
   fuente: SITE + '/apis', actualizado: UPDATED, moneda: 'USD', licencia: 'CC BY 4.0 (AgroHubs)', total, cotizar: SITE + COTIZAR,
   niveles: ANILLO,
-  apis: APIS.map((a) => ({ slug: a.slug, nombre: a.nombre, proveedor: a.proveedor, pais: a.pais, alcance: a.alcance, tipo: TIPO[a.tipo] || a.tipo, categorias: a.categorias, casos_de_uso: a.casos_de_uso, resumen: a.resumen, costos: { forma_de_pago: MODELO[a.costos.modelo], mensual_usd: a.costos.mensual_usd, anual_usd: a.costos.anual_usd, plan: a.costos.plan, origen_del_precio: VERIF_COSTO[a.costos.verificacion] }, evaluacion: { recomendacion: a.ranking.relevancia, uso_mundial: a.ranking.popularidad, chile: a.ranking.chile, latinoamerica: a.ranking.latam }, disponibilidad: ANILLO[a.radar.anillo], con_agrohubs: ESTADO[a.estado_agrohubs], docs_url: a.docs_url, ficha: `${SITE}/apis/${a.slug}` }))
+  // Campos originales (tipo, costos, ranking, radar, estado_agrohubs) se mantienen por compatibilidad;
+  // los textos en lenguaje simple van en campos aparte.
+  apis: APIS.map((a) => ({
+    slug: a.slug, nombre: a.nombre, proveedor: a.proveedor, pais: a.pais, alcance: a.alcance, tipo: a.tipo, categorias: a.categorias, casos_de_uso: a.casos_de_uso, resumen: a.resumen,
+    costos: a.costos, ranking: a.ranking, radar: a.radar, estado_agrohubs: a.estado_agrohubs, docs_url: a.docs_url, ficha: `${SITE}/apis/${a.slug}`,
+    tipo_texto: TIPO[a.tipo] || a.tipo,
+    precio: { forma_de_pago: MODELO[a.costos.modelo], mensual_usd: a.costos.mensual_usd, anual_usd: a.costos.anual_usd, plan: a.costos.plan, origen_del_precio: VERIF_COSTO[a.costos.verificacion] },
+    evaluacion: { recomendacion: a.ranking.relevancia, uso_mundial: a.ranking.popularidad, chile: a.ranking.chile, latinoamerica: a.ranking.latam },
+    disponibilidad: ANILLO[a.radar.anillo], con_agrohubs: ESTADO[a.estado_agrohubs]
+  }))
 }, null, 1))
 
 const llms = `# AgroHubs — Directorio de APIs agrícolas

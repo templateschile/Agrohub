@@ -22,6 +22,15 @@ for (const dim of ['relevancia', 'popularidad', 'chile', 'latam']) {
   [...APIS].sort((x, y) => y.ranking[dim] - x.ranking[dim] || y.ranking.relevancia - x.ranking.relevancia || x.nombre.localeCompare(y.nombre, 'es'))
     .forEach((a, i) => { a.ranking['pos_' + dim] = i + 1 })
 }
+// El nivel público del mapa no puede contradecir el estado real de la conexión:
+// conectada hoy => "Lista para usar"; solo en evaluación => "Disponible a pedido" (no se promete fecha)
+const CONECTADA = new Set(['integrada', 'proxy', 'scheduler'])
+for (const a of APIS) {
+  let anillo = a.radar.anillo
+  if (CONECTADA.has(a.estado_agrohubs) && (anillo === 'probar' || anillo === 'evaluar')) anillo = 'adoptar'
+  else if (a.estado_agrohubs === 'evaluacion' && anillo === 'probar') anillo = 'evaluar'
+  a.radar = { ...a.radar, anillo }
+}
 const visibles = new Set(APIS.map((a) => a.slug))
 for (const a of APIS) a.relacionadas = a.relacionadas.filter((s) => visibles.has(s))
 export const CATEGORIAS = read('categorias.json')
