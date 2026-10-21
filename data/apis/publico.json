@@ -1,0 +1,449 @@
+{
+  "_nota": "Textos para el público de www.agrohubs.cl/apis. Reemplazan resumen, descripcion, que_entrega o faq del catálogo técnico cuando este tiene detalles internos. 'ocultar': true saca la ficha del directorio público.",
+  "app_links": {
+    "ocultar": true
+  },
+  "agromet_inia": {
+    "descripcion": [
+      "Agromet es la red de estaciones meteorológicas agrícolas de Chile que coordina el Instituto de Investigaciones Agropecuarias (INIA). Reúne más de 400 estaciones de distintas instituciones y mide cada 15 minutos temperatura, humedad, lluvia, viento, radiación solar y temperatura de suelo.",
+      "Si tu sistema necesita datos de clima medidos en el campo, y no solo pronósticos, esta es la fuente principal en Chile. Sirve para alertas de heladas, cálculo de riego, horas frío y grados-día. La API es gratuita, pero hay que pedir una clave a INIA y su documentación es escasa; AgroHubs ya resolvió esa conexión."
+    ],
+    "faq": [
+      {
+        "q": "¿Agromet INIA es gratis?",
+        "a": "Sí. INIA entrega la clave de acceso sin costo y los datos de su portal también son de descarga libre."
+      },
+      {
+        "q": "¿Sirve para alertas de heladas?",
+        "a": "Sí. Con la temperatura de la estación más cercana cada 15 minutos se pueden configurar alertas cuando baja de un umbral."
+      }
+    ],
+    "resumen": "La red pública de estaciones meteorológicas agrícolas de Chile: más de 400 estaciones con datos de clima cada 15 minutos. Gratis, con clave de INIA."
+  },
+  "dmc": {
+    "descripcion": [
+      "La Dirección Meteorológica de Chile (DMC) es el servicio meteorológico oficial del país. Publica datos de sus estaciones automáticas cada 15 minutos, resúmenes diarios y series históricas de temperatura y lluvia.",
+      "Es la mejor opción cuando no hay una estación agrícola cerca o cuando necesitas series históricas largas. El acceso es gratuito con un usuario y una clave que se obtienen en su portal de climatología."
+    ],
+    "resumen": "Datos de las estaciones de la Dirección Meteorológica de Chile: clima cada 15 minutos y series históricas de temperatura y lluvia. Gratis con registro."
+  },
+  "odepa": {
+    "descripcion": [
+      "La Oficina de Estudios y Políticas Agrarias (ODEPA) publica desde 2025 un portal de datos abiertos con precios mayoristas diarios de frutas y hortalizas, precios al consumidor, exportaciones e importaciones, y el catastro frutícola.",
+      "Si tu sistema muestra precios, márgenes o planificación comercial, es la fuente oficial en Chile. No necesita clave. Los precios mayoristas se actualizan cada mañana y cada año se publica un archivo nuevo, algo que AgroHubs ya maneja."
+    ],
+    "resumen": "Precios mayoristas diarios de frutas y hortalizas, precios al consumidor, exportaciones y catastro frutícola de Chile, publicados por ODEPA. Gratis y sin registro."
+  },
+  "ciren_ide": {
+    "descripcion": [
+      "El Centro de Información de Recursos Naturales (CIREN) y la Infraestructura de Datos Espaciales del Ministerio de Agricultura publican mapas oficiales de Chile: estudios de suelos, catastro frutícola, propiedades rurales, erosión, uso de la tierra e incendios.",
+      "Con solo la ubicación de un predio, tu sistema puede saber qué tipo de suelo tiene, qué dice el catastro frutícola de la zona o a qué propiedad rural corresponde. El acceso es libre y gratuito."
+    ],
+    "faq": [
+      {
+        "q": "¿Puedo saber el tipo de suelo de un punto?",
+        "a": "Sí. Con la coordenada del predio se obtiene la serie de suelo y su clase de capacidad de uso según los estudios agrológicos de CIREN."
+      }
+    ],
+    "resumen": "Mapas oficiales de Chile para consultar por ubicación: suelos, catastro frutícola, propiedades rurales, erosión, uso de la tierra e incendios. Gratis y sin registro."
+  },
+  "kadi_sostenible": {
+    "resumen": "Registros de sostenibilidad del predio (etapa del cultivo, labores realizadas y residuos generados, con fotos) que alimentan los manuales AgroHubs Sostenible.",
+    "descripcion": [
+      "AgroHubs Sostenible es una fuente propia de AgroHubs. Registra por fecha la etapa del cultivo, las labores realizadas y los residuos que se generan, cada uno con texto y foto.",
+      "Sirve para construir historiales de manejo sostenible, reportes para certificaciones y material de capacitación. Está disponible para quienes integran su sistema con AgroHubs."
+    ]
+  },
+  "modag": {
+    "descripcion": [
+      "MODAG es un cuaderno de campo digital chileno. Registra las labores de cada campo y sector: aplicaciones, tipo de producto, costos, observaciones y responsables.",
+      "Si tu empresa ya usa MODAG, AgroHubs puede traer esos registros y combinarlos con clima, sensores y precios. El acceso a los datos requiere un acuerdo con MODAG."
+    ]
+  },
+  "biblioteca_inia": {
+    "resumen": "Boletines, fichas técnicas y manuales de la Biblioteca Digital de INIA, que AgroHubs reúne en su buscador para encontrarlos en segundos.",
+    "descripcion": [
+      "La Biblioteca Digital de INIA guarda miles de publicaciones técnicas sobre cultivos, riego, plagas y manejo. AgroHubs las indexa para que se puedan buscar en lenguaje natural junto a otros documentos técnicos.",
+      "Si tu sistema necesita recomendaciones con respaldo técnico, por ejemplo un asistente que cite fuentes, esta biblioteca es una base confiable en español y pensada para Chile."
+    ],
+    "que_entrega": [
+      "Boletines, fichas y manuales técnicos de INIA",
+      "Enlace a cada documento original en PDF",
+      "Búsqueda por tema dentro del buscador de AgroHubs"
+    ]
+  },
+  "banco_central": {
+    "descripcion": [
+      "La Base de Datos Estadísticos del Banco Central de Chile entrega series económicas por API: dólar observado, UF, IPC y cuentas nacionales por sector.",
+      "Sirve para convertir precios entre pesos y dólares, calcular márgenes de exportación o mostrar indicadores económicos en tu sistema. El acceso es gratuito con un usuario registrado."
+    ]
+  },
+  "geoportal_cl": {
+    "descripcion": [
+      "El Geoportal de Chile reúne mapas de muchas instituciones públicas: límites, caminos, red hídrica, áreas protegidas e infraestructura.",
+      "Complementa a CIREN cuando tu sistema necesita contexto territorial que no es agrícola, por ejemplo la distancia a un río o si un predio está cerca de un área protegida. Usa estándares abiertos de mapas (WMS y WFS)."
+    ],
+    "resumen": "Mapas de instituciones públicas de Chile (límites, caminos, ríos, áreas protegidas) en formatos estándar para usar en tu sistema."
+  },
+  "wiseconn": {
+    "descripcion": [
+      "WiseConn es la empresa chilena líder en telemetría y control de riego tecnificado. Su plataforma DropControl registra caudales, presiones, humedad de suelo y clima, y ejecuta los programas de riego.",
+      "Conectar DropControl permite ver el riego real junto a la humedad del suelo y el pronóstico, y detectar riegos de más o de menos. La integración requiere un acuerdo con WiseConn; AgroHubs la está gestionando como una de sus próximas conexiones."
+    ]
+  },
+  "dga_snia": {
+    "descripcion": [
+      "La Dirección General de Aguas (DGA) mide caudales de ríos, nivel de embalses, nieve y aguas subterráneas en más de 650 estaciones, y mantiene el catastro de derechos de agua.",
+      "Hoy no ofrece una conexión automática: los datos se consultan en su portal o se descargan en planillas. Es una fuente clave para la disponibilidad de agua de riego, así que AgroHubs la sigue de cerca."
+    ]
+  },
+  "sag_sipec": {
+    "descripcion": [
+      "El Servicio Agrícola y Ganadero (SAG) administra el sistema oficial de trazabilidad animal (SIPEC), el registro de plaguicidas autorizados y las normas cuarentenarias.",
+      "No tiene una conexión automática para terceros: el registro se hace en su sitio web. Para un sistema ganadero o de cumplimiento normativo es una referencia obligatoria."
+    ]
+  },
+  "auravant": {
+    "descripcion": [
+      "Auravant es una plataforma argentina de gestión agrícola y monitoreo satelital. Es de las pocas agtech latinoamericanas con un portal público para desarrolladores.",
+      "Permite intercambiar campos, lotes, labores e índices satelitales con el permiso del productor. Es útil si tus clientes ya usan Auravant."
+    ],
+    "resumen": "Plataforma argentina de gestión agrícola e imágenes satelitales, con conexión abierta para desarrolladores y permiso del productor."
+  },
+  "inmet": {
+    "descripcion": [
+      "El Instituto Nacional de Meteorología de Brasil (INMET) publica datos de sus estaciones automáticas y convencionales, pronósticos por municipio y registros históricos desde 1961.",
+      "El listado de estaciones es abierto y las observaciones requieren una clave gratuita que se pide por correo. Cada consulta permite hasta seis meses de datos."
+    ],
+    "resumen": "Datos de las estaciones meteorológicas de Brasil, pronóstico por municipio e históricos desde 1961. Gratis con clave."
+  },
+  "mapa_brasil": {
+    "descripcion": [
+      "El Ministerio de Agricultura de Brasil publica datos abiertos como el registro de agroquímicos (AGROFIT) y la zonificación de riesgo climático (ZARC). CONAB y Cepea agregan series de producción y precios.",
+      "La mayoría se descarga en planillas o CSV. Es útil para sistemas que operan en Brasil o comparan mercados."
+    ],
+    "resumen": "Datos abiertos del Ministerio de Agricultura de Brasil: agroquímicos registrados, zonificación de riesgo climático e índices de precios."
+  },
+  "smn_argentina": {
+    "resumen": "Datos abiertos del Servicio Meteorológico Nacional de Argentina: tiempo presente, pronóstico a 5 días, temperaturas, estaciones y observaciones horarias.",
+    "descripcion": [
+      "El Servicio Meteorológico Nacional (SMN) de Argentina publica archivos abiertos con el tiempo presente, el pronóstico a cinco días por localidad, temperaturas extremas y observaciones horarias.",
+      "No tiene una API oficial documentada, pero sus descargas son estables y gratuitas. También publica alertas meteorológicas."
+    ]
+  },
+  "open_meteo": {
+    "descripcion": [
+      "Open-Meteo es un servicio de pronóstico global que combina los mejores modelos meteorológicos del mundo. Entrega pronóstico por hora y por día, evapotranspiración para riego, radiación y humedad de suelo, además de datos históricos desde 1940.",
+      "Es la forma más simple de dar pronóstico confiable a cualquier punto de Chile. No necesita clave para uso no comercial y su plan comercial parte en US$29 al mes. Sus datos se pueden mostrar citando la fuente."
+    ],
+    "faq": [
+      {
+        "q": "¿Puedo usarlo en una app comercial?",
+        "a": "Sí, con el plan de pago. El plan gratuito es solo para uso no comercial, y en ambos casos hay que citar a Open-Meteo como fuente."
+      }
+    ],
+    "resumen": "Pronóstico del tiempo para cualquier punto del mundo, con datos para riego (evapotranspiración), humedad de suelo e historial desde 1940. Gratis para uso no comercial; planes desde US$29 al mes."
+  },
+  "openweather": {
+    "resumen": "Clima actual y pronóstico por ubicación y, con su servicio Agromonitoring, índices satelitales de vegetación y datos de suelo por potrero.",
+    "descripcion": [
+      "OpenWeatherMap es uno de los servicios de clima más usados del mundo. Entrega el clima actual, pronósticos e históricos, y con Agromonitoring permite dibujar potreros y obtener índices de vegetación y datos de suelo.",
+      "Ojo con la licencia: en los planes gratuitos y económicos los datos se comparten con la condición de que lo que construyas también sea abierto. Si vas a guardar o revender datos, conviene un plan empresarial u otra fuente como Open-Meteo."
+    ]
+  },
+  "weatherapi": {
+    "resumen": "Servicio comercial de clima actual y pronóstico por ciudad o coordenadas, con textos en español.",
+    "descripcion": [
+      "WeatherAPI.com entrega clima actual, pronóstico por día y por hora, alertas y datos de astronomía. Se consulta por nombre de ciudad, coordenadas o comuna.",
+      "Es fácil de integrar y tiene un plan gratuito limitado. AgroHubs lo usa para el pronóstico de su app y como respaldo de otras fuentes."
+    ]
+  },
+  "woocommerce": {
+    "resumen": "La tienda en línea más usada en WordPress. AgroHubs sincroniza desde ella su catálogo de productos e insumos agrícolas.",
+    "descripcion": [
+      "WooCommerce es una plataforma de tienda en línea para WordPress. Su API permite leer y actualizar productos, precios, stock y pedidos.",
+      "Si vendes insumos, productos o cosecha en una tienda WooCommerce, AgroHubs puede sincronizar ese catálogo con su buscador y su mercado."
+    ],
+    "que_entrega": [
+      "Productos, variantes y categorías",
+      "Precios y stock",
+      "Pedidos"
+    ]
+  },
+  "elasticsearch": {
+    "resumen": "Motor de búsqueda que permite encontrar en segundos documentos técnicos, productos y registros. AgroHubs lo usa para buscar entre más de 50.000 documentos.",
+    "descripcion": [
+      "Elasticsearch es un motor de búsqueda de texto completo. Encuentra resultados aunque la consulta tenga errores de tipeo y también busca dentro de archivos PDF.",
+      "AgroHubs lo usa para su buscador de documentos técnicos. Si tu sistema maneja mucha documentación, es la herramienta estándar para hacerla buscable."
+    ]
+  },
+  "fcm": {
+    "resumen": "Notificaciones push a celulares (Firebase Cloud Messaging) y monitoreo de errores (Sentry): las herramientas que mantienen informados a los usuarios y estable la app.",
+    "descripcion": [
+      "Firebase Cloud Messaging envía notificaciones push a celulares Android y iPhone sin costo. Sentry registra los errores de las aplicaciones para corregirlos rápido.",
+      "Con ellas un sistema agrícola puede avisar al productor de una helada, una alerta de sensor o una novedad, y mantener la app funcionando bien."
+    ]
+  },
+  "ml_kit": {
+    "descripcion": [
+      "Google ML Kit reconoce objetos en fotos directamente en el celular, sin conexión y sin costo.",
+      "Sus etiquetas son genéricas (planta, hoja, fruta), por lo que no sirven para identificar especies ni enfermedades. Para diagnóstico por foto recomendamos servicios especializados como Kindwise."
+    ]
+  },
+  "payments": {
+    "descripcion": [
+      "MercadoPago y Stripe permiten cobrar con tarjeta y otros medios de pago en línea; las compras dentro de la app se cobran por las tiendas de Apple y Google.",
+      "Son la base para vender suscripciones, servicios o productos dentro de una plataforma agrícola. MercadoPago es el más usado en Chile."
+    ],
+    "resumen": "Medios de pago en línea (MercadoPago, Stripe y compras dentro de la app) para cobrar planes, servicios o productos."
+  },
+  "ai_providers": {
+    "resumen": "Modelos de inteligencia artificial (Perplexity, OpenAI, Gemini y Claude) para un asistente agrícola que responde preguntas en lenguaje natural.",
+    "descripcion": [
+      "Los modelos de lenguaje permiten crear asistentes que responden preguntas en lenguaje natural, resumen documentos y explican datos. Perplexity agrega búsqueda en internet con fuentes.",
+      "Combinados con los datos del predio (clima, sensores, documentos técnicos), pasan de dar respuestas generales a recomendaciones concretas con su fuente. AgroHubs ya los usa en su chat agrícola."
+    ]
+  },
+  "agrovoc": {
+    "descripcion": [
+      "AGROVOC es el vocabulario agrícola de la FAO, con más de 40.000 conceptos en decenas de idiomas. Crop Ontology agrega variables y rasgos por cultivo.",
+      "Sirve para que un sistema entienda que palto, aguacate y avocado son lo mismo, mejore sus búsquedas y clasifique documentos o productos de forma estándar."
+    ],
+    "resumen": "Vocabulario agrícola de la FAO con más de 40.000 conceptos en varios idiomas, para que tu sistema entienda sinónimos y clasifique contenidos."
+  },
+  "sentinel_hub_cdse": {
+    "descripcion": [
+      "El Copernicus Data Space Ecosystem da acceso gratuito a las imágenes de los satélites europeos Sentinel, que pasan sobre Chile cada pocos días con 10 metros de detalle.",
+      "Permite calcular índices de vigor del cultivo (como NDVI) por cuartel y seguir su evolución en el tiempo. La cuota gratuita alcanza para miles de cuarteles al mes."
+    ],
+    "resumen": "Imágenes satelitales gratuitas de los satélites europeos Sentinel para medir el vigor del cultivo por cuartel. Cuota gratuita amplia cada mes."
+  },
+  "cropx": {
+    "descripcion": [
+      "CropX combina sondas de suelo propias, imágenes satelitales y modelos agronómicos para recomendar riego y nutrición.",
+      "No tiene un portal público para desarrolladores; las conexiones se acuerdan con la empresa. Es útil si tus clientes ya tienen sondas CropX."
+    ]
+  },
+  "davis_weatherlink": {
+    "resumen": "Conexión a las estaciones meteorológicas Davis, muy comunes en campos de Chile, con documentación pública y límites claros de uso.",
+    "descripcion": [
+      "Davis Instruments fabrica estaciones meteorológicas muy usadas en la agricultura. Su plataforma WeatherLink tiene una API pública y bien documentada para leer los datos de cada estación.",
+      "Si un predio tiene una estación Davis, sus datos de clima propios se pueden sumar al resto de las fuentes. Los datos históricos requieren un plan pagado por estación."
+    ]
+  },
+  "soilgrids": {
+    "descripcion": [
+      "SoilGrids es un mapa mundial de propiedades del suelo, como arcilla, arena, materia orgánica y pH, a distintas profundidades y con 250 metros de detalle.",
+      "Sirve para estimar el tipo de suelo donde no hay estudios locales. En Chile conviene usarlo como complemento de los estudios de CIREN."
+    ],
+    "resumen": "Mapa mundial de propiedades del suelo (arcilla, arena, materia orgánica, pH) para estimar el tipo de suelo de cualquier punto."
+  },
+  "kindwise": {
+    "descripcion": [
+      "Kindwise identifica plantas, malezas, enfermedades y plagas a partir de una foto, con servicios como Plant.id y Crop.health.",
+      "Es útil para que un productor fotografíe un problema en terreno y reciba una identificación con el nivel de confianza y sugerencias de manejo. Se paga por identificación."
+    ],
+    "resumen": "Identificación de plantas, malezas, enfermedades e insectos a partir de una foto. 100 identificaciones gratis y luego pago por uso."
+  },
+  "zentra": {
+    "descripcion": [
+      "METER Group fabrica sensores de humedad de suelo muy usados en investigación y en frutales, y los reúne en su plataforma ZENTRA Cloud.",
+      "Conectar ZENTRA permite ver la humedad, temperatura y salinidad del suelo a distintas profundidades junto al clima y el riego. El acceso viene con la suscripción a ZENTRA."
+    ],
+    "resumen": "Plataforma de los sensores de humedad de suelo de METER Group, para leer humedad, temperatura y salinidad del suelo."
+  },
+  "crop_models": {
+    "resumen": "Modelos científicos de cultivo, gratuitos, que simulan crecimiento, uso de agua y rendimiento a partir del clima, el suelo y el manejo.",
+    "descripcion": [
+      "WOFOST, AquaCrop, APSIM y DSSAT son modelos de simulación de cultivos usados en investigación en todo el mundo. Estiman el crecimiento, el agua que necesita el cultivo y el rendimiento esperado.",
+      "No son servicios en línea sino herramientas de código abierto. Con datos de clima y suelo se pueden convertir en calculadoras de riego o de rendimiento para tu sistema."
+    ]
+  },
+  "pessl_fieldclimate": {
+    "descripcion": [
+      "Pessl Instruments fabrica las estaciones METOS, presentes en Chile a través de distribuidores. Su plataforma FieldClimate entrega los datos de las estaciones y más de 80 modelos de riesgo de enfermedades.",
+      "Es una buena opción para alertas de enfermedades como oídio, botritis o venturia. La conexión requiere una suscripción por estación."
+    ],
+    "resumen": "Datos de las estaciones meteorológicas METOS y más de 80 modelos de riesgo de enfermedades, con suscripción por estación."
+  },
+  "sentek": {
+    "descripcion": [
+      "Sentek fabrica sondas de humedad de suelo que miden a varias profundidades, muy usadas en riego de frutales.",
+      "No tiene una conexión pública directa; sus datos suelen llegar a través de los registradores de Davis o Pessl, o mediante acuerdo con un distribuidor."
+    ]
+  },
+  "tts": {
+    "descripcion": [
+      "The Things Stack es una plataforma para redes LoRaWAN, la tecnología de radio de bajo consumo que usan muchos sensores de campo para transmitir a varios kilómetros.",
+      "Con ella, los datos de sensores de distintas marcas llegan a tu sistema en tiempo casi real. El plan gratuito permite hasta 10 sensores y 10 antenas."
+    ],
+    "resumen": "Plataforma para recibir datos de sensores de campo que transmiten por radio de largo alcance (LoRaWAN). Gratis hasta 10 sensores."
+  },
+  "adapt": {
+    "descripcion": [
+      "ADAPT es un estándar abierto de AgGateway para describir campos, límites, productos, maquinaria, órdenes de trabajo y labores agrícolas.",
+      "Usar un estándar común facilita intercambiar datos entre sistemas de gestión y maquinaria sin rehacer cada conexión."
+    ],
+    "resumen": "Estándar abierto para describir campos, productos, maquinaria y labores agrícolas, y así intercambiar datos entre sistemas."
+  },
+  "arable": {
+    "descripcion": [
+      "Arable fabrica una estación de campo todo en uno que mide clima, radiación, evapotranspiración y, con sensores adicionales, humedad de suelo.",
+      "Tiene una API documentada y avisos automáticos cuando llegan datos atrasados. Se paga una suscripción por equipo."
+    ],
+    "resumen": "Estación de campo todo en uno que mide clima, evapotranspiración y humedad de suelo, con API documentada."
+  },
+  "barchart": {
+    "descripcion": [
+      "Barchart entrega cotizaciones de commodities agrícolas y precios de futuros de las bolsas de Chicago (CME y CBOT), además de precios de compra de granos.",
+      "Sirve para mostrar precios internacionales en tiempo real o con retraso. Es un servicio pagado por uso, más los derechos de cada bolsa."
+    ]
+  },
+  "commodities_api": {
+    "descripcion": [
+      "Commodities-API y API Ninjas entregan precios diarios de referencia de trigo, maíz, soya, ganado y otros commodities.",
+      "Son económicas y fáciles de integrar, suficientes para mostrar tendencias de precio internacional."
+    ]
+  },
+  "agrirouter": {
+    "descripcion": [
+      "agrirouter es una plataforma europea neutral que traspasa datos entre maquinaria agrícola y software de distintas marcas, sin guardarlos.",
+      "Exige certificación y un acuerdo legal, y sus herramientas para desarrolladores están en transición. Solo conviene si trabajas con maquinaria europea."
+    ],
+    "que_entrega": [
+      "Traspaso de datos entre maquinaria y software de distintas marcas",
+      "Archivos de labores en formato ISOXML y telemetría"
+    ],
+    "resumen": "Plataforma europea que traspasa datos entre maquinaria y software agrícola de distintas marcas. Requiere certificación."
+  },
+  "eppo": {
+    "descripcion": [
+      "La base de datos de la Organización Europea y Mediterránea de Protección de Plantas (EPPO) asigna un código estándar a cada plaga, enfermedad y cultivo.",
+      "Usar esos códigos permite nombrar las plagas igual en todos los documentos, registros y recomendaciones de tu sistema. El acceso es gratuito con registro."
+    ],
+    "resumen": "Base de datos oficial de plagas, enfermedades y cultivos con códigos estándar para nombrarlos igual en todos los sistemas."
+  },
+  "eudr": {
+    "que_entrega": [
+      "Envío y consulta de declaraciones de debida diligencia ante la Unión Europea",
+      "Evaluación de riesgo de deforestación por polígono (Whisp)"
+    ],
+    "resumen": "Servicio oficial de la Unión Europea para declarar que un producto no viene de zonas deforestadas, y herramienta de la FAO para evaluar ese riesgo."
+  },
+  "faostat": {
+    "descripcion": [
+      "FAOSTAT es la base de estadísticas agrícolas de la FAO: producción, superficie, rendimiento, comercio y precios de más de 245 países desde 1961.",
+      "Sirve para comparar Chile con otros países productores y analizar mercados. Es gratuita y no requiere clave."
+    ]
+  },
+  "fiware_agrifood": {
+    "descripcion": [
+      "FIWARE publica modelos de datos abiertos para agricultura, como parcelas, registros de parcela, operaciones y sensores, que usan ciudades y regiones de todo el mundo.",
+      "Seguir estos modelos facilita conectar tu sistema con plataformas públicas y proyectos de ciudades o regiones inteligentes."
+    ],
+    "resumen": "Modelos de datos abiertos para parcelas, labores y sensores agrícolas, usados por ciudades y regiones inteligentes."
+  },
+  "leaf": {
+    "descripcion": [
+      "Leaf Agriculture conecta en una sola API los datos de las principales marcas de maquinaria y software agrícola: John Deere, Case IH y New Holland, Climate FieldView, Trimble y otras.",
+      "Entrega mapas de siembra, aplicación y cosecha, límites de campos e imágenes satelitales en un mismo formato. Es útil si tus clientes usan maquinaria de varias marcas."
+    ],
+    "que_entrega": [
+      "Conexión a cuentas de John Deere, CNH, FieldView, Trimble y otras",
+      "Campos y límites en un formato común",
+      "Mapas de siembra, aplicación y cosecha",
+      "Imágenes satelitales por campo"
+    ],
+    "resumen": "Una sola conexión para los datos de maquinaria y software de John Deere, Case IH, New Holland, FieldView, Trimble y otras marcas."
+  },
+  "planet": {
+    "descripcion": [
+      "Planet opera la flota de satélites más grande del mundo y fotografía todo el planeta cada día con 3 metros de detalle. También entrega indicadores listos, como biomasa del cultivo y humedad del suelo.",
+      "Es la opción cuando las imágenes gratuitas de Sentinel no alcanzan en detalle o frecuencia. El precio se cotiza según la superficie."
+    ]
+  },
+  "xarvio": {
+    "descripcion": [
+      "xarvio es la plataforma digital de BASF para predecir riesgo de enfermedades y generar mapas de aplicación variable por zona del campo.",
+      "No tiene una API pública; las conexiones se hacen a través de acuerdos con socios."
+    ]
+  },
+  "conaf_geprif": {
+    "resumen": "Mapas actualizados de incendios forestales en Chile: alertas activas, probabilidad de incendio por zona, perímetros y focos de calor detectados por satélite."
+  },
+  "datos_gob_cl": {
+    "resumen": "Portal nacional de datos abiertos de Chile, con datos de ministerios, municipios y servicios públicos, incluidos datos de clima."
+  },
+  "ine_censo": {
+    "resumen": "Resultados del Censo Agropecuario 2021 y mapas censales del Instituto Nacional de Estadísticas de Chile."
+  },
+  "dane_sipsa": {
+    "resumen": "Precios y volúmenes mayoristas de alimentos e insumos agrícolas en Colombia, publicados por el DANE."
+  },
+  "embrapa_agroapi": {
+    "resumen": "Catálogo de APIs de Embrapa (Brasil): agroquímicos registrados, recomendaciones por cultivo, bioinsumos, clasificación de suelos y trazabilidad bovina."
+  },
+  "ibge_sidra": {
+    "resumen": "Estadísticas oficiales de producción agrícola y ganadera de Brasil por municipio, del instituto de estadísticas IBGE."
+  },
+  "ideam_colombia": {
+    "resumen": "Datos de unas 2.600 estaciones meteorológicas de Colombia (lluvia, temperatura, presión) casi en tiempo real. Gratis."
+  },
+  "inta_siga": {
+    "resumen": "Red agrometeorológica del INTA (Argentina): datos diarios por estación, incluidas horas de frío, y mapas de suelos."
+  },
+  "magyp_datos": {
+    "resumen": "Estimaciones oficiales de superficie, producción y rendimiento por cultivo en Argentina desde 1969, más precios."
+  },
+  "siap_mexico": {
+    "resumen": "Estadísticas de producción agrícola de México por municipio y año desde 1980: superficie, producción, rendimiento y precio."
+  },
+  "senamhi_peru": {
+    "resumen": "Datos meteorológicos de Perú (con registro) y estadísticas agrarias del Ministerio de Agricultura en planillas."
+  },
+  "usda_ams": {
+    "resumen": "Precios de frutas, hortalizas, granos y ganado en los mercados de Estados Unidos, útiles para exportadores chilenos. Gratis con clave."
+  },
+  "agriwebb": {
+    "resumen": "Software de gestión ganadera con API para terceros: animales, potreros, manejos y pesajes."
+  },
+  "climate_fieldview": {
+    "resumen": "Plataforma de Bayer donde los productores guardan sus mapas de siembra, aplicación y cosecha. API gratuita para socios."
+  },
+  "cnh_fieldops": {
+    "resumen": "Datos de la maquinaria Case IH y New Holland: ubicación, horas, combustible, alertas y mapas de labores."
+  },
+  "ecmwf_open_data": {
+    "resumen": "Pronósticos del centro meteorológico europeo y datos climáticos históricos de alta calidad, gratuitos, en formatos para especialistas."
+  },
+  "farmos": {
+    "resumen": "Software de gestión agrícola de código abierto, con API completa para registrar campos, cultivos, labores y cosechas."
+  },
+  "gee": {
+    "resumen": "Plataforma de Google para analizar imágenes satelitales y datos climáticos a gran escala. Gratis en investigación; planes comerciales desde US$500 al mes."
+  },
+  "gs1_epcis": {
+    "resumen": "Estándar mundial para registrar la trazabilidad de un producto: qué pasó, dónde, cuándo y por qué, de la cosecha al cliente."
+  },
+  "icar_ade": {
+    "resumen": "Estándar abierto para intercambiar datos de animales: partos, celos, salud, ordeña y movimientos entre software y equipos."
+  },
+  "john_deere": {
+    "resumen": "Datos de la maquinaria y las cuentas John Deere: campos, máquinas y mapas de siembra, aplicación y cosecha, con permiso del cliente."
+  },
+  "meteomatics": {
+    "resumen": "Servicio meteorológico de pago con indicadores agrícolas listos: evapotranspiración, grados-día y horas de mojado de hoja."
+  },
+  "planetary_computer": {
+    "resumen": "Catálogo gratuito de Microsoft con imágenes satelitales Sentinel y Landsat y datos climáticos, listo para análisis."
+  },
+  "nasa_earthdata": {
+    "resumen": "Datos satelitales gratuitos de la NASA: vigor del cultivo, humedad de suelo y evapotranspiración, con registro gratuito."
+  },
+  "sencrop": {
+    "resumen": "Estaciones meteorológicas conectadas para el campo, con API documentada y alertas de heladas y lluvia."
+  },
+  "usda_nass": {
+    "resumen": "Estadísticas agrícolas oficiales de Estados Unidos: producción, superficie y precios por estado y condado. Gratis con clave."
+  }
+}

@@ -9,7 +9,30 @@ export const SITE = 'https://www.agrohubs.cl'
 export const UPDATED = '2026-10-20'
 
 const read = (f) => JSON.parse(readFileSync(join(ROOT, 'data', 'apis', f), 'utf8'))
+// Textos para el público: reemplazan los del catálogo técnico y ocultan fichas internas
+const PUBLICO = read('publico.json')
 export const APIS = read('integraciones.json')
+  .filter((a) => !(PUBLICO[a.key] && PUBLICO[a.key].ocultar))
+  .map((a) => {
+    const o = PUBLICO[a.key] || {}
+    return { ...a, resumen: o.resumen || a.resumen, descripcion: o.descripcion || a.descripcion, que_entrega: o.que_entrega || a.que_entrega, faq: o.faq || (o.descripcion ? [] : a.faq || []) }
+  })
+// Posiciones recalculadas sin las fichas ocultas
+for (const dim of ['relevancia', 'popularidad', 'chile', 'latam']) {
+  [...APIS].sort((x, y) => y.ranking[dim] - x.ranking[dim] || y.ranking.relevancia - x.ranking.relevancia || x.nombre.localeCompare(y.nombre, 'es'))
+    .forEach((a, i) => { a.ranking['pos_' + dim] = i + 1 })
+}
+// El nivel público del mapa no puede contradecir el estado real de la conexión:
+// conectada hoy => "Lista para usar"; solo en evaluación => "Disponible a pedido" (no se promete fecha)
+const CONECTADA = new Set(['integrada', 'proxy', 'scheduler'])
+for (const a of APIS) {
+  let anillo = a.radar.anillo
+  if (CONECTADA.has(a.estado_agrohubs) && (anillo === 'probar' || anillo === 'evaluar')) anillo = 'adoptar'
+  else if (a.estado_agrohubs === 'evaluacion' && anillo === 'probar') anillo = 'evaluar'
+  a.radar = { ...a.radar, anillo }
+}
+const visibles = new Set(APIS.map((a) => a.slug))
+for (const a of APIS) a.relacionadas = a.relacionadas.filter((s) => visibles.has(s))
 export const CATEGORIAS = read('categorias.json')
 export const CASOS = read('casos_de_uso.json')
 
@@ -19,32 +42,43 @@ export const caso = Object.fromEntries(CASOS.map((c) => [c.slug, c]))
 
 export const PAIS = { CL: 'Chile', AR: 'Argentina', BR: 'Brasil', CO: 'Colombia', MX: 'México', PE: 'Perú', UY: 'Uruguay', GLOBAL: 'Global' }
 export const ESTADO = {
-  integrada: 'Integrada en AgroHubs', proxy: 'Proxy en la API de AgroHubs', scheduler: 'Sincronización programada en AgroHubs',
-  plataforma: 'Servicio de la plataforma AgroHubs', planificada: 'Integración planificada', evaluacion: 'En evaluación', enlace: 'Enlace externo (sin API)'
+  integrada: 'Ya conectada en AgroHubs', proxy: 'Ya conectada en AgroHubs', scheduler: 'Ya conectada en AgroHubs',
+  plataforma: 'Herramienta en uso en AgroHubs', planificada: 'Próximamente en AgroHubs', evaluacion: 'AgroHubs la conecta a pedido', enlace: 'Sin conexión automática'
 }
-export const TIPO = { api_rest: 'API REST', web_service: 'Servicio web', portal_datos: 'Portal de datos', sdk: 'SDK o estándar', conector_hardware: 'Conector de hardware', servicio_ia: 'Servicio de IA', plataforma: 'Plataforma' }
-export const MODELO = { gratis: 'Gratis', freemium: 'Freemium', pago: 'Pago', uso: 'Pago por uso', cotizacion: 'Cotización', convenio: 'Convenio', propio: 'Propio' }
-export const VERIF_COSTO = { oficial: 'precio oficial', terceros: 'precio verificado por terceros', estimado: 'precio estimado, por verificar', interno: 'costo interno de AgroHubs', por_verificar: 'sin precio verificado' }
-export const VERIF = { verificado: 'Verificado', terceros: 'Verificado por terceros', por_verificar: 'Por verificar' }
-export const ANILLO = { adoptar: 'Adoptar', probar: 'Probar', evaluar: 'Evaluar', resistir: 'Resistir' }
+export const ESTADO_TXT = {
+  integrada: 'AgroHubs ya está conectado a esta fuente. Si integras tu sistema con AgroHubs, recibes estos datos junto a las demás fuentes, en un solo formato y sin tramitar claves ni mantener la conexión.',
+  proxy: 'AgroHubs ya está conectado a esta fuente. Si integras tu sistema con AgroHubs, recibes estos datos junto a las demás fuentes, en un solo formato y sin tramitar claves ni mantener la conexión.',
+  scheduler: 'AgroHubs ya trae estos datos de forma periódica. Si integras tu sistema con AgroHubs, los recibes listos y actualizados junto a las demás fuentes.',
+  plataforma: 'AgroHubs usa esta herramienta en su propia plataforma, así que sabemos cómo integrarla en la tuya.',
+  planificada: 'AgroHubs la conectará próximamente. Si la necesitas antes, podemos priorizarla dentro de tu proyecto.',
+  evaluacion: 'AgroHubs todavía no la ofrece conectada por defecto, pero puede integrarla a pedido dentro de tu proyecto.',
+  enlace: 'Esta fuente no ofrece una conexión automática: sus datos se consultan en el sitio del proveedor o se descargan. Podemos evaluar contigo si conviene automatizar la carga.'
+}
+export const TIPO = { api_rest: 'API (conexión directa)', web_service: 'Servicio web', portal_datos: 'Portal de datos descargables', sdk: 'Estándar o librería', conector_hardware: 'Equipo o sensor de campo', servicio_ia: 'Servicio de inteligencia artificial', plataforma: 'Plataforma o herramienta' }
+export const MODELO = { gratis: 'Gratis', freemium: 'Gratis con límite de uso', pago: 'Pago mensual', uso: 'Pago según uso', cotizacion: 'Precio a pedido', convenio: 'Requiere acuerdo con el proveedor', propio: 'Incluido en AgroHubs' }
+export const VERIF_COSTO = { oficial: 'precio publicado por el proveedor', terceros: 'precio confirmado por otros usuarios', estimado: 'precio aproximado, por confirmar con el proveedor', interno: 'incluido en AgroHubs', por_verificar: 'el proveedor no publica precio' }
+export const VERIF = { verificado: 'Información confirmada', terceros: 'Confirmada por otros usuarios', por_verificar: 'Por confirmar con el proveedor' }
+// Mapa de APIs (antes "radar"): cuatro niveles en lenguaje simple
+export const ANILLO = { adoptar: 'Lista para usar', probar: 'Próxima a conectarse', evaluar: 'Disponible a pedido', resistir: 'No recomendada' }
+export const ANILLO_CORTO = { adoptar: 'Lista para usar', probar: 'Próxima', evaluar: 'A pedido', resistir: 'No recomendada' }
 export const ANILLO_TXT = {
-  adoptar: 'está en uso o lista para producción en AgroHubs',
-  probar: 'conviene pilotearla en el próximo ciclo',
-  evaluar: 'vale la pena seguirla de cerca antes de integrarla',
-  resistir: 'conviene evitarla o reemplazarla por una alternativa'
+  adoptar: 'puedes usarla hoy: está conectada en AgroHubs o lista para conectarse',
+  probar: 'AgroHubs la conectará en los próximos meses',
+  evaluar: 'AgroHubs puede conectarla si tu proyecto la necesita',
+  resistir: 'hay alternativas mejores, más baratas o con menos restricciones'
 }
 export const CUADRANTES = [
   { slug: 'clima-suelo-agua', nombre: 'Clima, suelo y agua', color: '#2d7325' },
-  { slug: 'satelite-territorio', nombre: 'Satélite y territorio', color: '#2570e8' },
-  { slug: 'campo-conectado', nombre: 'Campo conectado', color: '#9a6530' },
-  { slug: 'mercados-datos-plataforma', nombre: 'Mercados, datos y plataforma', color: '#6b4fa0' }
+  { slug: 'satelite-territorio', nombre: 'Satélite y mapas', color: '#2570e8' },
+  { slug: 'campo-conectado', nombre: 'Sensores, riego y maquinaria', color: '#9a6530' },
+  { slug: 'mercados-datos-plataforma', nombre: 'Precios, datos y herramientas', color: '#6b4fa0' }
 ]
 export const cuad = Object.fromEntries(CUADRANTES.map((c, i) => [c.slug, { ...c, i }]))
 export const RANKINGS = [
-  { dim: 'relevancia', nombre: 'Relevancia de servicio', corto: 'Relevancia', txt: 'impacto en las decisiones de un hub agrícola por facilidad de integración' },
-  { dim: 'popularidad', nombre: 'Más populares', corto: 'Popularidad', txt: 'adopción global entre desarrolladores e industria' },
-  { dim: 'chile', nombre: 'Ranking Chile', corto: 'Chile', txt: 'cobertura y uso en Chile' },
-  { dim: 'latam', nombre: 'Ranking Latinoamérica', corto: 'LatAm', txt: 'cobertura y uso en Latinoamérica' }
+  { dim: 'relevancia', nombre: 'Recomendadas por AgroHubs', corto: 'Recomendación', txt: 'las que más aportan a un sistema agrícola conectado, considerando utilidad y facilidad de conexión' },
+  { dim: 'popularidad', nombre: 'Más usadas en el mundo', corto: 'Uso mundial', txt: 'las más adoptadas por empresas y desarrolladores a nivel global' },
+  { dim: 'chile', nombre: 'Mejores para Chile', corto: 'Chile', txt: 'las más útiles para operar en Chile, por cobertura y uso local' },
+  { dim: 'latam', nombre: 'Mejores para Latinoamérica', corto: 'Latinoamérica', txt: 'las más útiles para operar en la región' }
 ]
 
 export const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -65,34 +99,44 @@ export function accesibilidad(a) {
 }
 
 export const nivel = (s) => (s >= 80 ? 'alta' : s >= 50 ? 'media' : 'baja')
+export const COTIZAR = '/apis/cotizar'
+
+/** Bloque de llamado a la acción, presente en todas las páginas del directorio. */
+export function cta(slug = '', variante = '') {
+  const href = slug ? `${COTIZAR}?api=${slug}` : COTIZAR
+  return `<section class="cta ${variante}" aria-labelledby="cta-${slug || 'general'}-${variante || 'b'}"><div class="wrap cta-in">
+  <div><h2 id="cta-${slug || 'general'}-${variante || 'b'}">¿Quieres integrar tu software con múltiples fuentes y herramientas?</h2>
+  <p>Conectamos tu sistema con clima, satélite, sensores, riego, precios y más, en una sola API. Tú eliges las fuentes; nosotros nos encargamos de la conexión y el mantenimiento.</p></div>
+  <a class="btn btn-cta" href="${href}">Cotiza aquí</a>
+</div></section>`
+}
 
 export function costoFrase(a) {
   const c = a.costos
-  if (c.mensual_usd === 0) return `${a.nombre} es gratuita para el uso que necesita AgroHubs (${c.plan}).`
-  if (c.mensual_usd != null) return `El plan de entrada recomendado cuesta ${usd(c.mensual_usd)} al mes, ${usd(c.anual_usd)} al año (${c.plan}). Es un ${VERIF_COSTO[c.verificacion]}.`
-  return `${a.nombre} no tiene precio público: ${c.plan.charAt(0).toLowerCase() + c.plan.slice(1)}. El costo se acuerda con ${a.proveedor}.`
+  if (c.mensual_usd === 0) return `${a.nombre} se puede usar gratis (${c.plan.charAt(0).toLowerCase() + c.plan.slice(1)}).`
+  if (c.mensual_usd != null) return `El plan de entrada cuesta cerca de ${usd(c.mensual_usd)} al mes, ${usd(c.anual_usd)} al año (${c.plan.charAt(0).toLowerCase() + c.plan.slice(1)}). Es un ${VERIF_COSTO[c.verificacion]}.`
+  return `${a.nombre} no publica su precio: se acuerda directamente con ${a.proveedor}.`
 }
 
 export function chileFrase(a) {
   const pos = a.ranking.pos_chile
-  if (a.pais === 'CL') return `Sí. Es una fuente chilena (${a.alcance}) y ocupa el lugar ${pos} de ${total} en el ranking Chile de AgroHubs.`
-  if (a.pais === 'GLOBAL') return `Sí. Su cobertura es ${a.alcance.toLowerCase()}, lo que incluye Chile. Su relevancia en Chile es ${nivel(a.ranking.chile)}: lugar ${pos} de ${total} en el ranking Chile.`
-  return `Su cobertura es ${a.alcance}. Para productores en Chile su relevancia es ${nivel(a.ranking.chile)} (lugar ${pos} de ${total}); en Latinoamérica ocupa el lugar ${a.ranking.pos_latam}.`
+  if (a.pais === 'CL') return `Sí. Es una fuente chilena (${a.alcance}) y está en el lugar ${pos} de ${total} entre las mejores para Chile.`
+  if (a.pais === 'GLOBAL') return `Sí, funciona en todo el mundo, Chile incluido. Su utilidad en Chile es ${nivel(a.ranking.chile)}: está en el lugar ${pos} de ${total} entre las mejores para Chile.`
+  return `Su cobertura es ${a.alcance}. Para operar en Chile su utilidad es ${nivel(a.ranking.chile)} (lugar ${pos} de ${total}); en Latinoamérica está en el lugar ${a.ranking.pos_latam}.`
 }
 
 /** Preguntas frecuentes generadas desde los datos + las de la ficha. */
 export function faqs(a) {
   const rel = a.relacionadas.map((s) => bySlug[s]).filter(Boolean).map((r) => r.nombre)
-  const integ = a.endpoints_agrohubs.length
-    ? `${ESTADO[a.estado_agrohubs]}. Se consulta con ${a.endpoints_agrohubs[0]} en la API central de AgroHubs, sin manejar credenciales en la app.`
-    : `${ESTADO[a.estado_agrohubs]}. Por ahora AgroHubs la documenta y la evalúa; no tiene un endpoint propio en la API central.`
+  const integ = `${ESTADO[a.estado_agrohubs]}. ${ESTADO_TXT[a.estado_agrohubs]}`
   const list = [
     { q: `¿Qué es ${a.nombre}?`, a: a.resumen },
     { q: `¿Cuánto cuesta ${a.nombre}?`, a: costoFrase(a) },
     { q: `¿${a.nombre} sirve para agricultores en Chile?`, a: chileFrase(a) },
-    { q: `¿Cómo se usa ${a.nombre} con AgroHubs?`, a: integ }
+    { q: `¿Cómo conecto ${a.nombre} con mi sistema?`, a: integ }
   ]
-  if (rel.length) list.push({ q: `¿Qué alternativas hay a ${a.nombre}?`, a: `Alternativas o complementos en el directorio de AgroHubs: ${rel.join(', ')}.` })
+  if (rel.length) list.push({ q: `¿Qué alternativas hay a ${a.nombre}?`, a: `Alternativas o complementos: ${rel.join(', ')}.` })
+  list.push({ q: `¿Cuánto cuesta integrar ${a.nombre} con AgroHubs?`, a: 'Depende de cuántas fuentes y sistemas quieras conectar. Cuéntanos tu caso en el formulario de cotización y te enviamos una propuesta.' })
   for (const f of a.faq || []) list.push({ q: f.q, a: f.a })
   return list
 }
@@ -164,12 +208,13 @@ ${body}
     <div><b>AgroHubs</b><p>Conocimiento que se comparte · Tecnología que acompaña · Decisiones que transforman.</p></div>
     <nav aria-label="Pie de página" class="foot-nav">
       <a href="/">Inicio</a><a href="/dashboard">Dashboard</a><a href="/tienda">Tienda</a><a href="/evaluacion">Evaluación</a>
-      <a href="/apis">APIs agro</a><a href="/apis/radar">Radar de APIs</a><a href="/apis/ranking">Ranking y costos</a><a href="/llms.txt">llms.txt</a>
+      <a href="/apis">APIs agro</a><a href="/apis/radar">Mapa de APIs</a><a href="/apis/ranking">Ranking y costos</a><a href="${COTIZAR}">Cotiza tu integración</a>
     </nav>
   </div>
   <div class="wrap foot-base"><span>&copy; ${UPDATED.slice(0, 4)} AgroHubs · Chile</span><span>Directorio actualizado el ${fechaLarga(UPDATED)}</span></div>
 </footer>
 ${script}
+<script src="/apis/asesor.js" defer></script>
 </body>
 </html>
 `
@@ -194,11 +239,11 @@ export const orgLd = { '@type': 'Organization', name: 'AgroHubs', url: SITE, are
 export const crumbs = (items) => `<nav class="crumbs" aria-label="Migas de pan"><ol>${items.map(([l, h], i) => i === items.length - 1 ? `<li aria-current="page">${esc(l)}</li>` : `<li><a href="${h}">${esc(l)}</a></li>`).join('')}</ol></nav>`
 
 export const chipEstado = (a) => `<span class="chip st-${a.estado_agrohubs}">${esc(ESTADO[a.estado_agrohubs])}</span>`
-export const chipAnillo = (a) => `<span class="chip ring-${a.radar.anillo}">Radar: ${ANILLO[a.radar.anillo]}</span>`
+export const chipAnillo = (a) => `<span class="chip ring-${a.radar.anillo}">${ANILLO[a.radar.anillo]}</span>`
 
 export function costoCelda(a, k = 'mensual_usd') {
   const v = a.costos[k]
-  if (v == null) return `<span class="muted">${a.costos.modelo === 'convenio' ? 'Convenio' : 'Cotización'}</span>`
+  if (v == null) return `<span class="muted">${a.costos.modelo === 'convenio' ? 'Con acuerdo' : 'A pedido'}</span>`
   if (v === 0) return 'US$0'
   return usd(v)
 }
