@@ -67,21 +67,22 @@ export default function Hero() {
           <div className="hero-line-1 inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 mb-8 pulse-badge">
             <span className="w-1.5 h-1.5 bg-agro-green-400 rounded-full" />
             <span className="text-white/85 text-sm font-medium tracking-wide">
-              Centro Demostrativo Movil · Para cualquier agricultor
+              Centro Demostrativo Agrícola · Para todos los cultivos
             </span>
           </div>
 
           <h1 className="hero-line-2 font-extrabold leading-[1.08] text-white mb-5"
               style={{ fontSize: 'clamp(1.75rem, 4vw, 3rem)' }}>
-            El saber agrícola,{' '}
+            Crea tu{' '}
             <span className="text-agro-green-300">
-              digitalizado y siempre disponible
+              Centro Demostrativo Agrícola
             </span>
           </h1>
 
           <p className="hero-line-3 text-white/75 text-base leading-relaxed mb-8 max-w-lg">
-            AgroHubs centraliza tecnología, datos y conocimiento agrícola
-            en una sola plataforma — para cualquier agricultor, en cualquier territorio.
+            <strong className="text-white font-semibold">Y entrega a tus agricultores el poder de decidir.</strong>{' '}
+            AgroHubs reúne tecnología, datos y conocimiento agrícola en una sola plataforma,
+            para todos los cultivos y en cualquier territorio.
           </p>
 
           <div className="hero-line-4 flex flex-wrap gap-4 mb-14">

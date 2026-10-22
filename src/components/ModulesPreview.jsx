@@ -1,63 +1,8 @@
-﻿import { Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useInView } from "../hooks/useInView"
-import { BarChart2, MessageSquare, FolderOpen, Calendar, ShoppingBag, DollarSign } from "lucide-react"
+import { MODULOS } from "../lib/modulos"
 
-const modules = [
-  {
-    icon: BarChart2,
-    color: "text-agro-blue-600",
-    bg: "bg-agro-blue-50",
-    border: "border-agro-blue-100",
-    title: "Dashboard y Sensores",
-    desc: "Monitoreo en tiempo real de humedad, clima y variables de riego desde cualquier dispositivo.",
-    href: "/dashboard",
-  },
-  {
-    icon: MessageSquare,
-    color: "text-agro-green-600",
-    bg: "bg-agro-green-50",
-    border: "border-agro-green-100",
-    title: "AI Chat",
-    desc: "Pregunta en lenguaje natural y recibe recomendaciones técnicas basadas en tus datos del predio.",
-    href: "/ai-chat",
-  },
-  {
-    icon: FolderOpen,
-    color: "text-agro-earth-600",
-    bg: "bg-agro-earth-50",
-    border: "border-agro-earth-100",
-    title: "Documentos",
-    desc: "Centralización y búsqueda de protocolos, guías técnicas e historiales del campo.",
-    href: "/documentos",
-  },
-  {
-    icon: Calendar,
-    color: "text-purple-600",
-    bg: "bg-purple-50",
-    border: "border-purple-100",
-    title: "Eventos y Capacitaciones",
-    desc: "Agenda de talleres, demostraciones en terreno y capacitaciones para tu equipo agrícola.",
-    href: "/eventos",
-  },
-  {
-    icon: ShoppingBag,
-    color: "text-teal-600",
-    bg: "bg-teal-50",
-    border: "border-teal-100",
-    title: "Mercado de Cosecha",
-    desc: "Conecta con productores por comuna, revisa cupos disponibles y haz pedidos de cosecha B2B.",
-    href: "/tienda",
-  },
-  {
-    icon: DollarSign,
-    color: "text-amber-600",
-    bg: "bg-amber-50",
-    border: "border-amber-100",
-    title: "Evaluación AgroHubs",
-    desc: "Cuéntanos tu cultivo y tu operación, y diseñamos una solución AgroHubs modular a tu medida.",
-    href: "/evaluacion",
-  },
-]
+const modules = MODULOS.filter((m) => m.destacado)
 
 export default function ModulesPreview() {
   const [ref, visible] = useInView({ threshold: 0.15 })
@@ -88,26 +33,31 @@ export default function ModulesPreview() {
             const Icon = m.icon
             return (
               <Link
-                key={m.title}
+                key={m.slug}
                 to={m.href}
-                className={`group bg-white border ${m.border} rounded-2xl p-6 flex flex-col gap-4 hover:shadow-md transition-all duration-300 hover:-translate-y-1`}
+                className="group bg-white border border-gray-100 hover:border-agro-green-200 rounded-2xl p-6 flex flex-col gap-4 hover:shadow-md transition-all duration-300 hover:-translate-y-1"
                 style={{ transitionDelay: `${i * 60}ms` }}
               >
-                <div className={`w-11 h-11 rounded-xl ${m.bg} flex items-center justify-center`}>
-                  <Icon size={20} className={m.color} />
+                <div className="w-11 h-11 rounded-xl bg-agro-green-50 text-agro-green-700 flex items-center justify-center">
+                  <Icon size={20} />
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 text-base mb-1.5 group-hover:text-agro-green-700 transition-colors">
-                    {m.title}
+                    {m.titulo}
                   </h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{m.desc}</p>
+                  <p className="text-gray-500 text-sm leading-relaxed">{m.resumen}</p>
                 </div>
-                <span className={`text-sm font-semibold ${m.color} flex items-center gap-1 mt-auto`}>
+                <span className="text-sm font-semibold text-agro-green-700 flex items-center gap-1 mt-auto">
                   Ver módulo <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
                 </span>
               </Link>
             )
           })}
+        </div>
+        <div className="text-center mt-10">
+          <Link to="/modulos" className="inline-flex items-center gap-2 text-agro-green-700 font-semibold hover:text-agro-green-800">
+            Ver los {MODULOS.length} módulos <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </div>
     </section>
