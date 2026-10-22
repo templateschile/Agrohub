@@ -1,0 +1,95 @@
+name: Sitio ← catálogo del API
+
+# Mantiene el directorio /apis igual al catálogo del API (fuente única de verdad:
+# templateschile/agrohubs-app, api/src/hub/catalog/ y api/src/hub/recomendador.js).
+# Si hay cambios, abre o actualiza un PR "Sincronizar catálogo" que pasa por el build.
+#
+# Corre: una vez al día, a pedido (Actions → Run workflow) y al instante cuando el API
+# avisa con un repository_dispatch "catalogo-actualizado".
+#
+# ===== REQUISITO a configurar UNA VEZ en GitHub =====
+# Repo → Settings → Secrets and variables → Actions → New repository secret:
+#   - AGROHUBS_APP_TOKEN  token (fine-grained) con "Contents: read" sobre templateschile/agrohubs-app
+# Y en Settings → Actions → General: "Allow GitHub Actions to create and approve pull requests".
+
+on:
+  schedule:
+    - cron: '17 10 * * *'   # 07:17 en Chile
+  repository_dispatch:
+    types: [catalogo-actualizado]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-catalogo
+  cancel-in-progress: false
+
+jobs:
+  sincronizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TOKEN_APP: ${{ secrets.AGROHUBS_APP_TOKEN }}
+    steps:
+      - name: ¿Está configurado?
+        id: cfg
+        run: |
+          if [ -z "$TOKEN_APP" ]; then
+            echo "::warning::Falta el secret AGROHUBS_APP_TOKEN: no se puede leer el catálogo del API."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.cfg.outputs.ok == 'true'
+      - uses: actions/checkout@v4
+        if: steps.cfg.outputs.ok == 'true'
+        with:
+          repository: templateschile/agrohubs-app
+          token: ${{ secrets.AGROHUBS_APP_TOKEN }}
+          path: _app
+          sparse-checkout: api/src/hub
+      - name: Copiar catálogo y recomendador
+        if: steps.cfg.outputs.ok == 'true'
+        id: copia
+        run: |
+          for f in integraciones categorias casos_de_uso; do cp "_app/api/src/hub/catalog/$f.json" "data/apis/$f.json"; done
+          # Copia exacta (sin editarla) para que el sitio y el API recomienden igual
+          cp _app/api/src/hub/recomendador.js scripts/apis/recomendador.cjs
+          rm -rf _app
+          if git diff --quiet; then echo "Sin cambios"; echo "cambios=false" >> "$GITHUB_OUTPUT"; else git diff --stat; echo "cambios=true" >> "$GITHUB_OUTPUT"; fi
+      - name: Cerrar un PR de sincronización que ya no corresponde
+        if: steps.copia.outputs.cambios == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Si el API volvió a lo que ya tiene main, un PR sync/catalogo abierto quedó obsoleto
+          n=$(gh pr list --head sync/catalogo --state open --json number -q '.[].number')
+          if [ -n "$n" ]; then
+            gh pr close "$n" --delete-branch --comment "El catálogo del API vuelve a ser igual a main: este PR ya no corresponde."
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.copia.outputs.cambios == 'true'
+        with:
+          node-version: 20
+      - name: Probar que el directorio se genera
+        if: steps.copia.outputs.cambios == 'true'
+        run: npm run apis
+      - name: Abrir o actualizar el PR
+        if: steps.copia.outputs.cambios == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "agrohubs-sync[bot]"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout -B sync/catalogo
+          git add data/apis scripts/apis/recomendador.cjs
+          git commit -m "chore(apis): sincronizar catálogo desde agrohubs-app"
+          git push -f origin sync/catalogo
+          if [ -z "$(gh pr list --head sync/catalogo --state open --json number -q '.[].number')" ]; then
+            gh pr create --base main --head sync/catalogo --title "Sincronizar catálogo de APIs desde agrohubs-app" \
+              --body "Copia automática de \`api/src/hub/catalog/*.json\` y \`recomendador.js\` desde templateschile/agrohubs-app. El directorio /apis se generó sin errores."
+          fi
