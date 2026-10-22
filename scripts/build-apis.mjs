@@ -423,7 +423,7 @@ for (const a of APIS) {
   const q = cuad[a.radar.cuadrante]
   const c = a.costos
   const getHub = a.endpoints_agrohubs.filter((e) => /^(GET|POST) \/hub/.test(e)).map((e) => e.replace(/ \(.*\)$/, ''))
-  const curl = getHub[0] && getHub[0].startsWith('GET') ? `curl "https://app.agrohubs.cl/api/v1${getHub[0].replace(/^GET /, '')}" \\\n  -H "Authorization: Bearer TU_TOKEN_AGROHUBS"` : null
+  const curl = getHub[0] && getHub[0].startsWith('GET') ? `curl "https://api.agrohubs.cl/api/v1${getHub[0].replace(/^GET /, '')}" \\\n  -H "Authorization: Bearer TU_TOKEN_AGROHUBS"` : null
   const registro = a.acceso.registro && !/^(no requiere|n\/a|n\/d|interno)$/i.test(a.acceso.registro) ? a.acceso.registro : null
 
   const offers = c.mensual_usd == null
@@ -479,7 +479,7 @@ for (const a of APIS) {
   ${getHub.length ? `<details class="dev"><summary>Para desarrolladores: cómo se consulta en la API de AgroHubs</summary>
   <ul>${getHub.map((e) => `<li><code>${esc(e)}</code></li>`).join('')}</ul>
   ${curl ? `<pre><code>${esc(curl)}</code></pre>` : ''}
-  <p class="small">Documentación completa de la API: <a href="https://app.agrohubs.cl/api-docs" rel="noopener" target="_blank">app.agrohubs.cl/api-docs</a></p></details>` : ''}
+  <p class="small">Documentación completa de la API: <a href="https://api.agrohubs.cl/api-docs" rel="noopener" target="_blank">api.agrohubs.cl/api-docs</a></p></details>` : ''}
   </section>
 
   <section id="recomendacion"><h2>Qué tan recomendable es</h2>
@@ -679,7 +679,7 @@ write('apis/apis.css', readFileSync(join(ROOT, 'scripts', 'apis', 'apis.css'), '
 
 // ── Asesor (chat): catálogo compacto + recomendador por reglas de respaldo ──
 {
-  const ASESOR_URLS = (process.env.APIS_ASESOR_URL || 'https://app.agrohubs.cl/api/v1/hub/asesor,https://api.agrohubs.cl/api/v1/hub/asesor').split(',').map((u) => u.trim()).filter(Boolean)
+  const ASESOR_URLS = (process.env.APIS_ASESOR_URL || 'https://api.agrohubs.cl/api/v1/hub/asesor,https://app.agrohubs.cl/api/v1/hub/asesor').split(',').map((u) => u.trim()).filter(Boolean)
   const compacto = APIS.map((a) => ({ s: a.slug, n: a.nombre, r: a.resumen, p: a.pais, c: a.categorias, u: a.casos_de_uso, q: (a.que_entrega || []).slice(0, 4), k: a.ranking.relevancia }))
   const reco = readFileSync(join(ROOT, 'scripts', 'apis', 'recomendador.cjs'), 'utf8')
   const js = readFileSync(join(ROOT, 'scripts', 'apis', 'asesor.client.js'), 'utf8')
