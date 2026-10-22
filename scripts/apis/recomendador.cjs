@@ -1,7 +1,7 @@
 /**
  * Recomendador por reglas: puntúa el catálogo contra un texto libre ("necesito alertas de helada
  * y riego"). Lo usa el asesor IA para preseleccionar candidatos y como respaldo si Ollama no responde.
- * Copia de agrohubs-app/api/src/hub/recomendador.js: respaldo del chat del sitio cuando la API no responde.
+ * Sin dependencias para poder copiarlo tal cual al sitio (scripts/apis del repo Agrohub).
  */
 const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 

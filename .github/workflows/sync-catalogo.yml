@@ -57,11 +57,20 @@ jobs:
         id: copia
         run: |
           for f in integraciones categorias casos_de_uso; do cp "_app/api/src/hub/catalog/$f.json" "data/apis/$f.json"; done
-          # Misma lógica que el API; solo cambia la línea que dice de dónde viene la copia
-          sed '4s#.*# * Copia de agrohubs-app/api/src/hub/recomendador.js: respaldo del chat del sitio cuando la API no responde.#' \
-            _app/api/src/hub/recomendador.js > scripts/apis/recomendador.cjs
+          # Copia exacta (sin editarla) para que el sitio y el API recomienden igual
+          cp _app/api/src/hub/recomendador.js scripts/apis/recomendador.cjs
           rm -rf _app
           if git diff --quiet; then echo "Sin cambios"; echo "cambios=false" >> "$GITHUB_OUTPUT"; else git diff --stat; echo "cambios=true" >> "$GITHUB_OUTPUT"; fi
+      - name: Cerrar un PR de sincronización que ya no corresponde
+        if: steps.copia.outputs.cambios == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Si el API volvió a lo que ya tiene main, un PR sync/catalogo abierto quedó obsoleto
+          n=$(gh pr list --head sync/catalogo --state open --json number -q '.[].number')
+          if [ -n "$n" ]; then
+            gh pr close "$n" --delete-branch --comment "El catálogo del API vuelve a ser igual a main: este PR ya no corresponde."
+          fi
       - uses: actions/setup-node@v4
         if: steps.copia.outputs.cambios == 'true'
         with:
