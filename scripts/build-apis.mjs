@@ -266,13 +266,8 @@ ${cta()}`
 }
 
 // ── /apis/cotizar ──
-// Feriados de Chile (para proponer la reunión en días hábiles)
-const FERIADOS_CL = [
-  '2026-01-01', '2026-04-03', '2026-04-04', '2026-05-01', '2026-05-21', '2026-06-21', '2026-06-29', '2026-07-16', '2026-08-15',
-  '2026-09-18', '2026-09-19', '2026-10-12', '2026-10-31', '2026-11-01', '2026-12-08', '2026-12-25',
-  '2027-01-01', '2027-03-26', '2027-03-27', '2027-05-01', '2027-05-21', '2027-06-21', '2027-06-28', '2027-07-16', '2027-08-15',
-  '2027-09-18', '2027-09-19', '2027-10-11', '2027-10-31', '2027-11-01', '2027-12-08', '2027-12-25'
-]
+// Feriados de Chile (para proponer la reunión en días hábiles); los usa también el sitio (src/lib/reunion.js)
+const FERIADOS_CL = JSON.parse(readFileSync(join(ROOT, 'data', 'feriados-cl.json'), 'utf8'))
 {
   const opciones = sortedBy('relevancia').map((a) => `<option value="${esc(a.slug)}">${esc(a.nombre)}</option>`).join('')
   const nombres = JSON.stringify(Object.fromEntries(APIS.map((a) => [a.slug, a.nombre]))).replace(/</g, '\\u003c')
@@ -423,7 +418,7 @@ for (const a of APIS) {
   const q = cuad[a.radar.cuadrante]
   const c = a.costos
   const getHub = a.endpoints_agrohubs.filter((e) => /^(GET|POST) \/hub/.test(e)).map((e) => e.replace(/ \(.*\)$/, ''))
-  const curl = getHub[0] && getHub[0].startsWith('GET') ? `curl "https://app.agrohubs.cl/api/v1${getHub[0].replace(/^GET /, '')}" \\\n  -H "Authorization: Bearer TU_TOKEN_AGROHUBS"` : null
+  const curl = getHub[0] && getHub[0].startsWith('GET') ? `curl "https://api.agrohubs.cl/api/v1${getHub[0].replace(/^GET /, '')}" \\\n  -H "Authorization: Bearer TU_TOKEN_AGROHUBS"` : null
   const registro = a.acceso.registro && !/^(no requiere|n\/a|n\/d|interno)$/i.test(a.acceso.registro) ? a.acceso.registro : null
 
   const offers = c.mensual_usd == null
@@ -479,7 +474,7 @@ for (const a of APIS) {
   ${getHub.length ? `<details class="dev"><summary>Para desarrolladores: cómo se consulta en la API de AgroHubs</summary>
   <ul>${getHub.map((e) => `<li><code>${esc(e)}</code></li>`).join('')}</ul>
   ${curl ? `<pre><code>${esc(curl)}</code></pre>` : ''}
-  <p class="small">Documentación completa de la API: <a href="https://app.agrohubs.cl/api-docs" rel="noopener" target="_blank">app.agrohubs.cl/api-docs</a></p></details>` : ''}
+  <p class="small">Documentación completa de la API: <a href="https://api.agrohubs.cl/api-docs" rel="noopener" target="_blank">api.agrohubs.cl/api-docs</a></p></details>` : ''}
   </section>
 
   <section id="recomendacion"><h2>Qué tan recomendable es</h2>
@@ -619,6 +614,22 @@ ${cta()}`
 CATEGORIAS.forEach((t) => listPage('categoria', t))
 CASOS.forEach((t) => listPage('caso', t))
 
+// ── Integraciones destacadas para la portada del sitio (src/components/Integraciones.jsx) ──
+// Las más importantes de Chile y luego de Latinoamérica, según el ranking del catálogo.
+{
+  const ESTADO_CORTO = { integrada: 'Conectada', proxy: 'Conectada', scheduler: 'Conectada', plataforma: 'Conectada', planificada: 'Próximamente', evaluacion: 'A pedido', enlace: 'Enlace' }
+  // "ODEPA — Datos Abiertos" → nombre "ODEPA", detalle "Datos Abiertos" (sin rayas en la portada)
+  const partes = (n) => { const m = n.match(/^(.*?)\s+(?:—\s+(.*)|\((.*)\))$/); return m ? [m[1], m[2] || m[3]] : [n, ''] }
+  const fila = (a) => { const [nombre, detalle] = partes(a.nombre); return { slug: a.slug, nombre, detalle, pais: PAIS[a.pais] || a.pais, estado: ESTADO_CORTO[a.estado_agrohubs] || 'A pedido' } }
+  const top = (lista, campo) => lista.slice().sort((x, y) => y.ranking[campo] - x.ranking[campo] || x.nombre.localeCompare(y.nombre)).slice(0, 6).map(fila)
+  writeFileSync(join(ROOT, 'data', 'apis', 'destacadas.json'), JSON.stringify({
+    _nota: 'Generado por scripts/build-apis.mjs (npm run apis): no editar a mano.',
+    total_directorio: total,
+    chile: top(APIS.filter((a) => a.pais === 'CL'), 'chile'),
+    latam: top(APIS.filter((a) => !['CL', 'GLOBAL'].includes(a.pais)), 'latam')
+  }, null, 2) + '\n')
+}
+
 // ── Catálogo JSON, llms.txt, llms-full.txt ──
 write('apis/catalogo.json', JSON.stringify({
   fuente: SITE + '/apis', actualizado: UPDATED, moneda: 'USD', licencia: 'CC BY 4.0 (AgroHubs)', total, cotizar: SITE + COTIZAR,
@@ -679,7 +690,7 @@ write('apis/apis.css', readFileSync(join(ROOT, 'scripts', 'apis', 'apis.css'), '
 
 // ── Asesor (chat): catálogo compacto + recomendador por reglas de respaldo ──
 {
-  const ASESOR_URLS = (process.env.APIS_ASESOR_URL || 'https://app.agrohubs.cl/api/v1/hub/asesor,https://api.agrohubs.cl/api/v1/hub/asesor').split(',').map((u) => u.trim()).filter(Boolean)
+  const ASESOR_URLS = (process.env.APIS_ASESOR_URL || 'https://api.agrohubs.cl/api/v1/hub/asesor,https://app.agrohubs.cl/api/v1/hub/asesor').split(',').map((u) => u.trim()).filter(Boolean)
   const compacto = APIS.map((a) => ({ s: a.slug, n: a.nombre, r: a.resumen, p: a.pais, c: a.categorias, u: a.casos_de_uso, q: (a.que_entrega || []).slice(0, 4), k: a.ranking.relevancia }))
   const reco = readFileSync(join(ROOT, 'scripts', 'apis', 'recomendador.cjs'), 'utf8')
   const js = readFileSync(join(ROOT, 'scripts', 'apis', 'asesor.client.js'), 'utf8')

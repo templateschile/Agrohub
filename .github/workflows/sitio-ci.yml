@@ -1,0 +1,33 @@
+name: Sitio → build
+
+# En cada PR y push a main: genera el directorio /apis (falla si reaparece jerga interna
+# en los textos públicos) y compila el sitio con Vite. Si algo falla, el PR queda en rojo.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: sitio-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
+      - name: Revisar el directorio generado
+        run: |
+          node --check dist/apis/asesor.js
+          test -f dist/apis/cotizar.html
+          test -f dist/apis/catalogo.json
+          node -e "const c=require('./dist/apis/catalogo.json'); for (const k of ['tipo','costos','ranking','radar','estado_agrohubs']) if (!(k in c.apis[0])) { console.error('catalogo.json perdió el campo ' + k); process.exit(1) } console.log(c.apis.length + ' APIs en catalogo.json')"

@@ -7,17 +7,19 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Verde de la app (app-mobile/lib/theme/ah_tokens.dart): papel, menta y bosque, para que
+        // las páginas antiguas usen el mismo verde que la portada
         'agro-green': {
-          50: '#f0f7ee',
-          100: '#dcefd8',
-          200: '#b9dfb1',
-          300: '#8dc882',
-          400: '#5fad53',
-          500: '#3d9132',
-          600: '#2d7325',
-          700: '#245b1e',
-          800: '#1e481a',
-          900: '#183c15',
+          50: '#EAF6EC',
+          100: '#DCEFE0',
+          200: '#C9F7DD',
+          300: '#6EE7A8',
+          400: '#34B577',
+          500: '#1F8A4E',
+          600: '#17663C',
+          700: '#11512F',
+          800: '#0B3B24',
+          900: '#062716',
         },
         'agro-earth': {
           50: '#faf6f0',
@@ -45,9 +47,11 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['"Inter"', 'system-ui', 'sans-serif'],
+        sans: ['"Manrope"', 'system-ui', 'sans-serif'],
       },
     },
   },
+  // .container es el del sistema del sitio (src/base.css): ancho tope 1440px y márgenes propios
+  corePlugins: { container: false },
   plugins: [],
 }
