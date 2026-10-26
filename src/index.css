@@ -1,124 +1,42 @@
+/* Hallmark · shape: Map / Diagram (the app and its 12 modules) · genre: modern-minimal · theme: brand · redesign: full · job: book
+ * paper: oklch(97.5% 0.008 139.4) · accent: oklch(45.3% 0.101 154.9) · display: Sora · body: Manrope · hero: Stage (/), Banner (/evaluacion) · nav: edge-aligned, wordmark and one action · footer: mast, the wordmark over the links · signature: the app at the centre, its 12 modules around it, each one shown on the screen when picked
+ * axes: tinted paper/geometric sans/forest green · posture: one forest band · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H5 E4 S5 R5 V4 · weakest: P, the page argues one thing (book a call); cut the stats, the ten problems, the photo hero and the floating bubble to earn R5 */
+/* Hallmark · waive 47b · one phone frame, the app's dashboard built inside a data-slot from its own tokens and its 12 modules · the user asked for the figure of the app */
+/* Hallmark · waive 77 · four sections on /, hero and footer included · the user asked for the simplest page that does not overwhelm */
+/* Hallmark · waive 44c · the hero visual is the whole diagram, whose first column of modules sits 100px from the text; the phone is its centre · the modules go around the app, as the user asked */
+/* Hallmark · waive 79 · /evaluacion is a Banner: the evaluation steps start at 750px, above the fold · the hero holds the short meeting form beside the head */
+/* Hallmark · waive 85 · the form that closes /evaluacion books a diagnosis visit (its button reads Solicitar diagnóstico previo) · it is the page's job, not a mailing list */
+/* Hallmark · waive 39b · the 34px buttons are the evaluation form's counters and toggles, an app screen kept as found · out of this redesign's scope */
+/* Hallmark · dropped the Organización and Mensaje fields of the contact form on / · the user asked for a simple form to book a meeting: name, email, optional phone and the time */
+/* Hallmark · dropped the two Unsplash photos, the "10+" stat and the old section heads on / · they belonged to the removed sections; the year in the footer is now the current one */
+/* Hallmark · dropped, Problems, Transformation, EcosystemSection, ClosingCTA, ModulesPreview and FloatingCTA from / · the user asked for the simplest page: the app, its modules and a short form to book a meeting */
+@import "./tokens.css";
+@import "./base.css" layer(base);
+@import "./sitio.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   html { scroll-behavior: smooth; }
-  body { @apply font-sans text-gray-800 bg-white antialiased; }
-}
-
-/* ── Motion tokens ─────────────────────────────────────────── */
-:root {
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* ── Card hover ─────────────────────────────────────────────── */
-.card-hover {
-  transition: transform 0.3s var(--ease-out-quart), box-shadow 0.3s ease;
-}
-.card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 48px rgba(45, 115, 37, 0.10);
-}
-
-/* ── Reveal animations ──────────────────────────────────────── */
-.reveal {
-  opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
-}
-.reveal.visible {
-  opacity: 1;
-  transform: none;
-}
-
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-28px);
-  transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
-}
-.reveal-left.visible { opacity: 1; transform: none; }
-
-.reveal-right {
-  opacity: 0;
-  transform: translateX(28px);
-  transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
-}
-.reveal-right.visible { opacity: 1; transform: none; }
-
-.reveal-scale {
-  opacity: 0;
-  transform: scale(0.92);
-  transition: opacity 0.6s var(--ease-spring), transform 0.6s var(--ease-spring);
-}
-.reveal-scale.visible { opacity: 1; transform: scale(1); }
-
-/* ── Hero text animations ───────────────────────────────────── */
-@keyframes heroLine {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: none; }
-}
-.hero-line-1 { animation: heroLine 0.9s var(--ease-out-expo) 0.2s both; }
-.hero-line-2 { animation: heroLine 0.9s var(--ease-out-expo) 0.4s both; }
-.hero-line-3 { animation: heroLine 0.9s var(--ease-out-expo) 0.6s both; }
-.hero-line-4 { animation: heroLine 0.9s var(--ease-out-expo) 0.8s both; }
-.hero-line-5 { animation: heroLine 0.9s var(--ease-out-expo) 1.0s both; }
-
-/* ── Floating pulse badge ───────────────────────────────────── */
-@keyframes pulseBadge {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(61, 145, 50, 0.4); }
-  50%       { box-shadow: 0 0 0 8px rgba(61, 145, 50, 0); }
-}
-.pulse-badge { animation: pulseBadge 2.5s ease-in-out infinite; }
-
-/* ── Number counter shimmer ─────────────────────────────────── */
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-.stat-shimmer {
-  background: linear-gradient(90deg, #2d7325 30%, #5fad53 50%, #2d7325 70%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 3s linear infinite;
-}
-
-/* ── Section divider wave ───────────────────────────────────── */
-.wave-divider svg { display: block; }
-
-/* ── Scrollbar ──────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #f0f7ee; }
-::-webkit-scrollbar-thumb { background: #5fad53; border-radius: 3px; }
-
-/* ── Grain texture overlay ──────────────────────────────────── */
-.grain::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  opacity: 0.5;
-  mix-blend-mode: overlay;
+  body { @apply font-sans antialiased; background: var(--color-paper); color: var(--color-ink); }
 }
 
 /* ── Documento de propuesta (admin) ─────────────────────────── */
-.propuesta-doc { font-size: 14px; line-height: 1.65; color: #1f2937; max-width: 760px; margin: 0 auto; }
-.propuesta-doc h1 { font-size: 26px; font-weight: 800; color: #183c15; margin-bottom: 8px; }
-.propuesta-doc h2 { font-size: 17px; font-weight: 700; color: #245b1e; margin: 24px 0 8px; }
-.propuesta-doc p { margin: 8px 0; }
-.propuesta-doc ul { list-style: disc; padding-left: 22px; margin: 6px 0; }
-.propuesta-doc ol { list-style: decimal; padding-left: 22px; margin: 6px 0; }
-.propuesta-doc li { margin: 3px 0; }
-.propuesta-doc mark { background: #fef08a; padding: 0 2px; border-radius: 3px; }
+.propuesta-doc { font-size: 14px; line-height: 1.65; color: var(--color-doc-ink); max-width: 760px; margin: 0 auto; }
+.propuesta-doc h1 { font-size: 26px; font-weight: 800; color: var(--color-doc-h1); margin-bottom: var(--space-xs); }
+.propuesta-doc h2 { font-size: 17px; font-weight: 700; color: var(--color-doc-h2); margin: var(--space-lg) 0 var(--space-xs); }
+.propuesta-doc p { margin: var(--space-xs) 0; }
+.propuesta-doc ul { list-style: disc; padding-left: var(--space-lg); margin: var(--space-xs) 0; }
+.propuesta-doc ol { list-style: decimal; padding-left: var(--space-lg); margin: var(--space-xs) 0; }
+.propuesta-doc li { margin: var(--space-2xs) 0; }
+.propuesta-doc mark { background: var(--color-doc-mark); padding: 0 var(--space-3xs); border-radius: 3px; }
 
 @media print {
   .no-print { display: none !important; }
-  body { background: #fff !important; }
+  body { background: var(--color-print-paper) !important; }
   .print-area { padding: 0 !important; }
   .propuesta-doc mark { background: none; }
   @page { margin: 18mm; }

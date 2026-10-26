@@ -2,47 +2,29 @@ import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
-    <footer className="bg-agro-green-900 text-white py-12">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
-              <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5">
-                <circle cx="16" cy="16" r="6" fill="white" opacity="0.9"/>
-                <path d="M16 4 C16 4 10 8 10 16" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                <path d="M16 4 C16 4 22 8 22 16" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                <path d="M6 20 C8 24 12 28 16 28" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                <path d="M26 20 C24 24 20 28 16 28" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
-            </div>
-            <div>
-              <div className="font-bold text-lg leading-tight">AgroHubs</div>
-              <div className="text-white/50 text-xs">Centro Demostrativo Móvil</div>
-            </div>
-          </div>
-
-          <p className="text-white/50 text-sm text-center max-w-md">
-            Conocimiento que se comparte · Tecnología que acompaña · Decisiones que transforman.
-          </p>
-
-          <nav className="flex flex-wrap gap-5 text-white/60 text-sm justify-center">
-            <Link to="/" className="hover:text-white transition-colors">Inicio</Link>
-            <Link to="/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
-            <Link to="/tienda" className="hover:text-white transition-colors">Tienda</Link>
-            <Link to="/evaluacion" className="hover:text-white transition-colors">Evaluación</Link>
-            {/* Directorio estático (HTML generado en el build): enlace normal, no del router */}
-            <a href="/apis" className="hover:text-white transition-colors">APIs agro</a>
-            <a href="/apis/cotizar" className="hover:text-white transition-colors">Cotiza tu integración</a>
-          </nav>
+    <footer className="ah-pie">
+      <div className="container ah-pie__grid">
+        <div>
+          <p className="ah-pie__marca">AgroHubs</p>
+          <p className="ah-pie__linea">Tecnología, datos y conocimiento agrícola para cualquier agricultor, en cualquier territorio.</p>
         </div>
 
-        <div className="border-t border-white/10 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-white/30 text-xs">&copy; 2025 AgroHubs &middot; Chile</p>
-          <p className="text-white/40 text-xs">
-            <a href="/#contacto" className="hover:text-white/70 transition-colors">Contacto</a>
-          </p>
-          <p className="text-white/30 text-xs">Digitalización · Transferencia tecnológica · Acompañamiento</p>
-        </div>
+        <nav className="ah-pie__links" aria-label="Sitio">
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/ai-chat">AI Chat</Link>
+          <Link to="/documentos">Documentos</Link>
+          <Link to="/eventos">Eventos</Link>
+          <Link to="/tienda">Tienda</Link>
+          <Link to="/evaluacion">Evaluación</Link>
+          {/* Directorio estático (HTML generado en el build): enlace normal, no del router */}
+          <a href="/apis">APIs agro</a>
+          <a href="/apis/cotizar">Cotiza tu integración</a>
+          <a href="/#contacto">Contacto</a>
+          <Link to="/terminos">Términos</Link>
+        </nav>
+      </div>
+      <div className="container">
+        <p className="ah-pie__legal">&copy; {new Date().getFullYear()} AgroHubs, Chile</p>
       </div>
     </footer>
   )

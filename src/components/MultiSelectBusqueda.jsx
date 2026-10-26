@@ -53,7 +53,7 @@ export default function MultiSelectBusqueda({ grupos, valor, onChange, placehold
             if (e.key === "Escape") setAbierto(false)
           }}
           placeholder={placeholder}
-          className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400"
+          className="w-full pl-9 pr-3 py-2.5 border border-gray-500 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400"
         />
       </div>
       {abierto && (

@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import FloatingCTA from './components/FloatingCTA'
 
 // Pages
 import Home from './pages/Home'
@@ -29,7 +28,7 @@ function Sitio() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1" id="main">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -43,7 +42,6 @@ function Sitio() {
         </Routes>
       </main>
       <Footer />
-      <FloatingCTA />
     </div>
   )
 }
