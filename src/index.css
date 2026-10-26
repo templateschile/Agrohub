@@ -1,5 +1,5 @@
 /* Hallmark · shape: Map / Diagram (the app and its 12 modules) · genre: modern-minimal · theme: brand · redesign: full · job: book
- * paper: oklch(97.5% 0.008 139.4) · accent: oklch(45.3% 0.101 154.9) · display: Sora · body: Manrope · hero: Stage (/), Banner (/evaluacion) · nav: edge-aligned, wordmark and one action · footer: mast, the wordmark over the links · signature: the app at the centre, its 12 modules around it, each one shown on the screen when picked
+ * paper: oklch(97.5% 0.008 139.4) · accent: oklch(45.3% 0.101 154.9) · display: Sora · body: Manrope · hero: Stage (/), Banner (/evaluacion) · nav: edge-aligned, wordmark and one action · footer: mast, the wordmark over the links · signature: the app over the orchard, its 12 modules around it as colour icons, each one shown on the screen when picked
  * axes: tinted paper/geometric sans/forest green · posture: one forest band · contrast: pass · fold: pass · v2.0.0 */
 /* Hallmark · pre-emit critique: P4 H5 E4 S5 R5 V4 · weakest: P, the page argues one thing (book a call); cut the stats, the ten problems, the photo hero and the floating bubble to earn R5 */
 /* Hallmark · waive 47b · one phone frame, the app's dashboard built inside a data-slot from its own tokens and its 12 modules · the user asked for the figure of the app */
@@ -8,6 +8,9 @@
 /* Hallmark · waive 79 · /evaluacion is a Banner: the evaluation steps start at 750px, above the fold · the hero holds the short meeting form beside the head */
 /* Hallmark · waive 85 · the form that closes /evaluacion books a diagnosis visit (its button reads Solicitar diagnóstico previo) · it is the page's job, not a mailing list */
 /* Hallmark · waive 39b · the 34px buttons are the evaluation form's counters and toggles, an app screen kept as found · out of this redesign's scope */
+/* Hallmark · waive 83 · photographs cover more than a third of / below the hero (the field mosaic and the evaluation band) · the user asked for a graphic page with many images */
+/* Hallmark · waive 76 · the Wikimedia Commons thumbnails do not load in the build sandbox, whose proxy blocks upload.wikimedia.org; each one hides itself on error and leaves its colour field and icon · visitors load them from Commons */
+/* Hallmark · answered F5, F7 · icons in coloured circles across the page · the user asked for many icons and a fast, graphic read */
 /* Hallmark · dropped the Organización and Mensaje fields of the contact form on / · the user asked for a simple form to book a meeting: name, email, optional phone and the time */
 /* Hallmark · dropped the two Unsplash photos, the "10+" stat and the old section heads on / · they belonged to the removed sections; the year in the footer is now the current one */
 /* Hallmark · dropped, Problems, Transformation, EcosystemSection, ClosingCTA, ModulesPreview and FloatingCTA from / · the user asked for the simplest page: the app, its modules and a short form to book a meeting */

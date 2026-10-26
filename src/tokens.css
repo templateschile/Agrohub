@@ -15,6 +15,12 @@
   --color-forest: oklch(31.4% 0.065 157.8); --color-forest-deep: oklch(24.3% 0.05 156.9); --color-mint: oklch(84.2% 0.142 158.4);
   /* Documento de propuesta del admin (impresión) */
   --color-doc-ink: oklch(27.8% 0.03 256.8); --color-doc-h1: oklch(31.9% 0.077 142.1); --color-doc-h2: oklch(41.9% 0.109 141.7); --color-doc-mark: oklch(94.5% 0.124 101.5); --color-print-paper: oklch(100% 0 0);
+  /* Colores de los íconos de módulos (fuerte sobre suave, 3:1 o más) */
+  --color-cielo: oklch(51% 0.097 245.1); --color-cielo-suave: oklch(95.3% 0.013 241);
+  --color-ambar: oklch(50.9% 0.103 70.8); --color-ambar-suave: oklch(96.6% 0.032 87.3);
+  --color-tierra: oklch(50.9% 0.121 52); --color-tierra-suave: oklch(96.3% 0.018 70.2);
+  --color-ciruela: oklch(49.9% 0.123 313); --color-ciruela-suave: oklch(94.2% 0.021 313.8);
+  --color-scrim: oklch(24.3% 0.05 156.9 / 0.88); --color-scrim-0: oklch(24.3% 0.05 156.9 / 0.15);
   --color-on-dark: oklch(97.5% 0.008 139.4); --color-on-dark-2: oklch(93.7% 0.059 160.3);
   --color-accent: oklch(45.3% 0.101 154.9); --color-accent-ink: oklch(97.5% 0.008 139.4); --color-focus: oklch(45.3% 0.101 154.9);
   --font-display: "Sora", ui-sans-serif, system-ui, sans-serif; --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif; --font-outlier: var(--font-body);

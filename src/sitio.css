@@ -42,40 +42,51 @@
 }
 
 /* ── Tipografía de las páginas nuevas ───────────────────── */
-.ah-display { margin: 0; max-width: 14ch; font: var(--display-weight) clamp(2.25rem, 2.6vw + 1rem, 3.5rem)/1.06 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
-.ah-seccion { margin: 0; max-width: 16ch; font: var(--display-weight) var(--text-section)/1.06 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+.ah-display { margin: 0; max-width: 14ch; font: var(--display-weight) clamp(2.5rem, 3vw + 1rem, 4.25rem)/1.04 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+.ah-seccion { margin: 0; max-width: 18ch; font: var(--display-weight) var(--text-section)/1.06 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
 .ah-lead { margin: var(--space-md) 0 0; max-width: 36ch; font-size: var(--text-lead); line-height: 1.45; color: var(--color-ink-2); text-wrap: pretty; }
 .ah-acciones { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-xl); }
+.ah-btn--menta { background: var(--color-mint); border-color: var(--color-mint); color: var(--color-forest-deep); }
+@media (hover: hover) { .ah-btn--menta:hover { background: var(--color-on-dark-2); border-color: var(--color-on-dark-2); } }
 
-/* ── Portada: la app y sus módulos ──────────────────────── */
-.ah-hero { display: flex; align-items: center; min-height: 100svh; padding: calc(72px + var(--space-xl)) 0 var(--space-xl); }
-.ah-hero__grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); align-items: center; gap: var(--space-2xl); }
+/* Colores de módulo: ícono fuerte sobre fondo suave */
+.ah-color--bosque { --c: var(--color-accent); --c-suave: var(--color-paper-3); }
+.ah-color--cielo { --c: var(--color-cielo); --c-suave: var(--color-cielo-suave); }
+.ah-color--ambar { --c: var(--color-ambar); --c-suave: var(--color-ambar-suave); }
+.ah-color--tierra { --c: var(--color-tierra); --c-suave: var(--color-tierra-suave); }
+.ah-color--ciruela { --c: var(--color-ciruela); --c-suave: var(--color-ciruela-suave); }
+
+/* ── Portada: la app y sus módulos sobre el huerto ──────── */
+.ah-hero { position: relative; isolation: isolate; display: flex; align-items: center; min-height: 100svh; padding: calc(72px + var(--space-xl)) 0 var(--space-xl); background: var(--color-forest); color: var(--color-on-dark); --color-focus: var(--color-mint); }
+.ah-hero__fondo { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+.ah-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, var(--color-scrim) 0%, var(--color-scrim) 35%, var(--color-scrim-0) 100%); }
+.ah-hero .ah-display { color: var(--color-on-dark); }
+.ah-hero__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: var(--space-2xl); }
+.ah-cifras { display: grid; gap: var(--space-xs); margin: var(--space-xl) 0 0; padding: 0; list-style: none; }
+.ah-cifras li { display: flex; align-items: center; gap: var(--space-sm); font-size: var(--text-lead); color: var(--color-on-dark-2); }
+.ah-cifras svg { flex: none; width: 48px; height: 48px; padding: var(--space-sm); border-radius: var(--radius-pill); background: var(--color-mint); color: var(--color-forest-deep); }
+.ah-cifras b { font: 600 var(--text-2xl)/1 var(--font-display); color: var(--color-on-dark); font-variant-numeric: tabular-nums; }
 
 .ah-mapa { display: grid; grid-template-columns: minmax(0, 1fr) 260px minmax(0, 1fr); align-items: center; gap: var(--space-lg); }
-.ah-mapa__col { display: flex; flex-direction: column; gap: var(--space-xs); margin: 0; padding: 0; list-style: none; }
-.ah-modulo { position: relative; display: flex; align-items: center; gap: var(--space-xs); width: 100%; min-height: 52px; padding: var(--space-xs) var(--space-sm); border: 1px solid var(--color-rule); border-radius: var(--radius-input); background: var(--color-paper); color: var(--color-ink); font: 600 var(--text-sm)/1.25 var(--font-body); text-align: left; cursor: pointer; transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out); }
-.ah-modulo svg { flex: none; color: var(--color-accent); }
-.ah-modulo--der { flex-direction: row; }
-/* El trazo que une cada módulo con la app (diagrama del sistema) */
-.ah-modulo::after { content: ""; position: absolute; top: 50%; width: var(--space-lg); height: 1px; background: var(--color-rule); }
-.ah-modulo--izq::after { left: 100%; }
-.ah-modulo--der::after { right: 100%; }
-.ah-modulo[aria-pressed="true"] { border-color: var(--color-accent); background: var(--color-paper-3); }
-.ah-modulo[aria-pressed="true"]::after { background: var(--color-accent); }
-.ah-modulo:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-.ah-modulo:active { transform: translateY(1px); }
-@media (hover: hover) { .ah-modulo:hover { border-color: var(--color-accent); } }
+.ah-mapa__col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md) var(--space-xs); margin: 0; padding: 0; list-style: none; }
+.ah-orbita { display: grid; justify-items: center; gap: var(--space-2xs); width: 100%; padding: var(--space-2xs); border: 0; border-radius: var(--radius-input); background: transparent; color: var(--color-on-dark); font: 600 var(--text-sm)/1.2 var(--font-body); cursor: pointer; }
+.ah-orbita__icono { display: grid; place-items: center; width: 60px; height: 60px; border-radius: var(--radius-pill); background: var(--c-suave); color: var(--c); box-shadow: 0 8px 20px -8px color-mix(in oklab, var(--color-forest-deep) 70%, transparent); transition: transform var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out); }
+.ah-orbita__nombre { padding: var(--space-3xs) var(--space-xs); border-radius: var(--radius-pill); background: var(--color-scrim); }
+.ah-orbita[aria-pressed="true"] .ah-orbita__icono { background: var(--color-mint); color: var(--color-forest-deep); transform: scale(1.12); }
+.ah-orbita:focus-visible { outline: 2px solid var(--color-mint); outline-offset: 2px; }
+.ah-orbita:active .ah-orbita__icono { transform: scale(0.96); }
+@media (hover: hover) { .ah-orbita:hover .ah-orbita__icono { transform: scale(1.08); } }
 
 /* El teléfono: un marco, la pantalla de la app adentro */
-.ah-telefono { aspect-ratio: 9 / 18.5; width: 100%; border: 8px solid var(--color-ink); border-radius: 40px; background: var(--color-paper); box-shadow: 0 24px 48px -24px color-mix(in oklab, var(--color-forest) 45%, transparent); }
-.ah-app { position: relative; z-index: 2; display: flex; flex-direction: column; gap: var(--space-xs); height: 100%; padding: var(--space-md) var(--space-sm) 0; background: var(--color-paper); color: var(--color-ink); }
+.ah-telefono { aspect-ratio: 9 / 18.5; width: 100%; border: 8px solid var(--color-forest-deep); border-radius: 40px; background: var(--color-paper); box-shadow: 0 32px 64px -24px color-mix(in oklab, var(--color-forest-deep) 80%, transparent); }
+.ah-app { position: relative; z-index: 2; display: flex; flex-direction: column; gap: var(--space-xs); height: 100%; padding: var(--space-md) var(--space-sm) 0; background: var(--color-paper); color: var(--color-ink); --color-focus: var(--color-accent); }
 .ah-app__barra { display: flex; align-items: center; justify-content: space-between; color: var(--color-forest); }
 .ah-app__marca { display: inline-flex; align-items: center; gap: var(--space-2xs); font: 600 var(--text-sm)/1 var(--font-display); }
 .ah-app__marca svg { width: 18px; height: 18px; color: var(--color-accent); }
 .ah-app__pregunta { display: flex; align-items: center; gap: var(--space-xs); min-height: 36px; padding: 0 var(--space-sm); border: 1px solid var(--color-rule); border-radius: var(--radius-pill); background: var(--color-paper-2); color: var(--color-muted); font-size: var(--text-xs); }
 .ah-app__pregunta svg { color: var(--color-accent); }
 .ah-app__detalle { flex: none; display: grid; gap: var(--space-2xs); padding: var(--space-sm); border-radius: var(--radius-input); background: var(--color-forest); color: var(--color-on-dark); min-height: 148px; align-content: start; }
-.ah-app__icono { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-sm, 10px); background: var(--color-forest-deep); color: var(--color-mint); }
+.ah-app__icono { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--color-forest-deep); color: var(--color-mint); }
 .ah-app__nombre { margin-top: var(--space-2xs); font: 600 var(--text-sm)/1.25 var(--font-display); }
 .ah-app__texto { font-size: 12px; line-height: 1.4; color: var(--color-on-dark-2); }
 .ah-app__ver { justify-self: start; display: inline-flex; align-items: center; min-height: 32px; margin-top: var(--space-2xs); color: var(--color-mint); font-size: var(--text-xs); font-weight: 600; text-decoration: underline; text-underline-offset: 0.2em; }
@@ -83,7 +94,7 @@
 @media (hover: hover) { .ah-app__ver:hover { color: var(--color-on-dark); } }
 .ah-app__seccion { font: 600 var(--text-xs)/1 var(--font-display); color: var(--color-ink); }
 .ah-app__grilla { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2xs); margin: 0; padding: 0; list-style: none; }
-.ah-app__grilla li { display: grid; place-items: center; aspect-ratio: 5 / 4; border-radius: var(--radius-sm, 10px); background: var(--color-paper-2); color: var(--color-accent); transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out); }
+.ah-app__grilla li { display: grid; place-items: center; aspect-ratio: 5 / 4; border-radius: 10px; background: var(--color-paper-2); color: var(--color-accent); transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out); }
 .ah-app__grilla li.es-activo { background: var(--color-accent); color: var(--color-accent-ink); }
 .ah-app__nav { display: flex; justify-content: space-between; margin: auto 0 0; padding: var(--space-xs) var(--space-2xs) var(--space-sm); list-style: none; border-top: 1px solid var(--color-rule); }
 .ah-app__nav li { display: grid; justify-items: center; gap: var(--space-3xs); font-size: 11px; line-height: 1.2; color: var(--color-muted); }
@@ -94,30 +105,76 @@
 
 @media (max-width: 72rem) {
   .ah-hero { min-height: 0; }
+  .ah-hero::before { background: var(--color-scrim); }
   .ah-hero__grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
   .ah-mapa { max-width: 52rem; }
 }
 @media (max-width: 48rem) {
-  .ah-mapa { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-xs); }
-  .ah-telefono { grid-column: 1 / -1; order: -1; width: min(260px, 100%); margin: 0 auto var(--space-md); }
-  .ah-mapa__col { gap: var(--space-xs); }
-  .ah-modulo { min-height: 52px; font-size: var(--text-xs); }
-  .ah-modulo::after { display: none; }
+  .ah-mapa { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); }
+  .ah-telefono { order: -1; width: min(260px, 100%); margin: 0 auto; }
+  .ah-mapa__col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 40rem) {
-  /* En celular los módulos ya van como lista: la pantalla muestra solo el elegido */
+  /* En celular la pantalla muestra solo el módulo elegido */
   .ah-telefono { aspect-ratio: auto; }
   .ah-app { padding-bottom: var(--space-md); }
   .ah-app__seccion, .ah-app__grilla, .ah-app__nav { display: none; }
+  .ah-cifras li { font-size: var(--text-md); }
 }
 @media (max-width: 30rem) { .ah-acciones .ah-btn { width: 100%; } }
+
+/* ── Los 12 módulos de un vistazo ────────────────────────── */
+.ah-mods { padding: var(--section-gap-s) 0; }
+.ah-mods__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-md); margin: var(--space-2xl) 0 0; padding: 0; list-style: none; }
+.ah-mods__item { display: grid; align-content: start; gap: var(--space-xs); height: 100%; padding: var(--space-lg); border: 1px solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper); color: var(--color-ink); text-decoration: none; transition: border-color var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out); }
+.ah-mods__item.es-enlace:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.ah-mods__item.es-enlace:active { transform: translateY(1px); }
+@media (hover: hover) { .ah-mods__item.es-enlace:hover { border-color: var(--color-accent); transform: translateY(-2px); } }
+.ah-mods__icono { display: grid; place-items: center; width: 56px; height: 56px; margin-bottom: var(--space-xs); border-radius: var(--radius-input); background: var(--c-suave); color: var(--c); }
+.ah-mods__nombre { font: 600 var(--text-lg)/1.25 var(--font-display); hyphens: auto; overflow-wrap: break-word; min-width: 0; }
+.ah-mods__linea { color: var(--color-muted); line-height: 1.45; }
+@media (max-width: 60rem) { .ah-mods__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 30rem) { .ah-mods__item { padding: var(--space-md); } .ah-mods__nombre { font-size: var(--text-md); } .ah-mods__linea { font-size: var(--text-sm); } .ah-mods__grid { gap: var(--space-xs); } }
+
+/* ── En terreno: mosaico de fotos ────────────────────────── */
+.ah-terreno { padding: 0 0 var(--section-gap-s); }
+.ah-terreno__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 240px; gap: var(--space-md); margin: var(--space-2xl) 0 0; padding: 0; list-style: none; }
+.ah-teja.es-grande { grid-column: span 2; grid-row: span 2; }
+.ah-teja.es-alta { grid-row: span 2; }
+.ah-teja.es-ancha { grid-column: span 2; }
+.ah-teja__foto { position: relative; isolation: isolate; display: grid; place-items: center; height: 100%; margin: 0; overflow: hidden; border-radius: var(--radius-card); background: var(--c-suave); color: var(--c); }
+.ah-teja__respaldo { opacity: 0.5; }
+.ah-teja__foto .ah-foto { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; }
+.ah-teja__foto:has(.ah-foto) .ah-teja__respaldo { display: none; }
+.ah-teja__foto::after { content: ""; position: absolute; inset: 0; z-index: 0; background: linear-gradient(0deg, var(--color-scrim) 0%, var(--color-scrim-0) 60%); pointer-events: none; }
+.ah-teja__texto { position: absolute; inset: auto 0 0 0; z-index: 1; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--space-3xs) var(--space-sm); padding: var(--space-md); color: var(--color-on-dark); }
+.ah-teja__icono { grid-row: span 2; display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--radius-pill); background: var(--c-suave); color: var(--c); }
+.ah-teja__texto b { font: 600 var(--text-lg)/1.2 var(--font-display); }
+.ah-teja__texto span:last-child { font-size: var(--text-sm); color: var(--color-on-dark-2); }
+@media (max-width: 60rem) {
+  .ah-terreno__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 200px; }
+  .ah-teja.es-grande, .ah-teja.es-ancha { grid-column: span 2; grid-row: span 1; }
+  .ah-teja.es-alta { grid-row: span 1; }
+}
+@media (max-width: 30rem) { .ah-terreno__grid { grid-template-columns: minmax(0, 1fr); } .ah-teja.es-grande, .ah-teja.es-ancha { grid-column: auto; } }
+
+/* ── Así partimos: tres pasos ─────────────────────────────── */
+.ah-pasos { padding: var(--section-gap-s) 0; }
+.ah-pasos__lista { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-xl); margin: var(--space-2xl) 0 0; padding: 0; list-style: none; counter-reset: paso; }
+.ah-pasos__lista li { position: relative; display: grid; justify-items: start; gap: var(--space-xs); counter-increment: paso; }
+.ah-pasos__icono { position: relative; display: grid; place-items: center; width: 80px; height: 80px; margin-bottom: var(--space-sm); border-radius: var(--radius-pill); background: var(--color-paper-3); color: var(--color-accent); }
+.ah-pasos__icono::after { content: counter(paso); position: absolute; top: -4px; right: -4px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: var(--radius-pill); background: var(--color-accent); color: var(--color-accent-ink); font: 600 var(--text-sm)/1 var(--font-display); }
+.ah-pasos__lista b { font: 600 var(--text-title)/1.2 var(--font-display); }
+.ah-pasos__lista span:last-child { color: var(--color-muted); }
+@media (max-width: 48rem) { .ah-pasos__lista { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); } .ah-pasos__lista li { grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: var(--space-md); } .ah-pasos__icono { grid-row: span 2; margin: 0; width: 64px; height: 64px; } }
 
 /* ── Agendar reunión ─────────────────────────────────────── */
 .ah-agenda { padding: var(--space-2xl) 0 var(--section-gap); }
 .ah-agenda__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; gap: var(--space-2xl); }
 .ah-hechos { display: grid; gap: var(--space-md); margin: var(--space-xl) 0 0; padding: 0; list-style: none; max-width: 40ch; }
-.ah-hechos li { display: grid; gap: var(--space-3xs); padding-top: var(--space-md); border-top: 1px solid var(--color-rule); color: var(--color-muted); font-size: var(--text-md); line-height: 1.5; }
+.ah-hechos li { display: flex; align-items: center; gap: var(--space-sm); color: var(--color-muted); font-size: var(--text-md); line-height: 1.4; }
 .ah-hechos b { color: var(--color-ink); font-weight: 600; }
+.ah-hechos__icono { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: var(--radius-pill); background: var(--color-paper-3); color: var(--color-accent); }
 
 .ah-reunion { display: grid; gap: var(--space-lg); padding: var(--space-xl); border: 1px solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper-2); }
 .ah-reunion--compacto { padding: var(--space-lg); gap: var(--space-md); }
@@ -168,9 +225,11 @@
 }
 
 /* ── Banda: la evaluación ────────────────────────────────── */
-.ah-banda { padding: var(--section-gap-s) 0; background: var(--color-forest); color: var(--color-on-dark); --color-focus: var(--color-mint); }
+.ah-banda { position: relative; isolation: isolate; padding: var(--section-gap-s) 0; background: var(--color-forest); color: var(--color-on-dark); --color-focus: var(--color-mint); }
+.ah-banda__fondo { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+.ah-banda::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--color-scrim); }
 .ah-banda__grid { display: grid; justify-items: start; gap: var(--space-xl); }
-.ah-banda__frase { margin: 0; max-width: 32ch; font: var(--display-weight) var(--text-2xl)/1.2 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-on-dark); overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+.ah-banda__frase { margin: 0; max-width: 24ch; font: var(--display-weight) var(--text-section)/1.1 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-on-dark); overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
 
 /* ── Pie ─────────────────────────────────────────────────── */
 .ah-pie { padding: var(--space-3xl) 0 var(--space-xl); background: var(--color-paper-2); color: var(--color-ink); border-top: 1px solid var(--color-rule); }
@@ -187,8 +246,8 @@
 @media (max-width: 48rem) { .ah-pie__grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .ah-btn, .ah-modulo, .ah-hora label, .ah-input, .ah-nav__link, .ah-pie__links a, .ah-app__grilla li { transition: none; }
-  .ah-btn:active, .ah-modulo:active, .ah-hora label:active, .ah-nav__toggle:active { transform: none; }
+  .ah-btn, .ah-hora label, .ah-input, .ah-nav__link, .ah-pie__links a, .ah-app__grilla li { transition: none; }
+  .ah-btn:active, .ah-hora label:active, .ah-nav__toggle:active { transform: none; }
 }
 
 /* ── Evaluación: cabecera con la reunión corta ──────────── */
@@ -203,17 +262,30 @@
 .ah-integ { padding: var(--section-gap-s) 0; background: var(--color-paper-2); border-block: 1px solid var(--color-rule); }
 .ah-integ__cabeza { display: grid; gap: var(--space-2xs); margin-bottom: var(--space-2xl); }
 .ah-integ__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2xl); }
-.ah-integ__titulo { margin: 0 0 var(--space-sm); font: 600 var(--text-title)/1.2 var(--font-display); color: var(--color-ink); }
-.ah-integ__lista { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-rule); }
-.ah-integ__lista li { border-bottom: 1px solid var(--color-rule); }
-.ah-integ__fila { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); min-height: 64px; padding: var(--space-xs) var(--space-2xs); color: var(--color-ink); text-decoration: none; transition: background-color var(--dur-short) var(--ease-out); }
-.ah-integ__fila:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
-@media (hover: hover) { .ah-integ__fila:hover { background: var(--color-paper-3); } .ah-integ__fila:hover .ah-integ__nombre { text-decoration: underline; text-underline-offset: 0.2em; } }
+.ah-integ__titulo { margin: 0 0 var(--space-md); font: 600 var(--text-title)/1.2 var(--font-display); color: var(--color-ink); }
+.ah-integ__lista { display: grid; gap: var(--space-xs); margin: 0; padding: 0; list-style: none; }
+.ah-integ__tarjeta { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-md); min-height: 72px; padding: var(--space-sm) var(--space-md); border: 1px solid var(--color-rule); border-radius: var(--radius-input); background: var(--color-paper); color: var(--color-ink); text-decoration: none; transition: border-color var(--dur-short) var(--ease-out); }
+.ah-integ__tarjeta:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.ah-integ__tarjeta:active { transform: translateY(1px); }
+@media (hover: hover) { .ah-integ__tarjeta:hover { border-color: var(--color-accent); } .ah-integ__tarjeta:hover .ah-integ__nombre { text-decoration: underline; text-underline-offset: 0.2em; } }
+.ah-integ__icono { display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--radius-input); background: var(--color-cielo-suave); color: var(--color-cielo); }
 .ah-integ__nombre { display: grid; gap: var(--space-3xs); min-width: 0; font-weight: 600; line-height: 1.3; }
 .ah-integ__nombre small { font-size: var(--text-sm); font-weight: 400; color: var(--color-muted); }
 .ah-integ__nombre small:empty { display: none; }
-.ah-integ__estado { flex: none; font-size: var(--text-sm); color: var(--color-muted); }
-.ah-integ__estado.es-conectada { color: var(--color-accent); font-weight: 600; }
+.ah-integ__estado { display: inline-flex; align-items: center; gap: var(--space-2xs); padding: var(--space-2xs) var(--space-xs); border-radius: var(--radius-pill); font-size: var(--text-sm); font-weight: 600; white-space: nowrap; }
+.ah-integ__estado.es-conectada { background: var(--color-paper-3); color: var(--color-accent); }
+.ah-integ__estado.es-pronto { background: var(--color-ambar-suave); color: var(--color-ambar); }
+.ah-integ__estado.es-pedido { background: var(--color-cielo-suave); color: var(--color-cielo); }
 .ah-integ__ver { margin-top: var(--space-xl); }
 @media (max-width: 48rem) { .ah-integ__grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); } }
-@media (prefers-reduced-motion: reduce) { .ah-integ__fila { transition: none; } }
+@media (max-width: 30rem) { .ah-integ__tarjeta { grid-template-columns: auto minmax(0, 1fr); } .ah-integ__estado { grid-column: 2; justify-self: start; } }
+
+/* ── Créditos de fotos ───────────────────────────────────── */
+.ah-pie__creditos { margin-top: var(--space-xs); color: var(--color-muted); font-size: var(--text-xs); line-height: 1.5; }
+.ah-pie__creditos a { color: inherit; }
+.ah-pie__creditos a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ah-orbita__icono, .ah-mods__item, .ah-integ__tarjeta { transition: none; }
+  .ah-orbita[aria-pressed="true"] .ah-orbita__icono, .ah-orbita:active .ah-orbita__icono, .ah-mods__item.es-enlace:active, .ah-integ__tarjeta:active { transform: none; }
+}

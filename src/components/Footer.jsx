@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { FOTOS } from '../lib/fotos'
 
 export default function Footer() {
   return (
@@ -25,6 +26,12 @@ export default function Footer() {
       </div>
       <div className="container">
         <p className="ah-pie__legal">&copy; {new Date().getFullYear()} AgroHubs, Chile</p>
+        <p className="ah-pie__creditos">
+          Fotografías de Wikimedia Commons:{' '}
+          {Object.values(FOTOS).map((f, i, todas) => (
+            <span key={f.pagina}><a href={f.pagina} rel="noopener">{f.autor}</a> ({f.licencia}){i < todas.length - 1 ? ', ' : '.'}</span>
+          ))}
+        </p>
       </div>
     </footer>
   )

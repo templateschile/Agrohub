@@ -30,13 +30,14 @@ export default function AppModulos() {
     }
   }
 
-  const boton = (x, lado) => {
+  // Cada módulo: un ícono grande de color con su nombre corto; el nombre completo va en aria-label
+  const boton = x => {
     const I = x.icono
     return (
       <li key={x.key}>
-        <button type="button" className={`ah-modulo ah-modulo--${lado}`} aria-pressed={activo === x.key} onClick={() => elegir(x.key)}>
-          <I size={18} strokeWidth={1.75} aria-hidden="true" />
-          <span>{x.nombre}</span>
+        <button type="button" className={`ah-orbita ah-color--${x.color}`} aria-pressed={activo === x.key} aria-label={x.nombre} onClick={() => elegir(x.key)}>
+          <span className="ah-orbita__icono"><I size={24} strokeWidth={1.75} aria-hidden="true" /></span>
+          <span className="ah-orbita__nombre" aria-hidden="true">{x.corto}</span>
         </button>
       </li>
     )
@@ -44,7 +45,7 @@ export default function AppModulos() {
 
   return (
     <div className="ah-mapa" role="group" aria-label="Diagrama: la app AgroHubs y sus 12 módulos">
-      <ul className="ah-mapa__col ah-mapa__col--izq" aria-label="Módulos">{MODULOS.slice(0, 6).map(x => boton(x, "izq"))}</ul>
+      <ul className="ah-mapa__col ah-mapa__col--izq" aria-label="Módulos">{MODULOS.slice(0, 6).map(boton)}</ul>
 
       <div className="ah-telefono" data-slot="app" data-kind="product" data-alt="Pantalla principal de la app AgroHubs" ref={pantalla}>
         <div className="ah-app" data-keep aria-live="polite">
@@ -86,7 +87,7 @@ export default function AppModulos() {
         </div>
       </div>
 
-      <ul className="ah-mapa__col ah-mapa__col--der" aria-label="Más módulos">{MODULOS.slice(6).map(x => boton(x, "der"))}</ul>
+      <ul className="ah-mapa__col ah-mapa__col--der" aria-label="Más módulos">{MODULOS.slice(6).map(boton)}</ul>
     </div>
   )
 }
