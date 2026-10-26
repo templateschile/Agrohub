@@ -25,9 +25,9 @@ function Tarjeta({ f, conPais }) {
   return (
     <li>
       <a href={`/apis/${f.slug}`} className="ah-integ__tarjeta">
-        <span className="ah-integ__icono"><I size={22} strokeWidth={1.75} aria-hidden="true" /></span>
+        <span className="ah-integ__icono"><I size={24} strokeWidth={1.75} aria-hidden="true" /></span>
         <span className="ah-integ__nombre">{f.nombre}<small>{[f.detalle, conPais && f.pais].filter(Boolean).join(", ")}</small></span>
-        <span className={`ah-integ__estado ${e.clase}`}><E size={14} strokeWidth={2} aria-hidden="true" />{f.estado}</span>
+        <span className={`ah-integ__estado ${e.clase}`}><E size={16} strokeWidth={2} aria-hidden="true" />{f.estado}</span>
       </a>
     </li>
   )
@@ -35,9 +35,9 @@ function Tarjeta({ f, conPais }) {
 
 export default function Integraciones() {
   return (
-    <section className="ah-integ" id="integraciones" aria-labelledby="integ-titulo">
+    <section className="ah-sitio ah-integ" id="integraciones" aria-labelledby="integ-titulo">
       <div className="container">
-        <div className="ah-integ__cabeza">
+        <div className="ah-cabeza">
           <h2 id="integ-titulo" className="ah-seccion">{DESTACADAS.total_directorio} integraciones</h2>
           <p className="ah-lead">Chile primero, después Latinoamérica.</p>
         </div>
@@ -52,7 +52,7 @@ export default function Integraciones() {
           </div>
         </div>
         {/* Directorio estático (HTML generado en el build): enlace normal, no del router */}
-        <a className="ah-btn ah-btn--quieto ah-integ__ver" href="/apis">Ver el directorio de APIs agro</a>
+        <a className="ah-btn ah-btn--claro ah-integ__ver" href="/apis">Ver el directorio de APIs agro</a>
       </div>
     </section>
   )

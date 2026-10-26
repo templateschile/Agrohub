@@ -1,67 +1,65 @@
 import { Link } from "react-router-dom"
-import { LayoutGrid, Smartphone, Plug, ShieldCheck, Clock, UserRound } from "lucide-react"
-import AppModulos from "../components/AppModulos"
-import ModulosGrid from "../components/ModulosGrid"
-import EnTerreno from "../components/EnTerreno"
+import EjemploPablo from "../components/EjemploPablo"
+import VideoExplicativo from "../components/VideoExplicativo"
+import ModulosIndice from "../components/ModulosIndice"
+import Formas from "../components/Formas"
 import Integraciones from "../components/Integraciones"
-import ComoFunciona from "../components/ComoFunciona"
 import AgendarReunion from "../components/AgendarReunion"
 import DESTACADAS from "../../data/apis/destacadas.json"
 import { CAMPO, FOTOS, Foto } from "../lib/fotos"
 
-// Portada de lectura rápida: la app y sus módulos sobre el huerto, los módulos con íconos,
-// fotos en terreno, integraciones, cómo partimos, agendar la reunión y la evaluación.
+// Portada: el huerto con el aviso de helada de Pablo, de dónde sale ese aviso, el video de cómo funciona,
+// los 12 módulos, las tres formas de acercar la tecnología, las integraciones y la reunión.
 export default function Home() {
-  const cifras = [
-    { icono: LayoutGrid, valor: "12", texto: "módulos" },
-    { icono: Smartphone, valor: "1", texto: "app" },
-    { icono: Plug, valor: String(DESTACADAS.total_directorio), texto: "integraciones" },
-  ]
   return (
     <>
-      <section className="ah-hero" id="modulos" aria-labelledby="hero-titulo">
-        <Foto foto={CAMPO} prioridad className="ah-hero__fondo" />
+      <section className="ah-sitio ah-hero" aria-labelledby="hero-titulo">
+        <figure className="ah-hero__foto" data-slot="hero" data-alt="Tu campo: hileras de frutales de un predio que usa AgroHubs">
+          <Foto foto={CAMPO} prioridad />
+        </figure>
         <div className="container ah-hero__grid">
-          <div className="ah-hero__texto">
-            <h1 id="hero-titulo" className="ah-display">Todo tu campo en una app</h1>
-            <ul className="ah-cifras">
-              {cifras.map(({ icono: I, valor, texto }) => (
-                <li key={texto}><I size={22} strokeWidth={1.75} aria-hidden="true" /><b>{valor}</b>{texto}</li>
-              ))}
-            </ul>
+          <div className="ah-hero__cartel">
+            <h1 id="hero-titulo" className="ah-display">Todo tu campo en un solo lugar</h1>
+            <p className="ah-hero__linea">12 módulos, 1 app y {DESTACADAS.total_directorio} integraciones, con capacitación en terreno.</p>
             <div className="ah-acciones">
-              <a className="ah-btn ah-btn--menta" href="#contacto">Agendar reunión</a>
-              <Link className="ah-btn ah-btn--claro" to="/evaluacion">Evaluar mi operación</Link>
+              <a className="ah-btn" href="#contacto">Agendar reunión</a>
+              <a className="ah-btn ah-btn--claro" href="#video">Ver el video</a>
             </div>
           </div>
-          <AppModulos />
+          <figure className="ah-aviso" data-slot="aviso" data-kind="product" data-alt="Captura del aviso de helada en la app" aria-label="Ejemplo de aviso en la app">
+            <div className="ah-aviso__cabeza"><span>Aviso de helada</span><time>Hoy, 18:40</time></div>
+            <p className="ah-aviso__titulo">Pablo, se viene una helada</p>
+            <p className="ah-aviso__cifra"><b>−2<span className="ah-unidad">°C</span></b>a las 05:00</p>
+            <p className="ah-aviso__sector"><span className="ah-cuadro ah-linea--ambar" aria-hidden="true" />Sector 5 en plena flor: riesgo alto</p>
+            <a className="ah-aviso__ir" href="#ejemplo">Ver el checklist</a>
+          </figure>
         </div>
       </section>
 
-      <ModulosGrid />
-      <EnTerreno />
+      <EjemploPablo />
+      <VideoExplicativo />
+      <ModulosIndice />
+      <Formas />
       <Integraciones />
-      <ComoFunciona />
 
-      <section className="ah-agenda" id="contacto" aria-labelledby="agenda-titulo">
+      <section className="ah-sitio ah-agenda" id="contacto" aria-labelledby="agenda-titulo">
         <div className="container ah-agenda__grid">
           <div className="ah-agenda__texto">
             <h2 id="agenda-titulo" className="ah-seccion">Conversemos 30 minutos</h2>
-            <ul className="ah-hechos">
-              <li><span className="ah-hechos__icono"><ShieldCheck size={22} strokeWidth={1.75} aria-hidden="true" /></span><b>Sin compromiso</b></li>
-              <li><span className="ah-hechos__icono"><UserRound size={22} strokeWidth={1.75} aria-hidden="true" /></span><b>Te escribe una persona del equipo</b></li>
-              <li><span className="ah-hechos__icono"><Clock size={22} strokeWidth={1.75} aria-hidden="true" /></span><b>Respuesta en 24 horas hábiles</b></li>
-            </ul>
+            <p className="ah-lead">Sin compromiso. Te escribe una persona del equipo en 24 horas hábiles.</p>
+            <ol className="ah-ruta">
+              <li><span><b>Agenda</b> una videollamada</span></li>
+              <li><span><b>Diagnóstico</b> de lo que tienes y te falta</span></li>
+              <li><span><b>Activamos</b> tus módulos</span></li>
+            </ol>
+            <figure className="ah-agenda__foto" data-slot="agenda" data-alt="Tu predio en temporada: flores de los frutales">
+              <Foto foto={FOTOS.flor} sizes="(min-width: 60rem) 35vw, 100vw" />
+            </figure>
+            <div className="ah-agenda__eval"><p>¿Quieres una propuesta a tu medida? Evalúa tu operación en 5 minutos.</p><Link className="ah-btn ah-btn--quieto" to="/evaluacion">Hacer la evaluación</Link></div>
           </div>
-          <AgendarReunion origen="portada" />
-        </div>
-      </section>
-
-      <section className="ah-banda" aria-labelledby="banda-titulo">
-        <Foto foto={FOTOS.vina} className="ah-banda__fondo" />
-        <div className="container ah-banda__grid">
-          <h2 id="banda-titulo" className="ah-banda__frase">¿Quieres una propuesta a tu medida? Evalúa tu operación en 5 minutos.</h2>
-          <Link className="ah-btn ah-btn--menta" to="/evaluacion">Hacer la evaluación</Link>
+          <div className="ah-agenda__form">
+            <AgendarReunion origen="portada" />
+          </div>
         </div>
       </section>
     </>
