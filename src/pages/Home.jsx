@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom"
 import AppModulos from "../components/AppModulos"
 import AgendarReunion from "../components/AgendarReunion"
+import Integraciones from "../components/Integraciones"
 
-// Portada en tres pasos: la app con sus módulos, agendar la reunión y, si se quiere, la evaluación.
+// Portada: la app con sus módulos, sus integraciones, agendar la reunión y, si se quiere, la evaluación.
 export default function Home() {
   return (
     <>
       <section className="ah-hero" id="modulos" aria-labelledby="hero-titulo">
         <div className="container ah-hero__grid">
           <div className="ah-hero__texto">
-            <h1 id="hero-titulo" className="ah-display">Doce módulos, una sola app</h1>
-            <p className="ah-lead">Activa los que necesita tu predio; toca uno para verlo.</p>
+            <h1 id="hero-titulo" className="ah-display">12 módulos, 1 app y más de 200 integraciones</h1>
+            <p className="ah-lead">Activa los módulos de tu predio y conecta los sistemas que usas.</p>
             <div className="ah-acciones">
               <a className="ah-btn" href="#contacto">Agendar reunión</a>
               <Link className="ah-btn ah-btn--quieto" to="/evaluacion">Evaluar mi operación</Link>
@@ -19,6 +20,8 @@ export default function Home() {
           <AppModulos />
         </div>
       </section>
+
+      <Integraciones />
 
       <section className="ah-agenda" id="contacto" aria-labelledby="agenda-titulo">
         <div className="container ah-agenda__grid">

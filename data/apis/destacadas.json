@@ -1,0 +1,92 @@
+{
+  "_nota": "Generado por scripts/build-apis.mjs (npm run apis): no editar a mano.",
+  "total_directorio": 89,
+  "chile": [
+    {
+      "slug": "inia-agromet",
+      "nombre": "INIA Agromet",
+      "detalle": "",
+      "pais": "Chile",
+      "estado": "Conectada"
+    },
+    {
+      "slug": "odepa-datos-abiertos",
+      "nombre": "ODEPA",
+      "detalle": "Datos Abiertos",
+      "pais": "Chile",
+      "estado": "Conectada"
+    },
+    {
+      "slug": "ciren-ide-minagri",
+      "nombre": "CIREN / IDE MINAGRI",
+      "detalle": "ArcGIS REST",
+      "pais": "Chile",
+      "estado": "Conectada"
+    },
+    {
+      "slug": "conaf-geprif-incendios",
+      "nombre": "CONAF",
+      "detalle": "GEPRIF incendios forestales",
+      "pais": "Chile",
+      "estado": "Conectada"
+    },
+    {
+      "slug": "dmc-chile",
+      "nombre": "Dirección Meteorológica de Chile",
+      "detalle": "DMC",
+      "pais": "Chile",
+      "estado": "Conectada"
+    },
+    {
+      "slug": "wiseconn-dropcontrol",
+      "nombre": "WiseConn DropControl",
+      "detalle": "",
+      "pais": "Chile",
+      "estado": "Próximamente"
+    }
+  ],
+  "latam": [
+    {
+      "slug": "embrapa-agroapi",
+      "nombre": "Embrapa AgroAPI",
+      "detalle": "",
+      "pais": "Brasil",
+      "estado": "A pedido"
+    },
+    {
+      "slug": "inmet-brasil",
+      "nombre": "INMET",
+      "detalle": "API de estaciones",
+      "pais": "Brasil",
+      "estado": "A pedido"
+    },
+    {
+      "slug": "ibge-sidra",
+      "nombre": "IBGE",
+      "detalle": "SIDRA / Agregados",
+      "pais": "Brasil",
+      "estado": "A pedido"
+    },
+    {
+      "slug": "auravant",
+      "nombre": "Auravant",
+      "detalle": "",
+      "pais": "Argentina",
+      "estado": "A pedido"
+    },
+    {
+      "slug": "inta-siga",
+      "nombre": "INTA",
+      "detalle": "SIGA y GeoINTA",
+      "pais": "Argentina",
+      "estado": "A pedido"
+    },
+    {
+      "slug": "mapa-dados-abertos",
+      "nombre": "MAPA",
+      "detalle": "Dados Abertos (AGROFIT, ZARC)",
+      "pais": "Brasil",
+      "estado": "A pedido"
+    }
+  ]
+}
