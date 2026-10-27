@@ -1,17 +1,23 @@
 // Envia un formulario al API de la plataforma AgroHubs (POST /api/v1/site/leads): se guarda para
 // el admin (admin.agrohubs.cl › Sitio agrohubs.cl › Propuestas) y se avisa al equipo por email y Telegram.
 // La URL se puede cambiar con VITE_LEADS_URL (p. ej. para probar contra un API local).
-export const LEADS_URL = import.meta.env.VITE_LEADS_URL || "https://api.agrohubs.cl/api/v1/site/leads"
+// (`?.`: fuera de Vite, en las pruebas de scripts/tests, import.meta.env no existe)
+export const LEADS_URL = import.meta.env?.VITE_LEADS_URL || "https://api.agrohubs.cl/api/v1/site/leads"
 
-export async function enviarLead({ tipo, contacto, mensaje = "", resumen = [], respuestas = null, website = "" }) {
+// Alternativa que muestran los formularios si el envío falla
+export const CORREO_CONTACTO = "cotizaciones@agrohubs.cl"
+
+// Solo cuenta como enviado si el API responde { ok: true }. Un error HTTP, una respuesta que no es
+// JSON (p. ej. una página HTML) o un fallo de red devuelven false. Se prueba en scripts/tests.
+export async function enviarLead({ tipo, contacto, mensaje = "", resumen = [], respuestas = null, website = "" }, pedir = fetch) {
   try {
-    const res = await fetch(LEADS_URL, {
+    const res = await pedir(LEADS_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ tipo, contacto, mensaje, resumen, respuestas, website }),
     })
-    const json = await res.json().catch(() => ({}))
-    return res.ok && json.ok !== false
+    const json = await res.json().catch(() => null)
+    return res.ok && json?.ok === true
   } catch (_) {
     return false
   }

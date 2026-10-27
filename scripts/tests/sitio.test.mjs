@@ -1,14 +1,20 @@
 // Apps del ecosistema, confianza, video y módulos del sitio. Uso: npm test
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { APPS, APPS_CON_PAGINA, appPorSlug } from '../../src/lib/apps.js'
 import { CONFIAN, PARTNER } from '../../src/lib/confianza.js'
 import { hayVideo } from '../../src/lib/video.js'
+import { enviarLead, LEADS_URL, CORREO_CONTACTO } from '../../src/lib/lead.js'
 import { destinoAdmin, PESTANAS_ADMIN } from '../../src/lib/admin.js'
+import { enfocables, focoAtrapado } from '../../src/lib/foco.js'
 
 const leer = (ruta) => readFileSync(new URL(ruta, import.meta.url), 'utf8')
 const VERCEL = JSON.parse(leer('../../vercel.json'))
+// Todos los .js/.jsx de src, con su contenido
+const FUENTES = readdirSync(new URL('../../src/', import.meta.url), { recursive: true })
+  .map((f) => String(f).replace(/\\/g, '/')).filter((f) => /\.jsx?$/.test(f))
+  .map((f) => ({ f, texto: leer(`../../src/${f}`) }))
 
 test('menú Apps: AgroHubs, AgroCiclo, DronX y AgroSeller; Fisaro no es una app', () => {
   assert.deepEqual(APPS.map((a) => [a.nombre, a.ruta]), [
@@ -143,4 +149,57 @@ test('/admin?tab=… y /admin?id=… llegan a la misma página del panel desde e
   assert.equal(destinoAdmin('?id=a b'), 'https://admin.agrohubs.cl/site/propuestas?id=a%20b')
   assert.equal(destinoAdmin('?tab=constructor'), 'https://admin.agrohubs.cl/', 'solo pestañas conocidas')
   assert.equal(destinoAdmin(''), 'https://admin.agrohubs.cl/')
+})
+
+test('enviarLead: solo al API de la plataforma y solo cuenta como enviado con ok === true', async () => {
+  const llamadas = []
+  const api = (status, cuerpo) => async (url, opciones) => {
+    llamadas.push({ url, metodo: opciones.method, body: JSON.parse(opciones.body) })
+    return { ok: status >= 200 && status < 300, status, json: async () => { if (cuerpo instanceof Error) throw cuerpo; return cuerpo } }
+  }
+  const datos = { tipo: 'contacto', contacto: { nombre: 'Ana', email: 'ana@ejemplo.cl' } }
+  assert.equal(LEADS_URL, 'https://api.agrohubs.cl/api/v1/site/leads')
+  assert.equal(await enviarLead(datos, api(200, { ok: true })), true)
+  assert.equal(await enviarLead(datos, api(200, {})), false, 'sin ok')
+  assert.equal(await enviarLead(datos, api(200, { ok: 'true' })), false, 'ok tiene que ser true')
+  assert.equal(await enviarLead(datos, api(200, null)), false, 'cuerpo vacío')
+  assert.equal(await enviarLead(datos, api(200, new SyntaxError('HTML'))), false, 'respuesta que no es JSON')
+  assert.equal(await enviarLead(datos, api(429, { ok: false, message: 'Demasiados envíos' })), false)
+  assert.equal(await enviarLead(datos, api(500, { ok: true })), false, 'error HTTP')
+  assert.equal(await enviarLead(datos, async () => { throw new TypeError('Failed to fetch') }), false, 'sin red o CORS')
+  assert.equal(llamadas.length, 7, 'un envío por intento, sin probar otro destino')
+  assert.ok(llamadas.every((l) => l.url === LEADS_URL && l.metodo === 'POST'))
+  assert.equal(llamadas[0].body.contacto.nombre, 'Ana')
+})
+
+test('nada envía a /api/lead (ya no existe) y los formularios ofrecen otro contacto si falla', () => {
+  assert.ok(!existsSync(new URL('../../api/lead.js', import.meta.url)))
+  for (const { f, texto } of FUENTES) assert.ok(!/['"]\/api\/lead['"]/.test(texto), `src/${f}`)
+  const build = leer('../../scripts/build-apis.mjs')
+  assert.ok(!/['"]\/api\/lead['"]/.test(build), 'cotizar (/apis/cotizar) solo usa el API de la plataforma')
+  assert.ok(build.includes(`var LEADS_URL='${LEADS_URL}'`))
+  assert.ok(build.includes('j.ok===true'))
+  assert.equal(CORREO_CONTACTO, 'cotizaciones@agrohubs.cl')
+  for (const f of ['components/ContactModal.jsx', 'pages/Evaluacion.jsx', 'components/PedidoModal.jsx']) {
+    assert.ok(leer(`../../src/${f}`).includes('mailto:${CORREO_CONTACTO}'), `${f}: sin contacto alternativo`)
+  }
+})
+
+test('ContactModal: Tab y Shift+Tab ciclan dentro del diálogo', () => {
+  const lista = ['cerrar', 'nombre', 'enviar']
+  assert.equal(focoAtrapado(lista, 'enviar'), 'cerrar', 'Tab en el último vuelve al primero')
+  assert.equal(focoAtrapado(lista, 'cerrar', true), 'enviar', 'Shift+Tab en el primero va al último')
+  assert.equal(focoAtrapado(lista, 'nombre'), null, 'en medio, el navegador lo mueve solo')
+  assert.equal(focoAtrapado(lista, 'nombre', true), null)
+  assert.equal(focoAtrapado(lista, 'body'), 'cerrar', 'si el foco quedó fuera, vuelve al diálogo')
+  assert.equal(focoAtrapado(lista, 'body', true), 'enviar')
+  assert.equal(focoAtrapado([], 'body'), null)
+  const el = (n, extra = {}) => ({ n, disabled: false, tabIndex: 0, getClientRects: () => [{}], ...extra })
+  const caja = { querySelectorAll: () => [el('cerrar'), el('nombre'), el('trampa', { tabIndex: -1 }),
+    el('oculto', { getClientRects: () => [] }), el('enviar', { disabled: true })] }
+  assert.deepEqual(enfocables(caja).map((e) => e.n), ['cerrar', 'nombre'], 'sin el campo trampa, ocultos ni deshabilitados')
+  assert.deepEqual(enfocables(null), [])
+  const modal = leer('../../src/components/ContactModal.jsx')
+  assert.ok(modal.includes('focoAtrapado(enfocables(caja.current), document.activeElement, e.shiftKey)'))
+  assert.ok(modal.includes('previo.focus'), 'al cerrar, el foco vuelve al botón que lo abrió')
 })

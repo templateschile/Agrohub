@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { X, Leaf, User, Phone, Mail, Send, CheckCircle } from "lucide-react"
-import { enviarLead } from "../lib/lead"
+import { enviarLead, CORREO_CONTACTO } from "../lib/lead"
 
 const clp = n => "$" + Number(n).toLocaleString("es-CL")
 
@@ -13,6 +13,7 @@ export default function PedidoModal({ productor, onClose }) {
   const [email, setEmail] = useState("")
   const [enviando, setEnviando] = useState(false)
   const [enviado, setEnviado] = useState(false)
+  const [error, setError] = useState(false)
 
   const setQty = (key, val) => setQtys(prev => ({ ...prev, [key]: Math.max(0, parseInt(val) || 0) }))
 
@@ -23,6 +24,7 @@ export default function PedidoModal({ productor, onClose }) {
   const handleEnviar = async () => {
     if (!valido) return
     setEnviando(true)
+    setError(false)
     const resumen = [
       `Proveedor: ${productor.nombre} (${productor.comuna}, ${productor.region})`,
       ...pedido.map(p => {
@@ -31,9 +33,10 @@ export default function PedidoModal({ productor, onClose }) {
       }),
       `TOTAL: ${clp(total)}`,
     ]
-    await enviarLead({ tipo: "pedido", contacto: { nombre, telefono, email }, resumen })
+    const ok = await enviarLead({ tipo: "pedido", contacto: { nombre, telefono, email }, resumen })
     setEnviando(false)
-    setEnviado(true)
+    if (ok) setEnviado(true)
+    else setError(true)
   }
 
   return (
@@ -138,6 +141,12 @@ export default function PedidoModal({ productor, onClose }) {
               </div>
             </div>
 
+            {error && (
+              <p role="alert" className="text-xs text-red-600">
+                No pudimos enviar tu pedido. Inténtalo de nuevo en unos minutos o escríbenos a{" "}
+                <a href={`mailto:${CORREO_CONTACTO}`} className="underline font-semibold">{CORREO_CONTACTO}</a>.
+              </p>
+            )}
             <button onClick={handleEnviar} disabled={!valido || enviando}
               className="w-full flex items-center justify-center gap-2 bg-agro-green-600 hover:bg-agro-green-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl text-sm transition-colors">
               <Send size={15} />{enviando ? "Enviando..." : "Enviar pedido"}

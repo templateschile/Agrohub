@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react"
 import { X, User, Phone, Mail, Building2, Send, CheckCircle } from "lucide-react"
-import { enviarLead, emailValido } from "../lib/lead"
+import { enviarLead, emailValido, CORREO_CONTACTO } from "../lib/lead"
+import { enfocables, focoAtrapado } from "../lib/foco"
 
 const inputCls = "w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400"
 
@@ -17,18 +18,27 @@ export default function ContactModal({ onClose, titulo = "¿Hablamos?", subtitul
 
   const valido = nombre.trim() && emailValido(email)
 
-  // Diálogo accesible: foco en el primer campo al abrir, Escape cierra y el foco vuelve a donde estaba
+  // Diálogo accesible: foco en el primer campo al abrir, Tab y Shift+Tab no salen del diálogo,
+  // Escape cierra y el foco vuelve al botón que lo abrió
   const tituloId = useId()
   const caja = useRef(null)
+  const botonListo = useRef(null)
   const cerrar = useRef(onClose)
   cerrar.current = onClose
   useEffect(() => {
     const previo = document.activeElement
     caja.current?.querySelector("input")?.focus()
-    const tecla = e => { if (e.key === "Escape") cerrar.current() }
+    const tecla = e => {
+      if (e.key === "Escape") return cerrar.current()
+      if (e.key !== "Tab") return
+      const destino = focoAtrapado(enfocables(caja.current), document.activeElement, e.shiftKey)
+      if (destino) { e.preventDefault(); destino.focus() }
+    }
     document.addEventListener("keydown", tecla)
-    return () => { document.removeEventListener("keydown", tecla); previo?.focus?.() }
+    return () => { document.removeEventListener("keydown", tecla); if (previo?.isConnected) previo.focus?.() }
   }, [])
+  // Al enviarse, el formulario desaparece: el foco pasa al botón Cerrar del mensaje de éxito
+  useEffect(() => { if (enviado) botonListo.current?.focus() }, [enviado])
 
   const handleEnviar = async () => {
     if (!valido) return
@@ -58,7 +68,7 @@ export default function ContactModal({ onClose, titulo = "¿Hablamos?", subtitul
             <CheckCircle size={48} className="text-agro-green-500 mx-auto mb-3" />
             <h3 id={tituloId} className="font-bold text-gray-900 text-lg mb-2">¡Mensaje recibido!</h3>
             <p className="text-gray-500 text-sm">Nuestro equipo te contactará a la brevedad por email o teléfono.</p>
-            <button onClick={onClose} className="mt-5 bg-agro-green-600 text-white font-semibold px-6 py-2.5 rounded-full text-sm hover:bg-agro-green-700 transition-colors">
+            <button ref={botonListo} onClick={onClose} className="mt-5 bg-agro-green-600 text-white font-semibold px-6 py-2.5 rounded-full text-sm hover:bg-agro-green-700 transition-colors">
               Cerrar
             </button>
           </div>
@@ -87,7 +97,12 @@ export default function ContactModal({ onClose, titulo = "¿Hablamos?", subtitul
                 className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-agro-green-400 resize-none" />
               <input value={website} onChange={e => setWebsite(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
             </div>
-            {error && <p className="text-xs text-red-600 mt-3">No pudimos enviar tu mensaje. Inténtalo nuevamente en unos minutos.</p>}
+            {error && (
+              <p role="alert" className="text-xs text-red-600 mt-3">
+                No pudimos enviar tu mensaje. Inténtalo de nuevo en unos minutos o escríbenos a{" "}
+                <a href={`mailto:${CORREO_CONTACTO}`} className="underline font-semibold">{CORREO_CONTACTO}</a>.
+              </p>
+            )}
             <button onClick={handleEnviar} disabled={!valido || enviando}
               className="mt-5 w-full flex items-center justify-center gap-2 bg-agro-green-600 hover:bg-agro-green-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl text-sm transition-colors">
               <Send size={15} />

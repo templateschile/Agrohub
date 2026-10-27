@@ -367,13 +367,12 @@ const FERIADOS_CL = JSON.parse(readFileSync(join(ROOT, 'data', 'feriados-cl.json
     var p=r.split(' ');return {fecha:p[0],hora:p[1],propuesta:true};
   }
 
-  var DESTINOS=['/api/lead','https://api.agrohubs.cl/api/v1/site/leads'];
-  function enviar(i,datos){
-    if(i>=DESTINOS.length)return Promise.resolve(false);
-    return fetch(DESTINOS[i],{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)})
-      .then(function(r){return r.json().catch(function(){return {}}).then(function(j){return r.ok&&j.ok!==false})})
-      .catch(function(){return false})
-      .then(function(ok){return ok||enviar(i+1,datos)});
+  // Se envía al API de la plataforma y solo cuenta como enviado si responde { ok: true }
+  var LEADS_URL='https://api.agrohubs.cl/api/v1/site/leads';
+  function enviar(datos){
+    return fetch(LEADS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)})
+      .then(function(r){return r.json().catch(function(){return null}).then(function(j){return r.ok&&!!j&&j.ok===true})})
+      .catch(function(){return false});
   }
   f.addEventListener('submit',function(e){
     e.preventDefault();
@@ -392,10 +391,10 @@ const FERIADOS_CL = JSON.parse(readFileSync(join(ROOT, 'data', 'feriados-cl.json
       mensaje:'Cotización de integración de software.\\n'+resumen.join('\\n')+(v('f-mensaje')?'\\n\\n'+v('f-mensaje'):''),resumen:resumen,
       respuestas:{origen:origen,apis:slugs,necesidad:necesidad||null,reunion:rn?{fecha:rn.fecha,hora:rn.hora,zona:'America/Santiago',duracion_min:30}:null}};
     var b=document.getElementById('f-enviar');b.disabled=true;est.className='estado';est.textContent='Enviando…';
-    enviar(0,datos).then(function(ok){
+    enviar(datos).then(function(ok){
       b.disabled=false;
       if(ok){f.reset();pintar();est.className='estado ok';est.textContent='¡Listo! Recibimos tu solicitud. '+(rn?'Te escribiremos a '+email+' para confirmar la reunión del '+larga(rn.fecha)+' a las '+rn.hora+'.':'Te escribiremos pronto a '+email+'.')}
-      else{est.className='estado error';est.textContent='No pudimos enviar el formulario. Escríbenos a cotizaciones@agrohubs.cl y te respondemos.'}
+      else{est.className='estado error';est.textContent='No pudimos enviar el formulario. Inténtalo de nuevo en unos minutos o escríbenos a cotizaciones@agrohubs.cl y te respondemos.'}
     });
   });
 })();
