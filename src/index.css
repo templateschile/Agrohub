@@ -23,21 +23,3 @@
   html { scroll-behavior: smooth; }
   body { @apply font-sans antialiased; background: var(--color-paper); color: var(--color-ink); }
 }
-
-/* ── Documento de propuesta (admin) ─────────────────────────── */
-.propuesta-doc { font-size: 14px; line-height: 1.65; color: var(--color-doc-ink); max-width: 760px; margin: 0 auto; }
-.propuesta-doc h1 { font-size: 26px; font-weight: 800; color: var(--color-doc-h1); margin-bottom: var(--space-xs); }
-.propuesta-doc h2 { font-size: 17px; font-weight: 700; color: var(--color-doc-h2); margin: var(--space-lg) 0 var(--space-xs); }
-.propuesta-doc p { margin: var(--space-xs) 0; }
-.propuesta-doc ul { list-style: disc; padding-left: var(--space-lg); margin: var(--space-xs) 0; }
-.propuesta-doc ol { list-style: decimal; padding-left: var(--space-lg); margin: var(--space-xs) 0; }
-.propuesta-doc li { margin: var(--space-2xs) 0; }
-.propuesta-doc mark { background: var(--color-doc-mark); padding: 0 var(--space-3xs); border-radius: 3px; }
-
-@media print {
-  .no-print { display: none !important; }
-  body { background: var(--color-print-paper) !important; }
-  .print-area { padding: 0 !important; }
-  .propuesta-doc mark { background: none; }
-  @page { margin: 18mm; }
-}

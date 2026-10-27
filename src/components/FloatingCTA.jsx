@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { MessageSquare, X } from 'lucide-react'
 import ContactModal from './ContactModal'
+import { HubMark } from './HubMark'
 
 export default function FloatingCTA() {
   const [visible, setVisible] = useState(false)
@@ -36,12 +37,8 @@ export default function FloatingCTA() {
             <X size={15} />
           </button>
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-agro-green-600 flex items-center justify-center">
-              <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5">
-                <circle cx="16" cy="16" r="6" fill="white" opacity="0.9"/>
-                <path d="M16 4 C16 4 10 8 10 16" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-                <path d="M16 4 C16 4 22 8 22 16" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
+            <div className="w-10 h-10 rounded-xl bg-[#0b3b24] flex items-center justify-center">
+              <HubMark className="w-7 h-7 text-[#6ee7a8]" />
             </div>
             <div>
               <div className="font-semibold text-gray-900 text-sm">AgroHubs</div>

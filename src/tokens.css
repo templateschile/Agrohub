@@ -13,8 +13,6 @@
   --color-rule: oklch(91.7% 0.016 154.5);
   /* Bosque y menta de la app (app-mobile/lib/theme/ah_tokens.dart) */
   --color-forest: oklch(31.4% 0.065 157.8); --color-forest-deep: oklch(24.3% 0.05 156.9); --color-mint: oklch(84.2% 0.142 158.4);
-  /* Documento de propuesta del admin (impresión) */
-  --color-doc-ink: oklch(27.8% 0.03 256.8); --color-doc-h1: oklch(31.9% 0.077 142.1); --color-doc-h2: oklch(41.9% 0.109 141.7); --color-doc-mark: oklch(94.5% 0.124 101.5); --color-print-paper: oklch(100% 0 0);
   --color-on-dark: oklch(97.5% 0.008 139.4); --color-on-dark-2: oklch(93.7% 0.059 160.3);
   --color-accent: oklch(45.3% 0.101 154.9); --color-accent-ink: oklch(97.5% 0.008 139.4); --color-focus: oklch(45.3% 0.101 154.9);
   --font-display: "Sora", ui-sans-serif, system-ui, sans-serif; --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif; --font-outlier: var(--font-body);

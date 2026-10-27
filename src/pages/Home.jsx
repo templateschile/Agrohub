@@ -11,8 +11,9 @@ export default function Home() {
       <section className="ah-hero" id="modulos" aria-labelledby="hero-titulo">
         <div className="container ah-hero__grid">
           <div className="ah-hero__texto">
-            <h1 id="hero-titulo" className="ah-display">12 módulos, 1 app y {DESTACADAS.total_directorio} integraciones</h1>
-            <p className="ah-lead">Activa los módulos de tu predio y conecta los sistemas que usas.</p>
+            <p className="ah-eyebrow">12 módulos, 1 app y {DESTACADAS.total_directorio} integraciones</p>
+            <h1 id="hero-titulo" className="ah-display">Crea tu Centro Demostrativo Agrícola</h1>
+            <p className="ah-lead">Y entrega a tus agricultores el poder de decidir. Activa los módulos de cada predio y conecta los sistemas que usas, para todos los cultivos.</p>
             <div className="ah-acciones">
               <a className="ah-btn" href="#contacto">Agendar reunión</a>
               <Link className="ah-btn ah-btn--quieto" to="/evaluacion">Evaluar mi operación</Link>

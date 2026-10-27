@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
+import { HubMark } from './HubMark'
+import { esRutaDeModulo } from '../lib/modulos'
 
-// Menú corto: lo que la mayoría viene a hacer. Los demás módulos del sitio siguen en el pie de página.
+// Menú corto: lo que la mayoría viene a hacer. Los módulos tienen su índice en /modulos y
+// el resto del sitio sigue en el pie de página.
 const navLinks = [
+  { label: 'Módulos',    to: '/modulos', activo: esRutaDeModulo },
   { label: 'Evaluación', to: '/evaluacion' },
   { label: 'Tienda',     to: '/tienda' },
 ]
@@ -11,16 +15,8 @@ const navLinks = [
 function Marca() {
   return (
     <Link to="/" className="ah-nav__marca" aria-label="AgroHubs, inicio">
-      <span className="ah-nav__logo">
-        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
-          <circle cx="16" cy="16" r="6" fill="currentColor" opacity="0.9"/>
-          <path d="M16 4 C16 4 10 8 10 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M16 4 C16 4 22 8 22 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M6 20 C8 24 12 28 16 28" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M26 20 C24 24 20 28 16 28" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-        </svg>
-      </span>
-      <span className="ah-nav__nombre">AgroHubs<small>Centro Demostrativo Móvil</small></span>
+      <span className="ah-nav__logo"><HubMark className="ah-nav__hub" title={null} /></span>
+      <span className="ah-nav__nombre">AgroHubs<small>Centro Demostrativo Agrícola</small></span>
     </Link>
   )
 }
@@ -33,9 +29,10 @@ export default function Navbar() {
     setMenuOpen(false)
   }, [location.pathname])
 
+  const esActivo = link => (link.activo ? link.activo(location.pathname) : location.pathname === link.to)
   const enlaces = navLinks.map(link => (
     <li key={link.to}>
-      <Link to={link.to} className="ah-nav__link" aria-current={location.pathname === link.to ? 'page' : undefined}>{link.label}</Link>
+      <Link to={link.to} className="ah-nav__link" aria-current={esActivo(link) ? 'page' : undefined}>{link.label}</Link>
     </li>
   ))
 

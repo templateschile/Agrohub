@@ -2,6 +2,7 @@ import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { Bell, Sparkles, LayoutDashboard, FolderOpen, Store, Wrench } from "lucide-react"
 import { MODULOS } from "../lib/modulos"
+import { HubMark } from "./HubMark"
 
 // La app al centro y sus 12 módulos alrededor. Elegir un módulo lo muestra dentro de la pantalla.
 // La pantalla es la del dashboard de la app (app-mobile/lib/screens/main), construida en HTML
@@ -50,13 +51,7 @@ export default function AppModulos() {
         <div className="ah-app" data-keep aria-live="polite">
           <div className="ah-app__barra">
             <span className="ah-app__marca">
-              <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
-                <circle cx="16" cy="16" r="6" fill="currentColor" opacity="0.9" />
-                <path d="M16 4 C16 4 10 8 10 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M16 4 C16 4 22 8 22 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M6 20 C8 24 12 28 16 28" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M26 20 C24 24 20 28 16 28" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
+              <HubMark className="ah-app__hub" title={null} />
               AgroHubs
             </span>
             <Bell size={16} strokeWidth={1.75} aria-hidden="true" />
