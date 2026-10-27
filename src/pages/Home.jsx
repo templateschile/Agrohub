@@ -2,9 +2,12 @@ import { Link } from "react-router-dom"
 import AppModulos from "../components/AppModulos"
 import AgendarReunion from "../components/AgendarReunion"
 import Integraciones from "../components/Integraciones"
+import AppVideo from "../components/AppVideo"
+import { ConfianStrip, Partner } from "../components/Confianza"
 import DESTACADAS from "../../data/apis/destacadas.json"
 
-// Portada: la app con sus módulos, sus integraciones, agendar la reunión y, si se quiere, la evaluación.
+// Portada: la app con sus módulos, quiénes confían, el video, las integraciones,
+// el partner, agendar la reunión y, si se quiere, la evaluación.
 export default function Home() {
   return (
     <>
@@ -23,7 +26,21 @@ export default function Home() {
         </div>
       </section>
 
+      <ConfianStrip />
+
+      <section className="ah-bloque" aria-labelledby="video-titulo">
+        <div className="container ah-video-portada">
+          <div>
+            <h2 id="video-titulo" className="ah-seccion">Cómo usar la app AgroHubs</h2>
+            <p className="ah-lead">Configura tu predio con el asistente, revisa tus sensores, recibe avisos de clima y pregúntale a la inteligencia artificial, paso a paso.</p>
+          </div>
+          <AppVideo app="agrohubs" nombre="AgroHubs" />
+        </div>
+      </section>
+
       <Integraciones />
+
+      <Partner />
 
       <section className="ah-agenda" id="contacto" aria-labelledby="agenda-titulo">
         <div className="container ah-agenda__grid">

@@ -14,6 +14,7 @@ import Terminos from './pages/Terminos'
 import RedirigirAdmin from './pages/RedirigirAdmin'
 import Modulos from './pages/Modulos'
 import ModuloPagina from './pages/ModuloPagina'
+import AppPagina from './pages/AppPagina'
 import { MODULOS } from './lib/modulos'
 
 export default function App() {
@@ -44,6 +45,8 @@ function Sitio() {
           {MODULOS.filter(m => m.pagina).map(m => (
             <Route key={m.slug} path={m.ruta} element={<ModuloPagina slug={m.slug} />} />
           ))}
+          {/* Apps del ecosistema (lib/apps.js); un slug desconocido vuelve a la portada */}
+          <Route path="/apps/:slug" element={<AppPagina />} />
           <Route path="/evaluacion" element={<Evaluacion />} />
           <Route path="/precios" element={<Navigate to="/evaluacion" replace />} />
           <Route path="/terminos" element={<Terminos />} />

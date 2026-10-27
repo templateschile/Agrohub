@@ -14,6 +14,7 @@
 @import "./tokens.css";
 @import "./base.css" layer(base);
 @import "./sitio.css";
+@import "./apps.css";
 
 @tailwind base;
 @tailwind components;

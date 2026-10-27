@@ -1,7 +1,7 @@
 name: Sitio → build
 
-# En cada PR y push a main: genera el directorio /apis (falla si reaparece jerga interna
-# en los textos públicos) y compila el sitio con Vite. Si algo falla, el PR queda en rojo.
+# En cada PR y push a main: corre las pruebas (npm test), genera el directorio /apis (falla si
+# reaparece jerga interna en los textos públicos) y compila el sitio con Vite. Si algo falla, el PR queda en rojo.
 
 on:
   pull_request:
@@ -24,6 +24,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci --no-audit --no-fund
+      - run: npm test
       - run: npm run build
       - name: Revisar el directorio generado
         run: |

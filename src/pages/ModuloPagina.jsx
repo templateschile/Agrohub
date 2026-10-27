@@ -48,6 +48,11 @@ export default function ModuloPagina({ slug }) {
               <div className="min-w-0">
                 <h2 className="text-xl md:text-2xl font-bold text-agro-green-900 mb-2">{p.aviso.titulo}</h2>
                 <p className="text-agro-green-900/80 leading-relaxed max-w-3xl">{p.aviso.texto}</p>
+                {p.aviso.enlace && (
+                  <Link to={p.aviso.enlace.ruta} className="inline-flex items-center gap-1.5 mt-3 font-semibold text-agro-green-800 underline underline-offset-4 hover:text-agro-green-900">
+                    {p.aviso.enlace.texto} <ArrowRight size={15} aria-hidden="true" />
+                  </Link>
+                )}
                 <div className="flex flex-wrap gap-2 mt-4">
                   {['iOS', 'Android', 'Integrado con AgroHubs'].map((t) => (
                     <span key={t} className="inline-flex items-center gap-1.5 bg-white border border-agro-green-200 text-agro-green-800 text-xs font-semibold rounded-full px-3 py-1">

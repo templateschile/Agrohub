@@ -178,6 +178,7 @@ export const MODULOS = [
       aviso: {
         titulo: "Ya tenemos integración con DronX",
         texto: "DronX es un desarrollo de OlaDigital, con apps para iOS y Android, para solicitar drones agrícolas a demanda. AgroHubs se conecta con DronX: tus solicitudes viajan con los datos del predio y su estado se actualiza solo en la app.",
+        enlace: { texto: "Conoce la app DronX", ruta: "/apps/dronx" },
       },
       features: [
         { titulo: "Aplicación con dron", desc: "Fumigación y aplicación de productos por hectárea, también en pendientes." },
