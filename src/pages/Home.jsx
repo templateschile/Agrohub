@@ -2,11 +2,12 @@ import { Link } from "react-router-dom"
 import AppModulos from "../components/AppModulos"
 import AgendarReunion from "../components/AgendarReunion"
 import Integraciones from "../components/Integraciones"
+import EcosystemSection from "../components/EcosystemSection"
 import AppVideo from "../components/AppVideo"
 import { ConfianStrip, Partner } from "../components/Confianza"
 import DESTACADAS from "../../data/apis/destacadas.json"
 
-// Portada: la app con sus módulos, quiénes confían, el video, las integraciones,
+// Portada: la app con sus módulos, quiénes confían, el video, el ecosistema, las integraciones,
 // el partner, agendar la reunión y, si se quiere, la evaluación.
 export default function Home() {
   return (
@@ -37,6 +38,8 @@ export default function Home() {
           <AppVideo app="agrohubs" nombre="AgroHubs" />
         </div>
       </section>
+
+      <EcosystemSection />
 
       <Integraciones />
 

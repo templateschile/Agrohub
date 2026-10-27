@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -25,12 +26,21 @@ export default function App() {
   )
 }
 
+// Al cambiar de página se parte arriba (salvo enlaces a una sección, como /#contacto).
+// Sin esto, un enlace del diagrama del ecosistema abría el módulo a media página.
+function ArribaAlNavegar() {
+  const { pathname, hash } = useLocation()
+  useEffect(() => { if (!hash) window.scrollTo({ top: 0, behavior: 'instant' }) }, [pathname, hash])
+  return null
+}
+
 function Sitio() {
   // El admin se movio a admin.agrohubs.cl (panel de la plataforma): /admin redirige alla
   if (useLocation().pathname.startsWith('/admin')) return <RedirigirAdmin />
 
   return (
     <div className="min-h-screen flex flex-col">
+      <ArribaAlNavegar />
       <Navbar />
       <main className="flex-1" id="main">
         <Routes>

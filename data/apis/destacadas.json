@@ -88,5 +88,349 @@
       "pais": "Brasil",
       "estado": "A pedido"
     }
+  ],
+  "categorias": [
+    {
+      "slug": "clima-y-meteorologia",
+      "nombre": "Clima y meteorología",
+      "total": 17,
+      "top": [
+        {
+          "slug": "inia-agromet",
+          "nombre": "INIA Agromet"
+        },
+        {
+          "slug": "open-meteo",
+          "nombre": "Open-Meteo"
+        },
+        {
+          "slug": "davis-weatherlink",
+          "nombre": "Davis WeatherLink v2"
+        }
+      ]
+    },
+    {
+      "slug": "datos-publicos-y-estadisticas",
+      "nombre": "Datos públicos y estadísticas",
+      "total": 17,
+      "top": [
+        {
+          "slug": "odepa-datos-abiertos",
+          "nombre": "ODEPA"
+        },
+        {
+          "slug": "dmc-chile",
+          "nombre": "Dirección Meteorológica de Chile"
+        },
+        {
+          "slug": "dga-snia-chile",
+          "nombre": "DGA / SNIA"
+        }
+      ]
+    },
+    {
+      "slug": "satelite-y-teledeteccion",
+      "nombre": "Satélite y teledetección",
+      "total": 12,
+      "top": [
+        {
+          "slug": "sentinel-hub-cdse",
+          "nombre": "Copernicus Data Space / Sentinel Hub"
+        },
+        {
+          "slug": "nasa-earthdata",
+          "nombre": "NASA Earthdata"
+        },
+        {
+          "slug": "auravant",
+          "nombre": "Auravant"
+        }
+      ]
+    },
+    {
+      "slug": "sensores-iot",
+      "nombre": "Sensores e IoT",
+      "total": 12,
+      "top": [
+        {
+          "slug": "inia-agromet",
+          "nombre": "INIA Agromet"
+        },
+        {
+          "slug": "wiseconn-dropcontrol",
+          "nombre": "WiseConn DropControl"
+        },
+        {
+          "slug": "davis-weatherlink",
+          "nombre": "Davis WeatherLink v2"
+        }
+      ]
+    },
+    {
+      "slug": "agregadores-y-estandares",
+      "nombre": "Agregadores y estándares",
+      "total": 10,
+      "top": [
+        {
+          "slug": "adapt-standard",
+          "nombre": "AgGateway ADAPT Standard 2.0"
+        },
+        {
+          "slug": "agrovoc",
+          "nombre": "AGROVOC (FAO) y Crop Ontology"
+        },
+        {
+          "slug": "fiware-agrifood",
+          "nombre": "FIWARE Smart Data Models"
+        }
+      ]
+    },
+    {
+      "slug": "modelos-y-agronomia",
+      "nombre": "Modelos y agronomía",
+      "total": 10,
+      "top": [
+        {
+          "slug": "pessl-fieldclimate",
+          "nombre": "Pessl Instruments"
+        },
+        {
+          "slug": "kindwise-plant-id",
+          "nombre": "Kindwise"
+        },
+        {
+          "slug": "modelos-de-cultivo-open-source",
+          "nombre": "Modelos de cultivo open source"
+        }
+      ]
+    },
+    {
+      "slug": "gestion-predial",
+      "nombre": "Gestión predial (FMIS)",
+      "total": 9,
+      "top": [
+        {
+          "slug": "modag",
+          "nombre": "MODAG"
+        },
+        {
+          "slug": "kadi-agrohubs-sostenible",
+          "nombre": "Kadi / Adone"
+        },
+        {
+          "slug": "auravant",
+          "nombre": "Auravant"
+        }
+      ]
+    },
+    {
+      "slug": "mercados-y-precios",
+      "nombre": "Mercados y precios",
+      "total": 9,
+      "top": [
+        {
+          "slug": "odepa-datos-abiertos",
+          "nombre": "ODEPA"
+        },
+        {
+          "slug": "usda-ams-mars",
+          "nombre": "USDA AMS Market News (MARS) API"
+        },
+        {
+          "slug": "banco-central-chile",
+          "nombre": "Banco Central de Chile"
+        }
+      ]
+    },
+    {
+      "slug": "suelo-y-agua",
+      "nombre": "Suelo y agua",
+      "total": 9,
+      "top": [
+        {
+          "slug": "ciren-ide-minagri",
+          "nombre": "CIREN / IDE MINAGRI"
+        },
+        {
+          "slug": "zentra-cloud",
+          "nombre": "METER Group"
+        },
+        {
+          "slug": "sentek-irrimax",
+          "nombre": "Sentek"
+        }
+      ]
+    },
+    {
+      "slug": "geodatos-y-territorio",
+      "nombre": "Geodatos y territorio",
+      "total": 6,
+      "top": [
+        {
+          "slug": "ciren-ide-minagri",
+          "nombre": "CIREN / IDE MINAGRI"
+        },
+        {
+          "slug": "conaf-geprif-incendios",
+          "nombre": "CONAF"
+        },
+        {
+          "slug": "geoportal-chile",
+          "nombre": "Geoportal de Chile"
+        }
+      ]
+    },
+    {
+      "slug": "trazabilidad-y-certificacion",
+      "nombre": "Trazabilidad y certificación",
+      "total": 6,
+      "top": [
+        {
+          "slug": "gs1-epcis",
+          "nombre": "GS1 EPCIS 2.0"
+        },
+        {
+          "slug": "sag-sipec",
+          "nombre": "SAG"
+        },
+        {
+          "slug": "eppo-global-database",
+          "nombre": "EPPO Global Database API"
+        }
+      ]
+    },
+    {
+      "slug": "documentos-y-conocimiento",
+      "nombre": "Documentos y conocimiento",
+      "total": 5,
+      "top": [
+        {
+          "slug": "elasticsearch",
+          "nombre": "Elasticsearch"
+        },
+        {
+          "slug": "modag",
+          "nombre": "MODAG"
+        },
+        {
+          "slug": "kadi-agrohubs-sostenible",
+          "nombre": "Kadi / Adone"
+        }
+      ]
+    },
+    {
+      "slug": "maquinaria-y-telematica",
+      "nombre": "Maquinaria y telemática",
+      "total": 5,
+      "top": [
+        {
+          "slug": "climate-fieldview",
+          "nombre": "Climate FieldView API"
+        },
+        {
+          "slug": "john-deere-operations-center",
+          "nombre": "John Deere Operations Center API"
+        },
+        {
+          "slug": "leaf-agriculture",
+          "nombre": "Leaf Agriculture"
+        }
+      ]
+    },
+    {
+      "slug": "plataforma-y-servicios",
+      "nombre": "Plataforma y servicios",
+      "total": 5,
+      "top": [
+        {
+          "slug": "proveedores-ia-llm",
+          "nombre": "Proveedores de IA"
+        },
+        {
+          "slug": "elasticsearch",
+          "nombre": "Elasticsearch"
+        },
+        {
+          "slug": "mercadopago-stripe",
+          "nombre": "MercadoPago, Stripe e In-App Purchase"
+        }
+      ]
+    },
+    {
+      "slug": "sostenibilidad-y-carbono",
+      "nombre": "Sostenibilidad y carbono",
+      "total": 5,
+      "top": [
+        {
+          "slug": "kadi-agrohubs-sostenible",
+          "nombre": "Kadi / Adone"
+        },
+        {
+          "slug": "kilimo",
+          "nombre": "Kilimo"
+        },
+        {
+          "slug": "cool-farm-tool",
+          "nombre": "Cool Farm Tool API"
+        }
+      ]
+    },
+    {
+      "slug": "ganaderia-y-acuicultura",
+      "nombre": "Ganadería y acuicultura",
+      "total": 4,
+      "top": [
+        {
+          "slug": "sag-sipec",
+          "nombre": "SAG"
+        },
+        {
+          "slug": "icar-ade",
+          "nombre": "ICAR ADE"
+        },
+        {
+          "slug": "agriwebb",
+          "nombre": "AgriWebb API"
+        }
+      ]
+    },
+    {
+      "slug": "ia-y-asistentes",
+      "nombre": "IA y asistentes",
+      "total": 4,
+      "top": [
+        {
+          "slug": "proveedores-ia-llm",
+          "nombre": "Proveedores de IA"
+        },
+        {
+          "slug": "kindwise-plant-id",
+          "nombre": "Kindwise"
+        },
+        {
+          "slug": "instacrops",
+          "nombre": "Instacrops"
+        }
+      ]
+    },
+    {
+      "slug": "riego-y-control",
+      "nombre": "Riego y control",
+      "total": 3,
+      "top": [
+        {
+          "slug": "wiseconn-dropcontrol",
+          "nombre": "WiseConn DropControl"
+        },
+        {
+          "slug": "cropx",
+          "nombre": "CropX"
+        },
+        {
+          "slug": "kilimo",
+          "nombre": "Kilimo"
+        }
+      ]
+    }
   ]
 }

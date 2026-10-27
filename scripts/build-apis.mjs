@@ -10,6 +10,7 @@ import {
   crumbs, chipEstado, chipAnillo, costoCelda, sortedBy, faqs, costoFrase, nivel, accesibilidad, cta, COTIZAR
 } from './apis/lib.mjs'
 import { techRadarSvg, scoreRadarSvg, RADAR_ITEMS, radarNum } from './apis/charts.mjs'
+import { partesNombre, resumenPorCategoria } from './apis/ecosistema.mjs'
 
 const PUB = join(ROOT, 'public')
 const OUT = join(PUB, 'apis')
@@ -615,18 +616,19 @@ CATEGORIAS.forEach((t) => listPage('categoria', t))
 CASOS.forEach((t) => listPage('caso', t))
 
 // ── Integraciones destacadas para la portada del sitio (src/components/Integraciones.jsx) ──
-// Las más importantes de Chile y luego de Latinoamérica, según el ranking del catálogo.
+// Las más importantes de Chile y luego de Latinoamérica, según el ranking del catálogo, y el
+// resumen por categoría para el diagrama del ecosistema (src/components/EcosystemDiagram.jsx).
 {
   const ESTADO_CORTO = { integrada: 'Conectada', proxy: 'Conectada', scheduler: 'Conectada', plataforma: 'Conectada', planificada: 'Próximamente', evaluacion: 'A pedido', enlace: 'Enlace' }
   // "ODEPA — Datos Abiertos" → nombre "ODEPA", detalle "Datos Abiertos" (sin rayas en la portada)
-  const partes = (n) => { const m = n.match(/^(.*?)\s+(?:—\s+(.*)|\((.*)\))$/); return m ? [m[1], m[2] || m[3]] : [n, ''] }
-  const fila = (a) => { const [nombre, detalle] = partes(a.nombre); return { slug: a.slug, nombre, detalle, pais: PAIS[a.pais] || a.pais, estado: ESTADO_CORTO[a.estado_agrohubs] || 'A pedido' } }
+  const fila = (a) => { const [nombre, detalle] = partesNombre(a.nombre); return { slug: a.slug, nombre, detalle, pais: PAIS[a.pais] || a.pais, estado: ESTADO_CORTO[a.estado_agrohubs] || 'A pedido' } }
   const top = (lista, campo) => lista.slice().sort((x, y) => y.ranking[campo] - x.ranking[campo] || x.nombre.localeCompare(y.nombre)).slice(0, 6).map(fila)
   writeFileSync(join(ROOT, 'data', 'apis', 'destacadas.json'), JSON.stringify({
     _nota: 'Generado por scripts/build-apis.mjs (npm run apis): no editar a mano.',
     total_directorio: total,
     chile: top(APIS.filter((a) => a.pais === 'CL'), 'chile'),
-    latam: top(APIS.filter((a) => !['CL', 'GLOBAL'].includes(a.pais)), 'latam')
+    latam: top(APIS.filter((a) => !['CL', 'GLOBAL'].includes(a.pais)), 'latam'),
+    categorias: resumenPorCategoria(APIS, CATEGORIAS)
   }, null, 2) + '\n')
 }
 

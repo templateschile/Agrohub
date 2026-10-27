@@ -15,6 +15,7 @@
 @import "./base.css" layer(base);
 @import "./sitio.css";
 @import "./apps.css";
+@import "./ecosistema.css";
 
 @tailwind base;
 @tailwind components;

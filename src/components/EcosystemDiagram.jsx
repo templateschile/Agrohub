@@ -1,191 +1,226 @@
-import { useInView } from '../hooks/useInView'
-import { GitPullRequest, Database, Cpu, Users, Lock, Globe, Coins, Code2, ArrowRight } from 'lucide-react'
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { Sparkles } from "lucide-react"
+import { HubMark } from "./HubMark"
+import { MODULOS } from "../lib/modulos"
+import {
+  SISTEMAS_GENERALES, FISARO, GEO, BAJO_NODO, fisaroEnCatalogo, polar, arco, ranurasSistemas,
+  anchoTexto, etiquetaAfuera, anilloAgro, lineasAgro,
+} from "../lib/ecosistema"
+import DESTACADAS from "../../data/apis/destacadas.json"
 
-const hubs = [
-  { id: 'hub-a', label: 'Hub Norte', x: 18, y: 28, color: '#2d7325', ring: '#86efac' },
-  { id: 'hub-b', label: 'Hub Centro', x: 50, y: 18, color: '#2d7325', ring: '#86efac' },
-  { id: 'hub-c', label: 'Hub Sur', x: 82, y: 28, color: '#2d7325', ring: '#86efac' },
-  { id: 'hub-d', label: 'Hub Maule', x: 25, y: 72, color: '#2d7325', ring: '#86efac' },
-  { id: 'hub-e', label: 'Hub O\'Higgins', x: 75, y: 72, color: '#2d7325', ring: '#86efac' },
-  { id: 'core', label: 'Backend\nAPI', x: 50, y: 50, color: '#1e4aac', ring: '#93cbfb', isCore: true },
-]
+// Diagrama concéntrico del ecosistema: AgroHubs al centro → 12 módulos → integraciones con el agro
+// por categoría (resumen del catálogo en destacadas.json) → sistemas generales por tipo.
+// Escritorio (≥ 70rem): SVG con anillos, navegable con Tab (módulos y categorías son enlaces) y un panel
+// que describe lo que está bajo el cursor o el foco. Celular y tablet: las mismas capas como listas.
+// Sin logos de terceros: solo nombres en texto.
 
-const edges = [
-  ['hub-a', 'core'], ['hub-b', 'core'], ['hub-c', 'core'],
-  ['hub-d', 'core'], ['hub-e', 'core'],
-]
+const CATEGORIAS = DESTACADAS.categorias || []
+const TOTAL = DESTACADAS.total_directorio
+const CON_FISARO = !fisaroEnCatalogo(CATEGORIAS)
 
-const getPos = id => hubs.find(n => n.id === id)
+// Anillo agro: una ranura por categoría y Fisaro justo después de la suya
+const ANILLO_AGRO = anilloAgro(CATEGORIAS, CON_FISARO)
 
-const features = [
-  {
-    icon: GitPullRequest,
-    color: 'text-agro-green-300',
-    bg: 'bg-agro-green-900/60',
-    border: 'border-agro-green-700',
-    title: 'Features compartidos via PR',
-    desc: 'Cada hub puede desarrollar mejoras y proponerlas al ecosistema mediante Pull Request. Si es aprobado, queda disponible para toda la red.',
-  },
-  {
-    icon: Database,
-    color: 'text-agro-blue-300',
-    bg: 'bg-agro-blue-900/60',
-    border: 'border-agro-blue-700',
-    title: 'Data privada o compartida',
-    desc: 'Cada hub es dueño de su información. Puede mantenerla privada o disponibilizarla voluntariamente a otros hubs de la red.',
-  },
-  {
-    icon: Cpu,
-    color: 'text-amber-300',
-    bg: 'bg-amber-900/50',
-    border: 'border-amber-700',
-    title: 'IA con tokens por hub',
-    desc: 'Cada hub tiene un límite de tokens de IA incluidos. Se pueden comprar tokens adicionales o integrar un modelo propio sin consumir el pool compartido.',
-  },
-  {
-    icon: Lock,
-    color: 'text-rose-300',
-    bg: 'bg-rose-900/50',
-    border: 'border-rose-700',
-    title: 'Soporte condicionado',
-    desc: 'Si se edita el código sin hacer PR al ecosistema, se pierde el soporte oficial. El código editado pasa a ser responsabilidad del hub.',
-  },
-  {
-    icon: Code2,
-    color: 'text-purple-300',
-    bg: 'bg-purple-900/50',
-    border: 'border-purple-700',
-    title: 'Backend API cotizable aparte',
-    desc: 'El backend (Node.js) se cotiza por separado e incluye todos los features desarrollados por la red de hubs hasta la fecha de entrega.',
-  },
-  {
-    icon: Globe,
-    color: 'text-teal-300',
-    bg: 'bg-teal-900/50',
-    border: 'border-teal-700',
-    title: 'Flutter + React incluidos',
-    desc: 'La licencia incluye el panel admin en React y la app móvil en Flutter. Sin backend: acceso a la red de features existentes.',
-  },
-]
+const RANURAS_SISTEMAS = ranurasSistemas()
+const TOTAL_SISTEMAS = SISTEMAS_GENERALES.reduce((n, g) => n + g.items.length, 0)
 
-export default function EcosystemDiagram() {
-  const [ref, visible] = useInView({ threshold: 0.1 })
-  const [cardsRef, cardsVisible] = useInView({ threshold: 0.05 })
+// Geometría compartida con la prueba de solapes (lib/ecosistema.js)
+const { R, nodo: NODO, insignia: INSIGNIA, medio: MEDIO } = GEO
+
+const DETALLE_CENTRO = {
+  titulo: "AgroHubs",
+  texto: "La app y el panel de tu Centro Demostrativo Agrícola. Los módulos, las integraciones y los sistemas de tu equipo se conectan aquí.",
+}
+
+function Detalle({ foco }) {
+  return (
+    <div className="eco-detalle" aria-live="polite">
+      <p className="eco-detalle__titulo">{foco.titulo}</p>
+      <p className="eco-detalle__texto">{foco.texto}</p>
+      {foco.lista && <p className="eco-detalle__lista"><b>Destacadas:</b> {foco.lista.join(", ")}</p>}
+    </div>
+  )
+}
+
+function DiagramaSvg({ setFoco }) {
+  const navigate = useNavigate()
+  const irA = ruta => e => { e.preventDefault(); navigate(ruta) }
+  const pasoSis = 360 / RANURAS_SISTEMAS.length
 
   return (
-    <section className="py-24 bg-agro-green-950 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-14">
+    <svg className="eco-svg" viewBox={`${-MEDIO} ${-MEDIO} ${2 * MEDIO} ${2 * MEDIO}`} role="group" aria-labelledby="eco-svg-titulo eco-svg-desc">
+      <title id="eco-svg-titulo">Ecosistema AgroHubs</title>
+      <desc id="eco-svg-desc">
+        {`AgroHubs al centro. Primer anillo: ${MODULOS.length} módulos. Segundo anillo: ${TOTAL} integraciones con el agro en ${CATEGORIAS.length} categorías${CON_FISARO ? ", más Fisaro" : ""}. Anillo exterior: ${TOTAL_SISTEMAS} sistemas generales agrupados por tipo.`}
+      </desc>
 
-        {/* Header */}
-        <div
-          ref={ref}
-          className={`max-w-2xl mx-auto text-center mb-14 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-        >
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-4 py-1.5 mb-5">
-            <Globe size={13} className="text-agro-green-300" />
-            <span className="text-white/85 text-sm font-medium">Red de hubs AgroHubs</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Un ecosistema vivo de hubs interconectados
-          </h2>
-          <p className="text-white/55 text-base leading-relaxed">
-            Cada hub es independiente pero comparte un backend común, un stack de features colaborativo
-            y una red de datos voluntariamente compartida.
-          </p>
-        </div>
+      {/* Guías de los anillos */}
+      <circle r={R.modulos} className="eco-guia" />
+      <circle r={R.agro} className="eco-guia" />
 
-        {/* Network diagram */}
-        <div className="max-w-2xl mx-auto mb-14">
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
-            <div className="flex items-center justify-between mb-3 px-1">
-              <span className="text-xs font-semibold text-white/60">Red de hubs — visión global</span>
-              <span className="text-[10px] text-agro-green-400 bg-agro-green-900/60 border border-agro-green-700 rounded-full px-2.5 py-0.5">En producción</span>
-            </div>
-            <svg viewBox="0 0 100 100" className="w-full aspect-square">
-              {/* Edges */}
-              {edges.map(([a, b]) => {
-                const A = getPos(a), B = getPos(b)
-                if (!A || !B) return null
-                return (
-                  <line key={`${a}-${b}`}
-                    x1={A.x} y1={A.y} x2={B.x} y2={B.y}
-                    stroke="#86efac" strokeWidth="0.5"
-                    strokeDasharray="2 1.5" opacity="0.4"
-                  />
-                )
-              })}
-              {/* Nodes */}
-              {hubs.map(node => (
-                <g key={node.id}>
-                  {/* Pulse ring */}
-                  <circle cx={node.x} cy={node.y} r={node.isCore ? 10 : 7} fill={node.ring} opacity="0.15">
-                    <animate attributeName="r"
-                      values={node.isCore ? "9;12;9" : "6;8.5;6"}
-                      dur={node.isCore ? "2.5s" : "3s"} repeatCount="indefinite" />
-                  </circle>
-                  {/* Node */}
-                  <circle cx={node.x} cy={node.y} r={node.isCore ? 8 : 5.5}
-                    fill={node.color} opacity="0.9" />
-                  {/* Label */}
-                  {node.label.split('\n').map((line, li) => (
-                    <text key={li}
-                      x={node.x} y={node.y + (node.isCore ? 8 : 5.5) + 3.5 + li * 3.5}
-                      textAnchor="middle" fontSize={node.isCore ? "3.5" : "3"}
-                      fill={node.isCore ? "#93cbfb" : "#bbf7d0"}
-                      fontFamily="Inter,sans-serif" fontWeight="600">
-                      {line}
-                    </text>
-                  ))}
-                </g>
-              ))}
-            </svg>
-            <p className="text-center text-xs text-white/30 mt-1">
-              Cada nodo verde es un hub autónomo · El nodo azul es el backend compartido
-            </p>
-          </div>
-        </div>
-
-        {/* Feature cards */}
-        <div
-          ref={cardsRef}
-          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 transition-all duration-700 ${cardsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-        >
-          {features.map((f, i) => {
-            const Icon = f.icon
+      {/* Anillo 3: bandas por tipo de sistema */}
+      <g onMouseLeave={() => setFoco(DETALLE_CENTRO)}>
+        {SISTEMAS_GENERALES.map((g, gi) => {
+          const idx = RANURAS_SISTEMAS.map((r, i) => (r.grupo === gi ? i : -1)).filter(i => i >= 0)
+          const rad = gr => (gr * Math.PI) / 180
+          const desde = rad(-90 + idx[0] * pasoSis - pasoSis / 2 + 1.2)
+          const hasta = rad(-90 + idx[idx.length - 1] * pasoSis + pasoSis / 2 - 1.2)
+          return (
+            <path key={g.tipo} d={arco(R.sistemas, desde, hasta)} className={`eco-banda eco-banda--${gi % 2 ? "b" : "a"}`}
+              onMouseEnter={() => setFoco({ titulo: `Sistemas generales · ${g.tipo}`, texto: g.items.join(", ") })} />
+          )
+        })}
+        {RANURAS_SISTEMAS.map((r, i) => {
+          const p = polar(R.sistemas, i, RANURAS_SISTEMAS.length)
+          const g = SISTEMAS_GENERALES[r.grupo]
+          const enfocar = () => setFoco({ titulo: `Sistemas generales · ${g.tipo}`, texto: g.items.join(", ") })
+          if (r.tipo === "grupo") {
             return (
-              <div
-                key={f.title}
-                className={`${f.bg} border ${f.border} rounded-2xl p-5 flex flex-col gap-3`}
-                style={{ transitionDelay: `${i * 70}ms` }}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                    <Icon size={17} className={f.color} />
-                  </div>
-                  <h3 className="text-white font-semibold text-sm leading-tight">{f.title}</h3>
-                </div>
-                <p className="text-white/50 text-xs leading-relaxed">{f.desc}</p>
-              </div>
+              <text key={`g-${r.texto}`} x={p.x} y={p.y + 4} className="eco-grupo" textAnchor="middle" onMouseEnter={enfocar}>
+                {r.texto.toUpperCase()}
+              </text>
+            )
+          }
+          const w = anchoTexto(r.texto, GEO.pxChip) + 28
+          return (
+            <g key={r.texto} transform={`translate(${p.x} ${p.y})`} onMouseEnter={enfocar}>
+              <rect x={-w / 2} y={-17} width={w} height={34} rx={17} className="eco-chip" />
+              <text y={5} textAnchor="middle" className="eco-chip__texto">{r.texto}</text>
+            </g>
+          )
+        })}
+      </g>
+
+      {/* Anillo 2: integraciones con el agro, por categoría */}
+      {ANILLO_AGRO.map((r, i) => {
+        const p = polar(R.agro, i, ANILLO_AGRO.length)
+        const lineas = lineasAgro(r)
+        const t = etiquetaAfuera(p, lineas, GEO.pxAgro, INSIGNIA + 8)
+        if (r.tipo === "fisaro") {
+          return (
+            <g key="fisaro" className="eco-agro eco-agro--fisaro"
+              onMouseEnter={() => setFoco({ titulo: `${FISARO.nombre}`, texto: `Integración: ${FISARO.detalle}.` })}>
+              <circle cx={p.x} cy={p.y} r={INSIGNIA} className="eco-n eco-n--fisaro" />
+              <Sparkles x={p.x - 9} y={p.y - 9} size={18} strokeWidth={1.75} className="eco-n__icono" aria-hidden="true" />
+              <text x={p.x + t.x} y={p.y + t.y} textAnchor="middle" className="eco-agro__texto">{lineas[0]}</text>
+            </g>
+          )
+        }
+        const c = r.c
+        const detalle = { titulo: c.nombre, texto: `${c.total} integraciones en el directorio.`, lista: c.top.map(x => x.nombre) }
+        return (
+          <a key={c.slug} href={`/apis/categoria/${c.slug}`} className="eco-agro" aria-label={`${c.nombre}: ${c.total} integraciones`}
+            onMouseEnter={() => setFoco(detalle)} onFocus={() => setFoco(detalle)}>
+            <circle cx={p.x} cy={p.y} r={INSIGNIA} className="eco-n eco-n--agro" />
+            <text x={p.x} y={p.y + 4.5} textAnchor="middle" className="eco-n__num">{c.total}</text>
+            <text x={p.x + t.x} y={p.y + t.y} textAnchor="middle" className="eco-agro__texto">
+              {lineas.map((l, k) => <tspan key={k} x={p.x + t.x} dy={k ? 15 : 0}>{l}</tspan>)}
+            </text>
+          </a>
+        )
+      })}
+
+      {/* Anillo 1: los módulos */}
+      {MODULOS.map((m, i) => {
+        const p = polar(R.modulos, i, MODULOS.length)
+        const Icono = m.icono
+        const detalle = { titulo: m.nombre, texto: m.descripcion }
+        return (
+          <g key={m.key}>
+            <line x1={(p.x * R.centro) / R.modulos} y1={(p.y * R.centro) / R.modulos} x2={(p.x * (R.modulos - NODO)) / R.modulos} y2={(p.y * (R.modulos - NODO)) / R.modulos} className="eco-radio" />
+            <a href={m.ruta} onClick={irA(m.ruta)} className="eco-modulo" aria-label={m.nombre}
+              onMouseEnter={() => setFoco(detalle)} onFocus={() => setFoco(detalle)}>
+              <circle cx={p.x} cy={p.y} r={NODO} className="eco-n eco-n--modulo" />
+              <Icono x={p.x - 11} y={p.y - 11} size={22} strokeWidth={1.75} className="eco-n__icono" aria-hidden="true" />
+              <text x={p.x} y={p.y + NODO + BAJO_NODO} textAnchor="middle" className="eco-modulo__texto">{m.corto}</text>
+            </a>
+          </g>
+        )
+      })}
+
+      {/* Centro */}
+      <g className="eco-centro" onMouseEnter={() => setFoco(DETALLE_CENTRO)}>
+        <circle r={R.centro} className="eco-centro__fondo" />
+        <HubMark x={-30} y={-58} width={60} height={60} className="eco-centro__logo" title={null} />
+        <text y={26} textAnchor="middle" className="eco-centro__nombre">AgroHubs</text>
+        <text y={48} textAnchor="middle" className="eco-centro__bajada">Centro Demostrativo</text>
+      </g>
+    </svg>
+  )
+}
+
+// Celular y tablet: las capas apiladas, de adentro hacia afuera
+function Capas() {
+  return (
+    <ol className="eco-capas">
+      <li className="eco-capa eco-capa--centro">
+        <span className="eco-capa__logo"><HubMark className="eco-capa__hub" title={null} /></span>
+        <div>
+          <h3 className="eco-capa__titulo">AgroHubs, al centro</h3>
+          <p className="eco-capa__texto">{DETALLE_CENTRO.texto}</p>
+        </div>
+      </li>
+      <li className="eco-capa">
+        <h3 className="eco-capa__titulo">{MODULOS.length} módulos</h3>
+        <ul className="eco-chips">
+          {MODULOS.map(m => {
+            const Icono = m.icono
+            return (
+              <li key={m.key}>
+                <Link to={m.ruta} className="eco-chip-link"><Icono size={16} strokeWidth={1.75} aria-hidden="true" />{m.nombre}</Link>
+              </li>
             )
           })}
-        </div>
+        </ul>
+      </li>
+      <li className="eco-capa">
+        <h3 className="eco-capa__titulo">{TOTAL} integraciones con el agro</h3>
+        <p className="eco-capa__texto">Agrupadas en {CATEGORIAS.length} categorías, con las más recomendadas de cada una.</p>
+        <ul className="eco-cats">
+          {CATEGORIAS.map(c => (
+            <li key={c.slug} className="eco-cat">
+              <a href={`/apis/categoria/${c.slug}`} className="eco-cat__nombre">{c.nombre}</a>
+              <span className="eco-cat__total">{c.total}<span className="visually-hidden"> integraciones</span></span>
+              <p className="eco-cat__top">
+                {CON_FISARO && c.slug === FISARO.categoria && <><b>{FISARO.nombre}</b>, {FISARO.detalle}. </>}
+                {c.top.map((t, k) => <span key={t.slug}>{k ? ", " : ""}<a href={`/apis/${t.slug}`}>{t.nombre}</a></span>)}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </li>
+      <li className="eco-capa">
+        <h3 className="eco-capa__titulo">Sistemas generales</h3>
+        <ul className="eco-sistemas">
+          {SISTEMAS_GENERALES.map(g => (
+            <li key={g.tipo}>
+              <h4 className="eco-sistemas__tipo">{g.tipo}</h4>
+              <ul className="eco-chips eco-chips--texto">{g.items.map(s => <li key={s}><span className="eco-chip-texto">{s}</span></li>)}</ul>
+            </li>
+          ))}
+        </ul>
+      </li>
+    </ol>
+  )
+}
 
-        {/* Bottom CTA */}
-        <div className="mt-12 text-center flex flex-wrap justify-center gap-4">
-          <a
-            href="/terminos"
-            className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 border border-white/20 text-white/85 font-semibold text-sm px-6 py-3 rounded-full transition-colors"
-          >
-            Leer Términos y Condiciones <ArrowRight size={14} />
-          </a>
-          <a
-            href="/evaluacion"
-            className="inline-flex items-center gap-2 bg-agro-green-600 hover:bg-agro-green-500 text-white font-semibold text-sm px-6 py-3 rounded-full transition-colors"
-          >
-            Evalúa tu operación <ArrowRight size={14} />
-          </a>
-        </div>
-      </div>
-    </section>
+export default function EcosystemDiagram() {
+  const [foco, setFoco] = useState(DETALLE_CENTRO)
+  return (
+    <div className="eco">
+      <figure className="eco-figura">
+        <DiagramaSvg setFoco={setFoco} />
+        <figcaption className="eco-figura__pie">
+          <ul className="eco-leyenda" aria-label="Anillos del diagrama">
+            <li><span className="eco-leyenda__marca eco-leyenda__marca--modulo" aria-hidden="true" />{MODULOS.length} módulos</li>
+            <li><span className="eco-leyenda__marca eco-leyenda__marca--agro" aria-hidden="true" />{TOTAL} integraciones con el agro, por categoría</li>
+            <li><span className="eco-leyenda__marca eco-leyenda__marca--sistema" aria-hidden="true" />{TOTAL_SISTEMAS} sistemas generales</li>
+          </ul>
+          <Detalle foco={foco} />
+        </figcaption>
+      </figure>
+      <Capas />
+    </div>
   )
 }
