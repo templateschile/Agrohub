@@ -98,6 +98,26 @@ export function anilloAgro(categorias, conFisaro = !fisaroEnCatalogo(categorias)
 }
 export const lineasAgro = (r) => (r.tipo === "fisaro" ? [FISARO.nombre] : envolver(r.c.nombre, 14, 2))
 
+// Props de lo que tiene detalle pero no es enlace (Fisaro y los grupos de sistemas generales): se llega
+// con Tab y el detalle se muestra al recibir el foco, con Enter o Espacio, con un clic o al pasar el mouse.
+// `panelId` es el panel del detalle (aria-live), que lo anuncia al cambiar.
+export function propsDetalle(mostrar, etiqueta, panelId) {
+  return {
+    tabIndex: 0,
+    role: "button",
+    "aria-label": etiqueta,
+    "aria-controls": panelId,
+    onFocus: mostrar,
+    onMouseEnter: mostrar,
+    onClick: mostrar,
+    onKeyDown: (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return
+      e.preventDefault()
+      mostrar()
+    },
+  }
+}
+
 // Cajas (x0, y0, x1, y1) de todo lo que tiene texto en el SVG, para revisar que nada se pise.
 export function cajasDiagrama({ cortos, anillo, ranuras = ranurasSistemas(), geo = GEO }) {
   const { R, nodo, insignia, pxModulo, pxAgro, pxChip, pxGrupo } = geo

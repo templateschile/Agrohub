@@ -31,11 +31,15 @@
 .eco-centro__nombre { fill: var(--color-on-dark); font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
 .eco-centro__bajada { fill: var(--color-on-dark-2); font-size: 12px; font-weight: 600; }
 .eco-svg a { cursor: pointer; }
-.eco-svg a:focus { outline: none; }
+.eco-svg a:focus, .eco-svg [role="button"]:focus { outline: none; }
 .eco-modulo:hover .eco-n--modulo, .eco-modulo:focus-visible .eco-n--modulo { fill: var(--color-accent); }
 .eco-agro:hover .eco-n--agro, .eco-agro:focus-visible .eco-n--agro { fill: var(--color-paper-3); }
 .eco-svg a:hover text:not(.eco-n__num), .eco-svg a:focus-visible text:not(.eco-n__num) { text-decoration: underline; }
-.eco-svg a:focus-visible .eco-n { stroke: var(--color-ink); stroke-width: 4; }
+.eco-svg a:focus-visible .eco-n, .eco-svg [role="button"]:focus-visible .eco-n { stroke: var(--color-ink); stroke-width: 4; }
+/* Fisaro y los grupos de sistemas: botones que muestran su detalle (foco visible con Tab) */
+.eco-svg [role="button"]:focus-visible text { text-decoration: underline; }
+.eco-sistema:focus-visible .eco-banda { stroke: var(--color-mint); }
+.eco-sistema:focus-visible .eco-chip { stroke: var(--color-ink); stroke-width: 2; }
 
 .eco-figura__pie { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; gap: var(--space-xl); max-width: 1040px; margin: var(--space-lg) auto 0; }
 .eco-leyenda { display: grid; gap: var(--space-xs); margin: 0; padding: 0; list-style: none; color: var(--color-ink-2); font-size: var(--text-sm); }

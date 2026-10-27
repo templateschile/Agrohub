@@ -7,6 +7,7 @@ import { partesNombre, resumenPorCategoria } from '../apis/ecosistema.mjs'
 import { APIS, CATEGORIAS } from '../apis/lib.mjs'
 import {
   SISTEMAS_GENERALES, FISARO, GEO, fisaroEnCatalogo, envolver, anilloAgro, ranurasSistemas, cajasDiagrama, solapes,
+  propsDetalle,
 } from '../../src/lib/ecosistema.js'
 
 const leer = (ruta) => readFileSync(new URL(ruta, import.meta.url), 'utf8')
@@ -82,4 +83,22 @@ test('el SVG no tiene textos que se pisen y cabe en el viewBox', () => {
   // Con los radios anteriores había dos textos encimados: la prueba los detecta
   const antes = cajasDiagrama({ cortos: CORTOS, anillo: anilloAgro(DESTACADAS.categorias), geo: { ...GEO, R: { centro: 92, modulos: 205, agro: 350, sistemas: 505 } } })
   assert.ok(solapes(antes).length > 0)
+})
+
+test('Fisaro y los sistemas generales muestran su detalle con teclado y foco, no solo con el mouse', () => {
+  let veces = 0
+  const p = propsDetalle(() => veces++, 'Fisaro, integración: asistente', 'panel-1')
+  assert.equal(p.tabIndex, 0, 'se llega con Tab')
+  assert.equal(p.role, 'button')
+  assert.equal(p['aria-label'], 'Fisaro, integración: asistente')
+  assert.equal(p['aria-controls'], 'panel-1')
+  p.onFocus(); p.onMouseEnter(); p.onClick()
+  assert.equal(veces, 3)
+  let prevenidas = 0
+  for (const key of ['Enter', ' ', 'Tab', 'Escape', 'a']) p.onKeyDown({ key, preventDefault: () => prevenidas++ })
+  assert.equal(veces, 5, 'Enter y Espacio muestran el detalle')
+  assert.equal(prevenidas, 2, 'Tab y las demás teclas siguen su curso')
+  const diagrama = leer('../../src/components/EcosystemDiagram.jsx')
+  assert.equal(diagrama.match(/\{\.\.\.propsDetalle\(/g).length, 2, 'Fisaro y cada grupo de sistemas')
+  assert.ok(diagrama.includes('<Detalle foco={foco} id={panelId} />'), 'el panel del detalle tiene el id de aria-controls')
 })

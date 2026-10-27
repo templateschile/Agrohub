@@ -1,18 +1,19 @@
-import { useState } from "react"
+import { useId, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Sparkles } from "lucide-react"
 import { HubMark } from "./HubMark"
 import { MODULOS } from "../lib/modulos"
 import {
   SISTEMAS_GENERALES, FISARO, GEO, BAJO_NODO, fisaroEnCatalogo, polar, arco, ranurasSistemas,
-  anchoTexto, etiquetaAfuera, anilloAgro, lineasAgro,
+  anchoTexto, etiquetaAfuera, anilloAgro, lineasAgro, propsDetalle,
 } from "../lib/ecosistema"
 import DESTACADAS from "../../data/apis/destacadas.json"
 
 // Diagrama concéntrico del ecosistema: AgroHubs al centro → 12 módulos → integraciones con el agro
 // por categoría (resumen del catálogo en destacadas.json) → sistemas generales por tipo.
-// Escritorio (≥ 70rem): SVG con anillos, navegable con Tab (módulos y categorías son enlaces) y un panel
-// que describe lo que está bajo el cursor o el foco. Celular y tablet: las mismas capas como listas.
+// Escritorio (≥ 70rem): SVG con anillos, navegable con Tab (módulos y categorías son enlaces; Fisaro y
+// los grupos de sistemas, botones que muestran su detalle) y un panel que describe lo que está bajo el
+// cursor o el foco. Celular y tablet: las mismas capas como listas.
 // Sin logos de terceros: solo nombres en texto.
 
 const CATEGORIAS = DESTACADAS.categorias || []
@@ -33,9 +34,9 @@ const DETALLE_CENTRO = {
   texto: "La app y el panel de tu Centro Demostrativo Agrícola. Los módulos, las integraciones y los sistemas de tu equipo se conectan aquí.",
 }
 
-function Detalle({ foco }) {
+function Detalle({ foco, id }) {
   return (
-    <div className="eco-detalle" aria-live="polite">
+    <div id={id} className="eco-detalle" aria-live="polite">
       <p className="eco-detalle__titulo">{foco.titulo}</p>
       <p className="eco-detalle__texto">{foco.texto}</p>
       {foco.lista && <p className="eco-detalle__lista"><b>Destacadas:</b> {foco.lista.join(", ")}</p>}
@@ -43,7 +44,7 @@ function Detalle({ foco }) {
   )
 }
 
-function DiagramaSvg({ setFoco }) {
+function DiagramaSvg({ setFoco, panelId }) {
   const navigate = useNavigate()
   const irA = ruta => e => { e.preventDefault(); navigate(ruta) }
   const pasoSis = 360 / RANURAS_SISTEMAS.length
@@ -59,34 +60,37 @@ function DiagramaSvg({ setFoco }) {
       <circle r={R.modulos} className="eco-guia" />
       <circle r={R.agro} className="eco-guia" />
 
-      {/* Anillo 3: bandas por tipo de sistema */}
+      {/* Anillo 3: una banda por tipo de sistema, con su nombre y sus sistemas. Cada banda se enfoca
+          con Tab (o el mouse) y muestra su detalle en el panel */}
       <g onMouseLeave={() => setFoco(DETALLE_CENTRO)}>
         {SISTEMAS_GENERALES.map((g, gi) => {
           const idx = RANURAS_SISTEMAS.map((r, i) => (r.grupo === gi ? i : -1)).filter(i => i >= 0)
           const rad = gr => (gr * Math.PI) / 180
           const desde = rad(-90 + idx[0] * pasoSis - pasoSis / 2 + 1.2)
           const hasta = rad(-90 + idx[idx.length - 1] * pasoSis + pasoSis / 2 - 1.2)
+          const lista = g.items.join(", ")
+          const mostrar = () => setFoco({ titulo: `Sistemas generales · ${g.tipo}`, texto: lista })
           return (
-            <path key={g.tipo} d={arco(R.sistemas, desde, hasta)} className={`eco-banda eco-banda--${gi % 2 ? "b" : "a"}`}
-              onMouseEnter={() => setFoco({ titulo: `Sistemas generales · ${g.tipo}`, texto: g.items.join(", ") })} />
-          )
-        })}
-        {RANURAS_SISTEMAS.map((r, i) => {
-          const p = polar(R.sistemas, i, RANURAS_SISTEMAS.length)
-          const g = SISTEMAS_GENERALES[r.grupo]
-          const enfocar = () => setFoco({ titulo: `Sistemas generales · ${g.tipo}`, texto: g.items.join(", ") })
-          if (r.tipo === "grupo") {
-            return (
-              <text key={`g-${r.texto}`} x={p.x} y={p.y + 4} className="eco-grupo" textAnchor="middle" onMouseEnter={enfocar}>
-                {r.texto.toUpperCase()}
-              </text>
-            )
-          }
-          const w = anchoTexto(r.texto, GEO.pxChip) + 28
-          return (
-            <g key={r.texto} transform={`translate(${p.x} ${p.y})`} onMouseEnter={enfocar}>
-              <rect x={-w / 2} y={-17} width={w} height={34} rx={17} className="eco-chip" />
-              <text y={5} textAnchor="middle" className="eco-chip__texto">{r.texto}</text>
+            <g key={g.tipo} className="eco-sistema" {...propsDetalle(mostrar, `Sistemas generales, ${g.tipo}: ${lista}`, panelId)}>
+              <path d={arco(R.sistemas, desde, hasta)} className={`eco-banda eco-banda--${gi % 2 ? "b" : "a"}`} />
+              {idx.map(i => {
+                const r = RANURAS_SISTEMAS[i]
+                const p = polar(R.sistemas, i, RANURAS_SISTEMAS.length)
+                if (r.tipo === "grupo") {
+                  return (
+                    <text key={`g-${r.texto}`} x={p.x} y={p.y + 4} className="eco-grupo" textAnchor="middle">
+                      {r.texto.toUpperCase()}
+                    </text>
+                  )
+                }
+                const w = anchoTexto(r.texto, GEO.pxChip) + 28
+                return (
+                  <g key={r.texto} transform={`translate(${p.x} ${p.y})`}>
+                    <rect x={-w / 2} y={-17} width={w} height={34} rx={17} className="eco-chip" />
+                    <text y={5} textAnchor="middle" className="eco-chip__texto">{r.texto}</text>
+                  </g>
+                )
+              })}
             </g>
           )
         })}
@@ -98,9 +102,10 @@ function DiagramaSvg({ setFoco }) {
         const lineas = lineasAgro(r)
         const t = etiquetaAfuera(p, lineas, GEO.pxAgro, INSIGNIA + 8)
         if (r.tipo === "fisaro") {
+          const mostrar = () => setFoco({ titulo: FISARO.nombre, texto: `Integración: ${FISARO.detalle}.` })
           return (
             <g key="fisaro" className="eco-agro eco-agro--fisaro"
-              onMouseEnter={() => setFoco({ titulo: `${FISARO.nombre}`, texto: `Integración: ${FISARO.detalle}.` })}>
+              {...propsDetalle(mostrar, `${FISARO.nombre}, integración: ${FISARO.detalle}`, panelId)}>
               <circle cx={p.x} cy={p.y} r={INSIGNIA} className="eco-n eco-n--fisaro" />
               <Sparkles x={p.x - 9} y={p.y - 9} size={18} strokeWidth={1.75} className="eco-n__icono" aria-hidden="true" />
               <text x={p.x + t.x} y={p.y + t.y} textAnchor="middle" className="eco-agro__texto">{lineas[0]}</text>
@@ -207,17 +212,18 @@ function Capas() {
 
 export default function EcosystemDiagram() {
   const [foco, setFoco] = useState(DETALLE_CENTRO)
+  const panelId = useId()
   return (
     <div className="eco">
       <figure className="eco-figura">
-        <DiagramaSvg setFoco={setFoco} />
+        <DiagramaSvg setFoco={setFoco} panelId={panelId} />
         <figcaption className="eco-figura__pie">
           <ul className="eco-leyenda" aria-label="Anillos del diagrama">
             <li><span className="eco-leyenda__marca eco-leyenda__marca--modulo" aria-hidden="true" />{MODULOS.length} módulos</li>
             <li><span className="eco-leyenda__marca eco-leyenda__marca--agro" aria-hidden="true" />{TOTAL} integraciones con el agro, por categoría</li>
             <li><span className="eco-leyenda__marca eco-leyenda__marca--sistema" aria-hidden="true" />{TOTAL_SISTEMAS} sistemas generales</li>
           </ul>
-          <Detalle foco={foco} />
+          <Detalle foco={foco} id={panelId} />
         </figcaption>
       </figure>
       <Capas />
