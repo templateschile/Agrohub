@@ -5,8 +5,10 @@ import { readFileSync } from 'node:fs'
 import { APPS, APPS_CON_PAGINA, appPorSlug } from '../../src/lib/apps.js'
 import { CONFIAN, PARTNER } from '../../src/lib/confianza.js'
 import { hayVideo } from '../../src/lib/video.js'
+import { destinoAdmin, PESTANAS_ADMIN } from '../../src/lib/admin.js'
 
 const leer = (ruta) => readFileSync(new URL(ruta, import.meta.url), 'utf8')
+const VERCEL = JSON.parse(leer('../../vercel.json'))
 
 test('menú Apps: AgroHubs, AgroCiclo, DronX y AgroSeller; Fisaro no es una app', () => {
   assert.deepEqual(APPS.map((a) => [a.nombre, a.ruta]), [
@@ -92,4 +94,53 @@ test('los 12 módulos tienen página: propia o armada por ModuloPagina', () => {
     assert.ok(!(propia && b.includes('pagina: {')), `${ruta} tiene dos páginas`)
   }
   assert.ok(app.includes('path="/apps/:slug"'), 'ruta de las apps')
+})
+
+// ── Revisión QA del PR #24 ──
+
+test('vercel.json: las rutas de la SPA cargan directo (sin pasar por /index.html)', () => {
+  // Con cleanUrls, /index.html responde 308 hacia /: un rewrite a /index.html dejaba en 404 la carga
+  // directa de /evaluacion, /terminos, /dashboard, /modulos, /apps/*. Los archivos (assets, /apis,
+  // /videos) tienen prioridad sobre los rewrites, así que se siguen sirviendo tal cual.
+  assert.equal(VERCEL.cleanUrls, true)
+  const spa = VERCEL.rewrites[VERCEL.rewrites.length - 1]
+  assert.deepEqual(spa, { source: '/(.*)', destination: '/' })
+  assert.ok(!VERCEL.rewrites.some((r) => /\.html$/.test(r.destination)), 'ningún rewrite apunta a un .html')
+  assert.deepEqual(VERCEL.rewrites[0], { source: '/api/:path*', destination: '/api/:path*' }, '/api sigue yendo a las funciones')
+})
+
+// Mini evaluador de los redirects de vercel.json: source exacto o con /:path* y condiciones `has` de query
+// (Vercel compara el valor completo). Devuelve el destino con los grupos reemplazados.
+function redirigeVercel(ruta) {
+  const u = new URL(ruta, 'https://www.agrohubs.cl')
+  for (const r of VERCEL.redirects) {
+    if (!new RegExp(`^${r.source.replace('/:path*', '(?:/.*)?')}$`).test(u.pathname)) continue
+    const grupos = {}
+    const cumple = (r.has || []).every((h) => {
+      const v = u.searchParams.get(h.key)
+      if (h.type !== 'query' || v === null) return false
+      const m = h.value === undefined ? [] : new RegExp(`^(?:${h.value})$`).exec(v)
+      if (m) Object.assign(grupos, m.groups)
+      return Boolean(m)
+    })
+    if (cumple) return r.destination.replace(/:(\w+)/g, (_, k) => grupos[k] ?? `:${k}`)
+  }
+  return null
+}
+
+test('/admin?tab=… y /admin?id=… llegan a la misma página del panel desde el servidor y desde la SPA', () => {
+  const casos = ['/admin', '/admin?id=abc-123', '/admin?id=abc&tab=correo', '/admin?tab=otra', '/admin?tab=correos',
+    '/admin/correo', ...Object.keys(PESTANAS_ADMIN).map((t) => `/admin?tab=${t}`)]
+  for (const ruta of casos) {
+    const servidor = new URL(redirigeVercel(ruta))
+    const spa = new URL(destinoAdmin(new URL(ruta, 'https://www.agrohubs.cl').search))
+    assert.equal(servidor.origin + servidor.pathname, spa.origin + spa.pathname, ruta)
+    assert.equal(servidor.searchParams.get('id'), spa.searchParams.get('id'), ruta)
+  }
+  assert.equal(destinoAdmin('?tab=correo'), 'https://admin.agrohubs.cl/site/correo')
+  assert.equal(destinoAdmin('?tab=seguimiento'), 'https://admin.agrohubs.cl/site/seguimiento')
+  assert.equal(destinoAdmin('?tab=cuentas'), 'https://admin.agrohubs.cl/site/boveda')
+  assert.equal(destinoAdmin('?id=a b'), 'https://admin.agrohubs.cl/site/propuestas?id=a%20b')
+  assert.equal(destinoAdmin('?tab=constructor'), 'https://admin.agrohubs.cl/', 'solo pestañas conocidas')
+  assert.equal(destinoAdmin(''), 'https://admin.agrohubs.cl/')
 })
