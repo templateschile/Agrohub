@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { CheckCircle2, ArrowRight, Smartphone } from 'lucide-react'
+import { CheckCircle2, ArrowRight, Smartphone, Globe } from 'lucide-react'
 import { useInView } from '../hooks/useInView'
 import { MODULOS, moduloPorSlug } from '../lib/modulos'
 
@@ -54,9 +54,10 @@ export default function ModuloPagina({ slug }) {
                   </Link>
                 )}
                 <div className="flex flex-wrap gap-2 mt-4">
-                  {['iOS', 'Android', 'Integrado con AgroHubs'].map((t) => (
+                  {/* La app iOS aún no está publicada: Android y web */}
+                  {[['Android', Smartphone], ['Web', Globe], ['Integrado con AgroHubs', CheckCircle2]].map(([t, Chip]) => (
                     <span key={t} className="inline-flex items-center gap-1.5 bg-white border border-agro-green-200 text-agro-green-800 text-xs font-semibold rounded-full px-3 py-1">
-                      {t !== 'Integrado con AgroHubs' ? <Smartphone size={12} /> : <CheckCircle2 size={12} />} {t}
+                      <Chip size={12} aria-hidden="true" /> {t}
                     </span>
                   ))}
                 </div>

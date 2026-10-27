@@ -12,7 +12,7 @@ export default function Modulos() {
             Los módulos de tu <span className="text-agro-green-300">Centro Demostrativo Agrícola</span>
           </h1>
           <p className="text-white/70 text-lg md:text-xl max-w-2xl leading-relaxed">
-            Activa los que necesitas y suma más cuando estés listo. Cada módulo funciona en la app (iOS y Android) y en la web, para todos los cultivos.
+            Activa los que necesitas y suma más cuando estés listo. Cada módulo funciona en la app Android y en la web (iOS próximamente), para todos los cultivos.
           </p>
         </div>
       </section>

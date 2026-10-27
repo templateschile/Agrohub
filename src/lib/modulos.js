@@ -5,7 +5,6 @@
 // - `ruta`: página del módulo en este sitio. Las de Dashboard, AI Chat, Documentos, Eventos y Tienda
 //   están hechas a mano; el resto la arma ModuloPagina con `pagina`.
 // - `corto`: nombre breve para el diagrama del ecosistema.
-// - `destacado`: aparece en la vista previa de módulos (ModulesPreview).
 import {
   Radio, NotebookPen, Sparkles, FolderOpen, Globe, Sun,
   Lightbulb, Flower2, Calculator, CalendarDays, Store,
@@ -14,7 +13,7 @@ import IconoDron from "../components/IconoDron"
 
 export const MODULOS = [
   {
-    key: "dashboard_sensores", slug: "dashboard", ruta: "/dashboard", icono: Radio, destacado: true,
+    key: "dashboard_sensores", slug: "dashboard", ruta: "/dashboard", icono: Radio,
     nombre: "Dashboard y sensores", corto: "Sensores",
     descripcion: "Tus estaciones y sensores en un solo panel, con lecturas, gráficos y alertas. Se conecta con las marcas que ya usas.",
   },
@@ -41,12 +40,12 @@ export const MODULOS = [
     },
   },
   {
-    key: "chat_ia", slug: "ai-chat", ruta: "/ai-chat", icono: Sparkles, destacado: true,
+    key: "chat_ia", slug: "ai-chat", ruta: "/ai-chat", icono: Sparkles,
     nombre: "AI Chat agrícola", corto: "Chat IA",
     descripcion: "Asistente que responde consultas técnicas en lenguaje simple, apoyado en documentos confiables.",
   },
   {
-    key: "documentos", slug: "documentos", ruta: "/documentos", icono: FolderOpen, destacado: true,
+    key: "documentos", slug: "documentos", ruta: "/documentos", icono: FolderOpen,
     nombre: "Biblioteca técnica", corto: "Biblioteca",
     descripcion: "Documentos y fichas técnicas organizados y buscables. Sube los tuyos y decide si son públicos o privados.",
   },
@@ -93,7 +92,7 @@ export const MODULOS = [
     },
   },
   {
-    key: "recomendaciones", slug: "recomendaciones", ruta: "/recomendaciones", icono: Lightbulb, destacado: true,
+    key: "recomendaciones", slug: "recomendaciones", ruta: "/recomendaciones", icono: Lightbulb,
     nombre: "Recomendaciones por clima", corto: "Recomendaciones",
     descripcion: "Avisos agronómicos según el pronóstico de tu predio: heladas, calor, lluvia, viento, riego y ventanas para aplicar.",
     pagina: {
@@ -158,7 +157,7 @@ export const MODULOS = [
     },
   },
   {
-    key: "eventos", slug: "eventos", ruta: "/eventos", icono: CalendarDays, destacado: true,
+    key: "eventos", slug: "eventos", ruta: "/eventos", icono: CalendarDays,
     nombre: "Capacitaciones y eventos", corto: "Eventos",
     descripcion: "Días de campo, capacitaciones y eventos de tu hub.",
   },
@@ -168,7 +167,7 @@ export const MODULOS = [
     descripcion: "Catálogo de productos e insumos y venta de cosecha entre productores de la red.",
   },
   {
-    key: "drones", slug: "drones", ruta: "/drones", icono: IconoDron, destacado: true,
+    key: "drones", slug: "drones", ruta: "/drones", icono: IconoDron,
     nombre: "Solicitar drones (DronX)", corto: "Drones",
     descripcion: "Pide servicios con dron (aplicación, NDVI, mapeo, conteo) a operadores de DronX.",
     pagina: {
@@ -177,7 +176,7 @@ export const MODULOS = [
       bajada: "AgroHubs ya está integrado con DronX: pides el servicio desde la app o el panel y la solicitud llega directo a la red de operadores, con los datos de tu predio.",
       aviso: {
         titulo: "Ya tenemos integración con DronX",
-        texto: "DronX es un desarrollo de OlaDigital, con apps para iOS y Android, para solicitar drones agrícolas a demanda. AgroHubs se conecta con DronX: tus solicitudes viajan con los datos del predio y su estado se actualiza solo en la app.",
+        texto: "DronX es un desarrollo de OlaDigital, con app Android y web (iOS próximamente), para solicitar drones agrícolas a demanda. AgroHubs se conecta con DronX: tus solicitudes viajan con los datos del predio y su estado se actualiza solo en la app.",
         enlace: { texto: "Conoce la app DronX", ruta: "/apps/dronx" },
       },
       features: [

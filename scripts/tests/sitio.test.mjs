@@ -203,3 +203,7 @@ test('ContactModal: Tab y Shift+Tab ciclan dentro del diálogo', () => {
   assert.ok(modal.includes('focoAtrapado(enfocables(caja.current), document.activeElement, e.shiftKey)'))
   assert.ok(modal.includes('previo.focus'), 'al cerrar, el foco vuelve al botón que lo abrió')
 })
+
+test('no se anuncia la app iOS (aún no está publicada)', () => {
+  for (const { f, texto } of FUENTES) assert.ok(!/iOS y Android|['"]iOS['"]/.test(texto), `src/${f}`)
+})
