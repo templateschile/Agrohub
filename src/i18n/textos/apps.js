@@ -6,6 +6,7 @@ export default {
   es: {
     "apps.eyebrow": "App del ecosistema AgroHubs",
     "apps.resuelve": "Lo que resuelve",
+    "apps.capturas.titulo": "Así se ve en AgroHubs",
     "apps.hoy": "Hoy",
     "apps.con": "Con {app}",
     "apps.comoFunciona": "Cómo funciona",
@@ -50,6 +51,7 @@ export default {
   en: {
     "apps.eyebrow": "Part of the AgroHubs ecosystem",
     "apps.resuelve": "What it solves",
+    "apps.capturas.titulo": "How it looks in AgroHubs",
     "apps.hoy": "Today",
     "apps.con": "With {app}",
     "apps.comoFunciona": "How it works",
@@ -94,6 +96,7 @@ export default {
   pt: {
     "apps.eyebrow": "App do ecossistema AgroHubs",
     "apps.resuelve": "O que resolve",
+    "apps.capturas.titulo": "Como fica na AgroHubs",
     "apps.hoy": "Hoje",
     "apps.con": "Com {app}",
     "apps.comoFunciona": "Como funciona",

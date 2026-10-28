@@ -1,30 +1,23 @@
 import { useRef, useState } from "react"
-import { Bell, Sparkles, LayoutDashboard, FolderOpen, Store, Wrench } from "lucide-react"
-import { HubMark } from "./HubMark"
 import { useIdioma, useModulos, Enlace } from "../i18n"
+import { capturasDeModulo, capturasDe } from "../lib/capturas"
 
-// La app al centro y sus 12 módulos alrededor. Elegir un módulo lo muestra dentro de la pantalla.
-// La pantalla es la del dashboard de la app (app-mobile/lib/screens/main), construida en HTML
-// mientras no haya capturas: va en un data-slot para reemplazarla por una captura real.
-const NAV_APP = [
-  { icono: LayoutDashboard, clave: "app.nav.dashboard" },
-  { icono: Sparkles, clave: "app.nav.chat" },
-  { icono: FolderOpen, clave: "app.nav.documentos" },
-  { icono: Store, clave: "app.nav.tienda" },
-  { icono: Wrench, clave: "app.nav.servicios" },
-]
+// La app al centro y sus 12 módulos alrededor. Elegir un módulo muestra en el teléfono su pantalla real
+// (captura de la app con datos de ejemplo, lib/capturas.js); los módulos sin pantalla propia muestran
+// "Mi predio", donde se activan. Debajo del teléfono, el nombre del módulo, una línea y su página.
+const PREDIO = capturasDe("predio").movil
 
 export default function AppModulos() {
-  const { t } = useIdioma()
+  const { t, idioma } = useIdioma()
   const MODULOS = useModulos()
   const [activo, setActivo] = useState(MODULOS[0].key)
   const pantalla = useRef(null)
   const m = MODULOS.find(x => x.key === activo)
-  const Icono = m.icono
+  const captura = capturasDeModulo(activo).movil || PREDIO
 
   const elegir = key => {
     setActivo(key)
-    // En celular la pantalla queda arriba de la lista: se trae a la vista si no se ve
+    // En celular el teléfono queda arriba de la lista: se trae a la vista si no se ve
     const el = pantalla.current
     if (el && window.matchMedia("(max-width: 60rem)").matches) {
       const r = el.getBoundingClientRect()
@@ -48,37 +41,17 @@ export default function AppModulos() {
     <div className="ah-mapa" role="group" aria-label={t("app.diagrama")}>
       <ul className="ah-mapa__col ah-mapa__col--izq" aria-label={t("app.modulos")}>{MODULOS.slice(0, 6).map(x => boton(x, "izq"))}</ul>
 
-      <div className="ah-telefono" data-slot="app" data-kind="product" data-alt="Pantalla principal de la app AgroHubs" ref={pantalla}>
-        <div className="ah-app" data-keep aria-live="polite">
-          <div className="ah-app__barra">
-            <span className="ah-app__marca">
-              <HubMark className="ah-app__hub" title={null} />
-              AgroHubs
-            </span>
-            <Bell size={16} strokeWidth={1.75} aria-hidden="true" />
-          </div>
-          <p className="ah-app__pregunta"><Sparkles size={14} strokeWidth={1.75} aria-hidden="true" />{t("app.pregunta")}</p>
-
-          <div className="ah-app__detalle">
-            <span className="ah-app__icono"><Icono size={20} strokeWidth={1.75} aria-hidden="true" /></span>
-            <p className="ah-app__nombre">{m.nombre}</p>
-            <p className="ah-app__texto">{m.descripcion}</p>
-            {m.ruta && <Enlace className="ah-app__ver" to={m.ruta}>{t("app.verModulo")}</Enlace>}
-          </div>
-
-          <p className="ah-app__seccion">{t("app.tusModulos")}</p>
-          <ul className="ah-app__grilla" aria-hidden="true">
-            {MODULOS.map(x => {
-              const I = x.icono
-              return <li key={x.key} className={x.key === activo ? "es-activo" : undefined}><I size={16} strokeWidth={1.75} /></li>
-            })}
-          </ul>
-
-          <ul className="ah-app__nav" aria-hidden="true">
-            {NAV_APP.map(({ icono: I, clave }, i) => (
-              <li key={clave} className={i === 0 ? "es-activo" : undefined}><I size={16} strokeWidth={1.75} /><span>{t(clave)}</span></li>
-            ))}
-          </ul>
+      <div className="ah-mapa__centro" ref={pantalla}>
+        <div className="ah-telefono ah-telefono--real">
+          {captura && (
+            <img key={captura.src} src={captura.src} width={captura.ancho} height={captura.alto}
+              alt={captura.alt?.[idioma] || captura.alt?.es || ""} decoding="async" fetchPriority="high" />
+          )}
+        </div>
+        <div className="ah-telefono__pie" aria-live="polite">
+          <p className="ah-telefono__nombre">{m.nombre}</p>
+          <p className="ah-telefono__texto">{m.descripcion}</p>
+          {m.ruta && <Enlace className="ah-telefono__ver" to={m.ruta}>{t("app.verModulo")}</Enlace>}
         </div>
       </div>
 
