@@ -7,13 +7,11 @@
     "dev": "vite",
     "build": "node scripts/build-apis.mjs && vite build",
     "preview": "vite preview",
-    "apis": "node scripts/build-apis.mjs"
+    "apis": "node scripts/build-apis.mjs",
+    "test": "node --test scripts/tests/*.test.mjs"
   },
   "dependencies": {
-    "imapflow": "^2.1.2",
     "lucide-react": "^0.460.0",
-    "mailparser": "^3.9.31",
-    "nodemailer": "^8.0.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.15.1"

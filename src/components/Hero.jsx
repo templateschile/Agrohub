@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { ArrowDown } from 'lucide-react'
+import CreditoFoto from './CreditoFoto'
 
-const HERO_IMAGE = 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=85&auto=format&fit=crop'
+// Paltos con fruta a contraluz (Timur Seyfelmlyukov, Unsplash)
+const HERO_IMAGE = 'https://images.unsplash.com/photo-1789919350057-cf61e32bf138?w=1920&q=85&auto=format&fit=crop'
 
 export default function Hero() {
   const bgRef = useRef(null)
@@ -23,7 +25,7 @@ export default function Hero() {
         <img
           ref={bgRef}
           src={HERO_IMAGE}
-          alt="Agricultor trabajando en campo"
+          alt="Paltos con fruta colgando de las ramas a contraluz"
           className="w-full h-full object-cover object-center scale-110 will-change-transform"
           loading="eager"
           fetchpriority="high"
@@ -67,21 +69,22 @@ export default function Hero() {
           <div className="hero-line-1 inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 mb-8 pulse-badge">
             <span className="w-1.5 h-1.5 bg-agro-green-400 rounded-full" />
             <span className="text-white/85 text-sm font-medium tracking-wide">
-              Centro Demostrativo Movil · Para cualquier agricultor
+              Centro Demostrativo Agrícola · Para todos los cultivos
             </span>
           </div>
 
           <h1 className="hero-line-2 font-extrabold leading-[1.08] text-white mb-5"
               style={{ fontSize: 'clamp(1.75rem, 4vw, 3rem)' }}>
-            El saber agrícola,{' '}
+            Crea tu{' '}
             <span className="text-agro-green-300">
-              digitalizado y siempre disponible
+              Centro Demostrativo Agrícola
             </span>
           </h1>
 
           <p className="hero-line-3 text-white/75 text-base leading-relaxed mb-8 max-w-lg">
-            AgroHubs centraliza tecnología, datos y conocimiento agrícola
-            en una sola plataforma — para cualquier agricultor, en cualquier territorio.
+            <strong className="text-white font-semibold">Y entrega a tus agricultores el poder de decidir.</strong>{' '}
+            AgroHubs reúne tecnología, datos y conocimiento agrícola en una sola plataforma,
+            para todos los cultivos y en cualquier territorio.
           </p>
 
           <div className="hero-line-4 flex flex-wrap gap-4 mb-14">
@@ -116,6 +119,7 @@ export default function Hero() {
       </div>
 
       <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+      <CreditoFoto autor="Timur Seyfelmlyukov" perfil="timurse" foto="JA95LH6tfI4" />
     </section>
   )
 }

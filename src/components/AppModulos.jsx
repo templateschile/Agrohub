@@ -2,6 +2,7 @@ import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { Bell, Sparkles, LayoutDashboard, FolderOpen, Store, Wrench } from "lucide-react"
 import { MODULOS } from "../lib/modulos"
+import { HubMark } from "./HubMark"
 
 // La app al centro y sus 12 módulos alrededor. Elegir un módulo lo muestra dentro de la pantalla.
 // La pantalla es la del dashboard de la app (app-mobile/lib/screens/main), construida en HTML
@@ -30,14 +31,13 @@ export default function AppModulos() {
     }
   }
 
-  // Cada módulo: un ícono grande de color con su nombre corto; el nombre completo va en aria-label
-  const boton = x => {
+  const boton = (x, lado) => {
     const I = x.icono
     return (
       <li key={x.key}>
-        <button type="button" className={`ah-orbita ah-color--${x.color}`} aria-pressed={activo === x.key} aria-label={x.nombre} onClick={() => elegir(x.key)}>
-          <span className="ah-orbita__icono"><I size={24} strokeWidth={1.75} aria-hidden="true" /></span>
-          <span className="ah-orbita__nombre" aria-hidden="true">{x.corto}</span>
+        <button type="button" className={`ah-modulo ah-modulo--${lado}`} aria-pressed={activo === x.key} onClick={() => elegir(x.key)}>
+          <I size={18} strokeWidth={1.75} aria-hidden="true" />
+          <span>{x.nombre}</span>
         </button>
       </li>
     )
@@ -45,19 +45,13 @@ export default function AppModulos() {
 
   return (
     <div className="ah-mapa" role="group" aria-label="Diagrama: la app AgroHubs y sus 12 módulos">
-      <ul className="ah-mapa__col ah-mapa__col--izq" aria-label="Módulos">{MODULOS.slice(0, 6).map(boton)}</ul>
+      <ul className="ah-mapa__col ah-mapa__col--izq" aria-label="Módulos">{MODULOS.slice(0, 6).map(x => boton(x, "izq"))}</ul>
 
       <div className="ah-telefono" data-slot="app" data-kind="product" data-alt="Pantalla principal de la app AgroHubs" ref={pantalla}>
         <div className="ah-app" data-keep aria-live="polite">
           <div className="ah-app__barra">
             <span className="ah-app__marca">
-              <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
-                <circle cx="16" cy="16" r="6" fill="currentColor" opacity="0.9" />
-                <path d="M16 4 C16 4 10 8 10 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M16 4 C16 4 22 8 22 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M6 20 C8 24 12 28 16 28" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M26 20 C24 24 20 28 16 28" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
+              <HubMark className="ah-app__hub" title={null} />
               AgroHubs
             </span>
             <Bell size={16} strokeWidth={1.75} aria-hidden="true" />
@@ -87,7 +81,7 @@ export default function AppModulos() {
         </div>
       </div>
 
-      <ul className="ah-mapa__col ah-mapa__col--der" aria-label="Más módulos">{MODULOS.slice(6).map(boton)}</ul>
+      <ul className="ah-mapa__col ah-mapa__col--der" aria-label="Más módulos">{MODULOS.slice(6).map(x => boton(x, "der"))}</ul>
     </div>
   )
 }

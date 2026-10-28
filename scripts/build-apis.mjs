@@ -10,6 +10,7 @@ import {
   crumbs, chipEstado, chipAnillo, costoCelda, sortedBy, faqs, costoFrase, nivel, accesibilidad, cta, COTIZAR
 } from './apis/lib.mjs'
 import { techRadarSvg, scoreRadarSvg, RADAR_ITEMS, radarNum } from './apis/charts.mjs'
+import { partesNombre, resumenPorCategoria } from './apis/ecosistema.mjs'
 
 const PUB = join(ROOT, 'public')
 const OUT = join(PUB, 'apis')
@@ -366,13 +367,12 @@ const FERIADOS_CL = JSON.parse(readFileSync(join(ROOT, 'data', 'feriados-cl.json
     var p=r.split(' ');return {fecha:p[0],hora:p[1],propuesta:true};
   }
 
-  var DESTINOS=['/api/lead','https://api.agrohubs.cl/api/v1/site/leads'];
-  function enviar(i,datos){
-    if(i>=DESTINOS.length)return Promise.resolve(false);
-    return fetch(DESTINOS[i],{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)})
-      .then(function(r){return r.json().catch(function(){return {}}).then(function(j){return r.ok&&j.ok!==false})})
-      .catch(function(){return false})
-      .then(function(ok){return ok||enviar(i+1,datos)});
+  // Se envía al API de la plataforma y solo cuenta como enviado si responde { ok: true }
+  var LEADS_URL='https://api.agrohubs.cl/api/v1/site/leads';
+  function enviar(datos){
+    return fetch(LEADS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)})
+      .then(function(r){return r.json().catch(function(){return null}).then(function(j){return r.ok&&!!j&&j.ok===true})})
+      .catch(function(){return false});
   }
   f.addEventListener('submit',function(e){
     e.preventDefault();
@@ -391,10 +391,10 @@ const FERIADOS_CL = JSON.parse(readFileSync(join(ROOT, 'data', 'feriados-cl.json
       mensaje:'Cotización de integración de software.\\n'+resumen.join('\\n')+(v('f-mensaje')?'\\n\\n'+v('f-mensaje'):''),resumen:resumen,
       respuestas:{origen:origen,apis:slugs,necesidad:necesidad||null,reunion:rn?{fecha:rn.fecha,hora:rn.hora,zona:'America/Santiago',duracion_min:30}:null}};
     var b=document.getElementById('f-enviar');b.disabled=true;est.className='estado';est.textContent='Enviando…';
-    enviar(0,datos).then(function(ok){
+    enviar(datos).then(function(ok){
       b.disabled=false;
       if(ok){f.reset();pintar();est.className='estado ok';est.textContent='¡Listo! Recibimos tu solicitud. '+(rn?'Te escribiremos a '+email+' para confirmar la reunión del '+larga(rn.fecha)+' a las '+rn.hora+'.':'Te escribiremos pronto a '+email+'.')}
-      else{est.className='estado error';est.textContent='No pudimos enviar el formulario. Escríbenos a cotizaciones@agrohubs.cl y te respondemos.'}
+      else{est.className='estado error';est.textContent='No pudimos enviar el formulario. Inténtalo de nuevo en unos minutos o escríbenos a cotizaciones@agrohubs.cl y te respondemos.'}
     });
   });
 })();
@@ -615,18 +615,19 @@ CATEGORIAS.forEach((t) => listPage('categoria', t))
 CASOS.forEach((t) => listPage('caso', t))
 
 // ── Integraciones destacadas para la portada del sitio (src/components/Integraciones.jsx) ──
-// Las más importantes de Chile y luego de Latinoamérica, según el ranking del catálogo.
+// Las más importantes de Chile y luego de Latinoamérica, según el ranking del catálogo, y el
+// resumen por categoría para el diagrama del ecosistema (src/components/EcosystemDiagram.jsx).
 {
   const ESTADO_CORTO = { integrada: 'Conectada', proxy: 'Conectada', scheduler: 'Conectada', plataforma: 'Conectada', planificada: 'Próximamente', evaluacion: 'A pedido', enlace: 'Enlace' }
   // "ODEPA — Datos Abiertos" → nombre "ODEPA", detalle "Datos Abiertos" (sin rayas en la portada)
-  const partes = (n) => { const m = n.match(/^(.*?)\s+(?:—\s+(.*)|\((.*)\))$/); return m ? [m[1], m[2] || m[3]] : [n, ''] }
-  const fila = (a) => { const [nombre, detalle] = partes(a.nombre); return { slug: a.slug, nombre, detalle, pais: PAIS[a.pais] || a.pais, categoria: a.categorias[0], estado: ESTADO_CORTO[a.estado_agrohubs] || 'A pedido' } }
+  const fila = (a) => { const [nombre, detalle] = partesNombre(a.nombre); return { slug: a.slug, nombre, detalle, pais: PAIS[a.pais] || a.pais, estado: ESTADO_CORTO[a.estado_agrohubs] || 'A pedido' } }
   const top = (lista, campo) => lista.slice().sort((x, y) => y.ranking[campo] - x.ranking[campo] || x.nombre.localeCompare(y.nombre)).slice(0, 6).map(fila)
   writeFileSync(join(ROOT, 'data', 'apis', 'destacadas.json'), JSON.stringify({
     _nota: 'Generado por scripts/build-apis.mjs (npm run apis): no editar a mano.',
     total_directorio: total,
     chile: top(APIS.filter((a) => a.pais === 'CL'), 'chile'),
-    latam: top(APIS.filter((a) => !['CL', 'GLOBAL'].includes(a.pais)), 'latam')
+    latam: top(APIS.filter((a) => !['CL', 'GLOBAL'].includes(a.pais)), 'latam'),
+    categorias: resumenPorCategoria(APIS, CATEGORIAS)
   }, null, 2) + '\n')
 }
 

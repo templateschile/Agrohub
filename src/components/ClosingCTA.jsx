@@ -3,8 +3,10 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ClipboardCheck, ShieldCheck, Clock, CheckCircle } from 'lucide-react'
 import { enviarLead, emailValido } from '../lib/lead'
+import CreditoFoto from './CreditoFoto'
 
-const BG = 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1800&q=80&auto=format'
+// Hileras de hortalizas vistas desde el aire (Bernd Dittrich, Unsplash)
+const BG = 'https://images.unsplash.com/photo-1788122137594-f1c1cfda2a74?w=1800&q=80&auto=format'
 
 export default function ClosingCTA() {
   const [ref, visible] = useInView({ threshold: 0.2 })
@@ -13,7 +15,7 @@ export default function ClosingCTA() {
     <>
       <section className="relative py-28 overflow-hidden">
         <div className="absolute inset-0">
-          <img src={BG} alt="Campo agricola" className="w-full h-full object-cover" loading="lazy" />
+          <img src={BG} alt="Hileras de hortalizas vistas desde el aire" className="w-full h-full object-cover" loading="lazy" />
           <div className="absolute inset-0 bg-agro-green-900/88" />
         </div>
         <div
@@ -34,6 +36,7 @@ export default function ClosingCTA() {
             Construyamos el ecosistema juntos <ArrowRight size={18} />
           </a>
         </div>
+        <CreditoFoto autor="Bernd Dittrich" perfil="hdbernd" foto="P85kHT2SlxU" />
       </section>
 
       <section id="contacto" className="py-20 bg-gray-50">

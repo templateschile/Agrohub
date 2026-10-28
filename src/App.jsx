@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -11,7 +12,11 @@ import Eventos from './pages/Eventos'
 import Tienda from './pages/Tienda'
 import Evaluacion from './pages/Evaluacion'
 import Terminos from './pages/Terminos'
-import Admin from './pages/Admin'
+import RedirigirAdmin from './pages/RedirigirAdmin'
+import Modulos from './pages/Modulos'
+import ModuloPagina from './pages/ModuloPagina'
+import AppPagina from './pages/AppPagina'
+import { MODULOS } from './lib/modulos'
 
 export default function App() {
   return (
@@ -21,12 +26,21 @@ export default function App() {
   )
 }
 
+// Al cambiar de página se parte arriba (salvo enlaces a una sección, como /#contacto).
+// Sin esto, un enlace del diagrama del ecosistema abría el módulo a media página.
+function ArribaAlNavegar() {
+  const { pathname, hash } = useLocation()
+  useEffect(() => { if (!hash) window.scrollTo({ top: 0, behavior: 'instant' }) }, [pathname, hash])
+  return null
+}
+
 function Sitio() {
-  // El admin va sin menu, footer ni boton flotante del sitio publico
-  if (useLocation().pathname.startsWith('/admin')) return <Admin />
+  // El admin se movio a admin.agrohubs.cl (panel de la plataforma): /admin redirige alla
+  if (useLocation().pathname.startsWith('/admin')) return <RedirigirAdmin />
 
   return (
     <div className="min-h-screen flex flex-col">
+      <ArribaAlNavegar />
       <Navbar />
       <main className="flex-1" id="main">
         <Routes>
@@ -36,6 +50,13 @@ function Sitio() {
           <Route path="/documentos" element={<Documentos />} />
           <Route path="/eventos" element={<Eventos />} />
           <Route path="/tienda" element={<Tienda />} />
+          <Route path="/modulos" element={<Modulos />} />
+          {/* Módulos con página armada desde lib/modulos.js (los demás tienen página propia arriba) */}
+          {MODULOS.filter(m => m.pagina).map(m => (
+            <Route key={m.slug} path={m.ruta} element={<ModuloPagina slug={m.slug} />} />
+          ))}
+          {/* Apps del ecosistema (lib/apps.js); un slug desconocido vuelve a la portada */}
+          <Route path="/apps/:slug" element={<AppPagina />} />
           <Route path="/evaluacion" element={<Evaluacion />} />
           <Route path="/precios" element={<Navigate to="/evaluacion" replace />} />
           <Route path="/terminos" element={<Terminos />} />

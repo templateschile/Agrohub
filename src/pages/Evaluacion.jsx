@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Check, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Info, Lightbulb, Send, CheckCircle, ArrowRight, Plus, Trash2, Server } from "lucide-react"
-import { enviarLead, emailValido } from "../lib/lead"
+import { enviarLead, emailValido, CORREO_CONTACTO } from "../lib/lead"
 import { PRODUCTOS_AGRO } from "../lib/productosAgro"
 import MultiSelectBusqueda from "../components/MultiSelectBusqueda"
 import AgendarReunion from "../components/AgendarReunion"
@@ -497,7 +497,12 @@ export default function Evaluacion() {
                   </div>
                   <textarea value={contacto.mensaje} onChange={setC("mensaje")} rows={3} placeholder="¿Algo más que debamos saber? (opcional)" className={`${inputCls} mt-3 resize-none`} />
                   <input value={contacto.website} onChange={setC("website")} tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
-                  {estado === "error" && <p className="text-xs text-red-600 mt-3">No pudimos enviar tu evaluación. Inténtalo nuevamente en unos minutos.</p>}
+                  {estado === "error" && (
+                    <p role="alert" className="text-xs text-red-600 mt-3">
+                      No pudimos enviar tu evaluación. Inténtalo de nuevo en unos minutos o escríbenos a{" "}
+                      <a href={`mailto:${CORREO_CONTACTO}`} className="underline font-semibold">{CORREO_CONTACTO}</a>.
+                    </p>
+                  )}
                   <button type="submit" disabled={!contactoValido || estado === "enviando"}
                     className="mt-4 w-full flex items-center justify-center gap-2 bg-agro-green-600 hover:bg-agro-green-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-3.5 rounded-xl transition-colors text-sm">
                     <Send size={15} /> {estado === "enviando" ? "Enviando..." : "Solicitar diagnóstico previo"}

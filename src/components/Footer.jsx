@@ -1,38 +1,47 @@
 import { Link } from 'react-router-dom'
-import { FOTOS } from '../lib/fotos'
+import { HubMark } from './HubMark'
+import { Partner } from './Confianza'
+import { APPS_CON_PAGINA } from '../lib/apps'
 
-// Pie de frase: la línea de AgroHubs grande, los enlaces del sitio debajo, el año y los créditos de las fotos.
 export default function Footer() {
   return (
     <footer className="ah-pie">
       <div className="container ah-pie__grid">
         <div>
-          <h2 className="ah-pie__frase ah-pie__linea">Tecnología, datos y conocimiento agrícola para cualquier agricultor, en cualquier territorio.</h2>
+          <p className="ah-pie__marca">
+            <span className="ah-pie__logo"><HubMark className="ah-pie__hub" title={null} /></span>
+            AgroHubs
+          </p>
+          <p className="ah-pie__linea">Crea tu Centro Demostrativo Agrícola y entrega a tus agricultores el poder de decidir.</p>
+          <Partner variante="linea" />
         </div>
-        <p className="ah-pie__marca">AgroHubs</p>
 
-        <nav className="ah-pie__links" aria-label="Sitio">
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/ai-chat">AI Chat</Link>
-          <Link to="/documentos">Documentos</Link>
-          <Link to="/eventos">Eventos</Link>
-          <Link to="/tienda">Tienda</Link>
-          <Link to="/evaluacion">Evaluación</Link>
-          {/* Directorio estático (HTML generado en el build): enlace normal, no del router */}
-          <a href="/apis">APIs agro</a>
-          <a href="/apis/cotizar">Cotiza tu integración</a>
-          <a href="/#contacto">Contacto</a>
-          <Link to="/terminos">Términos</Link>
-        </nav>
+        <div className="ah-pie__navs">
+          <nav className="ah-pie__links" aria-label="Sitio">
+            <Link to="/modulos">Módulos</Link>
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/ai-chat">AI Chat</Link>
+            <Link to="/documentos">Documentos</Link>
+            <Link to="/eventos">Eventos</Link>
+            <Link to="/tienda">Tienda</Link>
+            <Link to="/drones">Drones</Link>
+            <Link to="/evaluacion">Evaluación</Link>
+            {/* Directorio estático (HTML generado en el build): enlace normal, no del router */}
+            <a href="/apis">APIs agro</a>
+            <a href="/apis/cotizar">Cotiza tu integración</a>
+            <a href="/#contacto">Contacto</a>
+            <Link to="/terminos">Términos</Link>
+          </nav>
+          <nav className="ah-pie__apps" aria-labelledby="pie-apps">
+            <p id="pie-apps" className="ah-pie__subtitulo">Apps del ecosistema</p>
+            <ul>
+              {APPS_CON_PAGINA.map(app => <li key={app.slug}><Link to={app.ruta}>{app.nombre}</Link></li>)}
+            </ul>
+          </nav>
+        </div>
       </div>
       <div className="container">
         <p className="ah-pie__legal">&copy; {new Date().getFullYear()} AgroHubs, Chile</p>
-        <p className="ah-pie__creditos" data-credits>
-          Fotografías de Wikimedia Commons:{' '}
-          {Object.values(FOTOS).map((f, i, todas) => (
-            <span key={f.pagina}><a href={f.pagina} rel="noopener">{f.autor}</a> ({f.licencia}){i < todas.length - 1 ? ', ' : '.'}</span>
-          ))}
-        </p>
       </div>
     </footer>
   )
