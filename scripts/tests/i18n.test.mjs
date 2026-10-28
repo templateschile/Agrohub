@@ -155,12 +155,13 @@ test('capturas reales: cada archivo del manifiesto existe, pesa poco y tiene alt
   }
 })
 
-test('la idea principal va bajo el H1 y como descripción de la portada, sin repetirse en la franja del equipo', () => {
+test('la bajada del héroe y la descripción de la portada son las frases de Fernando, sin repetirse en la franja del equipo', () => {
   for (const i of IDIOMAS) {
-    assert.equal(TEXTOS[i]['meta.descripcion'], TEXTOS[i]['hero.bajada'], `meta.descripcion = hero.bajada (${i})`)
     assert.ok(TEXTOS[i]['meta.descripcion'].length <= 155, `meta.descripcion corta (${i})`)
     assert.notEqual(TEXTOS[i]['pasos.equipo'], TEXTOS[i]['hero.bajada'])
+    assert.notEqual(TEXTOS[i]['hero.bajada'], TEXTOS[i]['hero.bajada2'])
   }
-  assert.match(TEXTOS.es['hero.bajada'], /optimicen sus recursos/)
-  assert.match(leer('../../index.html'), /Acompañamos a los agricultores/)
+  assert.equal(TEXTOS.es['hero.bajada'], 'Te acompañamos en el campo para que tus datos se conviertan en decisiones.')
+  assert.match(TEXTOS.es['meta.descripcion'], /^Tecnología al alcance de cada agricultor/)
+  assert.match(leer('../../index.html'), /Tecnología al alcance de cada agricultor/)
 })
