@@ -46,6 +46,18 @@ export const diaCorto = s => {
   return `${DIAS[d.getUTCDay()].slice(0, 3)} ${d.getUTCDate()} ${MESES[d.getUTCMonth()].slice(0, 3)}`
 }
 
+// El mismo día en el idioma de la página, para mostrarlo: "Wednesday, October 28" / "quarta-feira, 28 de outubro".
+// Lo que se envía al equipo sigue en español (diaLargo, reunionTexto).
+export function diaParaMostrar(s, locale = "es", corto = false) {
+  if (!locale || locale === "es") return corto ? diaCorto(s) : diaLargo(s)
+  try {
+    const opciones = corto ? { weekday: "short", day: "numeric", month: "short" } : { weekday: "long", day: "numeric", month: "long" }
+    return new Intl.DateTimeFormat(locale, { ...opciones, timeZone: "UTC" }).format(fecha(s))
+  } catch {
+    return s
+  }
+}
+
 // Primer día que se puede agendar (hoy + 2 hábiles)
 export const primerDia = () => sumarHabiles(hoyCL(), 2)
 

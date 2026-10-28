@@ -1,11 +1,14 @@
 import { useState } from "react"
 import ContactModal from "../components/ContactModal"
+import { useIdioma } from "../i18n"
 
 export default function Terminos() {
   const [showModal, setShowModal] = useState(false)
+  // Los términos son un texto legal: quedan en español, con un aviso en inglés y portugués
+  const { idioma, t } = useIdioma()
   return (
     <div className="min-h-screen bg-gray-50">
-      <section className="pt-32 pb-16 bg-gradient-to-b from-agro-green-900 to-agro-green-800">
+      <section className="pt-32 pb-16 bg-gradient-to-b from-agro-green-900 to-agro-green-800" lang="es">
         <div className="max-w-3xl mx-auto px-6 lg:px-14">
           <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-3">
             Términos y Condiciones
@@ -16,8 +19,9 @@ export default function Terminos() {
         </div>
       </section>
 
-      <section className="py-14">
+      <section className="py-14" lang="es">
         <div className="max-w-3xl mx-auto px-6 lg:px-14 flex flex-col gap-10 text-gray-700">
+          {idioma !== "es" && <p className="ah-aviso-idioma" lang={idioma}>{t("terminos.nota")}</p>}
 
           {/* 1 */}
           <div>
