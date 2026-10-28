@@ -3,7 +3,7 @@
 export default {
   es: {
     "meta.titulo": "AgroHubs | Crea tu Centro Demostrativo Agrícola",
-    "meta.descripcion": "Crea tu Centro Demostrativo Agrícola con AgroHubs: una app con 12 módulos para todos los cultivos, conectada con servicios del agro y modelos de IA, con capacitación en terreno.",
+    "meta.descripcion": "Acompañamos a los agricultores y les acercamos la tecnología para que optimicen sus recursos y reaccionen a tiempo con sus datos.",
     "nav.saltar": "Saltar al contenido",
     "nav.principal": "Principal",
     "nav.inicio": "AgroHubs, inicio",
@@ -46,7 +46,8 @@ export default {
 
     "hero.eyebrow": "12 módulos, 1 app y {activas} integraciones activas",
     "hero.titulo": "Crea tu Centro Demostrativo Agrícola",
-    "hero.bajada": "Activa los módulos de cada predio y conecta lo que ya usas. Para todos los cultivos.",
+    "hero.bajada": "Acompañamos a los agricultores y les acercamos la tecnología para que optimicen sus recursos y reaccionen a tiempo con sus datos.",
+    "hero.bajada2": "Activa los módulos de cada predio y conecta lo que ya usas. Para todos los cultivos.",
     "hero.agendar": "Agendar reunión",
     "hero.evaluar": "Evaluar mi operación",
     "pasos.titulo": "Tu app en tres pasos",
@@ -174,7 +175,7 @@ export default {
 
   en: {
     "meta.titulo": "AgroHubs | Build your Agricultural Demonstration Center",
-    "meta.descripcion": "Build your Agricultural Demonstration Center with AgroHubs: one app with 12 modules for every crop, connected to farm services and AI models, with on-site training.",
+    "meta.descripcion": "We work alongside farmers and bring technology within reach, so they make the most of their resources and act on their data in time.",
     "nav.saltar": "Skip to content",
     "nav.principal": "Main",
     "nav.inicio": "AgroHubs, home",
@@ -217,7 +218,8 @@ export default {
 
     "hero.eyebrow": "12 modules, 1 app and {activas} live integrations",
     "hero.titulo": "Build your Agricultural Demonstration Center",
-    "hero.bajada": "Turn on the modules each farm needs and connect what you already use. For every crop.",
+    "hero.bajada": "We work alongside farmers and bring technology within reach, so they make the most of their resources and act on their data in time.",
+    "hero.bajada2": "Turn on the modules each farm needs and connect what you already use. For every crop.",
     "hero.agendar": "Book a meeting",
     "hero.evaluar": "Assess my operation",
     "pasos.titulo": "Your app in three steps",
@@ -345,7 +347,7 @@ export default {
 
   pt: {
     "meta.titulo": "AgroHubs | Crie seu Centro Demonstrativo Agrícola",
-    "meta.descripcion": "Crie seu Centro Demonstrativo Agrícola com a AgroHubs: um app com 12 módulos para todas as culturas, conectado a serviços do agro e a modelos de IA, com capacitação em campo.",
+    "meta.descripcion": "Acompanhamos os agricultores e aproximamos a tecnologia do campo para que otimizem seus recursos e reajam a tempo com base nos seus dados.",
     "nav.saltar": "Pular para o conteúdo",
     "nav.principal": "Principal",
     "nav.inicio": "AgroHubs, início",
@@ -388,7 +390,8 @@ export default {
 
     "hero.eyebrow": "12 módulos, 1 app e {activas} integrações ativas",
     "hero.titulo": "Crie seu Centro Demonstrativo Agrícola",
-    "hero.bajada": "Ative os módulos de cada propriedade e conecte o que você já usa. Para todas as culturas.",
+    "hero.bajada": "Acompanhamos os agricultores e aproximamos a tecnologia do campo para que otimizem seus recursos e reajam a tempo com base nos seus dados.",
+    "hero.bajada2": "Ative os módulos de cada propriedade e conecte o que você já usa. Para todas as culturas.",
     "hero.agendar": "Agendar reunião",
     "hero.evaluar": "Avaliar minha operação",
     "pasos.titulo": "Seu app em três passos",

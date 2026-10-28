@@ -351,3 +351,7 @@
 .ah-lic__nota { margin-top: var(--space-lg); color: var(--color-muted); font-size: var(--text-sm); }
 .ah-lic__cta-texto { max-width: 46ch; color: var(--color-on-dark-2); font-size: var(--text-lg); }
 @media (max-width: 48rem) { .ah-lic__lista { grid-template-columns: minmax(0, 1fr); } }
+
+/* Héroe: la idea principal bajo el H1 y, más chico, qué hace la app */
+.ah-hero__bajada { max-width: 38ch; color: var(--color-ink); }
+.ah-hero__bajada2 { margin-top: var(--space-sm); max-width: 44ch; color: var(--color-muted); font-size: var(--text-md); line-height: 1.5; }

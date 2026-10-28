@@ -154,3 +154,13 @@ test('capturas reales: cada archivo del manifiesto existe, pesa poco y tiene alt
     for (const i of IDIOMAS) assert.ok(c.alt?.[i], `${c.archivo}: alt ${i}`)
   }
 })
+
+test('la idea principal va bajo el H1 y como descripción de la portada, sin repetirse en la franja del equipo', () => {
+  for (const i of IDIOMAS) {
+    assert.equal(TEXTOS[i]['meta.descripcion'], TEXTOS[i]['hero.bajada'], `meta.descripcion = hero.bajada (${i})`)
+    assert.ok(TEXTOS[i]['meta.descripcion'].length <= 155, `meta.descripcion corta (${i})`)
+    assert.notEqual(TEXTOS[i]['pasos.equipo'], TEXTOS[i]['hero.bajada'])
+  }
+  assert.match(TEXTOS.es['hero.bajada'], /optimicen sus recursos/)
+  assert.match(leer('../../index.html'), /Acompañamos a los agricultores/)
+})
