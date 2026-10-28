@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { ArrowDown } from 'lucide-react'
+import CreditoFoto from './CreditoFoto'
 
-const HERO_IMAGE = 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=85&auto=format&fit=crop'
+// Paltos con fruta a contraluz (Timur Seyfelmlyukov, Unsplash)
+const HERO_IMAGE = 'https://images.unsplash.com/photo-1789919350057-cf61e32bf138?w=1920&q=85&auto=format&fit=crop'
 
 export default function Hero() {
   const bgRef = useRef(null)
@@ -23,7 +25,7 @@ export default function Hero() {
         <img
           ref={bgRef}
           src={HERO_IMAGE}
-          alt="Agricultor trabajando en campo"
+          alt="Paltos con fruta colgando de las ramas a contraluz"
           className="w-full h-full object-cover object-center scale-110 will-change-transform"
           loading="eager"
           fetchpriority="high"
@@ -117,6 +119,7 @@ export default function Hero() {
       </div>
 
       <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+      <CreditoFoto autor="Timur Seyfelmlyukov" perfil="timurse" foto="JA95LH6tfI4" />
     </section>
   )
 }

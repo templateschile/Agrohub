@@ -1,8 +1,9 @@
 import { Droplets, TrendingDown, TrendingUp, Zap, Thermometer, BarChart2, Wind } from 'lucide-react'
 import { useInView } from '../hooks/useInView'
+import CreditoFoto from './CreditoFoto'
 
-/* Use a reliable Unsplash URL with explicit format */
-const FIELD_IMAGE = 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1400&q=80'
+// Hileras de lechugas en el campo (Divaris Shirichena, Unsplash)
+const FIELD_IMAGE = 'https://images.unsplash.com/photo-1791214561246-b09c29d93a24?auto=format&fit=crop&w=1400&q=80'
 
 function MetricCard({ icon: Icon, label, value, trend, trendLabel, color, bg }) {
   const [ref, visible] = useInView({ threshold: 0.1 })
@@ -69,7 +70,7 @@ export default function WaterResilience() {
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url('${FIELD_IMAGE}')` }}
         role="img"
-        aria-label="Campo agrícola con sistema de riego"
+        aria-label="Hileras de lechugas en un campo con riego"
       />
       {/* Strong overlay for text legibility */}
       <div className="absolute inset-0 bg-agro-green-950/80" />
@@ -154,6 +155,7 @@ export default function WaterResilience() {
           </div>
         </div>
       </div>
+      <CreditoFoto autor="Divaris Shirichena" perfil="divaris" foto="4pHBWzgLHiU" />
     </section>
   )
 }
