@@ -7,42 +7,66 @@
       "nombre": "INIA Agromet",
       "detalle": "",
       "pais": "Chile",
-      "estado": "Conectada"
+      "estado": "Conectada",
+      "categorias": [
+        "clima-y-meteorologia",
+        "sensores-iot"
+      ]
     },
     {
       "slug": "odepa-datos-abiertos",
       "nombre": "ODEPA",
       "detalle": "Datos Abiertos",
       "pais": "Chile",
-      "estado": "Conectada"
+      "estado": "Conectada",
+      "categorias": [
+        "mercados-y-precios",
+        "datos-publicos-y-estadisticas"
+      ]
     },
     {
       "slug": "ciren-ide-minagri",
       "nombre": "CIREN / IDE MINAGRI",
       "detalle": "ArcGIS REST",
       "pais": "Chile",
-      "estado": "Conectada"
+      "estado": "Conectada",
+      "categorias": [
+        "geodatos-y-territorio",
+        "suelo-y-agua"
+      ]
     },
     {
       "slug": "conaf-geprif-incendios",
       "nombre": "CONAF",
       "detalle": "GEPRIF incendios forestales",
       "pais": "Chile",
-      "estado": "Conectada"
+      "estado": "Conectada",
+      "categorias": [
+        "geodatos-y-territorio",
+        "clima-y-meteorologia"
+      ]
     },
     {
       "slug": "dmc-chile",
       "nombre": "Dirección Meteorológica de Chile",
       "detalle": "DMC",
       "pais": "Chile",
-      "estado": "Conectada"
+      "estado": "Conectada",
+      "categorias": [
+        "clima-y-meteorologia",
+        "datos-publicos-y-estadisticas"
+      ]
     },
     {
       "slug": "wiseconn-dropcontrol",
       "nombre": "WiseConn DropControl",
       "detalle": "",
       "pais": "Chile",
-      "estado": "Próximamente"
+      "estado": "Próximamente",
+      "categorias": [
+        "riego-y-control",
+        "sensores-iot"
+      ]
     }
   ],
   "latam": [
@@ -51,42 +75,65 @@
       "nombre": "Embrapa AgroAPI",
       "detalle": "",
       "pais": "Brasil",
-      "estado": "A pedido"
+      "estado": "A pedido",
+      "categorias": [
+        "modelos-y-agronomia",
+        "agregadores-y-estandares",
+        "trazabilidad-y-certificacion"
+      ]
     },
     {
       "slug": "inmet-brasil",
       "nombre": "INMET",
       "detalle": "API de estaciones",
       "pais": "Brasil",
-      "estado": "A pedido"
+      "estado": "A pedido",
+      "categorias": [
+        "clima-y-meteorologia"
+      ]
     },
     {
       "slug": "ibge-sidra",
       "nombre": "IBGE",
       "detalle": "SIDRA / Agregados",
       "pais": "Brasil",
-      "estado": "A pedido"
+      "estado": "A pedido",
+      "categorias": [
+        "datos-publicos-y-estadisticas"
+      ]
     },
     {
       "slug": "auravant",
       "nombre": "Auravant",
       "detalle": "",
       "pais": "Argentina",
-      "estado": "A pedido"
+      "estado": "A pedido",
+      "categorias": [
+        "gestion-predial",
+        "satelite-y-teledeteccion"
+      ]
     },
     {
       "slug": "inta-siga",
       "nombre": "INTA",
       "detalle": "SIGA y GeoINTA",
       "pais": "Argentina",
-      "estado": "A pedido"
+      "estado": "A pedido",
+      "categorias": [
+        "clima-y-meteorologia",
+        "geodatos-y-territorio"
+      ]
     },
     {
       "slug": "mapa-dados-abertos",
       "nombre": "MAPA",
       "detalle": "Dados Abertos (AGROFIT, ZARC)",
       "pais": "Brasil",
-      "estado": "A pedido"
+      "estado": "A pedido",
+      "categorias": [
+        "datos-publicos-y-estadisticas",
+        "modelos-y-agronomia"
+      ]
     }
   ],
   "categorias": [

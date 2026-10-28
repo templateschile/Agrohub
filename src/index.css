@@ -11,6 +11,7 @@
 /* Hallmark · dropped the Organización and Mensaje fields of the contact form on / · the user asked for a simple form to book a meeting: name, email, optional phone and the time */
 /* Hallmark · dropped the two Unsplash photos, the "10+" stat and the old section heads on / · they belonged to the removed sections; the year in the footer is now the current one */
 /* Hallmark · dropped, Problems, Transformation, EcosystemSection, ClosingCTA, ModulesPreview and FloatingCTA from / · the user asked for the simplest page: the app, its modules and a short form to book a meeting */
+/* Hallmark · added, the interactive ecosystem right after the hero, three steps above the phone, the ecosystem apps, six crop photos (Unsplash, credited on each) and Spanish, English and Portuguese · the owner asked for the ecosystem first, more real field photos for every crop and three languages */
 @import "./tokens.css";
 @import "./base.css" layer(base);
 @import "./sitio.css";
