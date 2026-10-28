@@ -44,9 +44,21 @@ test('destacadas.json trae el resumen por categoría al día con el catálogo, y
   for (const f of [...DESTACADAS.chile, ...DESTACADAS.latam]) assert.ok(Array.isArray(f.categorias) && f.categorias.length, `${f.slug} sin categorías`)
 })
 
-test('el anillo tiene los 12 módulos de la app, una vez cada uno', () => {
+test('el anillo tiene los 12 módulos de la app y el que viene (Insumos y bodega), una vez cada uno', () => {
   assert.equal(Object.keys(CORTOS_ES).length, 12)
-  assert.deepEqual([...ORDEN_MODULOS].sort(), Object.keys(CORTOS_ES).sort())
+  assert.deepEqual([...ORDEN_MODULOS].sort(), [...Object.keys(CORTOS_ES), 'insumos'].sort())
+  assert.ok(!('insumos' in CORTOS_ES), 'Insumos y bodega no está en la plataforma: no va en lib/modulos.js')
+  for (const i of ['es', 'en', 'pt']) assert.ok(BASE[i].insumos?.nombre && BASE[i].insumos?.descripcion, `insumos (${i})`)
+})
+
+test('MODAG es un cuaderno de campo: va en el módulo bitácora, no en Fuentes; Insumos no tiene nada conectado', () => {
+  assert.deepEqual(modulosDeServicio('modag').sort(), ['bitacora', 'insumos'])
+  assert.ok(INTEGRACIONES.some((f) => f.modulo === 'bitacora' && f.servicio === 'modag' && f.estado === 'conectada'))
+  assert.ok(!integracionesDe('fuentes').some((f) => f.servicio === 'modag'))
+  assert.ok(integracionesDe('insumos').length > 0 && integracionesDe('insumos').every((f) => f.estado !== 'conectada'))
+  assert.match(FUENTE_MODULOS, /nombre: "Cuaderno de campo"/)
+  assert.equal(BASE.en.bitacora.nombre, 'Field notebook')
+  assert.equal(BASE.pt.bitacora.nombre, 'Caderno de campo')
 })
 
 test('cada integración apunta a un módulo, un conector y un servicio que existen, con un estado válido', () => {
@@ -134,7 +146,7 @@ test('diagrama: nada se pisa y las etiquetas caben en el lienzo, en los tres idi
     const cortos = etiquetas(i)
     assert.deepEqual(solapes(cajasDiagrama(cortos)), [], `solapes en ${i}`)
     const { modulos, conectores, servicios, lineas } = plano(cortos)
-    assert.equal(modulos.length, 12)
+    assert.equal(modulos.length, 13)
     assert.equal(conectores.length, CONECTORES.length)
     assert.equal(servicios.length, SERVICIOS.length)
     for (const p of [...modulos, ...conectores, ...servicios]) assert.ok(Math.hypot(p.x, p.y) < GEO.medio, 'dentro del lienzo')

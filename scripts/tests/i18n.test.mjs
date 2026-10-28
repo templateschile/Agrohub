@@ -108,7 +108,10 @@ test('las plataformas de la app se escriben en un solo lugar', () => {
   assert.deepEqual(PLATAFORMAS, ['iOS', 'Android'])
   assert.equal(listaPlataformas('y'), 'iOS y Android')
   assert.equal(listaPlataformas('and'), 'iOS and Android')
-  for (const i of IDIOMAS) assert.match(TEXTOS[i]['pasos.3'], /\{plataformas\}/, `pasos.3 (${i}) usa la constante`)
+  for (const i of IDIOMAS) {
+    assert.match(TEXTOS[i]['pasos.3.bajada'], /\{plataformas\}/, `pasos.3.bajada (${i}) usa la constante`)
+    assert.match(TEXTOS[i]['marca.texto'], /\{plataformas\}/, `marca.texto (${i}) usa la constante`)
+  }
   for (const i of IDIOMAS) assert.match(TEXTOS[i]['mod.indice.bajada'], /\{plataformas\}/, `mod.indice.bajada (${i}) usa la constante`)
 })
 
@@ -128,4 +131,37 @@ test('subtítulos WebVTT: los tres idiomas, mismos cortes y tiempos que avanzan 
       assert.ok(fin <= 77.1, 'terminan dentro del video (1:17)')
     }
   }
+})
+
+test('Políticas y licencias: ruta en los tres idiomas, diez puntos, titular AgroHubs SpA y enlace en el pie', () => {
+  const app = leer('../../src/App.jsx')
+  assert.ok(app.includes("p('/licencias')"))
+  for (const i of IDIOMAS) {
+    for (let n = 1; n <= 10; n++) assert.ok(TEXTOS[i][`lic.${n}.titulo`] && TEXTOS[i][`lic.${n}.texto`], `lic.${n} (${i})`)
+    assert.match(TEXTOS[i]['lic.titular'], /AgroHubs SpA/)
+  }
+  assert.ok(!/\$|USD|CLP|precio|price|preço/i.test(JSON.stringify(AREAS.licencias)), 'sin precios')
+  assert.match(leer('../../src/components/Footer.jsx'), /to="\/licencias"/)
+})
+
+test('capturas reales: cada archivo del manifiesto existe, pesa poco y tiene alt en los tres idiomas', async () => {
+  const { statSync } = await import('node:fs')
+  const lista = JSON.parse(leer('../../src/lib/capturas.json'))
+  assert.ok(lista.length >= 8)
+  for (const c of lista) {
+    const ruta = new URL(`../../public/capturas/${c.archivo}`, import.meta.url)
+    assert.ok(statSync(ruta).size < 300 * 1024, `${c.archivo} pesa demasiado`)
+    for (const i of IDIOMAS) assert.ok(c.alt?.[i], `${c.archivo}: alt ${i}`)
+  }
+})
+
+test('la bajada del héroe y la descripción de la portada son las frases de Fernando, sin repetirse en la franja del equipo', () => {
+  for (const i of IDIOMAS) {
+    assert.ok(TEXTOS[i]['meta.descripcion'].length <= 155, `meta.descripcion corta (${i})`)
+    assert.notEqual(TEXTOS[i]['pasos.equipo'], TEXTOS[i]['hero.bajada'])
+    assert.notEqual(TEXTOS[i]['hero.bajada'], TEXTOS[i]['hero.bajada2'])
+  }
+  assert.equal(TEXTOS.es['hero.bajada'], 'Te acompañamos en el campo para que tus datos se conviertan en decisiones.')
+  assert.match(TEXTOS.es['meta.descripcion'], /^Tecnología al alcance de cada agricultor/)
+  assert.match(leer('../../index.html'), /Tecnología al alcance de cada agricultor/)
 })

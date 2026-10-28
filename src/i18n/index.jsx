@@ -14,6 +14,7 @@ import MODULOS_PAGINAS from "./datos/modulos-paginas.js"
 import APPS_TRAD from "./datos/apps.js"
 import { MODULOS } from "../lib/modulos"
 import { APPS } from "../lib/apps"
+import { MODULOS_PROXIMOS } from "../lib/modulos-proximos"
 
 const TRADUCTORES = Object.fromEntries(Object.keys(TEXTOS).map((i) => [i, traductor(TEXTOS[i], TEXTOS[PREDETERMINADO])]))
 
@@ -49,6 +50,19 @@ const CACHE_MODULOS = {}
 export function useModulos() {
   const { idioma } = useIdioma()
   return (CACHE_MODULOS[idioma] ||= modulosDe(idioma))
+}
+
+// Módulos anunciados como "Próximamente" (lib/modulos-proximos.js), con sus textos en el idioma activo
+export function modulosProximosDe(idioma) {
+  return MODULOS_PROXIMOS.map((m) => {
+    const t = { ...MODULOS_BASE.es?.[m.key], ...MODULOS_BASE[idioma]?.[m.key] }
+    return { ...m, ...t, etiqueta: t.etiqueta || t.corto }
+  })
+}
+const CACHE_PROXIMOS = {}
+export function useModulosProximos() {
+  const { idioma } = useIdioma()
+  return (CACHE_PROXIMOS[idioma] ||= modulosProximosDe(idioma))
 }
 
 export function appsDe(idioma) {

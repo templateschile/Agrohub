@@ -6,7 +6,7 @@ export default {
   en: {
     bitacora: {
       pagina: {
-        badge: "Field log and traceability",
+        badge: "Field notebook (farm log)",
         titulo: "Everything that happens in the field,", destacado: "logged by block",
         bajada: "Log field work, inputs and harvest from your phone as it happens. Every entry is tied to its block and its farm.",
         features: [
@@ -146,7 +146,7 @@ export default {
   pt: {
     bitacora: {
       pagina: {
-        badge: "Caderno de campo e rastreabilidade",
+        badge: "Caderno de campo",
         titulo: "O que acontece no campo,", destacado: "registrado por talhão",
         bajada: "Anote tarefas, insumos e colheita pelo celular, na hora em que acontecem. Cada registro fica ligado ao talhão e à propriedade.",
         features: [

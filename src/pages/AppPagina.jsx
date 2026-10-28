@@ -11,6 +11,8 @@ import { HubMark } from "../components/HubMark"
 import { Enlace, useApps, useIdioma, useModulos } from "../i18n"
 import { estiloAcento } from "../lib/apps"
 import { hayVideo } from "../lib/video"
+import Captura from "../components/Captura"
+import { capturasDeModulo } from "../lib/capturas"
 
 // Plantilla común de las páginas de app (/apps/<slug>), con los datos de lib/apps.js ya traducidos:
 // 1 hero con foto · 2 problemas → soluciones · 3 cómo funciona · (qué incluye) · (video, si existe
@@ -107,6 +109,19 @@ export default function AppPagina() {
           </div>
         </div>
       </section>
+
+      {/* Capturas reales: las apps que reutilizan un módulo de AgroHubs (DronX → Drones) muestran sus pantallas */}
+      {app.modulo && (capturasDeModulo(app.modulo).escritorio || capturasDeModulo(app.modulo).movil) && (
+        <section className="ah-bloque ah-appcap" aria-labelledby={id("capturas")}>
+          <div className="container">
+            <h2 id={id("capturas")} className="ah-seccion">{t("apps.capturas.titulo")}</h2>
+            <div className="ah-modcap ah-modcap--claro">
+              <Captura captura={capturasDeModulo(app.modulo).escritorio} vista="escritorio" className="ah-modcap__escritorio" />
+              <Captura captura={capturasDeModulo(app.modulo).movil} vista="movil" className="ah-modcap__movil" />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 2 · Problemas → soluciones */}
       <section className="ah-bloque" aria-labelledby={id("problemas")}>

@@ -3,6 +3,7 @@ import AgendarReunion from "../components/AgendarReunion"
 import Integraciones from "../components/Integraciones"
 import Ecosistema from "../components/Ecosistema"
 import AppsEcosistema from "../components/AppsEcosistema"
+import MarcaPropia from "../components/MarcaPropia"
 import AppVideo from "../components/AppVideo"
 import Pasos from "../components/Pasos"
 import Foto from "../components/Foto"
@@ -28,7 +29,8 @@ export default function Home() {
           <div className="ah-hero__texto">
             <p className="ah-eyebrow">{t("hero.eyebrow", { activas })}</p>
             <h1 id="hero-titulo" className="ah-display">{t("hero.titulo")}</h1>
-            <p className="ah-lead">{t("hero.bajada")}</p>
+            <p className="ah-lead ah-hero__bajada">{t("hero.bajada")}</p>
+            <p className="ah-hero__bajada2">{t("hero.bajada2")}</p>
             <div className="ah-acciones">
               <a className="ah-btn" href="#contacto">{t("hero.agendar")}</a>
               <Enlace className="ah-btn ah-btn--quieto" to="/evaluacion">{t("hero.evaluar")}</Enlace>
@@ -46,6 +48,8 @@ export default function Home() {
       <Integraciones />
 
       <AppsEcosistema />
+
+      <MarcaPropia />
 
       <section className="ah-cultivos" aria-labelledby="cultivos-titulo">
         <div className="container">

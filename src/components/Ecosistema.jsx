@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { Pause, Play } from "lucide-react"
 import { HubMark } from "./HubMark"
 import DESTACADAS from "../../data/apis/destacadas.json"
-import { useIdioma, useModulos, Enlace } from "../i18n"
+import { useIdioma, useModulos, useModulosProximos, Enlace } from "../i18n"
 import TRAD from "../i18n/datos/ecosistema.js"
 import {
   ESTADOS, SERVICIOS, GEO, ORDEN_MODULOS, conectorPorId, servicioPorId, integracionesDe, integracionesDeServicio,
@@ -24,12 +24,25 @@ const SERV_POR_ESTADO = Object.keys(ESTADOS).map(e => ({ estado: e, servicios: S
 export const SLUG_MODULO = {
   dashboard_sensores: "sensores", bitacora: "bitacora", chat_ia: "chat-ia", documentos: "biblioteca", fuentes: "fuentes",
   clima: "clima", recomendaciones: "recomendaciones", fenologia: "fenologia", calculadoras: "calculadoras",
-  eventos: "eventos", tienda: "mercado", drones: "drones",
+  eventos: "eventos", tienda: "mercado", drones: "drones", insumos: "insumos",
 }
 export const moduloDeSlug = slug => Object.keys(SLUG_MODULO).find(k => SLUG_MODULO[k] === slug) || null
 
 const PLANOS = {}
 const planoDe = (idioma, modulos) => (PLANOS[idioma] ||= plano(Object.fromEntries(modulos.map(m => [m.key, m.etiqueta]))))
+
+// Mouse de escritorio (no táctil): ahí el diagrama y la lista se adelantan al pasar el cursor
+function usePunteroFino() {
+  const consulta = "(hover: hover) and (pointer: fine)"
+  const [fino, setFino] = useState(() => typeof window !== "undefined" && window.matchMedia(consulta).matches)
+  useEffect(() => {
+    const mq = window.matchMedia(consulta)
+    const cambio = () => setFino(mq.matches)
+    mq.addEventListener("change", cambio)
+    return () => mq.removeEventListener("change", cambio)
+  }, [])
+  return fino
+}
 
 function useCompacto() {
   const consulta = "(max-width: 40rem)"
@@ -64,19 +77,32 @@ function Estado({ estado }) {
 
 export default function Ecosistema() {
   const [params, setParams] = useSearchParams()
-  const [hover, setHover] = useState(null)
+  const [vista, setVista] = useState(null)
   const [pausado, setPausado] = useState(false)
   const compacto = useCompacto()
+  const fino = usePunteroFino()
   const seccion = useRef(null)
+  const reloj = useRef(null)
   const { idioma, t } = useIdioma()
-  const modulos = useModulos()
+  const disponibles = useModulos()
+  const proximos = useModulosProximos()
+  const modulos = useMemo(() => [...disponibles, ...proximos], [disponibles, proximos])
   const MOD = Object.fromEntries(modulos.map(m => [m.key, m]))
+  useEffect(() => () => clearTimeout(reloj.current), [])
 
   const modulo = moduloDeSlug(params.get("modulo"))
   const servicio = !modulo && servicioPorId(params.get("servicio")) ? params.get("servicio") : null
   const sel = modulo ? { tipo: "modulo", id: modulo } : servicio ? { tipo: "servicio", id: servicio } : null
-  // Pasar el mouse muestra un adelanto solo mientras no hay nada elegido: con un filtro puesto, manda el filtro
-  const luz = resaltado(sel || hover)
+  // Adelanto: en escritorio, pasar el cursor por un módulo o servicio resalta lo suyo y cambia la lista, con
+  // una pequeña demora para no parpadear; al salir vuelve lo elegido. Con teclado, el foco en un botón hace lo
+  // mismo. Solo el clic (o Enter) fija la selección y cambia la URL.
+  const previsualizar = (x, { puntero = true } = {}) => {
+    if (puntero && !fino) return
+    clearTimeout(reloj.current)
+    reloj.current = setTimeout(() => setVista(x), x ? 140 : 260)
+  }
+  const mostrado = vista || sel
+  const luz = resaltado(mostrado)
 
   // Si llegan con un filtro en el enlace, se abre el diagrama (solo al cargar: por eso no depende de `sel`)
   const alCargar = useRef(Boolean(sel))
@@ -89,7 +115,8 @@ export default function Ecosistema() {
     p.delete("modulo"); p.delete("servicio")
     if (valor) p.set(clave, valor)
     setParams(p, { replace: true, preventScrollReset: true })
-    setHover(null)
+    clearTimeout(reloj.current)
+    setVista(null)
   }
   const elegirModulo = key => filtrar("modulo", key && key !== modulo ? SLUG_MODULO[key] : null)
   const elegirServicio = id => filtrar("servicio", id && id !== servicio ? id : null)
@@ -103,24 +130,31 @@ export default function Ecosistema() {
       <div className="container">
         <div className="eco-cabeza">
           <h2 id="eco-titulo" className="ah-seccion">{t("eco.titulo")}</h2>
-          <p className="ah-lead">{t("eco.bajada")}</p>
+          <ul className="eco-cifras">
+            <li><b>{disponibles.length}</b>{t("eco.cifra.modulos")}</li>
+            <li><b>{RESUMEN.conectores}</b>{t("eco.cifra.conectores")}</li>
+            <li><b>{RESUMEN.servicios}</b>{t("eco.cifra.servicios")}</li>
+          </ul>
         </div>
 
         <div className="eco-filtro" role="group" aria-labelledby="eco-filtro-titulo">
-          <p id="eco-filtro-titulo" className="eco-filtro__titulo">{t("eco.filtrar")}</p>
+          <p id="eco-filtro-titulo" className="eco-filtro__titulo">{t("eco.filtrar")} <span className="eco-filtro__ayuda">{t("eco.bajada")}</span></p>
           <ul className="eco-chips">
             <li>
               <button type="button" className="eco-chip eco-chip--todo" aria-pressed={!sel} onClick={verTodo}>{t("eco.todos")}</button>
             </li>
             {ordenChips.map(key => {
-              const { corto, icono: I } = MOD[key]
+              const { corto, icono: I, proximamente } = MOD[key]
               const n = integracionesDe(key).length
+              const x = { tipo: "modulo", id: key }
               return (
                 <li key={key}>
-                  <button type="button" className="eco-chip" aria-pressed={modulo === key} onClick={() => elegirModulo(key)}
-                    onMouseEnter={() => setHover({ tipo: "modulo", id: key })} onMouseLeave={() => setHover(null)}>
+                  <button type="button" className={`eco-chip${proximamente ? " eco-chip--proximo" : ""}`} aria-pressed={modulo === key} onClick={() => elegirModulo(key)}
+                    onMouseEnter={() => previsualizar(x)} onMouseLeave={() => previsualizar(null)}
+                    onFocus={() => previsualizar(x, { puntero: false })} onBlur={() => previsualizar(null, { puntero: false })}>
                     <I size={18} strokeWidth={1.75} aria-hidden="true" />
                     <span>{corto}</span>{" "}
+                    {proximamente && <span className="eco-chip__pronto">{t("eco.pronto")}</span>}
                     <span className="eco-chip__n">{n}<span className="visually-hidden"> {t.plural("eco.integraciones", n).replace(/^\d+\s*/, "")}</span></span>
                   </button>
                 </li>
@@ -132,9 +166,9 @@ export default function Ecosistema() {
         <div className="eco-grid">
           <figure className={`eco-mapa${luz ? " hay-luz" : ""}${pausado ? " es-pausado" : ""}`} aria-labelledby="eco-mapa-desc">
             <Diagrama idioma={idioma} modulos={modulos} MOD={MOD} luz={luz} compacto={compacto} clase={clase}
-              elegirModulo={elegirModulo} elegirServicio={elegirServicio} setHover={setHover} />
+              elegirModulo={elegirModulo} elegirServicio={elegirServicio} setHover={previsualizar} />
             <figcaption id="eco-mapa-desc" className="visually-hidden">
-              {t("eco.descripcionDiagrama", { conectores: RESUMEN.conectores, servicios: RESUMEN.servicios })}
+              {t("eco.descripcionDiagrama", { modulos: modulos.length, conectores: RESUMEN.conectores, servicios: RESUMEN.servicios })}
             </figcaption>
             <div className="eco-mapa__pie">
               <ul className="eco-leyenda" aria-label={t("eco.leyenda")}>
@@ -149,7 +183,7 @@ export default function Ecosistema() {
             </div>
           </figure>
 
-          <Panel sel={sel} MOD={MOD} verTodo={verTodo} elegirModulo={elegirModulo} elegirServicio={elegirServicio} />
+          <Panel sel={mostrado} MOD={MOD} disponibles={disponibles.length} verTodo={verTodo} elegirModulo={elegirModulo} elegirServicio={elegirServicio} />
         </div>
       </div>
     </section>
@@ -221,10 +255,10 @@ function Diagrama({ idioma, modulos, MOD, luz, compacto, clase, elegirModulo, el
 
       <g className="eco-modulos">
         {PLANO.modulos.map(m => {
-          const { etiqueta, icono: I } = MOD[m.key]
+          const { etiqueta, icono: I, proximamente } = MOD[m.key]
           const activo = luz?.modulos.has(m.key)
           return (
-            <g key={m.key} data-modulo={m.key} className={clase(activo, "eco-mod")} transform={`translate(${m.x} ${m.y})`}
+            <g key={m.key} data-modulo={m.key} className={clase(activo, `eco-mod${proximamente ? " eco-mod--proximo" : ""}`)} transform={`translate(${m.x} ${m.y})`}
               onClick={() => elegirModulo(m.key)} onMouseEnter={() => setHover({ tipo: "modulo", id: m.key })} onMouseLeave={() => setHover(null)}>
               {compacto ? (
                 <>
@@ -252,7 +286,7 @@ function Diagrama({ idioma, modulos, MOD, luz, compacto, clase, elegirModulo, el
   )
 }
 
-function Panel({ sel, MOD, verTodo, elegirModulo, elegirServicio }) {
+function Panel({ sel, MOD, disponibles, verTodo, elegirModulo, elegirServicio }) {
   const { t, conector, que, detalle } = useTextosEco()
   let titulo, cuerpo
   if (sel?.tipo === "modulo") {
@@ -263,6 +297,7 @@ function Panel({ sel, MOD, verTodo, elegirModulo, elegirServicio }) {
     cuerpo = (
       <>
         <p className="eco-panel__bajada">{m.descripcion}</p>
+        {m.proximamente && <p className="eco-panel__pronto"><span className="eco-estado eco-estado--proximamente">{t("eco.estado.proximamente")}</span> {t("eco.moduloProximo")}</p>}
         {grupos.map(({ c, filas }) => (
           <div key={c.id} className="eco-grupo">
             <p className="eco-grupo__titulo">{t("eco.conector", { nombre: conector(c) })}</p>
@@ -307,7 +342,7 @@ function Panel({ sel, MOD, verTodo, elegirModulo, elegirServicio }) {
     )
   } else {
     const { porEstado } = RESUMEN
-    titulo = t("eco.resumen.titulo", { servicios: RESUMEN.servicios })
+    titulo = t("eco.resumen.titulo", { modulos: disponibles, servicios: RESUMEN.servicios })
     cuerpo = (
       <>
         <p className="eco-panel__bajada">{t("eco.resumen.bajada", { conectadas: porEstado.conectada, proximas: porEstado.proximamente, pedido: porEstado.pedido })}</p>

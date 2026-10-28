@@ -1,0 +1,194 @@
+[
+  {
+    "archivo": "sensores-movil.webp",
+    "pantalla": "sensores",
+    "vista": "movil",
+    "ancho": 780,
+    "alto": 1688,
+    "alt": {
+      "es": "App AgroHubs: panel de sensores del predio con un gráfico de la humedad de suelo de los últimos 14 días y tarjetas de humedad y temperatura.",
+      "en": "AgroHubs app: farm sensor dashboard with a 14-day soil moisture chart and soil moisture and temperature cards.",
+      "pt": "App AgroHubs: painel de sensores da propriedade com um gráfico da umidade do solo dos últimos 14 dias e cartões de umidade e temperatura."
+    }
+  },
+  {
+    "archivo": "chat-escritorio.webp",
+    "pantalla": "chat",
+    "vista": "escritorio",
+    "ancho": 1440,
+    "alto": 900,
+    "alt": {
+      "es": "Panel AgroHubs: el asistente IA responde sobre el riesgo de helada y el riego del predio, con recomendaciones y las fuentes consultadas.",
+      "en": "AgroHubs dashboard: the AI assistant answers questions about frost risk and irrigation on the farm, with recommendations and the sources it used.",
+      "pt": "Painel AgroHubs: o assistente de IA responde sobre o risco de geada e a irrigação da propriedade, com recomendações e as fontes consultadas."
+    }
+  },
+  {
+    "archivo": "chat-movil.webp",
+    "pantalla": "chat",
+    "vista": "movil",
+    "ancho": 780,
+    "alto": 1688,
+    "alt": {
+      "es": "App AgroHubs: conversación con el asistente IA, que propone un programa de riego por sectores a partir de calicatas, sensores y clima.",
+      "en": "AgroHubs app: a conversation with the AI assistant, which proposes a sector-by-sector irrigation schedule based on soil pits, sensors and weather.",
+      "pt": "App AgroHubs: conversa com o assistente de IA, que propõe um programa de irrigação por setores com base em trincheiras de solo, sensores e clima."
+    }
+  },
+  {
+    "archivo": "documentos-escritorio.webp",
+    "pantalla": "documentos",
+    "vista": "escritorio",
+    "ancho": 1440,
+    "alto": 900,
+    "alt": {
+      "es": "Panel AgroHubs: biblioteca de documentos del predio organizada en carpetas, con análisis de suelo, planes de riego y fichas técnicas públicas o privadas.",
+      "en": "AgroHubs dashboard: farm document library organized in folders, with soil analyses, irrigation plans and technical sheets set as public or private.",
+      "pt": "Painel AgroHubs: biblioteca de documentos da propriedade organizada em pastas, com análises de solo, planos de irrigação e fichas técnicas públicas ou privadas."
+    }
+  },
+  {
+    "archivo": "documentos-movil.webp",
+    "pantalla": "documentos",
+    "vista": "movil",
+    "ancho": 780,
+    "alto": 1688,
+    "alt": {
+      "es": "App AgroHubs: sección Documentos con buscador, filtros, carpetas y botones para subir archivos o crear una carpeta.",
+      "en": "AgroHubs app: Documents section with search, filters, folders and buttons to upload files or create a folder.",
+      "pt": "App AgroHubs: seção Documentos com busca, filtros, pastas e botões para enviar arquivos ou criar uma pasta."
+    }
+  },
+  {
+    "archivo": "clima-escritorio.webp",
+    "pantalla": "clima",
+    "vista": "escritorio",
+    "ancho": 1440,
+    "alto": 900,
+    "alt": {
+      "es": "Panel AgroHubs: estación agroclimática con indicadores de horas frío, heladas, evapotranspiración y grados día, y una tabla de datos diarios.",
+      "en": "AgroHubs dashboard: weather station view with chill hours, frost, evapotranspiration and degree-day indicators, plus a table of daily readings.",
+      "pt": "Painel AgroHubs: estação agroclimática com indicadores de horas de frio, geadas, evapotranspiração e graus-dia, e uma tabela de dados diários."
+    }
+  },
+  {
+    "archivo": "clima-movil.webp",
+    "pantalla": "clima",
+    "vista": "movil",
+    "ancho": 780,
+    "alto": 1688,
+    "alt": {
+      "es": "App AgroHubs: clima del predio según la estación más cercana, con temperatura mínima y máxima, humedad, lluvia, ETo e indicadores de frío y heladas.",
+      "en": "AgroHubs app: farm weather from the nearest station, with minimum and maximum temperature, humidity, rain, ETo and chill and frost indicators.",
+      "pt": "App AgroHubs: clima da propriedade pela estação mais próxima, com temperatura mínima e máxima, umidade, chuva, ETo e indicadores de frio e geadas."
+    }
+  },
+  {
+    "archivo": "recomendaciones-escritorio.webp",
+    "pantalla": "recomendaciones",
+    "vista": "escritorio",
+    "ancho": 1440,
+    "alto": 900,
+    "alt": {
+      "es": "Panel AgroHubs: recomendaciones por clima para el predio, como un aviso de helada y otro de riego, con el pronóstico de los próximos días.",
+      "en": "AgroHubs dashboard: weather-based recommendations for the farm, such as a frost alert and an irrigation notice, with the forecast for the coming days.",
+      "pt": "Painel AgroHubs: recomendações baseadas no clima para a propriedade, como um alerta de geada e outro de irrigação, com a previsão dos próximos dias."
+    }
+  },
+  {
+    "archivo": "recomendaciones-movil.webp",
+    "pantalla": "recomendaciones",
+    "vista": "movil",
+    "ancho": 780,
+    "alto": 1688,
+    "alt": {
+      "es": "App AgroHubs: notificaciones con avisos de lluvia, helada, calor y viento, cada uno con su recomendación.",
+      "en": "AgroHubs app: notifications with rain, frost, heat and wind alerts, each with its recommendation.",
+      "pt": "App AgroHubs: notificações com alertas de chuva, geada, calor e vento, cada um com sua recomendação."
+    }
+  },
+  {
+    "archivo": "drones-escritorio.webp",
+    "pantalla": "drones",
+    "vista": "escritorio",
+    "ancho": 1440,
+    "alto": 900,
+    "alt": {
+      "es": "Panel AgroHubs: solicitudes de vuelos de dron del predio (NDVI, fumigación, mapeo y riego) con su estado y precio cotizado.",
+      "en": "AgroHubs dashboard: the farm's drone flight requests (NDVI, spraying, mapping and irrigation) with their status and quoted price.",
+      "pt": "Painel AgroHubs: solicitações de voos de drone da propriedade (NDVI, pulverização, mapeamento e irrigação) com status e preço cotado."
+    }
+  },
+  {
+    "archivo": "drones-movil.webp",
+    "pantalla": "drones",
+    "vista": "movil",
+    "ancho": 780,
+    "alto": 1688,
+    "alt": {
+      "es": "App AgroHubs: sección Servicios con la tarjeta de drones DronX para pedir fumigación, mapas NDVI o mapeo, y servicios de aliados.",
+      "en": "AgroHubs app: Services section with the DronX drone card to request spraying, NDVI maps or mapping, plus partner services.",
+      "pt": "App AgroHubs: seção Serviços com o cartão de drones DronX para pedir pulverização, mapas NDVI ou mapeamento, e serviços de parceiros."
+    }
+  },
+  {
+    "archivo": "tienda-escritorio.webp",
+    "pantalla": "tienda",
+    "vista": "escritorio",
+    "ancho": 1440,
+    "alto": 900,
+    "alt": {
+      "es": "Panel AgroHubs: catálogo de la tienda con cosechas, servicios, tecnología, fertilizantes e insumos, con su precio, vendedor y estado de publicación.",
+      "en": "AgroHubs dashboard: store catalog with harvests, services, technology, fertilizers and supplies, showing price, seller and publishing status.",
+      "pt": "Painel AgroHubs: catálogo da loja com colheitas, serviços, tecnologia, fertilizantes e insumos, com preço, vendedor e status de publicação."
+    }
+  },
+  {
+    "archivo": "tienda-movil.webp",
+    "pantalla": "tienda",
+    "vista": "movil",
+    "ancho": 780,
+    "alto": 1688,
+    "alt": {
+      "es": "App AgroHubs: tienda con buscador, categorías, la opción de publicar una cosecha o un servicio y servicios destacados.",
+      "en": "AgroHubs app: store with search, categories, an option to list a harvest or a service, and featured services.",
+      "pt": "App AgroHubs: loja com busca, categorias, a opção de anunciar uma colheita ou um serviço e serviços em destaque."
+    }
+  },
+  {
+    "archivo": "oportunidades-escritorio.webp",
+    "pantalla": "oportunidades",
+    "vista": "escritorio",
+    "ancho": 1440,
+    "alto": 900,
+    "alt": {
+      "es": "Panel AgroHubs: oportunidades públicas con un resumen de licitaciones abiertas, filtros y una lista de licitaciones agrícolas sugeridas con su cierre y monto.",
+      "en": "AgroHubs dashboard: public opportunities with a summary of open tenders, filters and a list of suggested agricultural tenders with their deadline and amount.",
+      "pt": "Painel AgroHubs: oportunidades públicas com um resumo das licitações abertas, filtros e uma lista de licitações agrícolas sugeridas com prazo e valor."
+    }
+  },
+  {
+    "archivo": "predio-escritorio.webp",
+    "pantalla": "predio",
+    "vista": "escritorio",
+    "ancho": 1440,
+    "alto": 900,
+    "alt": {
+      "es": "Panel AgroHubs: ficha de un predio habilitado con sus datos y sus módulos activos, como sensores, bitácora, chat IA, biblioteca, clima y drones.",
+      "en": "AgroHubs dashboard: an approved farm's page with its details and active modules, such as sensors, field log, AI chat, library, weather and drones.",
+      "pt": "Painel AgroHubs: página de uma propriedade habilitada com seus dados e módulos ativos, como sensores, caderno de campo, chat de IA, biblioteca, clima e drones."
+    }
+  },
+  {
+    "archivo": "predio-movil.webp",
+    "pantalla": "predio",
+    "vista": "movil",
+    "ancho": 780,
+    "alto": 1688,
+    "alt": {
+      "es": "App AgroHubs: perfil del productor con su hub y su predio, y accesos a productos, eventos, documentos, conectores y configuración con el asistente.",
+      "en": "AgroHubs app: grower profile with their hub and farm, and shortcuts to products, events, documents, connectors and setup with the assistant.",
+      "pt": "App AgroHubs: perfil do produtor com seu hub e sua propriedade, e atalhos para produtos, eventos, documentos, conectores e configuração com o assistente."
+    }
+  }
+]

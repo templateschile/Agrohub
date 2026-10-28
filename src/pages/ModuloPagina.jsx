@@ -1,16 +1,33 @@
 import { CheckCircle2, ArrowRight, Smartphone, Globe } from 'lucide-react'
 import { useInView } from '../hooks/useInView'
 import { useIdioma, useModulos, Enlace } from '../i18n'
+import Captura from '../components/Captura'
+import { capturasDeModulo } from '../lib/capturas'
 
 // Cabecera común de las páginas de módulo (las armadas aquí y las hechas a mano: Dashboard, AI Chat,
 // Documentos, Eventos y Tienda): nombre del módulo, h1 (el único de la página), bajada y botones.
+// Capturas reales del módulo (lib/capturas.js): la vista de escritorio en una ventana y la del celular
+// en un teléfono, a la derecha del texto. Sin captura, la cabecera queda de una columna.
+function CapturasModulo({ moduloKey }) {
+  const { escritorio, movil } = capturasDeModulo(moduloKey)
+  if (!escritorio && !movil) return null
+  return (
+    <div className={`ah-modcap${escritorio ? "" : " ah-modcap--solo-movil"}`}>
+      {escritorio && <Captura captura={escritorio} vista="escritorio" prioridad className="ah-modcap__escritorio" />}
+      {movil && <Captura captura={movil} vista="movil" prioridad className="ah-modcap__movil" />}
+    </div>
+  )
+}
+
 export function HeroModulo({ moduloKey, badge, titulo, destacado, bajada }) {
   const { t } = useIdioma()
   const m = useModulos().find((x) => x.key === moduloKey)
   const Icon = m?.icono
+  const conCaptura = Boolean(capturasDeModulo(moduloKey).escritorio || capturasDeModulo(moduloKey).movil)
   return (
     <section className="pt-32 pb-16 bg-gradient-to-b from-agro-green-900 to-agro-green-800">
-      <div className="max-w-7xl mx-auto px-6 lg:px-14">
+      <div className={`max-w-7xl mx-auto px-6 lg:px-14${conCaptura ? " ah-modhero" : ""}`}>
+        <div>
         <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
           {Icon && <Icon size={14} className="text-agro-green-300" aria-hidden="true" />}
           <span className="text-white/85 text-sm font-medium">{badge || m?.nombre}</span>
@@ -27,6 +44,8 @@ export function HeroModulo({ moduloKey, badge, titulo, destacado, bajada }) {
             {t('mod.cta.todos')}
           </Enlace>
         </div>
+        </div>
+        <CapturasModulo moduloKey={moduloKey} />
       </div>
     </section>
   )
