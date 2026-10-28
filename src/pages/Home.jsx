@@ -30,7 +30,7 @@ export default function Home() {
             <div className="ah-aviso__cabeza"><span>Aviso de helada</span><time>Hoy, 18:40</time></div>
             <p className="ah-aviso__titulo">Pablo, se viene una helada</p>
             <p className="ah-aviso__cifra"><b>−2<span className="ah-unidad">°C</span></b>a las 05:00</p>
-            <p className="ah-aviso__sector"><span className="ah-cuadro ah-linea--ambar" aria-hidden="true" />Sector 5 en plena flor: riesgo alto</p>
+            <p className="ah-aviso__sector"><span className="ah-cuadro ah-linea--ambar" aria-hidden="true" />Sector 5, en plena flor. Riesgo alto.</p>
             <a className="ah-aviso__ir" href="#ejemplo">Ver el checklist</a>
           </figure>
         </div>
@@ -55,7 +55,7 @@ export default function Home() {
             <figure className="ah-agenda__foto" data-slot="agenda" data-alt="Tu predio en temporada: flores de los frutales">
               <Foto foto={FOTOS.flor} sizes="(min-width: 60rem) 35vw, 100vw" />
             </figure>
-            <div className="ah-agenda__eval"><p>¿Quieres una propuesta a tu medida? Evalúa tu operación en 5 minutos.</p><Link className="ah-btn ah-btn--quieto" to="/evaluacion">Hacer la evaluación</Link></div>
+            <div className="ah-agenda__eval"><p>Si prefieres una propuesta a tu medida, evalúa tu operación en 5 minutos.</p><Link className="ah-btn ah-btn--quieto" to="/evaluacion">Hacer la evaluación</Link></div>
           </div>
           <div className="ah-agenda__form">
             <AgendarReunion origen="portada" />

@@ -12,7 +12,7 @@ const ESCENAS = [
   { id: "disperso", capitulo: "Disperso", dur: 8, sub: "Hoy cada dato vive en otro lado: el WhatsApp del asesor, la planilla, la estación, el cuaderno." },
   { id: "junto", capitulo: "Un solo lugar", dur: 7, sub: "AgroHubs lo junta en un solo lugar: tu predio, tus datos y tus avisos." },
   { id: "modulos", capitulo: "12 módulos", dur: MODULOS.length * POR_MODULO },
-  { id: "helada", capitulo: "La helada", dur: 11, sub: "Pablo, se viene una helada. El sector 5 está en plena flor y en riesgo: haz esto, aquí tienes el checklist." },
+  { id: "helada", capitulo: "La helada", dur: 11, sub: "Pablo, se viene una helada. El sector 5 está en plena flor y en riesgo. Enciende los ventiladores, parte el riego y aquí tienes el checklist." },
   { id: "capacitacion", capitulo: "Capacitación", dur: 7, sub: "Te enseñamos a usarla en tu campo: días de campo, capacitación para tu equipo y acompañamiento." },
   { id: "medida", capitulo: "A tu medida", dur: 8, sub: "Y si algo falta, conectamos tus sistemas o lo desarrollamos a tu medida." },
 ]
@@ -180,7 +180,7 @@ export default function VideoExplicativo() {
 
           </div>
 
-          <p className="ah-player__subtitulo" aria-live={reproduciendo ? "off" : "polite"}>{empezado ? subtitulo : "Qué hace AgroHubs, cada módulo y un ejemplo real de un día con helada."}</p>
+          <p className="ah-player__subtitulo" aria-live={reproduciendo ? "off" : "polite"}>{empezado ? subtitulo : "Qué hace AgroHubs, cada módulo y un ejemplo de un día con helada."}</p>
 
           <div className="ah-player__controles">
             <button type="button" className={`ah-player__boton${empezado ? "" : " es-inicio"}`} onClick={reproduciendo ? () => setReproduciendo(false) : reproducir}>
