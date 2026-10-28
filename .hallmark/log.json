@@ -1,0 +1,39 @@
+[
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "page",
+  "shape": "Workbench",
+  "theme": "wayfind",
+  "axes": "light/mono/cool",
+  "hero": "Poster",
+  "nav": "edge-aligned",
+  "footer": "statement",
+  "imagery": "photographs, library 3 and the user orchard; the product built",
+  "photos": [
+   "D%C3%BClmen,_Hausd%C3%BClmen,_Zaun_einer_Wiese_--_2021_--_5083.jpg",
+   "Grape_worker.jpg",
+   "Apple-tree_blossoms_2017_G3.jpg"
+  ],
+  "entry": "Poster hero with two ink signs",
+  "fingerprint": "workbench/wayfind/poster/edge/statement/product",
+  "sections": [
+   "Poster hero",
+   "Table + phone (Pablo)",
+   "Showcase video",
+   "Index (modules)",
+   "Lead photo + rows",
+   "Table band (integrations)",
+   "Form + photo"
+  ],
+  "signature": "Pablo frost alert as an ink sign, its sources on a departure board",
+  "waived": [
+   "64",
+   "39b",
+   "85",
+   "77"
+  ],
+  "prompt": "AgroHubs: one app, 12 modules, training and custom tech; book a meeting",
+  "date": "2026-10-26"
+ }
+]

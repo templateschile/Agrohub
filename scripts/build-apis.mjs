@@ -620,7 +620,7 @@ CASOS.forEach((t) => listPage('caso', t))
   const ESTADO_CORTO = { integrada: 'Conectada', proxy: 'Conectada', scheduler: 'Conectada', plataforma: 'Conectada', planificada: 'Próximamente', evaluacion: 'A pedido', enlace: 'Enlace' }
   // "ODEPA — Datos Abiertos" → nombre "ODEPA", detalle "Datos Abiertos" (sin rayas en la portada)
   const partes = (n) => { const m = n.match(/^(.*?)\s+(?:—\s+(.*)|\((.*)\))$/); return m ? [m[1], m[2] || m[3]] : [n, ''] }
-  const fila = (a) => { const [nombre, detalle] = partes(a.nombre); return { slug: a.slug, nombre, detalle, pais: PAIS[a.pais] || a.pais, estado: ESTADO_CORTO[a.estado_agrohubs] || 'A pedido' } }
+  const fila = (a) => { const [nombre, detalle] = partes(a.nombre); return { slug: a.slug, nombre, detalle, pais: PAIS[a.pais] || a.pais, categoria: a.categorias[0], estado: ESTADO_CORTO[a.estado_agrohubs] || 'A pedido' } }
   const top = (lista, campo) => lista.slice().sort((x, y) => y.ranking[campo] - x.ranking[campo] || x.nombre.localeCompare(y.nombre)).slice(0, 6).map(fila)
   writeFileSync(join(ROOT, 'data', 'apis', 'destacadas.json'), JSON.stringify({
     _nota: 'Generado por scripts/build-apis.mjs (npm run apis): no editar a mano.',

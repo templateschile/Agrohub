@@ -67,7 +67,7 @@ export default function AgendarReunion({ origen = "portada", compacto = false })
             return (
               <span key={v} className="ah-hora">
                 <input type="radio" name={`horario-${origen}`} id={id(h)} value={v} checked={horario === v} onChange={() => setHorario(v)} />
-                <label htmlFor={id(h)}><b>{compacto ? diaCorto(dia) : diaLargo(dia)}</b>{h} hrs</label>
+                <label htmlFor={id(h)}><b>{diaCorto(dia)}</b>{h} hrs</label>
               </span>
             )
           })}
