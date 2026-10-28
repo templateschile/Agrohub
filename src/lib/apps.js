@@ -1,12 +1,23 @@
-// Las apps del ecosistema AgroHubs: el menú "Apps" y las páginas /apps/<slug> (AppPagina).
-// Datos puros (sin JSX ni íconos) para poder probarlos con node:test (scripts/tests).
+// Las apps del ecosistema AgroHubs: el menú "Apps", la sección de la portada (AppsEcosistema) y las
+// páginas /apps/<slug> (AppPagina). Datos puros (sin JSX ni íconos) para probarlos con node:test
+// (scripts/tests). Los textos están en español; el inglés y el portugués van en src/i18n/datos/apps.js.
 //
-// Cada app con página sigue la misma plantilla: hero, video (/videos/<slug>.mp4 y .jpg),
-// tres problemas con su solución, cómo funciona en 3 pasos, para quién es, cómo se conecta
-// con AgroHubs, preguntas frecuentes y cierre. `incluye` es opcional.
-// - `sitio`: sitio propio de la app (se abre en otra pestaña). Sin sitio, el CTA abre el contacto.
-// - `modulo`: la página reutiliza el contenido de ese módulo (lib/modulos.js), p. ej. DronX → Drones.
+// Cada app con página sigue la misma plantilla: hero con foto, tres problemas con su solución, cómo
+// funciona en 3 pasos, qué incluye (opcional), para quién es, cómo se conecta con AgroHubs, preguntas
+// frecuentes y cierre (o el formulario de interés, si la app aún no existe).
+// - `sitio`: sitio propio de la app (se abre en otra pestaña).
+// - `cta` + `destino`: el botón principal. `otra`: el botón secundario. Un destino es { url } (sitio
+//   externo, otra pestaña), { ruta } (página de este sitio, con el prefijo de idioma) o { ancla } (una
+//   sección de la misma página: "como-funciona" o "interes").
+// - `interes`: la página termina con el formulario "súmate para probarlo primero" (FormInteres).
+// - `modulo`: la página muestra los servicios de ese módulo (lib/modulos.js), p. ej. DronX → Drones.
+// - `icono`: "dron", "reciclaje" o "feria" (IconoApp en components/AppsEcosistema.jsx).
+// - `foto` / `fotoRespaldo`: claves de FOTOS (lib/fotos.js); la segunda se usa si la primera no está.
+// - El color de cada app está en ACENTOS, más abajo.
 // Fisaro no es una app del ecosistema: aparece solo como integración en el diagrama de la portada.
+
+const SITIO_AGROCICLO = "https://agrociclo.oladigital.cl"
+const SITIO_DRONX = "https://dsp.oladigital.cl"
 
 export const APPS = [
   {
@@ -20,9 +31,14 @@ export const APPS = [
     nombre: "AgroCiclo",
     promesa: "Convierte tus residuos agrícolas en valor",
     ruta: "/apps/agrociclo",
-    sitio: "https://agrociclo.oladigital.cl",
-    bajada: "AgroCiclo conecta a agricultores con recicladores para retirar, valorizar y reciclar los materiales del agro de forma simple, desde el celular.",
+    sitio: SITIO_AGROCICLO,
+    icono: "reciclaje",
+    foto: "residuos",
+    fotoRespaldo: "lechugas",
+    bajada: "AgroCiclo conecta a agricultores con recicladores para retirar, valorizar y reciclar los residuos del predio desde el celular.",
     cta: "Ir a AgroCiclo",
+    destino: { url: SITIO_AGROCICLO },
+    otra: { texto: "Cómo funciona", destino: { ancla: "como-funciona" } },
     problemas: [
       {
         problema: "Plásticos de riego, envases y metales se acumulan en el predio sin un retiro claro.",
@@ -48,7 +64,7 @@ export const APPS = [
       { titulo: "Centros demostrativos", texto: "Que quieren ordenar el retiro de residuos de los agricultores de su red." },
     ],
     conexion: [
-      "AgroHubs ordena el predio y sus datos; AgroCiclo se encarga de lo que sale del predio como residuo.",
+      "AgroHubs ordena el predio y sus datos, y AgroCiclo se encarga de lo que sale del predio como residuo.",
       "Tu centro demostrativo puede sumar AgroCiclo como el canal de retiro de residuos para sus agricultores.",
       "Lo que no se vende en AgroSeller se puede derivar a AgroCiclo.",
     ],
@@ -59,7 +75,7 @@ export const APPS = [
       },
       {
         q: "¿Cuánto cuesta?",
-        a: "Depende del material y de su valor: puedes recibir un pago neto o puede haber un cobro mínimo por el servicio. Siempre ves la valorización antes de confirmar.",
+        a: "Depende del material y de su valor. Puedes recibir un pago neto o puede haber un cobro mínimo por el servicio, y siempre ves la valorización antes de confirmar.",
       },
       {
         q: "¿Cómo se calcula la valorización?",
@@ -80,10 +96,15 @@ export const APPS = [
     nombre: "DronX",
     promesa: "Servicios de dron a demanda",
     ruta: "/apps/dronx",
-    sitio: "https://dsp.oladigital.cl",
+    sitio: SITIO_DRONX,
     modulo: "drones",
-    bajada: "DronX, desarrollado por OlaDigital, conecta a quienes necesitan un servicio de dron con operadores de su red. AgroHubs ya está integrado: pides el servicio desde tu predio y la solicitud llega con sus datos.",
-    cta: "Ir a DronX",
+    icono: "dron",
+    foto: "dron",
+    fotoRespaldo: "hortalizas",
+    bajada: "DronX, de OlaDigital, conecta a quienes necesitan un servicio de dron con los operadores de su red. Como AgroHubs ya está integrado con DronX, pides el servicio desde tu predio y la solicitud llega con sus datos.",
+    cta: "Pedir desde AgroHubs",
+    destino: { ruta: "/drones" },
+    otra: { texto: "Ir al sitio de DronX", destino: { url: SITIO_DRONX } },
     problemas: [
       {
         problema: "Encontrar un operador de drones disponible cerca del predio toma tiempo.",
@@ -109,7 +130,7 @@ export const APPS = [
       { titulo: "Operadores de drones", texto: "Que reciben solicitudes cercanas y cobran por cada misión completada." },
     ],
     conexion: [
-      "Pides el servicio desde la app o el panel de tu predio en AgroHubs: cultivo, hectáreas, comuna y fecha.",
+      "Pides el servicio desde la app o el panel de tu predio en AgroHubs, con el cultivo, las hectáreas, la ubicación y la fecha.",
       "La solicitud llega a DronX con los datos de tu predio.",
       "El estado de la solicitud y los entregables vuelven a AgroHubs.",
     ],
@@ -133,17 +154,24 @@ export const APPS = [
     ],
     cierre: {
       titulo: "Pide tu próximo servicio con dron",
-      texto: "Entra a DronX o pídelo desde el módulo Drones de AgroHubs.",
+      texto: "Pídelo desde el módulo Drones de AgroHubs o entra al sitio de DronX.",
     },
   },
   {
     slug: "agroseller",
     nombre: "AgroSeller",
     nuevo: true,
+    estado: "En desarrollo",
     promesa: "Vende tu fruta directo a feriantes, por lotes y con reserva",
     ruta: "/apps/agroseller",
-    bajada: "AgroSeller nace de AgroCiclo para que productores y packings vendan fruta a feriantes y comerciantes: publicas lotes con precio y mínimo de compra, y el comprador reserva, retira o pide despacho. Está en desarrollo: súmate para probarlo primero.",
+    icono: "feria",
+    foto: "feria",
+    fotoRespaldo: "paltos",
+    bajada: "AgroSeller nace de AgroCiclo para que productores y packings vendan fruta a feriantes y comerciantes. Publicas lotes con precio y mínimo de compra, y el comprador reserva, retira o pide despacho. Está en desarrollo y puedes sumarte para probarlo primero.",
     cta: "Quiero ser parte",
+    destino: { ancla: "interes" },
+    otra: { texto: "Cómo funciona", destino: { ancla: "como-funciona" } },
+    interes: true,
     problemas: [
       {
         problema: "El feriante llama a varios productores para saber qué fruta hay, a qué precio y cuándo.",
@@ -165,6 +193,7 @@ export const APPS = [
     ],
     incluye: {
       titulo: "Cómo se publica un lote",
+      etiqueta: "Cada lote se ordena por",
       jerarquia: ["Especie", "Variedad", "Calibre", "Formato: caja de 10 kg, bin o granel"],
       grupos: [
         {
@@ -195,7 +224,7 @@ export const APPS = [
             "Reservas recurrentes, por ejemplo «todos los viernes para la feria»",
             "Lista de espera cuando no queda stock",
             "Calificaciones de productores y compradores",
-            "Precio de referencia de ODEPA junto a cada lote",
+            "Precio de referencia oficial junto a cada lote, como el de ODEPA en Chile",
             "Lo que no se vende se deriva a AgroCiclo",
           ],
         },
@@ -207,8 +236,8 @@ export const APPS = [
       { titulo: "Centros demostrativos", texto: "Que quieren abrir un canal de venta para los productores de su red." },
     ],
     conexion: [
-      "Nace de AgroCiclo: lo que no se vende en AgroSeller se deriva a AgroCiclo.",
-      "Usa el precio de referencia de ODEPA, una de las fuentes que AgroHubs ya integra.",
+      "Nace de AgroCiclo, y lo que no se vende en AgroSeller se deriva a AgroCiclo.",
+      "Muestra el precio de referencia de ODEPA, en Chile, una de las fuentes que AgroHubs ya integra.",
       "Complementa el Mercado de cosecha de AgroHubs con reservas por lote para feriantes.",
     ],
     faq: [
@@ -225,8 +254,8 @@ export const APPS = [
         a: "La reserva vence y el stock vuelve a quedar disponible. Si hay lista de espera, se avisa a la siguiente persona.",
       },
       {
-        q: "¿Qué es el precio de referencia de ODEPA?",
-        a: "Es el precio que publica la Oficina de Estudios y Políticas Agrarias para cada producto y mercado. Se muestra junto al precio del lote para comparar.",
+        q: "¿Qué es el precio de referencia?",
+        a: "Es el precio que publica una fuente oficial para cada producto y mercado, como ODEPA (Oficina de Estudios y Políticas Agrarias) en Chile. Se muestra junto al precio del lote para comparar.",
       },
     ],
     cierre: {
@@ -240,3 +269,23 @@ export const appPorSlug = (slug) => APPS.find((a) => a.slug === slug)
 
 // Apps con página propia en /apps/<slug> (AgroHubs es el sitio completo)
 export const APPS_CON_PAGINA = APPS.filter((a) => a.ruta.startsWith("/apps/"))
+
+// Color de cada app, en hex sRGB (va aparte de APPS porque los textos de las apps no llevan cifras;
+// ver scripts/tests/sitio.test.mjs). Los contrastes se prueban en scripts/tests/apps.test.mjs:
+// - color: botón principal, íconos y etiquetas. Texto blanco encima y el color sobre el papel: 4,5:1 o más.
+// - suave: fondo de la ficha del ícono y de "Con <app>". El color encima: 4,5:1 o más.
+// - claro: el acento sobre la banda bosque (botón con texto bosque oscuro): 4,5:1 o más.
+// AgroHubs usa los tokens de la marca (--color-accent, --color-paper-2 y --color-mint).
+export const ACENTOS = {
+  agrohubs: { color: "#17663c", suave: "#eaf6ec", claro: "#6ee7a8" },
+  dronx: { color: "#1f5aa6", suave: "#e4eefa", claro: "#9cc7f5" },
+  agrociclo: { color: "#0b6b73", suave: "#dff2ef", claro: "#86dccf" },
+  agroseller: { color: "#b0431a", suave: "#fbe9e1", claro: "#f6b393" },
+}
+export const acentoDe = (slug) => ACENTOS[slug] || ACENTOS.agrohubs
+
+// Variables CSS de una app para el atributo style (apps.css usa --app-acento, --app-suave y --app-claro)
+export const estiloAcento = (slug) => {
+  const a = acentoDe(slug)
+  return { "--app-acento": a.color, "--app-suave": a.suave, "--app-claro": a.claro }
+}
