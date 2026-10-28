@@ -95,11 +95,11 @@ test('los 12 módulos tienen página: propia o armada por ModuloPagina', () => {
     'fenologia', 'calculadoras', 'eventos', 'tienda', 'drones'], 'mismas key que la plataforma')
   for (const b of bloques) {
     const ruta = b.match(/ruta: "([^"]+)"/)[1]
-    const propia = app.includes(`path="${ruta}"`)
+    const propia = app.includes(`path="${ruta}"`) || app.includes(`p('${ruta}')`)
     assert.ok(propia || b.includes('pagina: {'), `${ruta} no tiene página`)
     assert.ok(!(propia && b.includes('pagina: {')), `${ruta} tiene dos páginas`)
   }
-  assert.ok(app.includes('path="/apps/:slug"'), 'ruta de las apps')
+  assert.ok(app.includes('path="/apps/:slug"') || app.includes("p('/apps/:slug')"), 'ruta de las apps')
 })
 
 // ── Revisión QA del PR #24 ──
@@ -109,8 +109,17 @@ test('vercel.json: las rutas de la SPA cargan directo (sin pasar por /index.html
   // directa de /evaluacion, /terminos, /dashboard, /modulos, /apps/*. Los archivos (assets, /apis,
   // /videos) tienen prioridad sobre los rewrites, así que se siguen sirviendo tal cual.
   assert.equal(VERCEL.cleanUrls, true)
+  // La regla de la SPA deja fuera /api, /assets y /apis: un archivo que no existe ahí da 404, no la portada.
+  // Las rutas en inglés y portugués (/en, /pt) cargan igual que las en español.
   const spa = VERCEL.rewrites[VERCEL.rewrites.length - 1]
-  assert.deepEqual(spa, { source: '/(.*)', destination: '/' })
+  assert.deepEqual(spa, { source: '/((?!api/|assets/|apis/).*)', destination: '/' })
+  const re = new RegExp(`^${spa.source}$`)
+  for (const r of ['/', '/evaluacion', '/terminos', '/modulos', '/apps/dronx', '/en', '/en/evaluacion', '/pt/terminos', '/pt/apps/agroseller']) {
+    assert.ok(re.test(r), `${r} va a la SPA`)
+  }
+  for (const r of ['/api/correo', '/assets/index.js', '/apis/inia-agromet', '/apis/categoria/clima-y-meteorologia']) {
+    assert.ok(!re.test(r), `${r} no pasa por la SPA`)
+  }
   assert.ok(!VERCEL.rewrites.some((r) => /\.html$/.test(r.destination)), 'ningún rewrite apunta a un .html')
   assert.deepEqual(VERCEL.rewrites[0], { source: '/api/:path*', destination: '/api/:path*' }, '/api sigue yendo a las funciones')
 })
@@ -204,6 +213,11 @@ test('ContactModal: Tab y Shift+Tab ciclan dentro del diálogo', () => {
   assert.ok(modal.includes('previo.focus'), 'al cerrar, el foco vuelve al botón que lo abrió')
 })
 
-test('no se anuncia la app iOS (aún no está publicada)', () => {
-  for (const { f, texto } of FUENTES) assert.ok(!/iOS y Android|['"]iOS['"]/.test(texto), `src/${f}`)
+// Fernando pidió decir "iOS y Android" en los tres pasos de la portada (PR #28). Las plataformas de la app
+// quedan en un solo lugar, src/lib/plataformas.js, para cambiarlas ahí si iOS todavía no está publicada.
+test('las plataformas de la app AgroHubs solo se escriben en lib/plataformas.js', () => {
+  for (const { f, texto } of FUENTES) {
+    if (f === 'lib/plataformas.js') continue
+    assert.ok(!/iOS y Android|iOS and Android|iOS e Android|['"]iOS['"]/.test(texto), `src/${f}`)
+  }
 })

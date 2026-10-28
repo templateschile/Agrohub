@@ -1,5 +1,7 @@
-/* Apps del ecosistema (menú y páginas /apps/<slug>), video, "Confían en nosotros" y partner.
-   Mismo sistema que sitio.css: todo color, fuente y espacio sale de tokens.css. */
+/* Apps del ecosistema: menú, pie, "Confían en nosotros", partner, video, la sección de la portada
+   (AppsEcosistema), las páginas /apps/<slug>, el formulario de interés y el diálogo de contacto.
+   Mismo sistema que sitio.css: todo color, fuente y espacio sale de tokens.css. El color propio de cada
+   app llega como --app-acento, --app-suave y --app-claro (lib/apps.js, estiloAcento); sin ellas, la marca. */
 
 /* ── Menú: desplegable Apps ──────────────────────────────── */
 .ah-insignia { display: inline-flex; align-items: center; min-height: 22px; padding: 0 var(--space-xs); border-radius: var(--radius-pill); background: var(--color-mint); color: var(--color-forest-deep); font: 700 11px/1 var(--font-body); letter-spacing: 0.04em; text-transform: uppercase; }
@@ -70,33 +72,105 @@
 .ah-bloque--tinte { background: var(--color-paper-2); border-block: 1px solid var(--color-rule); }
 .ah-bloque .ah-seccion { margin-bottom: var(--space-xl); }
 
-/* ── Páginas de app ──────────────────────────────────────── */
-.ah-apph { padding: calc(72px + var(--space-2xl)) 0 var(--section-gap-s); }
-.ah-apph__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: center; gap: var(--space-2xl); }
-.ah-apph__promesa { margin-top: var(--space-sm); max-width: 24ch; font: var(--display-weight) var(--text-2xl)/1.2 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink-2); text-wrap: balance; }
-.ah-apph .ah-lead { max-width: 48ch; font-size: var(--text-md); line-height: 1.55; }
-@media (max-width: 60rem) { .ah-apph__grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); } }
 
+/* ── Foto con crédito (portada de apps y hero de cada app) ─ */
+/* El crédito va al final, sobre la imagen, y queda encima del enlace que cubre la ficha */
+.ah-appf { position: relative; overflow: hidden; border-radius: var(--radius-card); background: var(--color-paper-3); }
+.ah-appf .ah-foto { display: block; }
+.ah-appf img { display: block; width: 100%; height: auto; object-fit: cover; transition: transform var(--dur-long) var(--ease-out); }
+.ah-appf .ah-credito { position: absolute; right: var(--space-xs); bottom: var(--space-xs); z-index: 2; max-width: calc(100% - 2 * var(--space-xs)); margin: 0; padding: var(--space-3xs) var(--space-xs); overflow: hidden; border-radius: var(--radius-pill); background: color-mix(in oklab, var(--color-forest-deep) 78%, transparent); color: var(--color-on-dark); font: 500 11px/1.6 var(--font-body); white-space: nowrap; text-overflow: ellipsis; }
+.ah-appf .ah-credito a { color: inherit; text-decoration: underline; text-underline-offset: 0.15em; }
+.ah-appf .ah-credito a:focus-visible { outline: 2px solid var(--color-mint); outline-offset: 1px; border-radius: 2px; }
+
+/* ── Botón con el color de la app ────────────────────────── */
+.ah-btn--app { background: var(--app-acento, var(--color-accent)); border-color: var(--app-acento, var(--color-accent)); color: var(--color-on-dark); }
+@media (hover: hover) {
+  .ah-btn--app:hover { background: color-mix(in oklab, var(--app-acento, var(--color-accent)) 76%, black); border-color: color-mix(in oklab, var(--app-acento, var(--color-accent)) 76%, black); }
+}
+
+/* ── Etiqueta de estado ("En desarrollo") ────────────────── */
+.ah-appx-estado { display: inline-flex; align-items: center; min-height: 24px; padding: 0 var(--space-xs); border: 1px solid color-mix(in oklab, var(--app-acento, var(--color-accent)) 35%, transparent); border-radius: var(--radius-pill); background: var(--app-suave, var(--color-paper-2)); color: var(--app-acento, var(--color-accent)); font: 700 var(--text-xs)/1 var(--font-body); letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; }
+
+/* ── Portada: las apps del ecosistema (AppsEcosistema) ───── */
+.ah-ecoapps { padding: var(--section-gap-s) 0; }
+.ah-ecoapps__cabeza { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: end; gap: var(--space-md) var(--space-2xl); margin-bottom: var(--space-xl); }
+.ah-ecoapps__cabeza .ah-lead { margin: 0; max-width: 46ch; }
+.ah-ecoapps__lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: var(--space-md); margin: 0; padding: 0; list-style: none; }
+/* En la página de una app van solo las otras dos: fichas del mismo ancho que en la portada, no a media página */
+.ah-ecoapps--otras .ah-ecoapps__lista { grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); }
+/* Toda la ficha es el enlace: el ::after del nombre la cubre (li es el bloque contenedor) */
+.ah-ecoapp { position: relative; display: grid; grid-template-rows: auto 1fr; overflow: hidden; border: 1px solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper); transition: border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out); }
+.ah-ecoapp__foto { border-radius: 0; }
+.ah-ecoapp__cuerpo { display: grid; align-content: start; justify-items: start; gap: var(--space-xs); padding: 0 var(--space-lg) var(--space-lg); }
+.ah-ecoapp__icono { position: relative; z-index: 2; display: grid; place-items: center; width: 56px; height: 56px; margin-top: -28px; border: 3px solid var(--color-paper); border-radius: 18px; background: var(--app-acento, var(--color-accent)); color: var(--color-on-dark); pointer-events: none; }
+.ah-ecoapp__nombre { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); margin: var(--space-2xs) 0 0; font: 600 var(--text-xl)/1.2 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); }
+.ah-ecoapp__enlace { color: inherit; text-decoration: none; }
+.ah-ecoapp__enlace::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: var(--radius-card); }
+.ah-ecoapp__enlace:focus-visible { outline: none; }
+.ah-ecoapp__enlace:focus-visible::after { outline: 3px solid var(--app-acento, var(--color-focus)); outline-offset: -3px; }
+.ah-ecoapp__promesa { margin: 0; color: var(--color-ink-2); line-height: 1.5; text-wrap: pretty; }
+.ah-ecoapp__ver { display: inline-flex; align-items: center; gap: var(--space-2xs); margin-top: auto; padding-top: var(--space-xs); color: var(--app-acento, var(--color-accent)); font: 600 var(--text-sm)/1.3 var(--font-body); }
+.ah-ecoapp__ver svg { transition: transform var(--dur-short) var(--ease-out); }
+@media (hover: hover) {
+  .ah-ecoapp:hover { border-color: var(--app-acento, var(--color-accent)); box-shadow: 0 24px 48px -32px color-mix(in oklab, var(--app-acento, var(--color-forest)) 60%, transparent); }
+  .ah-ecoapp:hover .ah-appf img { transform: scale(1.03); }
+  .ah-ecoapp:hover .ah-ecoapp__ver { text-decoration: underline; text-underline-offset: 0.2em; }
+  .ah-ecoapp:hover .ah-ecoapp__ver svg { transform: translateX(3px); }
+}
+@media (max-width: 48rem) { .ah-ecoapps__cabeza { grid-template-columns: minmax(0, 1fr); } }
+/* En el celular las fichas van una bajo otra: foto más baja para que la sección siga siendo corta */
+@media (max-width: 40rem) { .ah-ecoapp__foto img { aspect-ratio: 16 / 9; } }
+
+/* ── Páginas de app (/apps/<slug>) ───────────────────────── */
+.ah-appx { --color-focus: var(--app-acento, var(--color-accent)); }
+/* Las secciones a las que llevan los botones (#como-funciona, #interes) no quedan bajo el menú fijo */
+.ah-appx section[id] { scroll-margin-top: calc(72px + var(--space-md)); }
+
+.ah-appx-hero { padding: calc(72px + var(--space-2xl)) 0 var(--space-2xl); overflow-x: clip; background: radial-gradient(60rem 32rem at 90% 0%, color-mix(in oklab, var(--app-suave, var(--color-paper-2)) 80%, transparent), transparent 70%), var(--color-paper); }
+.ah-appx-hero__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: center; gap: var(--space-2xl); }
+.ah-appx-eyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); margin: 0 0 var(--space-md); color: var(--app-acento, var(--color-accent)); font: 600 var(--text-sm)/1.3 var(--font-body); letter-spacing: 0.02em; }
+.ah-appx-eyebrow__icono { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: var(--app-suave, var(--color-paper-2)); color: var(--app-acento, var(--color-accent)); }
+.ah-appx-hero__promesa { margin: var(--space-sm) 0 0; max-width: 22ch; font: var(--display-weight) var(--text-2xl)/1.2 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); text-wrap: balance; }
+.ah-appx-hero__bajada { margin: var(--space-md) 0 0; max-width: 52ch; color: var(--color-ink-2); font-size: var(--text-md); line-height: 1.6; text-wrap: pretty; }
+/* La foto con un bloque del color suave de la app detrás y el ícono de la app como sello */
+.ah-appx-hero__visual { position: relative; isolation: isolate; }
+.ah-appx-hero__visual::before { content: ""; position: absolute; inset: var(--space-lg) calc(-1 * var(--space-lg)) calc(-1 * var(--space-lg)) var(--space-lg); z-index: -1; border-radius: var(--radius-card); background: var(--app-suave, var(--color-paper-2)); }
+.ah-appx-hero__sello { position: absolute; top: calc(-1 * var(--space-md)); left: calc(-1 * var(--space-md)); z-index: 3; display: grid; place-items: center; width: 64px; height: 64px; border: 3px solid var(--color-paper); border-radius: 20px; background: var(--app-acento, var(--color-accent)); color: var(--color-on-dark); box-shadow: 0 16px 32px -16px color-mix(in oklab, var(--app-acento, var(--color-forest)) 70%, transparent); }
+@media (max-width: 60rem) {
+  .ah-appx-hero__grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xl); }
+  .ah-appx-hero__visual { max-width: 40rem; }
+}
+@media (max-width: 40rem) {
+  .ah-appx-hero { padding-top: calc(72px + var(--space-xl)); }
+  .ah-appx-hero__promesa { font-size: var(--text-xl); }
+  .ah-appx-hero__visual::before { inset: var(--space-md) calc(-1 * var(--space-sm)) calc(-1 * var(--space-sm)) var(--space-md); }
+  .ah-appx-hero__sello { top: var(--space-sm); left: var(--space-sm); width: 52px; height: 52px; border-radius: 16px; }
+}
+
+/* Problemas → soluciones */
 .ah-problemas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); margin: 0; padding: 0; list-style: none; }
 .ah-problema { display: grid; grid-template-rows: auto 1fr; border: 1px solid var(--color-rule); border-radius: var(--radius-card); overflow: hidden; }
-.ah-problema p { display: grid; align-content: start; gap: var(--space-xs); padding: var(--space-lg); line-height: 1.5; }
+.ah-problema p { display: grid; align-content: start; gap: var(--space-xs); margin: 0; padding: var(--space-lg); line-height: 1.5; }
 .ah-problema__antes { color: var(--color-ink-2); background: var(--color-paper); border-bottom: 1px solid var(--color-rule); }
-.ah-problema__despues { color: var(--color-ink); background: var(--color-paper-2); }
+.ah-problema__despues { color: var(--color-ink); background: var(--app-suave, var(--color-paper-2)); }
 .ah-etiqueta { justify-self: start; display: inline-flex; align-items: center; min-height: 24px; padding: 0 var(--space-xs); border-radius: var(--radius-pill); background: var(--color-paper-2); border: 1px solid var(--color-rule); color: var(--color-muted); font: 700 var(--text-xs)/1 var(--font-body); letter-spacing: 0.04em; text-transform: uppercase; }
-.ah-etiqueta--si { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); }
+.ah-etiqueta--si { background: var(--app-acento, var(--color-accent)); border-color: var(--app-acento, var(--color-accent)); color: var(--color-on-dark); }
 @media (max-width: 60rem) { .ah-problemas { grid-template-columns: minmax(0, 1fr); } }
 
-.ah-pasos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); margin: 0; padding: 0; list-style: none; }
-.ah-paso { display: grid; align-content: start; gap: var(--space-xs); padding: var(--space-lg); border: 1px solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper); }
-.ah-paso__num { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--color-forest); color: var(--color-mint); font: 600 var(--text-lg)/1 var(--font-display); }
+/* Cómo funciona: tres pasos unidos por una línea punteada del color de la app */
+.ah-pasos { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); margin: 0; padding: 0; list-style: none; }
+.ah-pasos::before { content: ""; position: absolute; top: calc(var(--space-lg) + 22px); left: var(--space-xl); right: var(--space-xl); height: 2px; background: repeating-linear-gradient(90deg, var(--app-acento, var(--color-accent)) 0 6px, transparent 6px 12px); }
+.ah-paso { position: relative; display: grid; align-content: start; gap: var(--space-xs); padding: var(--space-lg); border: 1px solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper); }
+.ah-paso__num { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--app-acento, var(--color-forest)); color: var(--color-on-dark); font: 600 var(--text-lg)/1 var(--font-display); }
 .ah-paso__titulo { margin: var(--space-2xs) 0 0; font: 600 var(--text-lg)/1.25 var(--font-display); }
-.ah-paso__texto { color: var(--color-ink-2); line-height: 1.5; }
-@media (max-width: 60rem) { .ah-pasos { grid-template-columns: minmax(0, 1fr); } }
+.ah-paso__texto { margin: 0; color: var(--color-ink-2); line-height: 1.5; }
+@media (max-width: 60rem) { .ah-pasos { grid-template-columns: minmax(0, 1fr); } .ah-pasos::before { display: none; } }
 
+/* Qué incluye */
 .ah-jerarquia { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); margin: 0 0 var(--space-xl); padding: 0; list-style: none; }
-.ah-jerarquia li { display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 40px; padding: 0 var(--space-md); border-radius: var(--radius-pill); background: var(--color-forest); color: var(--color-on-dark); font-weight: 600; }
+.ah-jerarquia li { display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 40px; padding: 0 var(--space-md); border-radius: var(--radius-pill); background: var(--app-acento, var(--color-forest)); color: var(--color-on-dark); font-weight: 600; }
 /* El orden del lote: cada nivel va dentro del anterior */
-.ah-jerarquia li + li::before { content: "→"; color: var(--color-mint); }
+.ah-jerarquia li + li::before { content: "→"; color: var(--app-claro, var(--color-mint)); }
 .ah-incluye { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-xl); }
 .ah-incluye > .ah-checks--grilla { grid-column: 1 / -1; }
 .ah-incluye__titulo { margin: 0 0 var(--space-sm); font: 600 var(--text-lg)/1.25 var(--font-display); }
@@ -104,33 +178,84 @@
 
 .ah-checks { display: grid; gap: var(--space-sm); margin: 0; padding: 0; list-style: none; }
 .ah-checks li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-xs); color: var(--color-ink-2); line-height: 1.5; }
-.ah-checks svg { margin-top: 0.15em; color: var(--color-accent); }
+.ah-checks svg { margin-top: 0.15em; color: var(--app-acento, var(--color-accent)); }
 .ah-checks b { color: var(--color-ink); font-weight: 600; }
 .ah-checks--grilla { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md) var(--space-xl); }
 @media (max-width: 48rem) { .ah-checks--grilla { grid-template-columns: minmax(0, 1fr); } }
 
+/* Para quién es · Cómo se conecta con AgroHubs */
 .ah-dos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2xl); }
 @media (max-width: 60rem) { .ah-dos { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); } }
 .ah-para { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-rule); }
 .ah-para li { display: grid; gap: var(--space-3xs); padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); color: var(--color-ink-2); line-height: 1.5; }
 .ah-para b { color: var(--color-ink); font-weight: 600; }
+.ah-bloque .ah-appx-conexion .ah-seccion { margin-bottom: var(--space-lg); }
+.ah-appx-conexion__par { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); margin: 0 0 var(--space-lg); }
+.ah-appx-chip { display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 40px; padding: 0 var(--space-md); border: 1px solid var(--color-rule); border-radius: var(--radius-pill); background: var(--color-paper); color: var(--color-ink); font: 600 var(--text-sm)/1 var(--font-display); }
+.ah-appx-chip__marca { width: 18px; height: 18px; color: var(--color-accent); }
+.ah-appx-chip--app svg { color: var(--app-acento, var(--color-accent)); }
+.ah-appx-conexion__flecha { color: var(--color-muted); }
 
+/* Preguntas frecuentes */
 .ah-faq__grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--space-2xl); align-items: start; }
 .ah-faq { border-top: 1px solid var(--color-rule); }
 .ah-faq__item { border-bottom: 1px solid var(--color-rule); }
 .ah-faq__item summary { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); min-height: 56px; padding: var(--space-sm) 0; color: var(--color-ink); font-weight: 600; cursor: pointer; list-style: none; }
 .ah-faq__item summary::-webkit-details-marker { display: none; }
-.ah-faq__item summary::after { content: "+"; flex: none; color: var(--color-accent); font: 600 var(--text-xl)/1 var(--font-display); }
+.ah-faq__item summary::after { content: "+"; flex: none; color: var(--app-acento, var(--color-accent)); font: 600 var(--text-xl)/1 var(--font-display); }
 .ah-faq__item[open] summary::after { content: "–"; }
 .ah-faq__item summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-.ah-faq__item p { padding: 0 0 var(--space-md); max-width: 60ch; color: var(--color-ink-2); line-height: 1.55; }
+.ah-faq__item p { margin: 0; padding: 0 0 var(--space-md); max-width: 60ch; color: var(--color-ink-2); line-height: 1.55; }
 @media (max-width: 60rem) { .ah-faq__grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); } }
 .ah-faq__grid .ah-seccion { margin-bottom: 0; }
 
+/* Cierre: banda bosque con los botones de la app */
+.ah-appx-banda { --color-focus: var(--app-claro, var(--color-mint)); }
 .ah-banda__texto { margin-top: var(--space-sm); max-width: 48ch; color: var(--color-on-dark-2); line-height: 1.5; }
-.ah-btn--invertido { background: var(--color-mint); border-color: var(--color-mint); color: var(--color-forest-deep); }
+.ah-btn--invertido { background: var(--app-claro, var(--color-mint)); border-color: var(--app-claro, var(--color-mint)); color: var(--color-forest-deep); }
 @media (hover: hover) { .ah-btn--invertido:hover { background: var(--color-on-dark); border-color: var(--color-on-dark); } }
+.ah-appx-texto-boton { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-xs); border: 0; background: none; color: var(--color-on-dark); font: 600 var(--text-md)/1 var(--font-body); text-decoration: underline; text-underline-offset: 0.2em; cursor: pointer; }
+.ah-appx-texto-boton:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; border-radius: var(--space-2xs); }
+@media (hover: hover) { .ah-appx-texto-boton:hover { color: var(--app-claro, var(--color-mint)); } }
+
+/* Cierre de una app en desarrollo: el formulario de interés (FormInteres) */
+.ah-appx-interes__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: start; gap: var(--space-2xl); }
+.ah-appx-interes .ah-seccion { margin-bottom: 0; }
+@media (max-width: 60rem) { .ah-appx-interes__grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); } }
+.ah-interes { display: grid; gap: var(--space-2xs); padding: var(--space-xl); border: 1px solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper); box-shadow: 0 24px 48px -32px color-mix(in oklab, var(--color-forest) 45%, transparent); }
+.ah-interes__pie { display: grid; gap: var(--space-2xs); margin-top: var(--space-xs); }
+.ah-interes__pie .ah-btn { width: 100%; }
+.ah-interes--listo { justify-items: start; gap: var(--space-sm); color: var(--color-ink-2); line-height: 1.5; }
+.ah-interes--listo svg { color: var(--app-acento, var(--color-accent)); }
+.ah-interes--listo p { margin: 0; }
+.ah-interes__titulo { margin: 0; font: 600 var(--text-xl)/1.2 var(--font-display); color: var(--color-ink); }
+.ah-interes__titulo:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 4px; border-radius: var(--space-2xs); }
+.ah-ayuda.ah-ayuda--error { color: var(--color-error); }
+@media (max-width: 40rem) { .ah-interes { padding: var(--space-lg) var(--space-md); } }
+
+/* ── Diálogo de contacto (ContactModal) ──────────────────── */
+.ah-modal { position: fixed; inset: 0; z-index: var(--z-modal); display: grid; place-items: center; padding: var(--space-md); }
+.ah-modal__fondo { position: absolute; inset: 0; background: color-mix(in oklab, var(--color-forest-deep) 55%, transparent); backdrop-filter: blur(3px); }
+.ah-modal__caja { position: relative; width: 100%; max-width: 32rem; max-height: calc(100dvh - 2 * var(--space-md)); overflow-y: auto; overscroll-behavior: contain; padding: var(--space-xl); border-radius: var(--radius-card); background: var(--color-paper); color: var(--color-ink); box-shadow: 0 32px 64px -24px color-mix(in oklab, var(--color-forest-deep) 60%, transparent); }
+.ah-modal__cerrar { position: absolute; top: var(--space-xs); right: var(--space-xs); display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--color-ink-2); cursor: pointer; }
+.ah-modal__cerrar:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 0; }
+@media (hover: hover) { .ah-modal__cerrar:hover { background: var(--color-paper-2); } }
+.ah-modal__titulo { margin: 0 var(--space-xl) var(--space-2xs) 0; font: 600 var(--text-xl)/1.2 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); text-wrap: balance; }
+.ah-modal__bajada { margin: 0 0 var(--space-lg); color: var(--color-ink-2); line-height: 1.5; }
+.ah-modal__form { display: grid; gap: var(--space-2xs); }
+.ah-modal__pie { display: grid; gap: var(--space-2xs); margin-top: var(--space-xs); }
+.ah-modal__pie .ah-btn { width: 100%; }
+.ah-modal__listo { display: grid; justify-items: center; gap: var(--space-sm); padding: var(--space-lg) 0 var(--space-xs); text-align: center; }
+.ah-modal__listo svg { color: var(--app-acento, var(--color-accent)); }
+.ah-modal__listo .ah-modal__titulo { margin-right: 0; }
+.ah-modal__listo .ah-modal__bajada { margin-bottom: var(--space-sm); }
+.ah-input--texto { min-height: 96px; padding-block: var(--space-sm); line-height: 1.5; resize: vertical; }
+@media (max-width: 40rem) {
+  .ah-modal { align-items: end; padding: var(--space-xs); }
+  .ah-modal__caja { max-height: calc(100dvh - var(--space-md)); padding: var(--space-lg) var(--space-md); }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .ah-apps__flecha, .ah-apps__item { transition: none; }
+  .ah-apps__flecha, .ah-apps__item, .ah-ecoapp, .ah-ecoapp__ver svg, .ah-appf img { transition: none; }
+  .ah-ecoapp:hover .ah-appf img, .ah-ecoapp:hover .ah-ecoapp__ver svg { transform: none; }
 }

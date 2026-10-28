@@ -1,58 +1,92 @@
-import { Link } from "react-router-dom"
 import AppModulos from "../components/AppModulos"
 import AgendarReunion from "../components/AgendarReunion"
 import Integraciones from "../components/Integraciones"
-import EcosystemSection from "../components/EcosystemSection"
+import Ecosistema from "../components/Ecosistema"
+import AppsEcosistema from "../components/AppsEcosistema"
 import AppVideo from "../components/AppVideo"
+import Pasos from "../components/Pasos"
+import Foto from "../components/Foto"
+import CreditoFoto from "../components/CreditoFoto"
 import { ConfianStrip, Partner } from "../components/Confianza"
-import DESTACADAS from "../../data/apis/destacadas.json"
+import { useIdioma, Enlace } from "../i18n"
+import { resumen } from "../lib/ecosistema"
+import { FOTOS } from "../lib/fotos"
 
-// Portada: la app con sus módulos, quiénes confían, el video, el ecosistema, las integraciones,
-// el partner, agendar la reunión y, si se quiere, la evaluación.
+const { activas } = resumen()
+// Una foto por tipo de cultivo (lib/fotos.js), sin preferir un país ni un cultivo
+const CULTIVOS = ["frutales", "hortalizas", "vinas", "cereales", "paltos", "ganado"].filter(k => FOTOS[k])
+
+// Portada: la app con sus módulos y los tres pasos, el ecosistema interactivo (lo principal) con las
+// integraciones de la región que siguen su filtro, las apps del ecosistema, los cultivos, el video,
+// quiénes confían, agendar la reunión y, si se quiere, la evaluación.
 export default function Home() {
+  const { t } = useIdioma()
   return (
     <>
       <section className="ah-hero" id="modulos" aria-labelledby="hero-titulo">
         <div className="container ah-hero__grid">
           <div className="ah-hero__texto">
-            <p className="ah-eyebrow">12 módulos, 1 app y {DESTACADAS.total_directorio} integraciones</p>
-            <h1 id="hero-titulo" className="ah-display">Crea tu Centro Demostrativo Agrícola</h1>
-            <p className="ah-lead">Y entrega a tus agricultores el poder de decidir. Activa los módulos de cada predio y conecta los sistemas que usas, para todos los cultivos.</p>
+            <p className="ah-eyebrow">{t("hero.eyebrow", { activas })}</p>
+            <h1 id="hero-titulo" className="ah-display">{t("hero.titulo")}</h1>
+            <p className="ah-lead">{t("hero.bajada")}</p>
             <div className="ah-acciones">
-              <a className="ah-btn" href="#contacto">Agendar reunión</a>
-              <Link className="ah-btn ah-btn--quieto" to="/evaluacion">Evaluar mi operación</Link>
+              <a className="ah-btn" href="#contacto">{t("hero.agendar")}</a>
+              <Enlace className="ah-btn ah-btn--quieto" to="/evaluacion">{t("hero.evaluar")}</Enlace>
             </div>
           </div>
-          <AppModulos />
+          <div className="ah-hero__app">
+            <Pasos />
+            <AppModulos />
+          </div>
         </div>
       </section>
 
-      <ConfianStrip />
+      <Ecosistema />
+
+      <Integraciones />
+
+      <AppsEcosistema />
+
+      <section className="ah-cultivos" aria-labelledby="cultivos-titulo">
+        <div className="container">
+          <div className="ah-cultivos__cabeza">
+            <h2 id="cultivos-titulo" className="ah-seccion">{t("cultivos.titulo")}</h2>
+            <p className="ah-lead">{t("cultivos.bajada")}</p>
+          </div>
+          <ul className="ah-cultivos__grilla">
+            {CULTIVOS.map(k => (
+              <li key={k} className="ah-cultivo">
+                <Foto foto={FOTOS[k]} proporcion={4 / 3} sizes="(min-width: 72rem) 30vw, (min-width: 40rem) 45vw, 100vw" />
+                <p className="ah-cultivo__nombre">{t(`cultivos.${k}`)}</p>
+                <CreditoFoto foto={FOTOS[k]} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
       <section className="ah-bloque" aria-labelledby="video-titulo">
         <div className="container ah-video-portada">
           <div>
-            <h2 id="video-titulo" className="ah-seccion">Cómo usar la app AgroHubs</h2>
-            <p className="ah-lead">Configura tu predio con el asistente, revisa tus sensores, recibe avisos de clima y pregúntale a la inteligencia artificial, paso a paso.</p>
+            <h2 id="video-titulo" className="ah-seccion">{t("video.titulo")}</h2>
+            <p className="ah-lead">{t("video.bajada")}</p>
           </div>
           <AppVideo app="agrohubs" nombre="AgroHubs" />
         </div>
       </section>
 
-      <EcosystemSection />
-
-      <Integraciones />
+      <ConfianStrip />
 
       <Partner />
 
       <section className="ah-agenda" id="contacto" aria-labelledby="agenda-titulo">
         <div className="container ah-agenda__grid">
           <div className="ah-agenda__texto">
-            <h2 id="agenda-titulo" className="ah-seccion">Conversemos 30 minutos</h2>
-            <p className="ah-lead">Elige un horario y te confirmamos por correo.</p>
+            <h2 id="agenda-titulo" className="ah-seccion">{t("agenda.titulo")}</h2>
+            <p className="ah-lead">{t("agenda.bajada")}</p>
             <ul className="ah-hechos">
-              <li><b>Sin compromiso</b>Primero entendemos tu operación; después proponemos.</li>
-              <li><b>Te escribe una persona</b>Del equipo AgroHubs, en menos de 24 horas hábiles.</li>
+              <li><b>{t("agenda.hecho1.b")}</b>{t("agenda.hecho1.t")}</li>
+              <li><b>{t("agenda.hecho2.b")}</b>{t("agenda.hecho2.t")}</li>
             </ul>
           </div>
           <AgendarReunion origen="portada" />
@@ -61,8 +95,8 @@ export default function Home() {
 
       <section className="ah-banda" aria-labelledby="banda-titulo">
         <div className="container ah-banda__grid">
-          <h2 id="banda-titulo" className="ah-banda__frase">¿Prefieres llegar a la reunión con una propuesta? Cuéntanos tu operación en 5 minutos.</h2>
-          <Link className="ah-btn ah-btn--claro" to="/evaluacion">Hacer la evaluación</Link>
+          <h2 id="banda-titulo" className="ah-banda__frase">{t("banda.frase")}</h2>
+          <Enlace className="ah-btn ah-btn--claro" to="/evaluacion">{t("banda.cta")}</Enlace>
         </div>
       </section>
     </>

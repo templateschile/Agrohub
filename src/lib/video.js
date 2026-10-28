@@ -8,3 +8,9 @@ export async function hayVideo(src, pedir = fetch) {
     return false
   }
 }
+
+// Videos con subtítulos: /videos/<app>.<idioma>.vtt versionados en public/videos.
+// El de AgroHubs no tiene voz (solo música): sus subtítulos dicen los textos que aparecen en pantalla.
+export const SUBTITULOS = {
+  agrohubs: ["es", "en", "pt"],
+}

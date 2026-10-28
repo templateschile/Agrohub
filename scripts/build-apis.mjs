@@ -620,7 +620,7 @@ CASOS.forEach((t) => listPage('caso', t))
 {
   const ESTADO_CORTO = { integrada: 'Conectada', proxy: 'Conectada', scheduler: 'Conectada', plataforma: 'Conectada', planificada: 'Próximamente', evaluacion: 'A pedido', enlace: 'Enlace' }
   // "ODEPA — Datos Abiertos" → nombre "ODEPA", detalle "Datos Abiertos" (sin rayas en la portada)
-  const fila = (a) => { const [nombre, detalle] = partesNombre(a.nombre); return { slug: a.slug, nombre, detalle, pais: PAIS[a.pais] || a.pais, estado: ESTADO_CORTO[a.estado_agrohubs] || 'A pedido' } }
+  const fila = (a) => { const [nombre, detalle] = partesNombre(a.nombre); return { slug: a.slug, nombre, detalle, pais: PAIS[a.pais] || a.pais, estado: ESTADO_CORTO[a.estado_agrohubs] || 'A pedido', categorias: a.categorias } }
   const top = (lista, campo) => lista.slice().sort((x, y) => y.ranking[campo] - x.ranking[campo] || x.nombre.localeCompare(y.nombre)).slice(0, 6).map(fila)
   writeFileSync(join(ROOT, 'data', 'apis', 'destacadas.json'), JSON.stringify({
     _nota: 'Generado por scripts/build-apis.mjs (npm run apis): no editar a mano.',

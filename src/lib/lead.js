@@ -9,12 +9,15 @@ export const CORREO_CONTACTO = "cotizaciones@agrohubs.cl"
 
 // Solo cuenta como enviado si el API responde { ok: true }. Un error HTTP, una respuesta que no es
 // JSON (p. ej. una página HTML) o un fallo de red devuelven false. Se prueba en scripts/tests.
-export async function enviarLead({ tipo, contacto, mensaje = "", resumen = [], respuestas = null, website = "" }, pedir = fetch) {
+// `idioma` (es, en o pt): el idioma de la página. Va dentro de `respuestas`, que el API guarda tal cual
+// (un campo nuevo en la raíz lo descartaría); el resumen para el equipo sigue en español.
+export async function enviarLead({ tipo, contacto, mensaje = "", resumen = [], respuestas = null, website = "", idioma }, pedir = fetch) {
   try {
+    const conIdioma = idioma ? { ...(respuestas || {}), idioma } : respuestas
     const res = await pedir(LEADS_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tipo, contacto, mensaje, resumen, respuestas, website }),
+      body: JSON.stringify({ tipo, contacto, mensaje, resumen, respuestas: conIdioma, website }),
     })
     const json = await res.json().catch(() => null)
     return res.ok && json?.ok === true

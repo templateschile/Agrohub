@@ -44,7 +44,7 @@
       "destination": "/api/:path*"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api/|assets/|apis/).*)",
       "destination": "/"
     }
   ],
