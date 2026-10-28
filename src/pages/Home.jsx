@@ -3,6 +3,7 @@ import AgendarReunion from "../components/AgendarReunion"
 import Integraciones from "../components/Integraciones"
 import Ecosistema from "../components/Ecosistema"
 import AppsEcosistema from "../components/AppsEcosistema"
+import MarcaPropia from "../components/MarcaPropia"
 import AppVideo from "../components/AppVideo"
 import Pasos from "../components/Pasos"
 import Foto from "../components/Foto"
@@ -46,6 +47,8 @@ export default function Home() {
       <Integraciones />
 
       <AppsEcosistema />
+
+      <MarcaPropia />
 
       <section className="ah-cultivos" aria-labelledby="cultivos-titulo">
         <div className="container">

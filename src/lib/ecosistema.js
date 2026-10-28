@@ -22,8 +22,9 @@ export const mejorEstado = (estados) => ORDEN_ESTADO.find((e) => estados.include
 // Orden de los módulos en el anillo, elegido para que los que comparten conectores o servicios queden
 // juntos (AI Chat y Avisos usan los mismos modelos de IA; Avisos y Clima, Open-Meteo; Clima, Fuentes y
 // Biblioteca, INIA; Biblioteca y Sensores, AWS; Bitácora, Eventos y Mercado, el CRM y el ERP).
+// "insumos" (Insumos y bodega) no existe aún en la plataforma: va como módulo próximamente (lib/modulos-proximos.js).
 export const ORDEN_MODULOS = [
-  "dashboard_sensores", "drones", "bitacora", "eventos", "tienda", "fenologia",
+  "dashboard_sensores", "drones", "bitacora", "insumos", "tienda", "fenologia", "eventos",
   "calculadoras", "chat_ia", "recomendaciones", "clima", "fuentes", "documentos",
 ]
 
@@ -35,6 +36,7 @@ export const slugDe = (texto) => String(texto).normalize("NFD").replace(/[̀-ͯ]
 export const CATEGORIAS_MODULO = {
   dashboard_sensores: ["sensores-iot", "riego-y-control"],
   bitacora: ["gestion-predial", "trazabilidad-y-certificacion"],
+  insumos: ["gestion-predial"],
   chat_ia: ["ia-y-asistentes"],
   documentos: ["documentos-y-conocimiento"],
   fuentes: ["datos-publicos-y-estadisticas", "geodatos-y-territorio"],
@@ -54,7 +56,8 @@ export const CONECTORES = [
   { id: "mensajeria", nombre: "Mensajería", etiqueta: ["Mensajería"], fuente: "api/src/notificaciones/notificador.js" },
   { id: "agromet", nombre: "Red agrometeorológica", etiqueta: ["Red", "agromet"], fuente: "api/src/clima/agromet.sync.js" },
   { id: "pronostico", nombre: "Pronóstico", etiqueta: ["Pronóstico"], fuente: "api/src/clima/lugar.js" },
-  { id: "agro", nombre: "Plataformas agro", etiqueta: ["Plataformas", "agro"], fuente: "api/src/predios/catalogo.js (modag, kadi)" },
+  { id: "registros", nombre: "Cuaderno de campo", etiqueta: ["Cuaderno", "de campo"], fuente: "api/src/predios/catalogo.js (conector modag), api/src/hub/providers/modag.js" },
+  { id: "agro", nombre: "Sostenibilidad", etiqueta: ["Sostenibilidad"], fuente: "api/src/predios/catalogo.js (conector kadi)" },
   { id: "publicos", nombre: "Datos públicos", etiqueta: ["Datos", "públicos"], fuente: "api/src/hub/providers/" },
   { id: "inia", nombre: "Biblioteca INIA", etiqueta: ["Biblioteca", "INIA"], fuente: "api/src/inia-scheduler/" },
   { id: "archivos", nombre: "Archivos", etiqueta: ["Archivos"], fuente: "api/src/upload/" },
@@ -84,7 +87,7 @@ export const SERVICIOS = [
   { id: "weatherapi", nombre: "WeatherAPI" },
   { id: "inia", nombre: "INIA", que: "Instituto de Investigaciones Agropecuarias de Chile" },
   { id: "dmc", nombre: "DMC", que: "Dirección Meteorológica de Chile" },
-  { id: "modag", nombre: "MODAG" },
+  { id: "modag", nombre: "MODAG", que: "Cuaderno de campo digital: labores, aplicaciones y cosecha" },
   { id: "kadi", nombre: "Kadi" },
   { id: "ciren", nombre: "CIREN", que: "Centro de Información de Recursos Naturales de Chile" },
   { id: "conaf", nombre: "CONAF", que: "Corporación Nacional Forestal de Chile" },
@@ -130,7 +133,6 @@ export const INTEGRACIONES = [
   fila("clima", "pronostico", "openweather", "Pronóstico", "conectada", "api/src/integrations/clima/clima.controller.js"),
   fila("clima", "pronostico", "weatherapi", "Pronóstico", "conectada", "api/src/integrations/weather/weather.controller.js"),
   // Fuentes externas
-  fila("fuentes", "agro", "modag", "Registros de campo del predio", "conectada", "api/src/predios/catalogo.js, api/src/hub/providers/modag.js"),
   fila("fuentes", "agro", "kadi", "Datos de sostenibilidad del predio", "conectada", "api/src/predios/catalogo.js, api/src/hub/providers/kadi.js"),
   fila("fuentes", "inia", "inia", "Publicaciones técnicas", "conectada", "api/src/inia-scheduler/inia-oai.js"),
   fila("fuentes", "publicos", "ciren", "Suelos y catastro frutícola", "conectada", "api/src/hub/providers/ciren-ide.js"),
@@ -154,8 +156,14 @@ export const INTEGRACIONES = [
   // Drones
   fila("drones", "dronx", "dronx", "Solicitudes de vuelo y su estado", "conectada", "api/src/drones/dronx.client.js"),
   fila("drones", "satelite", "copernicus", "Imágenes Sentinel para NDVI", "proximamente", "catálogo /apis (sentinel-hub-cdse)"),
-  // Bitácora, Eventos y Mercado
+  // Cuaderno de campo (módulo bitácora), Insumos y bodega, Eventos y Mercado.
+  // MODAG es un cuaderno de campo: sus registros llegan al módulo bitácora, no a Fuentes.
+  fila("bitacora", "registros", "modag", "Labores, aplicaciones y cosecha registradas en MODAG", "conectada", "api/src/predios/catalogo.js (conector modag), api/src/hub/providers/modag.js"),
   fila("bitacora", "gestion", "sap", "Labores, insumos y cosecha al ERP", "pedido"),
+  // Insumos y bodega: el módulo no existe aún (la bitácora solo registra lo aplicado). Nada conectado.
+  fila("insumos", "registros", "modag", "Descontar del stock lo aplicado en el cuaderno de campo", "proximamente"),
+  fila("insumos", "tienda", "woocommerce", "Reponer insumos desde el catálogo de la tienda", "proximamente"),
+  fila("insumos", "gestion", "sap", "Stock de fertilizantes y agroquímicos en el ERP", "pedido"),
   fila("eventos", "gestion", "kommo", "Inscritos y seguimiento", "pedido"),
   fila("tienda", "tienda", "woocommerce", "Catálogo y pedidos de tu tienda", "conectada", "api/src/predios/catalogo.js (woocommerce)"),
   fila("tienda", "cobros", "mercado-pago", "Cobro de pedidos", "pedido", "hoy cobra suscripciones: api/src/common/utils/mercadopago.js"),
@@ -202,7 +210,7 @@ export function resaltado(sel) {
 // con las cajas estimadas (cajasDiagrama + solapes). Chivo Mono: cada carácter mide 0,6 em.
 export const GEO = {
   medio: 530,
-  R: { centro: 76, modulos: 206, conectores: 298, servicios: 372 },
+  R: { centro: 76, modulos: 222, conectores: 298, servicios: 372 },
   baldosa: { alto: 50, minAncho: 72, relleno: 16 }, // módulos: ícono arriba y nombre abajo
   conector: 8, // medio lado del cuadrado de cada conector
   punto: 12, // radio del círculo de cada servicio (lleva su inicial)

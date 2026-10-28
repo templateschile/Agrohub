@@ -173,7 +173,7 @@ export default {
     "Dashboard de sensores": "Sensor dashboard",
     "Todos tus sensores y campos en un solo panel, con alertas cuando algo se sale de rango. Se conecta con las marcas que ya usas.":
       "All your sensors and fields in one dashboard, with alerts when a reading goes out of range. Works with the brands you already use.",
-    "Bitácora y trazabilidad": "Field log and traceability",
+    "Cuaderno de campo y trazabilidad": "Field notebook and traceability",
     "Registro de labores, insumos y cosecha por sector o productor, desde el celular. Permite relacionar el manejo con el resultado en planta.":
       "Log field work, inputs and harvest by block or grower from your phone, and link each practice to the result at the plant.",
     "AI Chat agrícola": "Farm AI chat",
@@ -406,7 +406,7 @@ export default {
     "Dashboard de sensores": "Painel de sensores",
     "Todos tus sensores y campos en un solo panel, con alertas cuando algo se sale de rango. Se conecta con las marcas que ya usas.":
       "Todos os seus sensores e áreas em um só painel, com alertas quando algo sai da faixa. Conecta com as marcas que você já usa.",
-    "Bitácora y trazabilidad": "Caderno de campo e rastreabilidade",
+    "Cuaderno de campo y trazabilidad": "Caderno de campo e rastreabilidade",
     "Registro de labores, insumos y cosecha por sector o productor, desde el celular. Permite relacionar el manejo con el resultado en planta.":
       "Registro de operações, insumos e colheita por talhão ou produtor, pelo celular. Mostra a relação entre o manejo e o resultado na indústria.",
     "AI Chat agrícola": "Chat de IA agrícola",

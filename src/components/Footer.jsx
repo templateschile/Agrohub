@@ -33,6 +33,7 @@ export default function Footer() {
             <a href="/apis" hrefLang="es">{t('pie.apis')}</a>
             <a href="/apis/cotizar" hrefLang="es">{t('pie.cotizar')}</a>
             <a href={ruta('/#contacto')}>{t('pie.contacto')}</a>
+            <Enlace to="/licencias">{t('pie.licencias')}</Enlace>
             <Enlace to="/terminos">{t('pie.terminos')}</Enlace>
           </nav>
           <nav className="ah-pie__apps" aria-labelledby="pie-apps">

@@ -19,10 +19,10 @@ export const MODULOS = [
   },
   {
     key: "bitacora", slug: "bitacora", ruta: "/bitacora", icono: NotebookPen,
-    nombre: "Bitácora y trazabilidad", corto: "Bitácora",
-    descripcion: "Registro de labores, insumos y cosecha desde el celular, por cuartel.",
+    nombre: "Cuaderno de campo", corto: "Cuaderno de campo",
+    descripcion: "La bitácora del predio: labores, aplicaciones, insumos y cosecha desde el celular, por lote.",
     pagina: {
-      badge: "Bitácora y trazabilidad",
+      badge: "Cuaderno de campo (bitácora)",
       titulo: "Lo que pasa en el campo,", destacado: "registrado por lote",
       bajada: "Anota labores, insumos y cosecha desde el celular, en el mismo momento en que ocurren. Cada registro queda asociado al lote (cuartel o sector) y al predio.",
       features: [

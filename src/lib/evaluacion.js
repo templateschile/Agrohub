@@ -150,7 +150,7 @@ export const INTERES = [
 export const MODULOS = [
   { id: "dashboard",    label: "Dashboard de sensores",
     desc: "Todos tus sensores y campos en un solo panel, con alertas cuando algo se sale de rango. Se conecta con las marcas que ya usas." },
-  { id: "trazabilidad", label: "Bitácora y trazabilidad",
+  { id: "trazabilidad", label: "Cuaderno de campo y trazabilidad",
     desc: "Registro de labores, insumos y cosecha por sector o productor, desde el celular. Permite relacionar el manejo con el resultado en planta." },
   { id: "ai",           label: "AI Chat agrícola",
     desc: "Asistente que responde consultas técnicas en lenguaje simple, apoyado en documentos confiables." },

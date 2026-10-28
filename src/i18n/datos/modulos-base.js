@@ -4,10 +4,13 @@
 export default {
   es: {
     recomendaciones: { etiqueta: "Avisos" },
+    bitacora: { etiqueta: "Cuaderno" },
+    insumos: { nombre: "Insumos y bodega", corto: "Insumos y bodega", etiqueta: "Insumos", descripcion: "Inventario de fertilizantes, agroquímicos y otros insumos del predio." },
   },
   en: {
     dashboard_sensores: { nombre: "Dashboard and sensors", corto: "Sensors", descripcion: "Your weather stations and sensors in one panel, with readings, charts and alerts. It works with the brands you already use." },
-    bitacora: { nombre: "Field log and traceability", corto: "Field log", descripcion: "Log field work, inputs and harvest from your phone, block by block." },
+    bitacora: { nombre: "Field notebook", corto: "Field notebook", etiqueta: "Notebook", descripcion: "Your farm log: field work, sprays, inputs and harvest from your phone, block by block." },
+    insumos: { nombre: "Inputs and inventory", corto: "Inputs and inventory", etiqueta: "Inputs", descripcion: "Inventory of fertilizers, agrochemicals and other farm inputs." },
     chat_ia: { nombre: "Farm AI chat", corto: "AI chat", descripcion: "An assistant that answers technical questions in plain language, backed by reliable documents." },
     documentos: { nombre: "Technical library", corto: "Library", descripcion: "Technical documents and data sheets, organized and searchable. Upload your own and choose whether they are public or private." },
     fuentes: { nombre: "External sources", corto: "Sources", descripcion: "Information from external sources (MODAG, Kadi, INIA and others) next to your own data." },
@@ -21,7 +24,8 @@ export default {
   },
   pt: {
     dashboard_sensores: { nombre: "Painel e sensores", corto: "Sensores", descripcion: "Suas estações e sensores em um só painel, com leituras, gráficos e alertas. Funciona com as marcas que você já usa." },
-    bitacora: { nombre: "Caderno de campo e rastreabilidade", corto: "Caderno", descripcion: "Registre tarefas, insumos e colheita pelo celular, por talhão." },
+    bitacora: { nombre: "Caderno de campo", corto: "Caderno de campo", etiqueta: "Caderno", descripcion: "O registro da propriedade: tarefas, aplicações, insumos e colheita pelo celular, por talhão." },
+    insumos: { nombre: "Insumos e estoque", corto: "Insumos e estoque", etiqueta: "Insumos", descripcion: "Estoque de fertilizantes, defensivos e outros insumos da propriedade." },
     chat_ia: { nombre: "Chat de IA agrícola", corto: "Chat IA", descripcion: "Um assistente que responde dúvidas técnicas em linguagem simples, com base em documentos confiáveis." },
     documentos: { nombre: "Biblioteca técnica", corto: "Biblioteca", descripcion: "Documentos e fichas técnicas organizados e pesquisáveis. Envie os seus e escolha se são públicos ou privados." },
     fuentes: { nombre: "Fontes externas", corto: "Fontes", descripcion: "Informações de fontes externas (MODAG, Kadi, INIA e outras) junto aos seus dados." },
