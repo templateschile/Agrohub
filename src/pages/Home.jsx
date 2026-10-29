@@ -9,17 +9,30 @@ import Pasos, { Equipo } from "../components/Pasos"
 import Foto from "../components/Foto"
 import CreditoFoto from "../components/CreditoFoto"
 import { ConfianStrip } from "../components/Confianza"
+import { FlujoDato, CentroDemostrativo } from "../components/Diagramas"
+import FormDemo from "../components/FormDemo"
 import { useIdioma, Enlace } from "../i18n"
-import { resumen } from "../lib/ecosistema"
 import { FOTOS } from "../lib/fotos"
 
-const { activas } = resumen()
 // Gente del campo (lib/fotos.js): personas trabajando, de varios países, sin preferir ninguno
 const GENTE = ["cosechaManos", "familiaCampo", "riegoPersona", "ganaderoCampo", "feriaVendedor", "vinas"].filter(k => FOTOS[k])
 
 // Portada: la app con sus módulos y los tres pasos, el ecosistema interactivo (lo principal) con las
 // integraciones de la región que siguen su filtro, las apps del ecosistema, los cultivos, el video,
 // quiénes confían y agendar la reunión (con la evaluación como segunda opción en la portada).
+// Un llamado corto a la demo, repetido después del ecosistema y del video
+function CtaDemo({ id }) {
+  const { t } = useIdioma()
+  return (
+    <div className="ah-ctademo" aria-labelledby={`${id}-t`}>
+      <div className="container ah-ctademo__caja">
+        <p id={`${id}-t`} className="ah-ctademo__texto">{t("cta.demo.frase")}</p>
+        <a className="ah-btn" href="#contacto">{t("cta.demo")}</a>
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
   const { t } = useIdioma()
   return (
@@ -31,12 +44,11 @@ export default function Home() {
         </div>
         <div className="container ah-hero__grid">
           <div className="ah-hero__texto">
-            <p className="ah-eyebrow">{t("hero.eyebrow", { activas })}</p>
+            <p className="ah-eyebrow">{t("hero.eyebrow")}</p>
             <h1 id="hero-titulo" className="ah-display">{t("hero.titulo")}</h1>
             <p className="ah-lead ah-hero__bajada">{t("hero.bajada")}</p>
             <div className="ah-acciones">
-              <a className="ah-btn" href="#contacto">{t("hero.agendar")}</a>
-              <Enlace className="ah-btn ah-btn--quieto" to="/evaluacion">{t("hero.evaluar")}</Enlace>
+              <a className="ah-btn" href="#contacto">{t("cta.demo")}</a>
             </div>
           </div>
           <div className="ah-hero__app">
@@ -46,9 +58,15 @@ export default function Home() {
         </div>
       </section>
 
+      <FlujoDato />
+
       <Ecosistema />
 
       <Integraciones />
+
+      <CtaDemo id="cta-eco" />
+
+      <CentroDemostrativo />
 
       <AppsEcosistema>
         <MarcaPropia incrustada />
@@ -58,7 +76,6 @@ export default function Home() {
         <div className="container">
           <div className="ah-cultivos__cabeza">
             <h2 id="cultivos-titulo" className="ah-seccion">{t("cultivos.titulo")}</h2>
-            <p className="ah-lead">{t("cultivos.bajada")}</p>
           </div>
           <ul className="ah-cultivos__grilla">
             {GENTE.map((k, i) => (
@@ -76,11 +93,12 @@ export default function Home() {
         <div className="container ah-video-portada">
           <div>
             <h2 id="video-titulo" className="ah-seccion">{t("video.titulo")}</h2>
-            <p className="ah-lead">{t("video.bajada")}</p>
           </div>
           <AppVideo app="app" nombre="AgroHubs" silencioso />
         </div>
       </section>
+
+      <CtaDemo id="cta-video" />
 
       <ConfianStrip />
 
@@ -89,12 +107,12 @@ export default function Home() {
           <div className="ah-agenda__texto">
             <h2 id="agenda-titulo" className="ah-seccion">{t("agenda.titulo")}</h2>
             <p className="ah-lead">{t("agenda.bajada")}</p>
-            <ul className="ah-hechos">
-              <li><b>{t("agenda.hecho1.b")}</b>{t("agenda.hecho1.t")}</li>
-              <li><b>{t("agenda.hecho2.b")}</b>{t("agenda.hecho2.t")}</li>
-            </ul>
             <Equipo />
+            <p className="ah-agenda__o"><a className="ah-enlace-plano" href="#reunion">{t("agenda.oReunion")}</a></p>
           </div>
+          <FormDemo origen="portada" />
+        </div>
+        <div className="container ah-agenda__reunion" id="reunion">
           <AgendarReunion origen="portada" />
         </div>
       </section>

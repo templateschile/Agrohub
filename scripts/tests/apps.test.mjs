@@ -97,13 +97,13 @@ test('cada botón de las apps lleva a un destino que existe', () => {
 
 test('cada app tiene ícono y foto (con respaldo mientras la propia no esté)', () => {
   for (const a of APPS_CON_PAGINA) {
-    assert.ok(['dron', 'reciclaje', 'feria'].includes(a.icono), `${a.slug}: ícono`)
+    assert.ok(['dron', 'reciclaje', 'feria', 'biblioteca'].includes(a.icono), `${a.slug}: ícono`)
     assert.ok(PORTADA.includes(`${a.icono}:`), `${a.slug}: IconoApp no conoce "${a.icono}"`)
     assert.ok(FOTOS[a.foto] || FOTOS[a.fotoRespaldo], `${a.slug}: ni ${a.foto} ni ${a.fotoRespaldo} están en lib/fotos.js`)
     assert.ok(FOTOS[a.fotoRespaldo], `${a.slug}: la foto de respaldo (${a.fotoRespaldo}) tiene que existir`)
   }
   // Fotos con personas (lib/fotos.js): quien recoge en el campo, el dron en vuelo y la vendedora de feria
-  assert.deepEqual(APPS_CON_PAGINA.map((a) => a.foto), ['recicladorCampo', 'dron', 'feriaVendedor'])
+  assert.deepEqual(APPS_CON_PAGINA.map((a) => a.foto), ['recicladorCampo', 'dron', 'feriaVendedor', 'agricultorTablet'])
 })
 
 // ── Traducciones ──
@@ -180,17 +180,20 @@ const TODOS = [
 test('textos sin rayas largas ni datos de ejemplo de un solo país', () => {
   for (const s of TODOS) {
     assert.ok(!s.includes('—'), `raya larga: ${s}`)
-    assert.ok(!/\+\s?56|\.cl\b/.test(s), `dato de ejemplo chileno: ${s}`)
+    // Los sitios reales de las apps (fisaro.cl) no son datos de ejemplo
+    assert.ok(!/\+\s?56|\.cl\b/.test(s.replace(/\bfisaro\.cl\b/g, '')), `dato de ejemplo chileno: ${s}`)
   }
   for (const [f, fuente] of [['FormInteres', INTERES], ['ContactModal', CONTACTO], ['AppPagina', PAGINA]]) {
     assert.ok(!/\+56|placeholder="\+/.test(fuente), `${f}: teléfono de ejemplo con código de un país`)
   }
 })
 
+// Fisaro: "más de 50.000 documentos" es la cifra del certificado de OlaDigital, no un invento
+export const CIFRA_DOCUMENTADA = /\b50[.,]000\b/g
 test('las traducciones de las apps tampoco inventan cifras', () => {
   for (const i of IDIOMAS_TRAD) {
     for (const a of APPS_CON_PAGINA) {
-      const cifras = JSON.stringify(DATOS_APPS[i][a.slug]).replace(/10 kg/g, '').match(/\d+/g)
+      const cifras = JSON.stringify(DATOS_APPS[i][a.slug]).replace(/10 kg/g, '').replace(CIFRA_DOCUMENTADA, '').match(/\d+/g)
       assert.equal(cifras, null, `${i} ${a.slug} trae cifras: ${cifras}`)
     }
   }

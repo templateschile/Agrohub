@@ -27,3 +27,7 @@ export async function enviarLead({ tipo, contacto, mensaje = "", resumen = [], r
 }
 
 export const emailValido = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.trim())
+
+// Número de WhatsApp del equipo para el enlace "Escríbenos por WhatsApp" (solo dígitos, con código de país,
+// p. ej. "56912345678"). No hay ninguno en el repo: queda vacío y el enlace no se muestra hasta que se cargue.
+export const WHATSAPP = import.meta.env?.VITE_WHATSAPP || ""

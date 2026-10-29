@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import BotonDemo from './components/BotonDemo'
 import Footer from './components/Footer'
 
 // Pages
@@ -137,6 +138,7 @@ function Sitio() {
         </Routes>
       </main>
       <Footer />
+      <BotonDemo />
     </div>
   )
 }

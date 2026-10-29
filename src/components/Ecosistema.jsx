@@ -6,8 +6,8 @@ import DESTACADAS from "../../data/apis/destacadas.json"
 import { useIdioma, useModulos, useModulosProximos, Enlace } from "../i18n"
 import TRAD from "../i18n/datos/ecosistema.js"
 import {
-  ESTADOS, SERVICIOS, GEO, ORDEN_MODULOS, conectorPorId, servicioPorId, integracionesDe, integracionesDeServicio,
-  modulosDeServicio, estadoDeServicio, estadoDeConector, resumen, resaltado, plano, etiquetaServicio,
+  SERVICIOS, GEO, ORDEN_MODULOS, MODULO_INICIAL, conectorPorId, servicioPorId, integracionesDe, integracionesDeServicio,
+  modulosDeServicio, resumen, resaltado, plano, etiquetaServicio,
 } from "../lib/ecosistema"
 
 // El ecosistema de AgroHubs: el centro, los 12 módulos, sus conectores y los servicios de terceros.
@@ -19,7 +19,9 @@ import {
 // módulos y la lista, que dicen lo mismo.
 
 const RESUMEN = resumen()
-const SERV_POR_ESTADO = Object.keys(ESTADOS).map(e => ({ estado: e, servicios: SERVICIOS.filter(s => estadoDeServicio(s.id) === e) }))
+// Sin estados a la vista: Fernando agenda una demo y en ese tiempo arma el MVP. El estado sigue en los datos
+// (lib/ecosistema.js) y en la ficha técnica de /apis, pero el diagrama muestra todos los servicios por igual.
+const SERV_ORDENADOS = [...SERVICIOS].sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))
 // El filtro de la URL usa el nombre corto en español, igual en los tres idiomas
 export const SLUG_MODULO = {
   dashboard_sensores: "sensores", bitacora: "bitacora", chat_ia: "chat-ia", documentos: "biblioteca", fuentes: "fuentes",
@@ -66,14 +68,10 @@ function useTextosEco() {
     etiquetaConector: c => tr?.conectores[c.id]?.etiqueta || c.etiqueta,
     que: s => tr?.servicios[s.id] || s.que,
     detalle: f => tr?.filas[`${f.modulo}/${f.conector}/${f.servicio}`] || f.detalle,
-    estado: e => t(`eco.estado.${e}`),
   }
 }
 
-function Estado({ estado }) {
-  const { estado: texto } = useTextosEco()
-  return <span className={`eco-estado eco-estado--${estado}`}>{texto(estado)}</span>
-}
+function Estado() { return null }
 
 export default function Ecosistema() {
   const [params, setParams] = useSearchParams()
@@ -90,7 +88,8 @@ export default function Ecosistema() {
   const MOD = Object.fromEntries(modulos.map(m => [m.key, m]))
   useEffect(() => () => clearTimeout(reloj.current), [])
 
-  const modulo = moduloDeSlug(params.get("modulo"))
+  // Sin ?modulo= en la URL queda seleccionada la IA agrícola; "Todos" la quita con ?modulo=todos
+  const modulo = params.has("modulo") ? moduloDeSlug(params.get("modulo")) : MODULO_INICIAL
   const servicio = !modulo && servicioPorId(params.get("servicio")) ? params.get("servicio") : null
   const sel = modulo ? { tipo: "modulo", id: modulo } : servicio ? { tipo: "servicio", id: servicio } : null
   // Adelanto: en escritorio, pasar el cursor por un módulo o servicio resalta lo suyo y cambia la lista, con
@@ -120,7 +119,7 @@ export default function Ecosistema() {
   }
   const elegirModulo = key => filtrar("modulo", key && key !== modulo ? SLUG_MODULO[key] : null)
   const elegirServicio = id => filtrar("servicio", id && id !== servicio ? id : null)
-  const verTodo = () => filtrar(null, null)
+  const verTodo = () => filtrar("modulo", "todos")
 
   const clase = (activo, extra = "") => `${extra}${luz ? (activo ? " es-activo" : " es-tenue") : ""}`
   const ordenChips = ORDEN_MODULOS.filter(k => MOD[k])
@@ -171,11 +170,7 @@ export default function Ecosistema() {
               {t("eco.descripcionDiagrama", { modulos: modulos.length, conectores: RESUMEN.conectores, servicios: RESUMEN.servicios })}
             </figcaption>
             <div className="eco-mapa__pie">
-              <ul className="eco-leyenda" aria-label={t("eco.leyenda")}>
-                {Object.keys(ESTADOS).map(e => (
-                  <li key={e}><span className={`eco-leyenda__punto eco-leyenda__punto--${e}`} aria-hidden="true" /><b>{t(`eco.estado.${e}`)}</b> {t(`eco.estado.${e}.detalle`)}</li>
-                ))}
-              </ul>
+              <p className="eco-leyenda">{t("eco.leyenda")}</p>
               <button type="button" className="eco-pausa" aria-pressed={pausado} onClick={() => setPausado(p => !p)}>
                 {pausado ? <Play size={16} strokeWidth={2} aria-hidden="true" /> : <Pause size={16} strokeWidth={2} aria-hidden="true" />}
                 {t("eco.pausar")}
@@ -219,7 +214,7 @@ function Diagrama({ idioma, modulos, MOD, luz, compacto, clase, elegirModulo, el
           const e = etiquetaServicio(s)
           const activo = luz?.servicios.has(s.id)
           return (
-            <g key={s.id} data-servicio={s.id} className={clase(activo, `eco-serv eco-serv--${estadoDeServicio(s.id)}`)} onClick={() => elegirServicio(s.id)}
+            <g key={s.id} data-servicio={s.id} className={clase(activo, "eco-serv eco-serv--conectada")} onClick={() => elegirServicio(s.id)}
               onMouseEnter={() => setHover({ tipo: "servicio", id: s.id })} onMouseLeave={() => setHover(null)}>
               <circle cx={s.x} cy={s.y} r={r.servicio} />
               {!compacto && <text className="eco-serv__inicial" x={s.x} y={s.y} dy="0.36em">{s.nombre[0]}</text>}
@@ -238,7 +233,7 @@ function Diagrama({ idioma, modulos, MOD, luz, compacto, clase, elegirModulo, el
           const ancho = Math.max(...lineas.map(x => x.length)) * GEO.px.conector * 0.6 + 18
           const alto = lineas.length * (GEO.px.conector + 3) + 10
           return (
-            <g key={c.id} className={clase(activo, `eco-con eco-con--${estadoDeConector(c.id)}`)}>
+            <g key={c.id} className={clase(activo, "eco-con eco-con--conectada")}>
               <rect x={c.x - lado} y={c.y - lado} width={lado * 2} height={lado * 2} rx={3} />
               {activo && !compacto && (
                 <g className="eco-con__chip">
@@ -297,7 +292,7 @@ function Panel({ sel, MOD, disponibles, verTodo, elegirModulo, elegirServicio })
     cuerpo = (
       <>
         <p className="eco-panel__bajada">{m.descripcion}</p>
-        {m.proximamente && <p className="eco-panel__pronto"><span className="eco-estado eco-estado--proximamente">{t("eco.estado.proximamente")}</span> {t("eco.moduloProximo")}</p>}
+        {m.proximamente && <p className="eco-panel__pronto">{t("eco.moduloProximo")}</p>}
         {grupos.map(({ c, filas }) => (
           <div key={c.id} className="eco-grupo">
             <p className="eco-grupo__titulo">{t("eco.conector", { nombre: conector(c) })}</p>
@@ -341,35 +336,17 @@ function Panel({ sel, MOD, disponibles, verTodo, elegirModulo, elegirServicio })
       </>
     )
   } else {
-    const { porEstado } = RESUMEN
     titulo = t("eco.resumen.titulo", { modulos: disponibles, servicios: RESUMEN.servicios })
     cuerpo = (
       <>
-        {/* Barra de proporciones: cuántos servicios están conectados, en desarrollo o a pedido. Los nombres quedan
-            plegados para no llenar el panel de texto. */}
-        <p className="visually-hidden">{t("eco.resumen.bajada", { conectadas: porEstado.conectada, proximas: porEstado.proximamente, pedido: porEstado.pedido })}</p>
-        <div className="eco-barra" aria-hidden="true">
-          {SERV_POR_ESTADO.map(({ estado, servicios }) => (
-            <span key={estado} className={`eco-barra__tramo eco-barra__tramo--${estado}`} style={{ flexGrow: servicios.length }} />
-          ))}
-        </div>
-        <ul className="eco-barra__leyenda" aria-hidden="true">
-          {SERV_POR_ESTADO.map(({ estado, servicios }) => (
-            <li key={estado}><b>{servicios.length}</b><Estado estado={estado} /></li>
-          ))}
-        </ul>
+        <p className="eco-panel__bajada">{t("eco.resumen.bajada")}</p>
         <details className="eco-todos">
           <summary className="eco-enlace">{t("eco.resumen.ver", { n: RESUMEN.servicios })}</summary>
-          {SERV_POR_ESTADO.map(({ estado, servicios }) => (
-            <div key={estado} className="eco-grupo">
-              <p className="eco-grupo__titulo"><Estado estado={estado} /> {servicios.length}</p>
-              <ul className="eco-servchips">
-                {servicios.map(s => (
-                  <li key={s.id}><button type="button" className="eco-servchip" onClick={() => elegirServicio(s.id)}>{s.nombre}</button></li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <ul className="eco-servchips">
+            {SERV_ORDENADOS.map(s => (
+              <li key={s.id}><button type="button" className="eco-servchip" onClick={() => elegirServicio(s.id)}>{s.nombre}</button></li>
+            ))}
+          </ul>
         </details>
       </>
     )

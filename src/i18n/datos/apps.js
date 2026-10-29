@@ -219,6 +219,38 @@ export default {
         texto: "If you grow fruit or buy for the market, tell us about your business and we'll let you know when AgroSeller is ready.",
       },
     },
+    fisaro: {
+      promesa: "Farm assistance with over 50,000 technical documents in your pocket",
+      bajada: "Fisaro, built by OlaDigital, gathers over 50,000 agricultural technical documents. Search by text, voice or photo, ask the AI assistant, check the weather by district, calculate fertilization and keep consulting offline.",
+      cta: "Go to Fisaro",
+      otra: { texto: "How it works" },
+      problemas: [
+        { problema: "Technical information is scattered across bulletins, sheets and manuals that are hard to find in the field.", solucion: "Over 50,000 technical documents in one app, searchable by text, voice or photo." },
+        { problema: "An agronomic question in the field waits until you reach the advisor.", solucion: "The AI assistant answers right away, backed by the library's documents." },
+        { problema: "Many farms have no signal.", solucion: "What you looked up stays available offline." },
+      ],
+      pasos: [
+        { titulo: "Search", texto: "Type, speak or take a photo: the app finds the document or the answer." },
+        { titulo: "Consult", texto: "Ask the AI assistant, check your district's weather or use the fertilization calculators." },
+        { titulo: "Take the answer to the field", texto: "Save what you looked up and use it offline." },
+      ],
+      paraQuien: [
+        { titulo: "Growers", texto: "Who need a technical answer on the spot, at the farm." },
+        { titulo: "Advisors and technicians", texto: "Who look up sheets, bulletins and rates without carrying folders." },
+        { titulo: "Students and training centers", texto: "Who want a technical library at hand." },
+      ],
+      conexion: [
+        "Fisaro is a separate app by OlaDigital, with its own website and account.",
+        "AgroHubs and Fisaro share the same development team.",
+      ],
+      faq: [
+        { q: "What documents does it have?", a: "Over 50,000 agricultural technical documents: bulletins, sheets, manuals and publications." },
+        { q: "Does it work without internet?", a: "Yes: what you looked up stays available offline." },
+        { q: "How do I search?", a: "By text, by voice or with a photo." },
+        { q: "Is it the same app as AgroHubs?", a: "No. Fisaro is OlaDigital's farm assistance app; AgroHubs is the platform for your Demonstration Center." },
+      ],
+      cierre: { titulo: "Download Fisaro", texto: "Go to fisaro.cl and start looking things up." },
+    },
   },
 
   pt: {
@@ -435,6 +467,38 @@ export default {
         titulo: "Participe dos primeiros testes",
         texto: "Se você produz fruta ou compra para a feira, conte seu caso e avisaremos quando a AgroSeller estiver pronta.",
       },
+    },
+    fisaro: {
+      promesa: "Assistência agrícola com mais de 50.000 documentos técnicos no bolso",
+      bajada: "O Fisaro, desenvolvido pela OlaDigital, reúne mais de 50.000 documentos técnicos agrícolas. Você busca por texto, voz ou foto, consulta o assistente de IA, vê o clima por município, calcula adubação e continua consultando sem conexão.",
+      cta: "Ir para o Fisaro",
+      otra: { texto: "Como funciona" },
+      problemas: [
+        { problema: "A informação técnica fica espalhada em boletins, fichas e manuais difíceis de achar no campo.", solucion: "Mais de 50.000 documentos técnicos em um só app, com busca por texto, voz ou foto." },
+        { problema: "Uma dúvida agronômica no campo espera até falar com o assessor.", solucion: "O assistente de IA responde na hora, com base nos documentos da biblioteca." },
+        { problema: "Em muitas propriedades não há sinal.", solucion: "O que você consultou fica disponível sem conexão." },
+      ],
+      pasos: [
+        { titulo: "Busque", texto: "Escreva, fale ou tire uma foto: o app encontra o documento ou a resposta." },
+        { titulo: "Consulte", texto: "Pergunte ao assistente de IA, veja o clima do seu município ou use as calculadoras de adubação." },
+        { titulo: "Leve a resposta para o campo", texto: "Salve o que consultou e use sem conexão." },
+      ],
+      paraQuien: [
+        { titulo: "Produtores", texto: "Que precisam de uma resposta técnica na hora, na propriedade." },
+        { titulo: "Assessores e técnicos", texto: "Que buscam fichas, boletins e doses sem carregar pastas." },
+        { titulo: "Estudantes e centros de formação", texto: "Que querem uma biblioteca técnica à mão." },
+      ],
+      conexion: [
+        "O Fisaro é um app à parte, da OlaDigital, com site e conta próprios.",
+        "AgroHubs e Fisaro têm a mesma equipe de desenvolvimento.",
+      ],
+      faq: [
+        { q: "Quais documentos ele tem?", a: "Mais de 50.000 documentos técnicos agrícolas: boletins, fichas, manuais e publicações." },
+        { q: "Funciona sem internet?", a: "Sim: o que você consultou fica disponível sem conexão." },
+        { q: "Como eu busco?", a: "Por texto, por voz ou com uma foto." },
+        { q: "É o mesmo app que a AgroHubs?", a: "Não. O Fisaro é o app de assistência agrícola da OlaDigital; a AgroHubs é a plataforma do seu Centro Demonstrativo." },
+      ],
+      cierre: { titulo: "Baixe o Fisaro", texto: "Entre em fisaro.cl e comece a consultar." },
     },
   },
 }
