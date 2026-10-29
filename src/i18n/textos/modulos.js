@@ -4,6 +4,7 @@
 // ejemplo: el sitio no muestra preferencia por un país.
 export default {
   es: {
+    "mod.proximamente": "Próximamente",
     // Comunes a las páginas de módulo
     "mod.cta.quiero": "Quiero este módulo",
     "mod.cta.todos": "Ver todos los módulos",
@@ -209,6 +210,7 @@ export default {
   },
 
   en: {
+    "mod.proximamente": "Coming soon",
     "mod.cta.quiero": "I want this module",
     "mod.cta.todos": "See all modules",
     "mod.verModulo": "View module",
@@ -405,6 +407,7 @@ export default {
   },
 
   pt: {
+    "mod.proximamente": "Em breve",
     "mod.cta.quiero": "Quero este módulo",
     "mod.cta.todos": "Ver todos os módulos",
     "mod.verModulo": "Ver módulo",

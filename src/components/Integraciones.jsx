@@ -10,7 +10,7 @@ import { useIdioma, useModulos } from "../i18n"
 const FILAS = [
   ...DESTACADAS.chile.map(f => ({ ...f, pais: f.pais || "Chile" })),
   ...DESTACADAS.latam,
-].sort((a, b) => (a.estado === "Conectada" ? 0 : 1) - (b.estado === "Conectada" ? 0 : 1) || a.nombre.localeCompare(b.nombre, "es"))
+].sort((a, b) => a.nombre.localeCompare(b.nombre, "es"))
 
 // El catálogo trae el país en español: se muestra en el idioma de la página
 const ISO = { Chile: "CL", Brasil: "BR", Argentina: "AR", Colombia: "CO", Perú: "PE", México: "MX", Uruguay: "UY", Paraguay: "PY", Bolivia: "BO", Ecuador: "EC" }
@@ -18,20 +18,17 @@ function nombrePais(pais, locale) {
   try { return ISO[pais] ? new Intl.DisplayNames([locale], { type: "region" }).of(ISO[pais]) : pais } catch { return pais }
 }
 
-// Un país = una tarjeta con su código y sus servicios como píldoras; el punto dice el estado (lleno = conectada,
-// borde = próximamente, punteado = a pedido). Menos texto que una tabla: el detalle está en la ficha.
-const CLASE_ESTADO = { Conectada: "es-conectada", Próximamente: "es-pronto", "A pedido": "es-pedido" }
+// Un país = una tarjeta con su código y sus servicios como píldoras, todos por igual (sin estado: el detalle
+// técnico está en la ficha de /apis). Menos texto que una tabla.
 function Paises({ filas }) {
-  const { t, locale } = useIdioma()
+  const { locale } = useIdioma()
   const grupos = []
   for (const f of filas) {
     let g = grupos.find(x => x.pais === f.pais)
     if (!g) grupos.push(g = { pais: f.pais, filas: [] })
     g.filas.push(f)
   }
-  // Primero los países con más conectadas
-  const conectadas = g => g.filas.filter(f => f.estado === "Conectada").length
-  grupos.sort((a, b) => conectadas(b) - conectadas(a) || b.filas.length - a.filas.length)
+  grupos.sort((a, b) => b.filas.length - a.filas.length || a.pais.localeCompare(b.pais, "es"))
   return (
     <ul className="ah-paises">
       {grupos.map(g => (
@@ -40,9 +37,8 @@ function Paises({ filas }) {
           <ul className="ah-pais__apis">
             {g.filas.map(f => (
               <li key={f.slug}>
-                <a href={`/apis/${f.slug}`} hrefLang="es" className={`ah-pais__api ${CLASE_ESTADO[f.estado] || ""}`} title={f.detalle || undefined}>
+                <a href={`/apis/${f.slug}`} hrefLang="es" className="ah-pais__api" title={f.detalle || undefined}>
                   <span className="ah-pais__punto" aria-hidden="true" />{f.nombre.split(" / ")[0]}
-                  <span className="visually-hidden">, {t(`integ.estado.${f.estado}`)}</span>
                 </a>
               </li>
             ))}
@@ -53,16 +49,7 @@ function Paises({ filas }) {
   )
 }
 
-function Leyenda() {
-  const { t } = useIdioma()
-  return (
-    <ul className="ah-paises__leyenda" aria-hidden="true">
-      {Object.entries(CLASE_ESTADO).map(([estado, clase]) => (
-        <li key={estado} className={clase}><span className="ah-pais__punto" />{t(`integ.estado.${estado}`)}</li>
-      ))}
-    </ul>
-  )
-}
+function Leyenda() { return null }
 
 export default function Integraciones() {
   const { t } = useIdioma()

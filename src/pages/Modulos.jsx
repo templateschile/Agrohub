@@ -59,7 +59,7 @@ export default function Modulos() {
                     <h2 className="font-bold text-gray-900 text-base mb-1.5">{m.nombre}</h2>
                     <p className="text-gray-600 text-sm leading-relaxed">{m.descripcion}</p>
                   </div>
-                  <span className="mt-auto self-start inline-flex items-center min-h-[28px] px-3 rounded-full border border-gray-400 text-gray-700 text-xs font-bold">{t('eco.estado.proximamente')}</span>
+                  <span className="mt-auto self-start inline-flex items-center min-h-[28px] px-3 rounded-full border border-gray-400 text-gray-700 text-xs font-bold">{t('mod.proximamente')}</span>
                 </div>
               </li>
             )

@@ -132,7 +132,7 @@ export default function Navbar() {
           {enlaces.slice(1)}
           <li><a href="/apis" className="ah-nav__link" hrefLang="es">{t('nav.apis')}</a></li>
           <li><SelectorIdioma /></li>
-          <li><a href={ruta('/#contacto')} className="ah-btn ah-btn--chico">{t('nav.agendar')}</a></li>
+          <li><a href={ruta('/#contacto')} className="ah-btn ah-btn--chico">{t('cta.demo')}</a></li>
         </ul>
         <button type="button" onClick={() => setMenuOpen(v => !v)} className="ah-nav__toggle"
           aria-expanded={menuOpen} aria-controls="menu-movil" aria-label={menuOpen ? t('nav.cerrar') : t('nav.abrir')}>
@@ -151,7 +151,7 @@ export default function Navbar() {
             </ul>
           </li>
           <li><SelectorIdioma onElegir={() => setMenuOpen(false)} /></li>
-          <li><a href={ruta('/#contacto')} className="ah-btn" onClick={() => setMenuOpen(false)}>{t('nav.agendar')}</a></li>
+          <li><a href={ruta('/#contacto')} className="ah-btn" onClick={() => setMenuOpen(false)}>{t('cta.demo')}</a></li>
         </ul>
       )}
     </nav>
