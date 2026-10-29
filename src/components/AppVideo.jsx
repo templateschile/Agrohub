@@ -10,7 +10,7 @@ import { IDIOMAS, NOMBRES, LOCALES } from "../i18n/idiomas"
 // idioma de la página activa por defecto; el botón de subtítulos de los controles cambia de pista.
 // Si el archivo no existe muestra "Video próximamente" en el mismo recuadro 16:9, sin mover el layout.
 
-export default function AppVideo({ app, nombre }) {
+export default function AppVideo({ app, nombre, silencioso = false }) {
   const { idioma, t } = useIdioma()
   const src = `/videos/${app}.mp4`
   const [estado, setEstado] = useState("revisando") // revisando | listo | sin-video
@@ -28,7 +28,7 @@ export default function AppVideo({ app, nombre }) {
       <div className="ah-video-caja">
       <div className="ah-video">
         {/* key: al cambiar de idioma se vuelve a montar para que la pista por defecto sea la nueva */}
-        <video key={idioma} className="ah-video__medio" src={src} poster={`/videos/${app}.jpg`} controls muted playsInline
+        <video key={idioma} className="ah-video__medio" src={src} poster={`/videos/${app}.jpg`} controls muted={!silencioso || undefined} playsInline
           preload="metadata" aria-label={t("video.aria", { nombre })} onError={() => setEstado("sin-video")}>
           {IDIOMAS.filter(i => pistas.includes(i)).map(i => (
             <track key={i} kind="subtitles" src={`/videos/${app}.${i}.vtt`} srcLang={LOCALES[i]} label={NOMBRES[i]} default={i === idioma} />

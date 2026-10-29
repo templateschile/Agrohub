@@ -115,7 +115,7 @@ test('las plataformas de la app se escriben en un solo lugar', () => {
   for (const i of IDIOMAS) assert.match(TEXTOS[i]['mod.indice.bajada'], /\{plataformas\}/, `mod.indice.bajada (${i}) usa la constante`)
 })
 
-test('subtítulos WebVTT: los tres idiomas, mismos cortes y tiempos que avanzan dentro del video', () => {
+test('subtítulos WebVTT: los tres idiomas, mismos cortes y tiempos que avanzan dentro del video', async () => {
   const tiempo = (s) => { const [h, m, r] = s.split(':'); return +h * 3600 + +m * 60 + +r }
   for (const [video, idiomas] of Object.entries(SUBTITULOS)) {
     assert.deepEqual(idiomas, ['es', 'en', 'pt'])
@@ -131,6 +131,11 @@ test('subtítulos WebVTT: los tres idiomas, mismos cortes y tiempos que avanzan 
       assert.ok(fin <= 77.1, 'terminan dentro del video (1:17)')
     }
   }
+  // El video real de la app: 1080p, sin pista de audio (el original solo traía música), menos de 8 MB, con póster
+  const { statSync } = await import('node:fs')
+  assert.ok(statSync(new URL('../../public/videos/app.mp4', import.meta.url)).size < 8 * 1024 * 1024, 'app.mp4 pesa menos de 8 MB')
+  assert.ok(statSync(new URL('../../public/videos/app.jpg', import.meta.url)).size > 0, 'app.jpg existe')
+  assert.match(leer('../../src/pages/Home.jsx'), /app="app"/, 'la portada usa el video real')
 })
 
 test('Políticas y licencias: ruta en los tres idiomas, diez puntos, titular AgroHubs SpA y enlace en el pie', () => {
