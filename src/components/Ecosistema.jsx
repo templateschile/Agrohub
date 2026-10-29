@@ -6,7 +6,7 @@ import DESTACADAS from "../../data/apis/destacadas.json"
 import { useIdioma, useModulos, useModulosProximos, Enlace } from "../i18n"
 import TRAD from "../i18n/datos/ecosistema.js"
 import {
-  SERVICIOS, GEO, ORDEN_MODULOS, conectorPorId, servicioPorId, integracionesDe, integracionesDeServicio,
+  SERVICIOS, GEO, ORDEN_MODULOS, MODULO_INICIAL, conectorPorId, servicioPorId, integracionesDe, integracionesDeServicio,
   modulosDeServicio, resumen, resaltado, plano, etiquetaServicio,
 } from "../lib/ecosistema"
 
@@ -88,7 +88,8 @@ export default function Ecosistema() {
   const MOD = Object.fromEntries(modulos.map(m => [m.key, m]))
   useEffect(() => () => clearTimeout(reloj.current), [])
 
-  const modulo = moduloDeSlug(params.get("modulo"))
+  // Sin ?modulo= en la URL queda seleccionada la IA agrícola; "Todos" la quita con ?modulo=todos
+  const modulo = params.has("modulo") ? moduloDeSlug(params.get("modulo")) : MODULO_INICIAL
   const servicio = !modulo && servicioPorId(params.get("servicio")) ? params.get("servicio") : null
   const sel = modulo ? { tipo: "modulo", id: modulo } : servicio ? { tipo: "servicio", id: servicio } : null
   // Adelanto: en escritorio, pasar el cursor por un módulo o servicio resalta lo suyo y cambia la lista, con
@@ -118,7 +119,7 @@ export default function Ecosistema() {
   }
   const elegirModulo = key => filtrar("modulo", key && key !== modulo ? SLUG_MODULO[key] : null)
   const elegirServicio = id => filtrar("servicio", id && id !== servicio ? id : null)
-  const verTodo = () => filtrar(null, null)
+  const verTodo = () => filtrar("modulo", "todos")
 
   const clase = (activo, extra = "") => `${extra}${luz ? (activo ? " es-activo" : " es-tenue") : ""}`
   const ordenChips = ORDEN_MODULOS.filter(k => MOD[k])

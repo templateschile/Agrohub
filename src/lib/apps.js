@@ -14,10 +14,11 @@
 // - `icono`: "dron", "reciclaje" o "feria" (IconoApp en components/AppsEcosistema.jsx).
 // - `foto` / `fotoRespaldo`: claves de FOTOS (lib/fotos.js); la segunda se usa si la primera no está.
 // - El color de cada app está en ACENTOS, más abajo.
-// Fisaro no es una app del ecosistema: aparece solo como integración en el diagrama de la portada.
+// Fisaro es una app de OlaDigital (asistencia agrícola): va como app del ecosistema, sin integración asumida.
 
 const SITIO_AGROCICLO = "https://agrociclo.oladigital.cl"
 const SITIO_DRONX = "https://dsp.oladigital.cl"
+const SITIO_FISARO = "https://fisaro.cl"
 
 export const APPS = [
   {
@@ -263,6 +264,58 @@ export const APPS = [
       texto: "Si produces fruta o compras para la feria, cuéntanos tu caso y te avisamos cuando AgroSeller esté listo.",
     },
   },
+  {
+    slug: "fisaro",
+    nombre: "Fisaro",
+    promesa: "Asistencia agrícola con más de 50.000 documentos técnicos en tu bolsillo",
+    ruta: "/apps/fisaro",
+    sitio: SITIO_FISARO,
+    icono: "biblioteca",
+    foto: "agricultorTablet",
+    fotoRespaldo: "asesorCampo",
+    bajada: "Fisaro, desarrollada por OlaDigital, reúne más de 50.000 documentos técnicos agrícolas. Buscas por texto, voz o foto, consultas al asistente de IA, revisas el clima por comuna, calculas fertilización y sigues consultando sin conexión.",
+    cta: "Ir a Fisaro",
+    destino: { url: SITIO_FISARO },
+    otra: { texto: "Cómo funciona", destino: { ancla: "como-funciona" } },
+    problemas: [
+      {
+        problema: "La información técnica está repartida en boletines, fichas y manuales difíciles de encontrar en terreno.",
+        solucion: "Más de 50.000 documentos técnicos en una sola app, con búsqueda por texto, voz o foto.",
+      },
+      {
+        problema: "Una duda agronómica en el campo espera hasta hablar con el asesor.",
+        solucion: "El asistente de IA responde al momento, apoyado en los documentos de la biblioteca.",
+      },
+      {
+        problema: "En muchos predios no hay señal.",
+        solucion: "Lo que consultaste queda disponible sin conexión.",
+      },
+    ],
+    pasos: [
+      { titulo: "Busca", texto: "Escribe, dicta o saca una foto: la app encuentra el documento o la respuesta." },
+      { titulo: "Consulta", texto: "Pregunta al asistente de IA, revisa el clima de tu comuna o usa las calculadoras de fertilización." },
+      { titulo: "Lleva la respuesta al campo", texto: "Guarda lo consultado y úsalo sin conexión." },
+    ],
+    paraQuien: [
+      { titulo: "Agricultores", texto: "Que necesitan una respuesta técnica en el momento, en el predio." },
+      { titulo: "Asesores y técnicos", texto: "Que buscan fichas, boletines y dosis sin cargar carpetas." },
+      { titulo: "Estudiantes y centros de formación", texto: "Que quieren una biblioteca técnica a mano." },
+    ],
+    conexion: [
+      "Fisaro es una app aparte, de OlaDigital, con su propio sitio y cuenta.",
+      "AgroHubs y Fisaro comparten el mismo equipo de desarrollo.",
+    ],
+    faq: [
+      { q: "¿Qué documentos tiene?", a: "Más de 50.000 documentos técnicos agrícolas: boletines, fichas, manuales y publicaciones." },
+      { q: "¿Funciona sin internet?", a: "Sí: lo que consultaste queda disponible sin conexión." },
+      { q: "¿Cómo busco?", a: "Por texto, por voz o con una foto." },
+      { q: "¿Es la misma app que AgroHubs?", a: "No. Fisaro es una app de asistencia agrícola de OlaDigital; AgroHubs es la plataforma de tu Centro Demostrativo." },
+    ],
+    cierre: {
+      titulo: "Descarga Fisaro",
+      texto: "Entra a fisaro.cl y empieza a consultar.",
+    },
+  },
 ]
 
 export const appPorSlug = (slug) => APPS.find((a) => a.slug === slug)
@@ -281,6 +334,7 @@ export const ACENTOS = {
   dronx: { color: "#1f5aa6", suave: "#e4eefa", claro: "#9cc7f5" },
   agrociclo: { color: "#0b6b73", suave: "#dff2ef", claro: "#86dccf" },
   agroseller: { color: "#b0431a", suave: "#fbe9e1", claro: "#f6b393" },
+  fisaro: { color: "#6b4fa0", suave: "#efe9f8", claro: "#c9b8ec" },
 }
 export const acentoDe = (slug) => ACENTOS[slug] || ACENTOS.agrohubs
 

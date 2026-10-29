@@ -16,11 +16,11 @@ const FUENTES = readdirSync(new URL('../../src/', import.meta.url), { recursive:
   .map((f) => String(f).replace(/\\/g, '/')).filter((f) => /\.jsx?$/.test(f))
   .map((f) => ({ f, texto: leer(`../../src/${f}`) }))
 
-test('menú Apps: AgroHubs, AgroCiclo, DronX y AgroSeller; Fisaro no es una app', () => {
+test('menú Apps: AgroHubs, AgroCiclo, DronX, AgroSeller y Fisaro', () => {
   assert.deepEqual(APPS.map((a) => [a.nombre, a.ruta]), [
-    ['AgroHubs', '/'], ['AgroCiclo', '/apps/agrociclo'], ['DronX', '/apps/dronx'], ['AgroSeller', '/apps/agroseller'],
+    ['AgroHubs', '/'], ['AgroCiclo', '/apps/agrociclo'], ['DronX', '/apps/dronx'], ['AgroSeller', '/apps/agroseller'], ['Fisaro', '/apps/fisaro'],
   ])
-  assert.ok(!APPS.some((a) => /fisaro/i.test(a.nombre + a.slug)))
+  assert.ok(APPS.some((a) => a.slug === 'fisaro' && a.sitio === 'https://fisaro.cl'), 'Fisaro es una app de OlaDigital en el ecosistema')
   assert.equal(appPorSlug('agrohubs').promesa, 'Crea tu Centro Demostrativo Agrícola')
   assert.equal(appPorSlug('agrociclo').promesa, 'Convierte tus residuos agrícolas en valor')
   assert.equal(appPorSlug('dronx').promesa, 'Servicios de dron a demanda')
@@ -37,7 +37,7 @@ test('sitios propios y CTA de cada app', () => {
 })
 
 test('cada página de app tiene todas las secciones de la plantilla', () => {
-  assert.equal(APPS_CON_PAGINA.length, 3)
+  assert.equal(APPS_CON_PAGINA.length, 4)
   for (const a of APPS_CON_PAGINA) {
     assert.ok(a.bajada && a.cta, `${a.slug}: hero`)
     assert.equal(a.problemas.length, 3, `${a.slug}: tres problemas`)
@@ -61,7 +61,8 @@ test('AgroSeller cubre lotes, variantes, reservas y extras', () => {
 
 test('los textos de las apps no inventan cifras', () => {
   for (const a of APPS_CON_PAGINA) {
-    const cifras = JSON.stringify(a).replace(/caja de 10 kg/g, '').match(/\d+/g)
+    // "más de 50.000 documentos" de Fisaro es la cifra del certificado de OlaDigital, no un invento
+    const cifras = JSON.stringify(a).replace(/caja de 10 kg/g, '').replace(/\b50[.,]000\b/g, '').match(/\d+/g)
     assert.equal(cifras, null, `${a.slug} trae cifras: ${cifras}`)
   }
 })
@@ -91,8 +92,10 @@ test('los 12 módulos tienen página: propia o armada por ModuloPagina', () => {
   const bloques = fuente.split(/\r?\n  \{\r?\n/).slice(1)
   assert.equal(bloques.length, 12)
   const keys = bloques.map((b) => b.match(/key: "([^"]+)"/)[1])
-  assert.deepEqual(keys, ['dashboard_sensores', 'bitacora', 'chat_ia', 'documentos', 'fuentes', 'clima', 'recomendaciones',
-    'fenologia', 'calculadoras', 'eventos', 'tienda', 'drones'], 'mismas key que la plataforma')
+  // Mismas key que la plataforma; el orden es del sitio (la IA agrícola va primera, por pedido de Fernando)
+  assert.deepEqual([...keys].sort(), ['dashboard_sensores', 'bitacora', 'chat_ia', 'documentos', 'fuentes', 'clima', 'recomendaciones',
+    'fenologia', 'calculadoras', 'eventos', 'tienda', 'drones'].sort(), 'mismas key que la plataforma')
+  assert.equal(keys[0], 'chat_ia', 'la IA agrícola va primera')
   for (const b of bloques) {
     const ruta = b.match(/ruta: "([^"]+)"/)[1]
     const propia = app.includes(`path="${ruta}"`) || app.includes(`p('${ruta}')`)

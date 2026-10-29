@@ -24,9 +24,11 @@ export const mejorEstado = (estados) => ORDEN_ESTADO.find((e) => estados.include
 // Biblioteca, INIA; Biblioteca y Sensores, AWS; Bitácora, Eventos y Mercado, el CRM y el ERP).
 // "insumos" (Insumos y bodega) no existe aún en la plataforma: va como módulo próximamente (lib/modulos-proximos.js).
 export const ORDEN_MODULOS = [
-  "dashboard_sensores", "drones", "bitacora", "insumos", "tienda", "fenologia", "eventos",
-  "calculadoras", "chat_ia", "recomendaciones", "clima", "fuentes", "documentos",
+  "chat_ia", "clima", "recomendaciones", "calculadoras", "fuentes", "documentos", "dashboard_sensores",
+  "drones", "bitacora", "insumos", "tienda", "eventos", "fenologia",
 ]
+// Módulo seleccionado al cargar sin ?modulo= (Fernando: la IA agrícola primero)
+export const MODULO_INICIAL = "chat_ia"
 
 // Slug de un módulo para la URL (?modulo=sensores): su nombre corto sin tildes
 export const slugDe = (texto) => String(texto).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")

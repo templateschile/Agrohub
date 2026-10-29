@@ -1,4 +1,4 @@
-import { ArrowRight, Recycle, Store } from "lucide-react"
+import { ArrowRight, Recycle, Store, BookOpenText } from "lucide-react"
 import IconoDron from "./IconoDron"
 import Foto from "./Foto"
 import CreditoFoto from "./CreditoFoto"
@@ -11,7 +11,7 @@ import { estiloAcento } from "../lib/apps"
 // <AppsEcosistema excluir="dronx" id="otras-apps" titulo={t("apps.otras")} bajada={null} />.
 // Toda la ficha es clicable (el enlace del nombre la cubre); el crédito de la foto queda encima y se puede usar.
 
-const ICONOS = { dron: IconoDron, reciclaje: Recycle, feria: Store }
+const ICONOS = { dron: IconoDron, reciclaje: Recycle, feria: Store, biblioteca: BookOpenText }
 
 export function IconoApp({ icono, size = 24, ...rest }) {
   const Icono = ICONOS[icono]

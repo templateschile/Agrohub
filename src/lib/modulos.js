@@ -13,6 +13,11 @@ import IconoDron from "../components/IconoDron"
 
 export const MODULOS = [
   {
+    key: "chat_ia", slug: "ai-chat", ruta: "/ai-chat", icono: Sparkles,
+    nombre: "IA agrícola", corto: "IA agrícola",
+    descripcion: "Asistente que responde consultas técnicas en lenguaje simple, apoyado en documentos confiables.",
+  },
+  {
     key: "dashboard_sensores", slug: "dashboard", ruta: "/dashboard", icono: Radio,
     nombre: "Dashboard y sensores", corto: "Sensores",
     descripcion: "Tus estaciones y sensores en un solo panel, con lecturas, gráficos y alertas. Se conecta con las marcas que ya usas.",
@@ -38,11 +43,6 @@ export const MODULOS = [
         "Revisas el historial por lote y lo exportas cuando lo necesitas.",
       ],
     },
-  },
-  {
-    key: "chat_ia", slug: "ai-chat", ruta: "/ai-chat", icono: Sparkles,
-    nombre: "AI Chat agrícola", corto: "Chat IA",
-    descripcion: "Asistente que responde consultas técnicas en lenguaje simple, apoyado en documentos confiables.",
   },
   {
     key: "documentos", slug: "documentos", ruta: "/documentos", icono: FolderOpen,
