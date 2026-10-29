@@ -9,8 +9,9 @@ export async function hayVideo(src, pedir = fetch) {
   }
 }
 
-// Videos con subtítulos: /videos/<app>.<idioma>.vtt versionados en public/videos.
-// El de AgroHubs no tiene voz (solo música): sus subtítulos dicen los textos que aparecen en pantalla.
+// Videos con subtítulos: /videos/<nombre>.<idioma>.vtt versionados en public/videos.
+// - app: el video real de la app (1080p, 1:17, sin audio: el original solo traía música de fondo).
+// Sin voz: los subtítulos dicen los textos en pantalla.
 export const SUBTITULOS = {
-  agrohubs: ["es", "en", "pt"],
+  app: ["es", "en", "pt"],
 }

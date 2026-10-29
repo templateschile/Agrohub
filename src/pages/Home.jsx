@@ -79,7 +79,7 @@ export default function Home() {
             <h2 id="video-titulo" className="ah-seccion">{t("video.titulo")}</h2>
             <p className="ah-lead">{t("video.bajada")}</p>
           </div>
-          <AppVideo app="agrohubs" nombre="AgroHubs" />
+          <AppVideo app="app" nombre="AgroHubs" silencioso />
         </div>
       </section>
 

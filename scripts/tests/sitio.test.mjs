@@ -80,9 +80,9 @@ test('hayVideo exige un archivo de video (Vercel responde el index.html si no ex
   assert.equal(await hayVideo('/videos/a.mp4', async () => { throw new Error('red') }), false)
 })
 
-test('el video de AgroHubs está publicado con su portada', () => {
-  assert.ok(readFileSync(new URL('../../public/videos/agrohubs.mp4', import.meta.url)).length > 0)
-  assert.ok(readFileSync(new URL('../../public/videos/agrohubs.jpg', import.meta.url)).length > 0)
+test('el video real de la app está publicado con su portada', () => {
+  assert.ok(readFileSync(new URL('../../public/videos/app.mp4', import.meta.url)).length > 0)
+  assert.ok(readFileSync(new URL('../../public/videos/app.jpg', import.meta.url)).length > 0)
 })
 
 test('los 12 módulos tienen página: propia o armada por ModuloPagina', () => {

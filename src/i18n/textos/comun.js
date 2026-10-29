@@ -72,10 +72,10 @@ export default {
     "cultivos.bajada": "Café, hortalizas, fruta, ganado o viñas. Cada predio activa lo que le sirve.",
     "cultivos.vinas": "Viñas",
 
-    "video.titulo": "Cómo usar la app AgroHubs",
+    "video.titulo": "La app AgroHubs, tal como es",
     "video.bajada": "Del registro del predio a los avisos y la IA, en un minuto.",
     "video.aria": "Video de {nombre}",
-    "video.subtitulos": "Subtítulos en español, inglés y portugués.",
+    "video.subtitulos": "Sin voz: los subtítulos en español, inglés y portugués cuentan cada paso.",
     "video.pronto.titulo": "Video próximamente",
     "video.pronto.texto": "Estamos preparando un video corto de {nombre}. Mientras tanto, te lo mostramos en una reunión.",
 
@@ -251,10 +251,10 @@ export default {
     "cultivos.bajada": "Coffee, vegetables, fruit, cattle or vines. Each farm turns on what it needs.",
     "cultivos.vinas": "Vineyards",
 
-    "video.titulo": "How to use the AgroHubs app",
+    "video.titulo": "The AgroHubs app, as it is",
     "video.bajada": "From farm setup to alerts and AI, in one minute.",
     "video.aria": "{nombre} video",
-    "video.subtitulos": "Subtitles in Spanish, English and Portuguese.",
+    "video.subtitulos": "No voice: the subtitles in Spanish, English and Portuguese tell each step.",
     "video.pronto.titulo": "Video coming soon",
     "video.pronto.texto": "We are making a short video about {nombre}. Until then, we can show it to you in a meeting.",
 
@@ -430,10 +430,10 @@ export default {
     "cultivos.bajada": "Café, hortaliças, fruta, gado ou vinhedos. Cada propriedade ativa o que precisa.",
     "cultivos.vinas": "Vinhedos",
 
-    "video.titulo": "Como usar o app AgroHubs",
+    "video.titulo": "O app AgroHubs, como ele é",
     "video.bajada": "Do cadastro da propriedade aos alertas e à IA, em um minuto.",
     "video.aria": "Vídeo de {nombre}",
-    "video.subtitulos": "Legendas em espanhol, inglês e português.",
+    "video.subtitulos": "Sem voz: as legendas em espanhol, inglês e português contam cada passo.",
     "video.pronto.titulo": "Vídeo em breve",
     "video.pronto.texto": "Estamos preparando um vídeo curto de {nombre}. Enquanto isso, mostramos tudo em uma reunião.",
 
