@@ -12,6 +12,9 @@
 /* Hallmark · dropped the two Unsplash photos, the "10+" stat and the old section heads on / · they belonged to the removed sections; the year in the footer is now the current one */
 /* Hallmark · dropped, Problems, Transformation, EcosystemSection, ClosingCTA, ModulesPreview and FloatingCTA from / · the user asked for the simplest page: the app, its modules and a short form to book a meeting */
 /* Hallmark · added, the interactive ecosystem right after the hero, three steps above the phone, the ecosystem apps, six crop photos (Unsplash, credited on each) and Spanish, English and Portuguese · the owner asked for the ecosystem first, more real field photos for every crop and three languages */
+/* Hallmark · dropped, the closing photo band (it repeated «Agendar reunión» right under the form), the partner block (OlaDigital is in the strip and the footer), the module text under the phone, the step and team blurbs and the second hero paragraph · the owner asked for less text: 11 sections down to 8, hero inside the 1440x900 fold */
+/* Hallmark · changed, integrations from a two-column text table to one card per country with status dots; the ecosystem summary from 34 name chips to a proportion bar (the names fold under «Ver los 34 servicios»); the crop grid to 3 columns so the 6 photos fill 3 rows (the 6th sat alone beside two empty cells on PC) · the owner asked for images and diagrams over text */
+/* Hallmark · waive 75 · the 10px text is the photo credits, kept small on purpose (PR #30) */
 @import "./tokens.css";
 @import "./base.css" layer(base);
 @import "./sitio.css";

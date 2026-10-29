@@ -5,10 +5,10 @@ import Ecosistema from "../components/Ecosistema"
 import AppsEcosistema from "../components/AppsEcosistema"
 import MarcaPropia from "../components/MarcaPropia"
 import AppVideo from "../components/AppVideo"
-import Pasos from "../components/Pasos"
+import Pasos, { Equipo } from "../components/Pasos"
 import Foto from "../components/Foto"
 import CreditoFoto from "../components/CreditoFoto"
-import { ConfianStrip, Partner } from "../components/Confianza"
+import { ConfianStrip } from "../components/Confianza"
 import { useIdioma, Enlace } from "../i18n"
 import { resumen } from "../lib/ecosistema"
 import { FOTOS } from "../lib/fotos"
@@ -19,7 +19,7 @@ const GENTE = ["cosechaManos", "familiaCampo", "riegoPersona", "ganaderoCampo", 
 
 // Portada: la app con sus módulos y los tres pasos, el ecosistema interactivo (lo principal) con las
 // integraciones de la región que siguen su filtro, las apps del ecosistema, los cultivos, el video,
-// quiénes confían, agendar la reunión y, si se quiere, la evaluación.
+// quiénes confían y agendar la reunión (con la evaluación como segunda opción en la portada).
 export default function Home() {
   const { t } = useIdioma()
   return (
@@ -34,7 +34,6 @@ export default function Home() {
             <p className="ah-eyebrow">{t("hero.eyebrow", { activas })}</p>
             <h1 id="hero-titulo" className="ah-display">{t("hero.titulo")}</h1>
             <p className="ah-lead ah-hero__bajada">{t("hero.bajada")}</p>
-            <p className="ah-hero__bajada2">{t("hero.bajada2")}</p>
             <div className="ah-acciones">
               <a className="ah-btn" href="#contacto">{t("hero.agendar")}</a>
               <Enlace className="ah-btn ah-btn--quieto" to="/evaluacion">{t("hero.evaluar")}</Enlace>
@@ -51,9 +50,9 @@ export default function Home() {
 
       <Integraciones />
 
-      <AppsEcosistema />
-
-      <MarcaPropia />
+      <AppsEcosistema>
+        <MarcaPropia incrustada />
+      </AppsEcosistema>
 
       <section className="ah-cultivos" aria-labelledby="cultivos-titulo">
         <div className="container">
@@ -85,8 +84,6 @@ export default function Home() {
 
       <ConfianStrip />
 
-      <Partner />
-
       <section className="ah-agenda" id="contacto" aria-labelledby="agenda-titulo">
         <div className="container ah-agenda__grid">
           <div className="ah-agenda__texto">
@@ -96,25 +93,9 @@ export default function Home() {
               <li><b>{t("agenda.hecho1.b")}</b>{t("agenda.hecho1.t")}</li>
               <li><b>{t("agenda.hecho2.b")}</b>{t("agenda.hecho2.t")}</li>
             </ul>
+            <Equipo />
           </div>
           <AgendarReunion origen="portada" />
-        </div>
-      </section>
-
-      <section className="ah-cierre" aria-labelledby="cierre-titulo">
-        <div className="ah-cierre__foto">
-          <Foto foto={FOTOS.asesorCampo} sizes="100vw" />
-          <CreditoFoto foto={FOTOS.asesorCampo} />
-        </div>
-        <div className="container ah-cierre__grid">
-          <div className="ah-cierre__caja">
-            <h2 id="cierre-titulo" className="ah-banda__frase">{t("cierre.titulo")}</h2>
-            <p>{t("cierre.texto")}</p>
-            <div className="ah-acciones">
-              <a className="ah-btn" href="#contacto">{t("hero.agendar")}</a>
-              <Enlace className="ah-btn ah-btn--quieto" to="/evaluacion">{t("banda.cta")}</Enlace>
-            </div>
-          </div>
         </div>
       </section>
     </>

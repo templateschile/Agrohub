@@ -101,6 +101,7 @@ export default {
     "eco.tuEstacion": "Tu estación",
     "eco.verModulo": "Ver el módulo {modulo}",
     "eco.resumen.titulo": "{modulos} módulos y {servicios} servicios",
+    "eco.resumen.ver": "Ver los {n} servicios",
     "eco.resumen.bajada": "{conectadas} conectados hoy, {proximas} en desarrollo y {pedido} a pedido. Elige un módulo para ver solo sus integraciones, o un servicio para ver dónde se usa.",
     "eco.directorio": "Ver el directorio de {n} APIs agro",
 
@@ -280,6 +281,7 @@ export default {
     "eco.tuEstacion": "Your station",
     "eco.verModulo": "See the {modulo} module",
     "eco.resumen.titulo": "{modulos} modules and {servicios} services",
+    "eco.resumen.ver": "See all {n} services",
     "eco.resumen.bajada": "{conectadas} live today, {proximas} in development and {pedido} on request. Pick a module to see only its integrations, or a service to see where it is used.",
     "eco.directorio": "See the directory of {n} farm APIs (in Spanish)",
 
@@ -459,6 +461,7 @@ export default {
     "eco.tuEstacion": "Sua estação",
     "eco.verModulo": "Ver o módulo {modulo}",
     "eco.resumen.titulo": "{modulos} módulos e {servicios} serviços",
+    "eco.resumen.ver": "Ver os {n} serviços",
     "eco.resumen.bajada": "{conectadas} conectados hoje, {proximas} em desenvolvimento e {pedido} sob demanda. Escolha um módulo para ver só as integrações dele, ou um serviço para ver onde é usado.",
     "eco.directorio": "Ver o diretório de {n} APIs do agro (em espanhol)",
 

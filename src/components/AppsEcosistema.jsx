@@ -21,7 +21,7 @@ export function IconoApp({ icono, size = 24, ...rest }) {
 // Foto de la app (lib/apps.js: `foto`, con `fotoRespaldo` mientras la propia no esté en lib/fotos.js)
 export const fotoDe = (app) => FOTOS[app.foto] || FOTOS[app.fotoRespaldo] || FOTOS.hortalizas
 
-export default function AppsEcosistema({ excluir, titulo, bajada, id = "apps" }) {
+export default function AppsEcosistema({ excluir, titulo, bajada, id = "apps", children }) {
   const { t } = useIdioma()
   const apps = useApps().filter((a) => a.ruta.startsWith("/apps/") && a.slug !== excluir)
   const texto = bajada === undefined ? t("apps.portada.bajada") : bajada
@@ -57,6 +57,7 @@ export default function AppsEcosistema({ excluir, titulo, bajada, id = "apps" })
             )
           })}
         </ul>
+        {children}
       </div>
     </section>
   )
