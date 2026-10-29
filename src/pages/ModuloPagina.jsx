@@ -3,6 +3,16 @@ import { useInView } from '../hooks/useInView'
 import { useIdioma, useModulos, Enlace } from '../i18n'
 import Captura from '../components/Captura'
 import { capturasDeModulo } from '../lib/capturas'
+import Foto from '../components/Foto'
+import CreditoFoto from '../components/CreditoFoto'
+import { FOTOS } from '../lib/fotos'
+
+// Foto de gente del campo detrás de la cabecera de cada módulo (lib/fotos.js)
+const FOTO_MODULO = {
+  dashboard_sensores: 'riegoPersona', bitacora: 'cosechaManos', chat_ia: 'agricultorTablet', documentos: 'asesorCampo',
+  fuentes: 'capacitacion', clima: 'cereales', recomendaciones: 'frutales', fenologia: 'vinas', calculadoras: 'familiaCampo',
+  eventos: 'capacitacion', tienda: 'feriaVendedor', drones: 'operadorDron',
+}
 
 // Cabecera común de las páginas de módulo (las armadas aquí y las hechas a mano: Dashboard, AI Chat,
 // Documentos, Eventos y Tienda): nombre del módulo, h1 (el único de la página), bajada y botones.
@@ -24,9 +34,11 @@ export function HeroModulo({ moduloKey, badge, titulo, destacado, bajada }) {
   const m = useModulos().find((x) => x.key === moduloKey)
   const Icon = m?.icono
   const conCaptura = Boolean(capturasDeModulo(moduloKey).escritorio || capturasDeModulo(moduloKey).movil)
+  const fondo = FOTO_MODULO[moduloKey] && FOTOS[FOTO_MODULO[moduloKey]]
   return (
-    <section className="pt-32 pb-16 bg-gradient-to-b from-agro-green-900 to-agro-green-800">
-      <div className={`max-w-7xl mx-auto px-6 lg:px-14${conCaptura ? " ah-modhero" : ""}`}>
+    <section className={`pt-32 pb-16 bg-agro-green-900 ah-modhero-fondo${fondo ? " ah-modhero-fondo--foto" : ""}`}>
+      {fondo && <div className="ah-modhero-fondo__foto"><Foto foto={fondo} prioridad sizes="100vw" /><CreditoFoto foto={fondo} /></div>}
+      <div className={`relative max-w-7xl mx-auto px-6 lg:px-14${conCaptura ? " ah-modhero" : ""}`}>
         <div>
         <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
           {Icon && <Icon size={14} className="text-agro-green-300" aria-hidden="true" />}

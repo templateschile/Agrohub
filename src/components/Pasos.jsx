@@ -1,6 +1,9 @@
-import { LayoutGrid, Plug, Smartphone, ArrowRight, Wrench, GraduationCap, LifeBuoy, Users } from "lucide-react"
+import { LayoutGrid, Plug, Smartphone, ArrowRight, Wrench, GraduationCap, LifeBuoy } from "lucide-react"
 import { useIdioma, Enlace } from "../i18n"
 import { listaPlataformas } from "../lib/plataformas"
+import Foto from "./Foto"
+import CreditoFoto from "./CreditoFoto"
+import { FOTOS } from "../lib/fotos"
 
 // Tres pasos sobre el teléfono de la portada (texto de Fernando): elegir módulos, elegir con qué conectarse
 // y elegir cuántos usuarios, cada uno con una línea; debajo, el equipo que acompaña (implementación,
@@ -36,8 +39,14 @@ export default function Pasos() {
         })}
       </ol>
       <div className="ah-tp__equipo">
-        <span className="ah-tp__equipo-icono" aria-hidden="true"><Users size={20} strokeWidth={1.75} /></span>
-        <p className="ah-tp__equipo-titulo">{t("pasos.equipo")}</p>
+        <div className="ah-tp__equipo-foto">
+          <Foto foto={FOTOS.familiaCampo} proporcion={1} sizes="120px" />
+          <CreditoFoto foto={FOTOS.familiaCampo} />
+        </div>
+        <div className="ah-tp__equipo-texto">
+          <p className="ah-tp__equipo-titulo">{t("pasos.equipo")}</p>
+          <p className="ah-tp__equipo-bajada">{t("pasos.equipo.bajada")}</p>
+        </div>
         <ul className="ah-tp__equipo-lista">
           {equipo.map(({ icono: I, clave }) => (
             <li key={clave}><I size={16} strokeWidth={1.75} aria-hidden="true" />{t(clave)}</li>

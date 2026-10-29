@@ -55,8 +55,8 @@ export const MODULOS = [
     descripcion: "Información de fuentes externas (MODAG, Kadi, INIA y otras) junto a tus datos.",
     pagina: {
       badge: "Fuentes externas",
-      titulo: "Información confiable,", destacado: "en un solo lugar",
-      bajada: "AgroHubs reúne publicaciones técnicas, datos agrometeorológicos y fuentes de tu territorio para que el asistente y tu equipo respondan con respaldo.",
+      titulo: "Boletines, clima y datos públicos,", destacado: "junto a tus datos",
+      bajada: "AgroHubs reúne publicaciones técnicas, datos agrometeorológicos y fuentes de tu territorio para que el asistente y tu equipo respondan citando la fuente.",
       features: [
         { titulo: "Publicaciones técnicas", desc: "Boletines y guías de instituciones agrícolas, buscables por tema y cultivo." },
         { titulo: "Agrometeorología", desc: "Datos de estaciones públicas integrados al clima de tu predio." },
@@ -76,7 +76,7 @@ export const MODULOS = [
     descripcion: "Pronóstico y datos agrometeorológicos para tu zona.",
     pagina: {
       badge: "Clima y agrometeorología",
-      titulo: "El clima de tu predio,", destacado: "no el de la ciudad",
+      titulo: "Pronóstico y estaciones", destacado: "para tu predio",
       bajada: "Pronóstico a la ubicación exacta de tu campo, datos de estaciones agrometeorológicas cercanas y los indicadores que importan para regar y aplicar.",
       features: [
         { titulo: "Pronóstico por predio", desc: "Temperatura, lluvia, viento y humedad para las coordenadas de tu campo." },
@@ -97,13 +97,13 @@ export const MODULOS = [
     descripcion: "Avisos agronómicos según el pronóstico de tu predio: heladas, calor, lluvia, viento, riego y ventanas para aplicar.",
     pagina: {
       badge: "Recomendaciones por clima",
-      titulo: "Avisos a tiempo,", destacado: "antes de que el clima decida por ti",
+      titulo: "Avisos a tiempo", destacado: "para heladas, calor, lluvia y viento",
       bajada: "Dos veces al día AgroHubs revisa el pronóstico de cada predio y prepara recomendaciones concretas para tu cultivo. Tu centro demostrativo las aprueba, o se envían solas si así lo eliges.",
       features: [
         { titulo: "Heladas", desc: "Aviso con anticipación cuando la mínima baja de 2 °C, con las medidas de control a activar." },
         { titulo: "Calor", desc: "Sobre 32 °C: ajusta horarios de riego y evita aplicaciones en las horas de más calor." },
         { titulo: "Lluvia", desc: "Posterga fertilizaciones y aplicaciones foliares, y revisa drenajes antes de que llueva." },
-        { titulo: "Viento", desc: "Con viento fuerte no conviene aplicar ni volar drones: te avisamos qué días evitar." },
+        { titulo: "Viento", desc: "Con viento fuerte no conviene aplicar ni volar drones. Te avisamos qué días evitar." },
         { titulo: "Riego con ETo", desc: "Cuántos milímetros reponer según la evapotranspiración y el coeficiente de tu cultivo." },
         { titulo: "Ventana de aplicación", desc: "El mejor momento de la semana para aplicar: poco viento, sin lluvia y temperatura adecuada." },
       ],
@@ -173,10 +173,10 @@ export const MODULOS = [
     pagina: {
       badge: "Drones agrícolas · integración DronX",
       titulo: "Drones agrícolas a demanda,", destacado: "desde tu predio",
-      bajada: "AgroHubs ya está integrado con DronX: pides el servicio desde la app o el panel y la solicitud llega directo a la red de operadores, con los datos de tu predio.",
+      bajada: "Pides el servicio desde la app o el panel de AgroHubs y la solicitud llega a la red de operadores de DronX con los datos de tu predio.",
       aviso: {
-        titulo: "Ya tenemos integración con DronX",
-        texto: "DronX es un desarrollo de OlaDigital, con app Android y web (iOS próximamente), para solicitar drones agrícolas a demanda. AgroHubs se conecta con DronX: tus solicitudes viajan con los datos del predio y su estado se actualiza solo en la app.",
+        titulo: "Integrado con DronX",
+        texto: "DronX es de OlaDigital y tiene app Android y web (iOS próximamente). Tus solicitudes salen con los datos del predio y su estado se actualiza solo en AgroHubs.",
         enlace: { texto: "Conoce la app DronX", ruta: "/apps/dronx" },
       },
       features: [

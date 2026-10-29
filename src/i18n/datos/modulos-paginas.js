@@ -26,8 +26,8 @@ export default {
     fuentes: {
       pagina: {
         badge: "External sources",
-        titulo: "Reliable information,", destacado: "in one place",
-        bajada: "AgroHubs brings together technical publications, agrometeorological data and sources from your region, so the assistant and your team can back up their answers.",
+        titulo: "Bulletins, weather and public data,", destacado: "next to your own",
+        bajada: "AgroHubs brings together technical publications, agrometeorological data and sources from your region, so the assistant and your team can answer citing the source.",
         features: [
           { titulo: "Technical publications", desc: "Bulletins and guides from agricultural institutions, searchable by topic and crop." },
           { titulo: "Agrometeorology", desc: "Data from public weather stations, built into your farm's weather." },
@@ -44,7 +44,7 @@ export default {
     clima: {
       pagina: {
         badge: "Weather and agrometeorology",
-        titulo: "Your farm's weather,", destacado: "not the nearest city's",
+        titulo: "Forecast and stations", destacado: "for your farm",
         bajada: "Forecasts for the exact location of your field, data from nearby agrometeorological stations, and the indicators that matter for irrigation and spraying.",
         features: [
           { titulo: "Forecast for each farm", desc: "Temperature, rain, wind and humidity for your field's coordinates." },
@@ -62,7 +62,7 @@ export default {
     recomendaciones: {
       pagina: {
         badge: "Weather-based advice",
-        titulo: "Alerts in time,", destacado: "before the weather decides for you",
+        titulo: "Alerts in time", destacado: "for frost, heat, rain and wind",
         bajada: "Twice a day AgroHubs checks the forecast for each farm and drafts specific advice for your crop. Your demonstration center approves it, or it goes out automatically if you choose.",
         features: [
           { titulo: "Frost", desc: "Advance warning when the low drops below 2 °C, with the protection measures to turn on." },
@@ -119,10 +119,10 @@ export default {
       pagina: {
         badge: "Farm drones · DronX integration",
         titulo: "Farm drones on demand,", destacado: "from your farm",
-        bajada: "AgroHubs is already integrated with DronX: you request the service from the app or the dashboard, and the request goes straight to the operator network with your farm's details.",
+        bajada: "You request the service from the AgroHubs app or dashboard, and the request reaches the DronX operator network with your farm's details.",
         aviso: {
-          titulo: "We are already integrated with DronX",
-          texto: "DronX is built by OlaDigital, with an Android app and a web version (iOS coming soon), to book farm drones on demand. AgroHubs connects to DronX: your requests carry your farm's details, and their status updates in the app on its own.",
+          titulo: "Integrated with DronX",
+          texto: "DronX is built by OlaDigital and has an Android app and a web version (iOS coming soon). Your requests go out with your farm's details, and their status updates in AgroHubs on its own.",
           enlace: { texto: "See the DronX app" },
         },
         features: [
@@ -166,8 +166,8 @@ export default {
     fuentes: {
       pagina: {
         badge: "Fontes externas",
-        titulo: "Informação confiável,", destacado: "em um só lugar",
-        bajada: "A AgroHubs reúne publicações técnicas, dados agrometeorológicos e fontes da sua região para que o assistente e a sua equipe respondam com embasamento.",
+        titulo: "Boletins, clima e dados públicos,", destacado: "junto aos seus dados",
+        bajada: "A AgroHubs reúne publicações técnicas, dados agrometeorológicos e fontes da sua região para que o assistente e a sua equipe respondam citando a fonte.",
         features: [
           { titulo: "Publicações técnicas", desc: "Boletins e guias de instituições agrícolas, pesquisáveis por tema e cultura." },
           { titulo: "Agrometeorologia", desc: "Dados de estações públicas integrados ao clima da sua propriedade." },
@@ -184,7 +184,7 @@ export default {
     clima: {
       pagina: {
         badge: "Clima e agrometeorologia",
-        titulo: "O clima da sua propriedade,", destacado: "não o da cidade",
+        titulo: "Previsão e estações", destacado: "para a sua propriedade",
         bajada: "Previsão para a localização exata do seu campo, dados de estações agrometeorológicas próximas e os indicadores que importam para irrigar e aplicar.",
         features: [
           { titulo: "Previsão por propriedade", desc: "Temperatura, chuva, vento e umidade para as coordenadas do seu campo." },
@@ -202,7 +202,7 @@ export default {
     recomendaciones: {
       pagina: {
         badge: "Recomendações pelo clima",
-        titulo: "Alertas a tempo,", destacado: "antes que o clima decida por você",
+        titulo: "Alertas a tempo", destacado: "para geada, calor, chuva e vento",
         bajada: "Duas vezes por dia a AgroHubs confere a previsão de cada propriedade e prepara recomendações concretas para a sua cultura. O seu centro demonstrativo aprova, ou elas são enviadas automaticamente, se você preferir.",
         features: [
           { titulo: "Geada", desc: "Aviso antecipado quando a mínima fica abaixo de 2 °C, com as medidas de proteção a acionar." },
@@ -259,10 +259,10 @@ export default {
       pagina: {
         badge: "Drones agrícolas · integração DronX",
         titulo: "Drones agrícolas sob demanda,", destacado: "a partir da sua propriedade",
-        bajada: "A AgroHubs já está integrada à DronX: você pede o serviço pelo app ou pelo painel e a solicitação chega direto à rede de operadores, com os dados da sua propriedade.",
+        bajada: "Você pede o serviço pelo app ou pelo painel da AgroHubs e a solicitação chega à rede de operadores da DronX com os dados da sua propriedade.",
         aviso: {
-          titulo: "Já temos integração com a DronX",
-          texto: "A DronX é um desenvolvimento da OlaDigital, com app Android e versão web (iOS em breve), para solicitar drones agrícolas sob demanda. A AgroHubs se conecta à DronX: as suas solicitações levam os dados da propriedade e o status é atualizado sozinho no app.",
+          titulo: "Integrado à DronX",
+          texto: "A DronX é da OlaDigital e tem app Android e versão web (iOS em breve). As suas solicitações saem com os dados da propriedade e o status é atualizado sozinho na AgroHubs.",
           enlace: { texto: "Conheça o app DronX" },
         },
         features: [

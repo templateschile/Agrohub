@@ -242,9 +242,12 @@
 /* ── Fotos de Unsplash y su crédito (encima, abajo a la derecha) ── */
 .ah-foto { display: block; }
 .ah-foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.ah-credito { position: absolute; right: var(--space-xs); bottom: var(--space-xs); z-index: 2; max-width: calc(100% - 2 * var(--space-xs)); margin: 0; padding: var(--space-3xs) var(--space-xs); overflow: hidden; border-radius: var(--radius-pill); background: color-mix(in oklab, var(--color-forest-deep) 80%, transparent); color: var(--color-on-dark); font: 500 11px/1.6 var(--font-body); white-space: nowrap; text-overflow: ellipsis; }
-.ah-credito a { color: inherit; text-decoration: underline; text-underline-offset: 0.15em; }
-.ah-credito a:focus-visible { outline: 2px solid var(--color-mint); outline-offset: 1px; border-radius: 2px; }
+/* Crédito discreto: solo el autor, 10 px, casi transparente; sube al pasar el cursor por la foto o al enfocarlo */
+.ah-credito { position: absolute; right: 6px; bottom: 4px; z-index: 2; margin: 0; padding: 0; color: rgba(255, 255, 255, 0.4); font: 400 10px/1.4 var(--font-body); letter-spacing: 0.01em; white-space: nowrap; pointer-events: none; transition: color var(--dur-short) var(--ease-out); }
+.ah-credito a { color: inherit; text-decoration: none; pointer-events: auto; }
+.ah-credito a:focus-visible { outline: 1px solid var(--color-mint); outline-offset: 1px; border-radius: 2px; }
+@media (hover: hover) { :is(.ah-foto, figure, div, li, section):hover > .ah-credito { color: rgba(255, 255, 255, 0.85); } }
+.ah-credito:focus-within { color: rgba(255, 255, 255, 0.85); }
 
 /* ── Héroe: tres pasos sobre el teléfono ─────────────────── */
 .ah-hero__app { display: grid; gap: var(--space-lg); min-width: 0; }
@@ -355,3 +358,58 @@
 /* Héroe: la idea principal bajo el H1 y, más chico, qué hace la app */
 .ah-hero__bajada { max-width: 38ch; color: var(--color-ink); }
 .ah-hero__bajada2 { margin-top: var(--space-sm); max-width: 44ch; color: var(--color-muted); font-size: var(--text-md); line-height: 1.5; }
+
+/* ── Héroe con foto a sangre detrás del texto ───────────── */
+.ah-hero { position: relative; isolation: isolate; }
+.ah-hero__foto { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+.ah-hero__foto .ah-foto, .ah-hero__foto img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 62% 45%); }
+.ah-hero__foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--color-paper) 0%, color-mix(in oklab, var(--color-paper) 94%, transparent) 34%, color-mix(in oklab, var(--color-paper) 62%, transparent) 50%, color-mix(in oklab, var(--color-paper) 22%, transparent) 70%, transparent 100%); }
+.ah-hero__foto .ah-foto, .ah-hero__foto img { object-position: 78% 40%; }
+.ah-hero__foto .ah-credito { z-index: 1; color: rgba(255, 255, 255, 0.55); }
+.ah-hero__app { position: relative; }
+.ah-hero__texto { position: relative; }
+@media (max-width: 72rem) {
+  .ah-hero__foto::after { background: linear-gradient(180deg, color-mix(in oklab, var(--color-paper) 70%, transparent) 0%, color-mix(in oklab, var(--color-paper) 92%, transparent) 55%, var(--color-paper) 100%); }
+}
+
+/* Equipo con una foto de acompañamiento en terreno (sin nombres: no hay fotos autorizadas del equipo) */
+.ah-tp__equipo { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; padding: var(--space-xs) var(--space-md) var(--space-xs) var(--space-xs); }
+.ah-tp__equipo-foto { position: relative; width: 64px; height: 64px; overflow: hidden; border-radius: 50%; }
+.ah-tp__equipo-foto img { width: 100%; height: 100%; object-fit: cover; }
+.ah-tp__equipo-foto .ah-credito { display: none; }
+.ah-tp__equipo-texto { display: grid; gap: 2px; }
+.ah-tp__equipo-bajada { color: var(--color-on-dark-2); font-size: var(--text-xs); line-height: 1.35; }
+@media (max-width: 40rem) { .ah-tp__equipo { grid-template-columns: auto minmax(0, 1fr); } .ah-tp__equipo-lista { grid-column: 1 / -1; } }
+
+/* Gente del campo: grilla asimétrica, la primera foto grande */
+.ah-cultivos__grilla { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(0, auto); }
+.ah-cultivo--grande { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+.ah-cultivo--grande .ah-foto img { height: 100%; }
+@media (max-width: 60rem) { .ah-cultivos__grilla { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ah-cultivo--grande { grid-column: span 2; grid-row: auto; aspect-ratio: 3 / 2; } }
+@media (max-width: 30rem) { .ah-cultivos__grilla { grid-template-columns: minmax(0, 1fr); } .ah-cultivo--grande { grid-column: auto; } }
+
+/* Cierre con foto a sangre y una caja de papel */
+.ah-cierre { position: relative; isolation: isolate; padding: var(--section-gap-s) 0; min-height: 420px; display: grid; align-items: center; }
+.ah-cierre__foto { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+.ah-cierre__foto .ah-foto, .ah-cierre__foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; }
+.ah-cierre__foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, color-mix(in oklab, var(--color-forest-deep) 35%, transparent), transparent 60%); }
+.ah-cierre__foto .ah-foto, .ah-cierre__foto img { object-position: 60% 40%; }
+.ah-cierre__caja { display: grid; gap: var(--space-md); max-width: 36rem; padding: var(--space-xl); border-radius: var(--radius-card); background: var(--color-paper); color: var(--color-ink); }
+.ah-cierre__caja .ah-banda__frase { color: var(--color-ink); }
+.ah-cierre__caja p { color: var(--color-ink-2); }
+.ah-cierre__caja .ah-acciones { margin-top: 0; }
+@media (max-width: 40rem) { .ah-cierre { padding: var(--space-xl) 0; } .ah-cierre__caja { padding: var(--space-lg); } }
+
+/* Cabecera de módulos: foto de gente detrás, sin degradado genérico */
+.ah-modhero-fondo { position: relative; isolation: isolate; overflow: hidden; }
+.ah-modhero-fondo__foto { position: absolute; inset: 0; z-index: -1; }
+.ah-modhero-fondo__foto .ah-foto, .ah-modhero-fondo__foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+.ah-modhero-fondo__foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, color-mix(in oklab, var(--color-forest-deep) 88%, transparent) 0%, color-mix(in oklab, var(--color-forest-deep) 80%, transparent) 55%, color-mix(in oklab, var(--color-forest-deep) 55%, transparent) 100%); }
+
+/* Créditos de fotos */
+.ah-creditos { padding: var(--space-2xl) 0 var(--section-gap-s); }
+.ah-creditos__lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-md); margin: 0; padding: 0; list-style: none; }
+.ah-creditos__foto { display: grid; gap: var(--space-2xs); }
+.ah-creditos__foto img { width: 100%; height: auto; border-radius: var(--radius-input); }
+.ah-creditos__foto p { font-size: var(--text-sm); color: var(--color-ink-2); }
+.ah-creditos__foto a { color: var(--color-ink); min-height: 44px; display: inline-flex; align-items: center; }
