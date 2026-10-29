@@ -50,7 +50,7 @@ export default function AppModulos() {
         </div>
         <div className="ah-telefono__pie" aria-live="polite">
           <p className="ah-telefono__nombre">{m.nombre}</p>
-          <p className="ah-telefono__texto">{m.descripcion}</p>
+          {/* Sin la descripción larga: el teléfono ya muestra el módulo; el detalle está en su página */}
           {m.ruta && <Enlace className="ah-telefono__ver" to={m.ruta}>{t("app.verModulo")}</Enlace>}
         </div>
       </div>

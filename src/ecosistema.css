@@ -152,3 +152,17 @@
 .eco-mod--proximo .eco-mod__marco, .eco-mod--proximo > circle { stroke-dasharray: 5 4; stroke: var(--color-muted); }
 .eco-panel__pronto { margin: 0; color: var(--color-ink-2); font-size: var(--text-sm); line-height: 1.5; }
 @media (max-width: 40rem) { .eco-cifras b { font-size: var(--text-2xl); } .eco-filtro__ayuda { display: block; margin: var(--space-3xs) 0 0; } }
+
+/* Resumen: barra de proporciones por estado y la lista de servicios plegada */
+.eco-barra { display: flex; gap: 3px; height: 14px; border-radius: var(--radius-pill); overflow: hidden; }
+.eco-barra__tramo { flex-basis: 0; min-width: 8px; background: var(--color-paper-3); }
+.eco-barra__tramo--conectada { background: var(--color-accent); }
+.eco-barra__tramo--proximamente { background: var(--color-ink-2); opacity: 0.45; }
+.eco-barra__tramo--pedido { background: repeating-linear-gradient(135deg, var(--color-rule) 0 4px, var(--color-paper-3) 4px 8px); }
+.eco-barra__leyenda { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-sm); margin: 0; padding: 0; list-style: none; }
+.eco-barra__leyenda li { display: grid; justify-items: start; gap: var(--space-2xs); }
+.eco-barra__leyenda b { font: 600 var(--text-section)/1 var(--font-display); color: var(--color-ink); }
+.eco-todos { display: grid; gap: var(--space-md); }
+.eco-todos > summary { cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; list-style: none; }
+.eco-todos > summary::-webkit-details-marker { display: none; }
+.eco-todos[open] > summary { margin-bottom: var(--space-sm); }

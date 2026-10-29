@@ -345,17 +345,32 @@ function Panel({ sel, MOD, disponibles, verTodo, elegirModulo, elegirServicio })
     titulo = t("eco.resumen.titulo", { modulos: disponibles, servicios: RESUMEN.servicios })
     cuerpo = (
       <>
-        <p className="eco-panel__bajada">{t("eco.resumen.bajada", { conectadas: porEstado.conectada, proximas: porEstado.proximamente, pedido: porEstado.pedido })}</p>
-        {SERV_POR_ESTADO.map(({ estado, servicios }) => (
-          <div key={estado} className="eco-grupo">
-            <p className="eco-grupo__titulo"><Estado estado={estado} /> {servicios.length}</p>
-            <ul className="eco-servchips">
-              {servicios.map(s => (
-                <li key={s.id}><button type="button" className="eco-servchip" onClick={() => elegirServicio(s.id)}>{s.nombre}</button></li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        {/* Barra de proporciones: cuántos servicios están conectados, en desarrollo o a pedido. Los nombres quedan
+            plegados para no llenar el panel de texto. */}
+        <p className="visually-hidden">{t("eco.resumen.bajada", { conectadas: porEstado.conectada, proximas: porEstado.proximamente, pedido: porEstado.pedido })}</p>
+        <div className="eco-barra" aria-hidden="true">
+          {SERV_POR_ESTADO.map(({ estado, servicios }) => (
+            <span key={estado} className={`eco-barra__tramo eco-barra__tramo--${estado}`} style={{ flexGrow: servicios.length }} />
+          ))}
+        </div>
+        <ul className="eco-barra__leyenda" aria-hidden="true">
+          {SERV_POR_ESTADO.map(({ estado, servicios }) => (
+            <li key={estado}><b>{servicios.length}</b><Estado estado={estado} /></li>
+          ))}
+        </ul>
+        <details className="eco-todos">
+          <summary className="eco-enlace">{t("eco.resumen.ver", { n: RESUMEN.servicios })}</summary>
+          {SERV_POR_ESTADO.map(({ estado, servicios }) => (
+            <div key={estado} className="eco-grupo">
+              <p className="eco-grupo__titulo"><Estado estado={estado} /> {servicios.length}</p>
+              <ul className="eco-servchips">
+                {servicios.map(s => (
+                  <li key={s.id}><button type="button" className="eco-servchip" onClick={() => elegirServicio(s.id)}>{s.nombre}</button></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </details>
       </>
     )
   }

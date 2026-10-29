@@ -4,8 +4,8 @@ import { CATEGORIAS_MODULO } from "../lib/ecosistema"
 import { moduloDeSlug } from "./Ecosistema"
 import { useIdioma, useModulos } from "../i18n"
 
-// Las integraciones destacadas de la región (del directorio /apis, generadas por scripts/build-apis.mjs), en una
-// sola lista sin preferir un país: primero las conectadas y luego por nombre. Cada fila abre su ficha (en español).
+// Las integraciones destacadas de la región (del directorio /apis, generadas por scripts/build-apis.mjs), agrupadas
+// por país: primero las conectadas y luego por nombre. Cada píldora abre su ficha (en español).
 // Sigue el filtro del ecosistema (?modulo=): con un módulo elegido muestra solo las de sus categorías.
 const FILAS = [
   ...DESTACADAS.chile.map(f => ({ ...f, pais: f.pais || "Chile" })),
@@ -18,21 +18,49 @@ function nombrePais(pais, locale) {
   try { return ISO[pais] ? new Intl.DisplayNames([locale], { type: "region" }).of(ISO[pais]) : pais } catch { return pais }
 }
 
-function Lista({ filas }) {
+// Un país = una tarjeta con su código y sus servicios como píldoras; el punto dice el estado (lleno = conectada,
+// borde = próximamente, punteado = a pedido). Menos texto que una tabla: el detalle está en la ficha.
+const CLASE_ESTADO = { Conectada: "es-conectada", Próximamente: "es-pronto", "A pedido": "es-pedido" }
+function Paises({ filas }) {
   const { t, locale } = useIdioma()
+  const grupos = []
+  for (const f of filas) {
+    let g = grupos.find(x => x.pais === f.pais)
+    if (!g) grupos.push(g = { pais: f.pais, filas: [] })
+    g.filas.push(f)
+  }
+  // Primero los países con más conectadas
+  const conectadas = g => g.filas.filter(f => f.estado === "Conectada").length
+  grupos.sort((a, b) => conectadas(b) - conectadas(a) || b.filas.length - a.filas.length)
   return (
-    <div className="ah-integ__col">
-      <ul className="ah-integ__lista">
-        {filas.map(f => (
-          <li key={f.slug}>
-            <a href={`/apis/${f.slug}`} hrefLang="es" className="ah-integ__fila">
-              <span className="ah-integ__nombre">{f.nombre}<small>{[f.detalle, nombrePais(f.pais, locale)].filter(Boolean).join(", ")}</small></span>
-              <span className={`ah-integ__estado${f.estado === "Conectada" ? " es-conectada" : ""}`}>{t(`integ.estado.${f.estado}`)}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="ah-paises">
+      {grupos.map(g => (
+        <li key={g.pais} className="ah-pais">
+          <p className="ah-pais__cabeza"><span className="ah-pais__iso" aria-hidden="true">{ISO[g.pais] || g.pais.slice(0, 2).toUpperCase()}</span>{nombrePais(g.pais, locale)}</p>
+          <ul className="ah-pais__apis">
+            {g.filas.map(f => (
+              <li key={f.slug}>
+                <a href={`/apis/${f.slug}`} hrefLang="es" className={`ah-pais__api ${CLASE_ESTADO[f.estado] || ""}`} title={f.detalle || undefined}>
+                  <span className="ah-pais__punto" aria-hidden="true" />{f.nombre.split(" / ")[0]}
+                  <span className="visually-hidden">, {t(`integ.estado.${f.estado}`)}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function Leyenda() {
+  const { t } = useIdioma()
+  return (
+    <ul className="ah-paises__leyenda" aria-hidden="true">
+      {Object.entries(CLASE_ESTADO).map(([estado, clase]) => (
+        <li key={estado} className={clase}><span className="ah-pais__punto" />{t(`integ.estado.${estado}`)}</li>
+      ))}
+    </ul>
   )
 }
 
@@ -43,7 +71,6 @@ export default function Integraciones() {
   const modulo = moduloDeSlug(params.get("modulo"))
   const categorias = modulo ? CATEGORIAS_MODULO[modulo] || [] : null
   const filas = categorias ? FILAS.filter(f => (f.categorias || []).some(c => categorias.includes(c))) : FILAS
-  const mitad = Math.ceil(filas.length / 2)
   const nombre = modulo && modulos.find(m => m.key === modulo)?.corto
   const verTodas = () => {
     const p = new URLSearchParams(params)
@@ -57,6 +84,7 @@ export default function Integraciones() {
         <div className="ah-integ__cabeza">
           <h2 id="integ-titulo" className="ah-seccion">{t("integ.titulo")}</h2>
           <p className="ah-lead">{t("integ.bajada")}</p>
+          <Leyenda />
         </div>
         {modulo && (
           <div className="ah-integ__filtro">
@@ -65,12 +93,7 @@ export default function Integraciones() {
             {categorias[0] && <a className="eco-enlace" href={`/apis/categoria/${categorias[0]}`} hrefLang="es">{t("integ.categoria", { modulo: nombre })}</a>}
           </div>
         )}
-        {filas.length > 0 && (
-          <div className="ah-integ__grid">
-            <Lista filas={filas.slice(0, mitad)} />
-            {filas.length > 1 && <Lista filas={filas.slice(mitad)} />}
-          </div>
-        )}
+        {filas.length > 0 && <Paises filas={filas} />}
         {/* Directorio estático (HTML generado en el build): enlace normal, no del router */}
         <a className="ah-btn ah-btn--quieto ah-integ__ver" href="/apis" hrefLang="es">{t("integ.ver")}</a>
       </div>
