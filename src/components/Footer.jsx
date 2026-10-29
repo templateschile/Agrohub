@@ -35,6 +35,7 @@ export default function Footer() {
             <a href={ruta('/#contacto')}>{t('pie.contacto')}</a>
             <Enlace to="/licencias">{t('pie.licencias')}</Enlace>
             <Enlace to="/terminos">{t('pie.terminos')}</Enlace>
+            <Enlace to="/creditos">{t('pie.creditos')}</Enlace>
           </nav>
           <nav className="ah-pie__apps" aria-labelledby="pie-apps">
             <p id="pie-apps" className="ah-pie__subtitulo">{t('pie.apps')}</p>

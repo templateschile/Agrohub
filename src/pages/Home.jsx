@@ -14,8 +14,8 @@ import { resumen } from "../lib/ecosistema"
 import { FOTOS } from "../lib/fotos"
 
 const { activas } = resumen()
-// Una foto por tipo de cultivo (lib/fotos.js), sin preferir un país ni un cultivo
-const CULTIVOS = ["frutales", "hortalizas", "vinas", "cereales", "paltos", "ganado"].filter(k => FOTOS[k])
+// Gente del campo (lib/fotos.js): personas trabajando, de varios países, sin preferir ninguno
+const GENTE = ["cosechaManos", "familiaCampo", "riegoPersona", "ganaderoCampo", "feriaVendedor", "vinas"].filter(k => FOTOS[k])
 
 // Portada: la app con sus módulos y los tres pasos, el ecosistema interactivo (lo principal) con las
 // integraciones de la región que siguen su filtro, las apps del ecosistema, los cultivos, el video,
@@ -25,6 +25,10 @@ export default function Home() {
   return (
     <>
       <section className="ah-hero" id="modulos" aria-labelledby="hero-titulo">
+        <div className="ah-hero__foto">
+          <Foto foto={FOTOS.agricultorTablet} prioridad sizes="100vw" />
+          <CreditoFoto foto={FOTOS.agricultorTablet} />
+        </div>
         <div className="container ah-hero__grid">
           <div className="ah-hero__texto">
             <p className="ah-eyebrow">{t("hero.eyebrow", { activas })}</p>
@@ -58,9 +62,9 @@ export default function Home() {
             <p className="ah-lead">{t("cultivos.bajada")}</p>
           </div>
           <ul className="ah-cultivos__grilla">
-            {CULTIVOS.map(k => (
-              <li key={k} className="ah-cultivo">
-                <Foto foto={FOTOS[k]} proporcion={4 / 3} sizes="(min-width: 72rem) 30vw, (min-width: 40rem) 45vw, 100vw" />
+            {GENTE.map((k, i) => (
+              <li key={k} className={`ah-cultivo${i === 0 ? " ah-cultivo--grande" : ""}`}>
+                <Foto foto={FOTOS[k]} proporcion={i === 0 ? 3 / 2 : 4 / 3} sizes="(min-width: 72rem) 30vw, (min-width: 40rem) 45vw, 100vw" />
                 <p className="ah-cultivo__nombre">{t(`cultivos.${k}`)}</p>
                 <CreditoFoto foto={FOTOS[k]} />
               </li>
@@ -97,10 +101,20 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="ah-banda" aria-labelledby="banda-titulo">
-        <div className="container ah-banda__grid">
-          <h2 id="banda-titulo" className="ah-banda__frase">{t("banda.frase")}</h2>
-          <Enlace className="ah-btn ah-btn--claro" to="/evaluacion">{t("banda.cta")}</Enlace>
+      <section className="ah-cierre" aria-labelledby="cierre-titulo">
+        <div className="ah-cierre__foto">
+          <Foto foto={FOTOS.asesorCampo} sizes="100vw" />
+          <CreditoFoto foto={FOTOS.asesorCampo} />
+        </div>
+        <div className="container ah-cierre__grid">
+          <div className="ah-cierre__caja">
+            <h2 id="cierre-titulo" className="ah-banda__frase">{t("cierre.titulo")}</h2>
+            <p>{t("cierre.texto")}</p>
+            <div className="ah-acciones">
+              <a className="ah-btn" href="#contacto">{t("hero.agendar")}</a>
+              <Enlace className="ah-btn ah-btn--quieto" to="/evaluacion">{t("banda.cta")}</Enlace>
+            </div>
+          </div>
         </div>
       </section>
     </>

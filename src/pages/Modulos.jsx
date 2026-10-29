@@ -1,6 +1,9 @@
 import { ArrowRight } from 'lucide-react'
 import { useIdioma, useModulos, useModulosProximos, Enlace } from '../i18n'
 import { listaPlataformas } from '../lib/plataformas'
+import Foto from '../components/Foto'
+import CreditoFoto from '../components/CreditoFoto'
+import { FOTOS } from '../lib/fotos'
 
 // Índice de todos los módulos: cada uno con su página.
 export default function Modulos() {
@@ -9,8 +12,9 @@ export default function Modulos() {
   const proximos = useModulosProximos()
   return (
     <div>
-      <section className="pt-32 pb-14 bg-gradient-to-b from-agro-green-900 to-agro-green-800">
-        <div className="max-w-7xl mx-auto px-6 lg:px-14">
+      <section className="pt-32 pb-14 bg-agro-green-900 ah-modhero-fondo ah-modhero-fondo--foto">
+        <div className="ah-modhero-fondo__foto"><Foto foto={FOTOS.capacitacion} prioridad sizes="100vw" /><CreditoFoto foto={FOTOS.capacitacion} /></div>
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-14">
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 max-w-3xl" style={{ textWrap: 'balance' }}>
             {t('mod.indice.titulo')} <span className="text-agro-green-300">{t('mod.indice.destacado')}</span>
           </h1>

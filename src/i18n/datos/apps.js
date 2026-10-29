@@ -67,7 +67,7 @@ export default {
     },
     dronx: {
       promesa: "Drone services on demand",
-      bajada: "DronX, built by OlaDigital, connects people who need drone work with the operators in its network. AgroHubs is already integrated with DronX, so you request the service from your farm and it arrives with the farm's data.",
+      bajada: "DronX, built by OlaDigital, connects people who need drone work with the operators in its network. From AgroHubs you request the service and it goes out with your farm's data.",
       cta: "Request through AgroHubs",
       otra: { texto: "Visit the DronX website" },
       problemas: [
@@ -284,7 +284,7 @@ export default {
     },
     dronx: {
       promesa: "Serviços de drone sob demanda",
-      bajada: "A DronX, da OlaDigital, conecta quem precisa de um serviço de drone aos operadores da sua rede. Como a AgroHubs já está integrada à DronX, você pede o serviço a partir da sua propriedade e a solicitação chega com os dados dela.",
+      bajada: "A DronX, da OlaDigital, conecta quem precisa de um drone aos operadores da sua rede. Pela AgroHubs você pede o serviço e a solicitação sai com os dados da sua propriedade.",
       cta: "Pedir pela AgroHubs",
       otra: { texto: "Ir para o site da DronX" },
       problemas: [

@@ -6,7 +6,7 @@ export default {
   es: {
     // Cabecera
     "eval.titulo": "Evalúa tu operación",
-    "eval.bajada": "En 5 minutos nos cuentas qué tienes y qué buscas, y diseñamos tu solución AgroHubs.",
+    "eval.bajada": "En 5 minutos nos cuentas qué tienes y qué buscas, y te proponemos los módulos y sensores para tu campo.",
     "eval.hecho1.titulo": "Sin compromiso",
     "eval.hecho1.texto": "Datos confidenciales, respuesta en 24 horas hábiles.",
     "eval.hecho2.titulo": "Si tu caso no aparece en las opciones",
@@ -166,7 +166,7 @@ export default {
     "eval.etapas.titulo": "Cómo trabajamos",
 
     // Enviado
-    "eval.ok.titulo": "¡Gracias, {nombre}!",
+    "eval.ok.titulo": "Gracias, {nombre}",
     "eval.ok.texto": "Recibimos tu evaluación. Te contactaremos pronto.",
     "eval.ok.confirmacion": "Te enviamos una confirmación a {email}.",
     "eval.ok.paso1.titulo": "Revisamos tus respuestas",
@@ -260,7 +260,7 @@ export default {
 
   en: {
     "eval.titulo": "Assess your operation",
-    "eval.bajada": "Tell us in 5 minutes what you have and what you need, and we'll design your AgroHubs setup.",
+    "eval.bajada": "Tell us in 5 minutes what you have and what you need, and we'll propose the modules and sensors for your farm.",
     "eval.hecho1.titulo": "No commitment",
     "eval.hecho1.texto": "Your data stays confidential. We reply within one business day.",
     "eval.hecho2.titulo": "If your case isn't listed",
@@ -412,7 +412,7 @@ export default {
     "eval.diag.vacio": "As you answer, you'll see here how AgroHubs can help your operation.",
     "eval.etapas.titulo": "How we work",
 
-    "eval.ok.titulo": "Thank you, {nombre}!",
+    "eval.ok.titulo": "Thank you, {nombre}",
     "eval.ok.texto": "We received your assessment and will be in touch soon.",
     "eval.ok.confirmacion": "We sent a confirmation to {email}.",
     "eval.ok.paso1.titulo": "We review your answers",
@@ -505,7 +505,7 @@ export default {
 
   pt: {
     "eval.titulo": "Avalie a sua operação",
-    "eval.bajada": "Em 5 minutos você conta o que tem e o que procura, e nós desenhamos a sua solução AgroHubs.",
+    "eval.bajada": "Em 5 minutos você conta o que tem e o que procura, e propomos os módulos e sensores para o seu campo.",
     "eval.hecho1.titulo": "Sem compromisso",
     "eval.hecho1.texto": "Dados confidenciais, resposta em até 24 horas úteis.",
     "eval.hecho2.titulo": "Se o seu caso não estiver nas opções",
@@ -657,7 +657,7 @@ export default {
     "eval.diag.vacio": "Conforme você responde, aqui aparece como a AgroHubs pode ajudar a sua operação.",
     "eval.etapas.titulo": "Como trabalhamos",
 
-    "eval.ok.titulo": "Obrigado, {nombre}!",
+    "eval.ok.titulo": "Obrigado, {nombre}",
     "eval.ok.texto": "Recebemos a sua avaliação. Entraremos em contato em breve.",
     "eval.ok.confirmacion": "Enviamos uma confirmação para {email}.",
     "eval.ok.paso1.titulo": "Analisamos as suas respostas",

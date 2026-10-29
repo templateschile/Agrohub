@@ -78,9 +78,6 @@
 .ah-appf { position: relative; overflow: hidden; border-radius: var(--radius-card); background: var(--color-paper-3); }
 .ah-appf .ah-foto { display: block; }
 .ah-appf img { display: block; width: 100%; height: auto; object-fit: cover; transition: transform var(--dur-long) var(--ease-out); }
-.ah-appf .ah-credito { position: absolute; right: var(--space-xs); bottom: var(--space-xs); z-index: 2; max-width: calc(100% - 2 * var(--space-xs)); margin: 0; padding: var(--space-3xs) var(--space-xs); overflow: hidden; border-radius: var(--radius-pill); background: color-mix(in oklab, var(--color-forest-deep) 78%, transparent); color: var(--color-on-dark); font: 500 11px/1.6 var(--font-body); white-space: nowrap; text-overflow: ellipsis; }
-.ah-appf .ah-credito a { color: inherit; text-decoration: underline; text-underline-offset: 0.15em; }
-.ah-appf .ah-credito a:focus-visible { outline: 2px solid var(--color-mint); outline-offset: 1px; border-radius: 2px; }
 
 /* ── Botón con el color de la app ────────────────────────── */
 .ah-btn--app { background: var(--app-acento, var(--color-accent)); border-color: var(--app-acento, var(--color-accent)); color: var(--color-on-dark); }

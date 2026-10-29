@@ -13,6 +13,7 @@ import Tienda from './pages/Tienda'
 import Evaluacion from './pages/Evaluacion'
 import Terminos from './pages/Terminos'
 import Licencias from './pages/Licencias'
+import Creditos from './pages/Creditos'
 import RedirigirAdmin from './pages/RedirigirAdmin'
 import Modulos from './pages/Modulos'
 import ModuloPagina from './pages/ModuloPagina'
@@ -114,6 +115,7 @@ function rutas(prefijo) {
     <Route key={p('/precios')} path={p('/precios')} element={<Navigate to={p('/evaluacion')} replace />} />,
     <Route key={p('/terminos')} path={p('/terminos')} element={<Terminos />} />,
     <Route key={p('/licencias')} path={p('/licencias')} element={<Licencias />} />,
+    <Route key={p('/creditos')} path={p('/creditos')} element={<Creditos />} />,
   ]
 }
 

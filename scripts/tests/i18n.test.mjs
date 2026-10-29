@@ -165,3 +165,17 @@ test('la bajada del héroe y la descripción de la portada son las frases de Fer
   assert.match(TEXTOS.es['meta.descripcion'], /^Tecnología al alcance de cada agricultor/)
   assert.match(leer('../../index.html'), /Tecnología al alcance de cada agricultor/)
 })
+
+test('fotos con personas y créditos: al menos 8 con gente, crédito discreto solo con el autor, y la lista completa en /creditos', async () => {
+  const { FOTOS } = await import('../../src/lib/fotos.js')
+  const personas = ['agricultorTablet', 'asesorCampo', 'cosechaManos', 'feriaVendedor', 'operadorDron', 'recicladorCampo', 'riegoPersona', 'familiaCampo', 'ganaderoCampo', 'capacitacion']
+  const faltan = personas.filter((k) => !FOTOS[k])
+  assert.deepEqual(faltan, [], 'fotos con personas que faltan')
+  for (const f of Object.values(FOTOS)) assert.ok(f.imagen && f.autor && f.perfil && f.id && f.alt?.es && f.alt?.en && f.alt?.pt, `${f.id}: datos incompletos`)
+  const credito = leer('../../src/components/CreditoFoto.jsx')
+  assert.ok(credito.includes('to="/creditos"') && !/>\s*Unsplash\s*</.test(credito), 'sobre la foto solo va el autor, con enlace a /creditos')
+  const pagina = leer('../../src/pages/Creditos.jsx')
+  assert.ok(pagina.includes('unsplash.com/photos/') && pagina.includes('unsplash.com/@'), '/creditos enlaza cada foto y cada autor en Unsplash')
+  assert.ok(leer('../../src/App.jsx').includes("p('/creditos')"))
+  assert.match(leer('../../src/components/Footer.jsx'), /to="\/creditos"/)
+})

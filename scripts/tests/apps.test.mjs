@@ -102,7 +102,8 @@ test('cada app tiene ícono y foto (con respaldo mientras la propia no esté)', 
     assert.ok(FOTOS[a.foto] || FOTOS[a.fotoRespaldo], `${a.slug}: ni ${a.foto} ni ${a.fotoRespaldo} están en lib/fotos.js`)
     assert.ok(FOTOS[a.fotoRespaldo], `${a.slug}: la foto de respaldo (${a.fotoRespaldo}) tiene que existir`)
   }
-  assert.deepEqual(APPS_CON_PAGINA.map((a) => a.foto), ['residuos', 'dron', 'feria'])
+  // Fotos con personas (lib/fotos.js): quien recoge en el campo, el dron en vuelo y la vendedora de feria
+  assert.deepEqual(APPS_CON_PAGINA.map((a) => a.foto), ['recicladorCampo', 'dron', 'feriaVendedor'])
 })
 
 // ── Traducciones ──

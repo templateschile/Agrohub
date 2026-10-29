@@ -51,6 +51,47 @@ export const FOTOS = {
     imagen: "photo-1729622493745-03ca9590c64a", autor: "Ricky Beron", perfil: "nacio1966", id: "V0sZeTunIvY",
     alt: { es: "Puesto de feria repleto de fruta fresca a la venta: uvas, mangos, manzanas y cerezas", en: "Market stall packed with fresh fruit for sale: grapes, mangoes, apples and cherries", pt: "Banca de feira repleta de frutas frescas à venda: uvas, mangas, maçãs e cerejas" },
   },
+  // --- Fotos con personas (héroe, equipo, módulos) ---
+  agricultorTablet: {
+    imagen: "photo-1761839257870-06874bda71b5", autor: "Land O'Lakes, Inc.", perfil: "landolakesinc", id: "7ddaKmX7Tow", pos: "62% 45%",
+    alt: { es: "Agricultor con guantes apoyado en un cerco de madera revisa una tablet en su predio", en: "Farmer in work gloves leaning on a wooden fence checks a tablet on his farm", pt: "Agricultor de luvas apoiado em uma cerca de madeira consulta um tablet em sua propriedade" },
+  },
+  asesorCampo: {
+    imagen: "photo-1791570923102-0d9dc11d14db", autor: "David Maillard", perfil: "orubecoffee", id: "RGfN4xqQTOQ", pos: "55% 45%",
+    alt: { es: "Asesor conversa con dos productores entre cafetos en una ladera soleada", en: "Adviser talks with two growers among coffee plants on a sunny hillside", pt: "Assessor conversa com dois produtores entre pés de café em uma encosta ensolarada" },
+  },
+  capacitacionGrupo: {
+    imagen: "photo-1723851944164-121e673fbffb", autor: "Jhonathan David Posso Guaitarilla", perfil: "jhonathan_posso", id: "UF7NdgkLBBU", pos: "55% 45%",
+    alt: { es: "Grupo de productores trabaja en hileras de cultivo en una ladera rodeada de vegetación", en: "Group of growers works crop rows on a hillside surrounded by vegetation", pt: "Grupo de produtores trabalha em fileiras de cultivo em uma encosta cercada de vegetação" },
+  },
+  cosechaManos: {
+    imagen: "photo-1775434657007-549ae5d21bd4", autor: "Felipe Osorio", perfil: "felipeosoriogarcia", id: "TcPJecW_V0g",
+    alt: { es: "Manos de un recolector sostienen cerezas de café recién cosechadas junto al arbusto", en: "A picker's hands hold freshly harvested coffee cherries beside the bush", pt: "Mãos de um colhedor seguram cerejas de café recém-colhidas junto ao arbusto" },
+  },
+  feriaVendedor: {
+    imagen: "photo-1778720431543-8f2446c74dc8", autor: "Anton Acosta", perfil: "ottelo", id: "S7vHvX9a1h4", pos: "50% 40%",
+    alt: { es: "Vendedora sonríe en su puesto de feria entre plátanos, piñas y sandías", en: "Smiling vendor at her market stall among bananas, pineapples and watermelons", pt: "Vendedora sorri em sua banca de feira entre bananas, abacaxis e melancias" },
+  },
+  operadorDron: {
+    imagen: "photo-1767194316751-dce698b5e224", autor: "Rob Wingate", perfil: "robwingate", id: "eu9YwRKCt3s", pos: "50% 45%",
+    alt: { es: "Operador con el control en la mano lanza un dron sobre un terreno abierto al atardecer", en: "Operator holding the controller launches a drone over open terrain at sunset", pt: "Operador com o controle na mão lança um drone sobre um terreno aberto ao entardecer" },
+  },
+  recicladorCampo: {
+    imagen: "photo-1695492120345-1ab1ee0c217f", autor: "Gerson Crespo", perfil: "yersoncrespo", id: "rcJukcTNXq8", pos: "55% 50%",
+    alt: { es: "Campesino con azadón recoge un saco en un campo de caña con cerros al fondo", en: "Farmer with a hoe collects a sack in a cane field with hills in the background", pt: "Agricultor com enxada recolhe um saco em um canavial com morros ao fundo" },
+  },
+  riegoPersona: {
+    imagen: "photo-1567497063796-7952e455a2a6", autor: "daniel kawed", perfil: "dancalorg", id: "9f_eJeULtSY", pos: "50% 55%",
+    alt: { es: "Tres trabajadores ajustan una tubería de riego entre plantas de banano", en: "Three workers adjust an irrigation pipe among banana plants", pt: "Três trabalhadores ajustam uma tubulação de irrigação entre bananeiras" },
+  },
+  familiaCampo: {
+    imagen: "photo-1654727317152-b8178b6083ef", autor: "Ashlyn Ciara", perfil: "ashlynciara", id: "py7JHxeMPKM", pos: "50% 40%",
+    alt: { es: "Pareja de productores sonríe entre almácigos de café bajo malla sombra", en: "Couple of growers smiles among coffee seedlings under shade netting", pt: "Casal de produtores sorri entre mudas de café sob tela de sombreamento" },
+  },
+  ganaderoCampo: {
+    imagen: "photo-1732138186663-7a71cd3a46f2", autor: "Brandon Lotero", perfil: "blotero", id: "jjJomvOZpt8", pos: "50% 45%",
+    alt: { es: "Ganadero a caballo arrea un rebaño de vacas por un camino entre praderas", en: "Rancher on horseback drives a herd of cattle along a track between pastures", pt: "Pecuarista a cavalo conduz um rebanho de vacas por um caminho entre pastagens" },
+  },
 }
 
 // URL de una foto de Unsplash en un ancho dado; `alto` recorta en el servidor (fit=crop)
