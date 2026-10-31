@@ -1,4 +1,4 @@
-// Nombre, nombre corto, descripción y etiqueta del diagrama de los 12 módulos (src/lib/modulos.js) en
+// Nombre, nombre corto, descripción y etiqueta del diagrama de los 17 módulos (src/lib/modulos.js) en
 // inglés y portugués, por `key`. El contenido de cada página de módulo va en modulos-paginas.js.
 // `etiqueta`: nombre para el diagrama del ecosistema cuando el corto no cabe (también en español).
 export default {
@@ -6,6 +6,8 @@ export default {
     recomendaciones: { etiqueta: "Avisos" },
     bitacora: { etiqueta: "Cuaderno" },
     insumos: { nombre: "Insumos y bodega", corto: "Insumos y bodega", etiqueta: "Insumos", descripcion: "Inventario de fertilizantes, agroquímicos y otros insumos del predio." },
+    agroclima_viticola: { etiqueta: "Agroclima" },
+    expediente_do: { etiqueta: "Expediente" },
   },
   en: {
     dashboard_sensores: { nombre: "Dashboard and sensors", corto: "Sensors", descripcion: "Your weather stations and sensors in one panel, with readings, charts and alerts. It works with the brands you already use." },
@@ -21,6 +23,11 @@ export default {
     eventos: { nombre: "Training and events", corto: "Events", descripcion: "Field days, training sessions and events from your hub." },
     tienda: { nombre: "Harvest market and store", corto: "Market", descripcion: "A catalog of products and inputs, plus harvest sales between growers in the network." },
     drones: { nombre: "Request drones (DronX)", corto: "Drones", descripcion: "Order drone services (spraying, NDVI, mapping, plant counts) from DronX operators." },
+    agroclima_viticola: { nombre: "Vineyard agroclimate", corto: "Vineyard agroclimate", etiqueta: "Agroclimate", descripcion: "Winkler, Huglin, cool night, drought and multicriteria indices, plus frost risk by weather station and block." },
+    cuarteles: { nombre: "Blocks and field survey", corto: "Blocks", descripcion: "A record for each block with variety, planting, irrigation and soil; its polygon on the map, field surveys with photos and GPS without signal, and NDVI vigor per block." },
+    muestras: { nombre: "Samples and laboratory", corto: "Samples", descripcion: "Sampling with a code and QR, chain of custody, shipment to the lab and analytical results for wines, musts, soil and water." },
+    cata: { nombre: "Sensory evaluation", corto: "Tasting", descripcion: "Tasting panel, blind-coded sessions, OIV and descriptive sheets, consistency between judges and a results report." },
+    expediente_do: { nombre: "Origin dossier", corto: "Origin dossier", etiqueta: "Dossier", descripcion: "Builds the application for a Designation of Origin or Geographical Indication before Chile's SAG with the hub's data: zoning, agroclimate, analyses, tasting and growers." },
   },
   pt: {
     dashboard_sensores: { nombre: "Painel e sensores", corto: "Sensores", descripcion: "Suas estações e sensores em um só painel, com leituras, gráficos e alertas. Funciona com as marcas que você já usa." },
@@ -36,5 +43,10 @@ export default {
     eventos: { nombre: "Capacitações e eventos", corto: "Eventos", descripcion: "Dias de campo, capacitações e eventos do seu hub." },
     tienda: { nombre: "Mercado de colheita e loja", corto: "Mercado", descripcion: "Catálogo de produtos e insumos, e venda de colheita entre produtores da rede." },
     drones: { nombre: "Solicitar drones (DronX)", corto: "Drones", descripcion: "Peça serviços com drone (aplicação, NDVI, mapeamento, contagem de plantas) a operadores da DronX." },
+    agroclima_viticola: { nombre: "Agroclima vitícola", corto: "Agroclima vitícola", etiqueta: "Agroclima", descripcion: "Índices de Winkler, Huglin, frescor noturno, seca e multicritério, e risco de geada por estação e talhão." },
+    cuarteles: { nombre: "Talhões e levantamento", corto: "Talhões", descripcion: "Ficha de cada talhão com variedade, plantio, irrigação e solo; polígono no mapa, levantamento em campo com fotos e GPS sem sinal, e vigor NDVI por talhão." },
+    muestras: { nombre: "Amostras e laboratório", corto: "Amostras", descripcion: "Coleta de amostras com código e QR, cadeia de custódia, envio ao laboratório e resultados analíticos de vinhos, mostos, solo e água." },
+    cata: { nombre: "Avaliação sensorial", corto: "Degustação", descripcion: "Painel de degustação, sessões com codificação cega, fichas OIV e descritivas, consistência entre juízes e ata de resultados." },
+    expediente_do: { nombre: "Dossiê de origem", corto: "Dossiê de origem", etiqueta: "Dossiê", descripcion: "Monta o pedido de Denominação de Origem ou Indicação Geográfica junto ao SAG do Chile com os dados do hub: zoneamento, agroclima, análises, degustação e produtores." },
   },
 }

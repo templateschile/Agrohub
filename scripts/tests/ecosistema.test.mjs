@@ -44,8 +44,8 @@ test('destacadas.json trae el resumen por categoría al día con el catálogo, y
   for (const f of [...DESTACADAS.chile, ...DESTACADAS.latam]) assert.ok(Array.isArray(f.categorias) && f.categorias.length, `${f.slug} sin categorías`)
 })
 
-test('el anillo tiene los 12 módulos de la app y el que viene (Insumos y bodega), una vez cada uno', () => {
-  assert.equal(Object.keys(CORTOS_ES).length, 12)
+test('el anillo tiene los 17 módulos de la app y el que viene (Insumos y bodega), una vez cada uno', () => {
+  assert.equal(Object.keys(CORTOS_ES).length, 17)
   assert.deepEqual([...ORDEN_MODULOS].sort(), [...Object.keys(CORTOS_ES), 'insumos'].sort())
   assert.ok(!('insumos' in CORTOS_ES), 'Insumos y bodega no está en la plataforma: no va en lib/modulos.js')
   for (const i of ['es', 'en', 'pt']) assert.ok(BASE[i].insumos?.nombre && BASE[i].insumos?.descripcion, `insumos (${i})`)
@@ -113,6 +113,15 @@ test('traducciones del ecosistema completas en inglés y portugués', () => {
   assert.ok(!/[—–]/.test(JSON.stringify(TRAD) + JSON.stringify(BASE)), 'sin rayas largas')
 })
 
+test('vitivinicultura: cinco módulos con página, en el anillo y sin nada conectado todavía', () => {
+  const VITI = ['agroclima_viticola', 'cuarteles', 'muestras', 'cata', 'expediente_do']
+  for (const k of VITI) {
+    assert.ok(k in CORTOS_ES, `${k} en lib/modulos.js`)
+    assert.ok(integracionesDe(k).length > 0 && integracionesDe(k).every((f) => f.estado !== 'conectada'), `${k}: nada conectado`)
+  }
+  assert.deepEqual(modulosDeServicio('copernicus').sort(), ['cuarteles', 'drones'])
+})
+
 test('filtro por módulo: Sensores trae solo lo suyo; filtro por servicio: Google en AI Chat, Avisos y Biblioteca', () => {
   const sensores = integracionesDe('dashboard_sensores')
   assert.equal(sensores.length, 9)
@@ -146,7 +155,7 @@ test('diagrama: nada se pisa y las etiquetas caben en el lienzo, en los tres idi
     const cortos = etiquetas(i)
     assert.deepEqual(solapes(cajasDiagrama(cortos)), [], `solapes en ${i}`)
     const { modulos, conectores, servicios, lineas } = plano(cortos)
-    assert.equal(modulos.length, 13)
+    assert.equal(modulos.length, 18)
     assert.equal(conectores.length, CONECTORES.length)
     assert.equal(servicios.length, SERVICIOS.length)
     for (const p of [...modulos, ...conectores, ...servicios]) assert.ok(Math.hypot(p.x, p.y) < GEO.medio, 'dentro del lienzo')

@@ -141,8 +141,104 @@ export default {
         ],
       },
     },
+    agroclima_viticola: {
+      pagina: {
+        badge: "Vineyard agroclimate",
+        titulo: "The indices of your area,", destacado: "by station and block",
+        bajada: "AgroHubs computes the vineyard's bioclimatic indices from nearby stations and your own, and brings them down to each block so you can compare seasons and anticipate frost.",
+        features: [
+          { titulo: "Winkler and Huglin", desc: "Accumulated degree days and heliothermal potential per season, with the climate class of each area." },
+          { titulo: "Cool night index", desc: "Minimum temperatures during ripening, which anticipate aromas and acidity." },
+          { titulo: "Drought", desc: "Seasonal water balance from rainfall and evapotranspiration." },
+          { titulo: "Multicriteria index", desc: "All the indices combined into one climate classification for the area." },
+          { titulo: "Frost risk", desc: "Frost probability by station and block, with the date of the last spring frost." },
+          { titulo: "By station and block", desc: "Agromet INIA, Open-Meteo and your own stations, assigned to each block." },
+        ],
+        pasos: [
+          "You register your blocks and choose the station that represents each one.",
+          "AgroHubs computes the indices from each season's data.",
+          "You compare areas and seasons, and get the frost risk alert.",
+        ],
+      },
+    },
+    cuarteles: {
+      pagina: {
+        badge: "Blocks and field survey",
+        titulo: "Every block on the map,", destacado: "with its record and its vigor",
+        bajada: "You draw each block's polygon, fill in its record and update it in the field from your phone, with photos and GPS even without signal. NDVI vigor comes from the satellite.",
+        features: [
+          { titulo: "Block record", desc: "Variety, rootstock, planting year, spacing, irrigation and soil." },
+          { titulo: "Polygon on the map", desc: "Draw or import the outline and AgroHubs calculates the area." },
+          { titulo: "Field survey", desc: "Photos and a GPS point from your phone, without signal; it syncs once you are back online." },
+          { titulo: "NDVI vigor", desc: "Sentinel-2 imagery per block to compare vigor across sectors and dates." },
+          { titulo: "History", desc: "Every change to the record keeps its date and who made it." },
+        ],
+        pasos: [
+          "You draw the farm's blocks on the map.",
+          "You fill in the record and check it in the field with photos and GPS.",
+          "You follow each block's NDVI vigor through the season.",
+        ],
+      },
+    },
+    muestras: {
+      pagina: {
+        badge: "Samples and laboratory",
+        titulo: "From sample to result,", destacado: "without losing track",
+        bajada: "Every sample starts with a code and a QR, goes through the chain of custody to the lab and comes back with its analytical results to the block it came from.",
+        features: [
+          { titulo: "Code and QR", desc: "A printed label for every wine, must, soil or water sample." },
+          { titulo: "Chain of custody", desc: "Who took, carried and received each sample, with date and time." },
+          { titulo: "Shipment to the lab", desc: "Batches of samples with a shipping note and receipt confirmation." },
+          { titulo: "Analytical results", desc: "pH, acidity, sugars, alcohol and the rest of the parameters, per sample." },
+          { titulo: "Traceability to the block", desc: "Every result stays linked to its block and season." },
+        ],
+        pasos: [
+          "You take the sample and scan its QR from your phone.",
+          "You send it to the lab with the chain of custody recorded.",
+          "The results arrive in AgroHubs and stay in the block's record.",
+        ],
+      },
+    },
+    cata: {
+      pagina: {
+        badge: "Sensory evaluation",
+        titulo: "Tasting sessions", destacado: "with comparable results",
+        bajada: "You set up the panel, blind-code the samples and each judge fills in their sheet from their phone. AgroHubs measures consistency between judges and issues the report.",
+        features: [
+          { titulo: "Tasting panel", desc: "Judges, roles and the session calendar." },
+          { titulo: "Blind coding", desc: "Each sample gets a random code for the session." },
+          { titulo: "OIV and descriptive sheets", desc: "The 100-point OIV sheet or your own descriptive sheets." },
+          { titulo: "Consistency between judges", desc: "Spread per attribute and judges out of range." },
+          { titulo: "Results report", desc: "A summary of the session, ready to share." },
+        ],
+        pasos: [
+          "You create the session, pick the sheet and code the samples.",
+          "Each judge fills in their sheet from their phone.",
+          "You review consistency and issue the report.",
+        ],
+      },
+    },
+    expediente_do: {
+      pagina: {
+        badge: "Origin dossier",
+        titulo: "The origin application,", destacado: "built from your data",
+        bajada: "The dossier to apply for a Designation of Origin or a Geographical Indication gathers what the hub already recorded: blocks, agroclimatic indices, lab analyses, tasting reports and the growers' register.",
+        features: [
+          { titulo: "Zoning", desc: "Map and area of the blocks that make up the zone." },
+          { titulo: "Agroclimate", desc: "Winkler, Huglin and cool night indices for the seasons that support the zone." },
+          { titulo: "Analyses", desc: "Lab results for wines, musts, soil and water." },
+          { titulo: "Tasting", desc: "Reports from the sensory evaluation sessions." },
+          { titulo: "Growers", desc: "Register of the growers and vineyards included in the application." },
+          { titulo: "Dossier ready", desc: "A document ordered the way the authority requires it, with its annexes." },
+        ],
+        pasos: [
+          "You choose the zone and the blocks that make it up.",
+          "AgroHubs gathers agroclimate, analyses, tasting and growers.",
+          "You review the dossier and submit it to the authority.",
+        ],
+      },
+    },
   },
-
   pt: {
     bitacora: {
       pagina: {
@@ -278,6 +374,103 @@ export default {
           "A solicitação chega à DronX com os dados da sua propriedade.",
           "Um operador da rede DronX faz o orçamento e agenda o voo.",
           "Você acompanha o status na AgroHubs e recebe os mapas e relatórios.",
+        ],
+      },
+    },
+    agroclima_viticola: {
+      pagina: {
+        badge: "Agroclima vitícola",
+        titulo: "Os índices da sua região,", destacado: "por estação e talhão",
+        bajada: "A AgroHubs calcula os índices bioclimáticos do vinhedo com as estações próximas e as suas, e os leva a cada talhão para comparar safras e antecipar geadas.",
+        features: [
+          { titulo: "Winkler e Huglin", desc: "Graus-dia acumulados e potencial heliotérmico por safra, com a classe climática de cada região." },
+          { titulo: "Frescor noturno", desc: "Mínimas do período de maturação, que antecipam aromas e acidez." },
+          { titulo: "Seca", desc: "Balanço hídrico da safra com chuva e evapotranspiração." },
+          { titulo: "Índice multicritério", desc: "Os índices reunidos em uma só classificação climática da região." },
+          { titulo: "Risco de geada", desc: "Probabilidade de geada por estação e talhão, com a data da última geada de primavera." },
+          { titulo: "Por estação e talhão", desc: "Agromet INIA, Open-Meteo e suas estações, atribuídas a cada talhão." },
+        ],
+        pasos: [
+          "Você cadastra seus talhões e escolhe a estação que representa cada um.",
+          "A AgroHubs calcula os índices com os dados de cada safra.",
+          "Você compara regiões e safras, e recebe o alerta de risco de geada.",
+        ],
+      },
+    },
+    cuarteles: {
+      pagina: {
+        badge: "Talhões e levantamento",
+        titulo: "Cada talhão no mapa,", destacado: "com sua ficha e seu vigor",
+        bajada: "Você desenha o polígono de cada talhão, preenche a ficha e a atualiza em campo pelo celular, com fotos e GPS mesmo sem sinal. O vigor NDVI vem do satélite.",
+        features: [
+          { titulo: "Ficha do talhão", desc: "Variedade, porta-enxerto, ano de plantio, espaçamento, irrigação e solo." },
+          { titulo: "Polígono no mapa", desc: "Você desenha ou importa o contorno e a AgroHubs calcula a área." },
+          { titulo: "Levantamento em campo", desc: "Fotos e ponto GPS pelo celular, sem sinal; sincroniza quando a rede volta." },
+          { titulo: "Vigor NDVI", desc: "Imagens Sentinel-2 por talhão para comparar vigor entre setores e datas." },
+          { titulo: "Histórico", desc: "Cada alteração da ficha fica com data e responsável." },
+        ],
+        pasos: [
+          "Você desenha os talhões da propriedade no mapa.",
+          "Preenche a ficha e a confere em campo com fotos e GPS.",
+          "Acompanha o vigor NDVI de cada talhão ao longo da safra.",
+        ],
+      },
+    },
+    muestras: {
+      pagina: {
+        badge: "Amostras e laboratório",
+        titulo: "Da amostra ao resultado,", destacado: "sem perder o rastro",
+        bajada: "Cada amostra nasce com um código e um QR, passa pela cadeia de custódia até o laboratório e volta com seus resultados analíticos ao talhão de onde saiu.",
+        features: [
+          { titulo: "Código e QR", desc: "Etiqueta impressa para cada amostra de vinho, mosto, solo ou água." },
+          { titulo: "Cadeia de custódia", desc: "Quem coletou, transportou e recebeu cada amostra, com data e hora." },
+          { titulo: "Envio ao laboratório", desc: "Lotes de amostras com guia de envio e aviso de recebimento." },
+          { titulo: "Resultados analíticos", desc: "pH, acidez, açúcares, álcool e os demais parâmetros, por amostra." },
+          { titulo: "Rastreabilidade ao talhão", desc: "Cada resultado fica associado ao talhão e à safra." },
+        ],
+        pasos: [
+          "Você coleta a amostra e escaneia o QR pelo celular.",
+          "Envia ao laboratório com a cadeia de custódia registrada.",
+          "Os resultados chegam à AgroHubs e ficam na ficha do talhão.",
+        ],
+      },
+    },
+    cata: {
+      pagina: {
+        badge: "Avaliação sensorial",
+        titulo: "Sessões de degustação", destacado: "com resultados comparáveis",
+        bajada: "Você monta o painel, codifica as amostras às cegas e cada juiz preenche sua ficha pelo celular. A AgroHubs calcula a consistência entre juízes e emite a ata.",
+        features: [
+          { titulo: "Painel de degustação", desc: "Juízes, funções e calendário de sessões." },
+          { titulo: "Codificação cega", desc: "Cada amostra recebe um código aleatório para a sessão." },
+          { titulo: "Fichas OIV e descritivas", desc: "Ficha OIV de 100 pontos ou fichas descritivas próprias." },
+          { titulo: "Consistência entre juízes", desc: "Dispersão por atributo e juízes fora da faixa." },
+          { titulo: "Ata de resultados", desc: "Resumo da sessão, pronto para compartilhar." },
+        ],
+        pasos: [
+          "Você cria a sessão, escolhe a ficha e codifica as amostras.",
+          "Cada juiz preenche sua ficha pelo celular.",
+          "Você revisa a consistência e emite a ata.",
+        ],
+      },
+    },
+    expediente_do: {
+      pagina: {
+        badge: "Dossiê de origem",
+        titulo: "O pedido de origem,", destacado: "montado com seus dados",
+        bajada: "O dossiê para pedir uma Denominação de Origem ou uma Indicação Geográfica reúne o que o hub já registrou: talhões, índices agroclimáticos, análises de laboratório, atas de degustação e cadastro de produtores.",
+        features: [
+          { titulo: "Zoneamento", desc: "Mapa e área dos talhões que formam a região." },
+          { titulo: "Agroclima", desc: "Índices de Winkler, Huglin e frescor noturno das safras que sustentam a região." },
+          { titulo: "Análises", desc: "Resultados de laboratório de vinhos, mostos, solo e água." },
+          { titulo: "Degustação", desc: "Atas das sessões de avaliação sensorial." },
+          { titulo: "Produtores", desc: "Cadastro dos produtores e vinhedos que integram o pedido." },
+          { titulo: "Dossiê pronto", desc: "Documento organizado como a autoridade exige, com seus anexos." },
+        ],
+        pasos: [
+          "Você escolhe a região e os talhões que a compõem.",
+          "A AgroHubs reúne agroclima, análises, degustação e produtores.",
+          "Você revisa o dossiê e o apresenta à autoridade.",
         ],
       },
     },
