@@ -1,8 +1,9 @@
-// Ecosistema de la portada (components/Ecosistema.jsx): AgroHubs al centro, los 12 módulos, los conectores
+// Ecosistema de la portada (components/Ecosistema.jsx): AgroHubs al centro, los 17 módulos, los conectores
 // y los servicios de terceros. Datos puros, sin JSX ni íconos, para probarlos en scripts/tests.
 //
 // De dónde sale cada dato (repo de la plataforma, templateschile/agrohubs-app):
-// - Módulos: los 12 de api/src/predios/catalogo.js (MODULOS), los mismos `key` de src/lib/modulos.js.
+// - Módulos: los 12 de api/src/predios/catalogo.js (MODULOS) y los 5 de vitivinicultura (ramas feat/agroclima-viticola,
+//   feat/muestras-laboratorio y feat/cata-sensorial de la plataforma), los mismos `key` de src/lib/modulos.js.
 // - Conectores: los de api/src/predios/catalogo.js (CONECTORES), api/src/sensors/connectors/index.js,
 //   api/src/conectores/conectores.service.js y los proveedores de api/src/hub/providers/. `fuente` dice cuál.
 // - Estado de cada integración:
@@ -23,9 +24,11 @@ export const mejorEstado = (estados) => ORDEN_ESTADO.find((e) => estados.include
 // juntos (AI Chat y Avisos usan los mismos modelos de IA; Avisos y Clima, Open-Meteo; Clima, Fuentes y
 // Biblioteca, INIA; Biblioteca y Sensores, AWS; Bitácora, Eventos y Mercado, el CRM y el ERP).
 // "insumos" (Insumos y bodega) no existe aún en la plataforma: va como módulo próximamente (lib/modulos-proximos.js).
+// Los de vitivinicultura van seguidos: Agroclima junto a Clima (misma red agromet y pronóstico), Cuarteles
+// junto a Drones (satélite), y Muestras, Cata y Expediente entre Cuarteles y Cuaderno.
 export const ORDEN_MODULOS = [
-  "chat_ia", "clima", "recomendaciones", "calculadoras", "fuentes", "documentos", "dashboard_sensores",
-  "drones", "bitacora", "insumos", "tienda", "eventos", "fenologia",
+  "chat_ia", "clima", "agroclima_viticola", "recomendaciones", "calculadoras", "fuentes", "documentos", "dashboard_sensores",
+  "drones", "cuarteles", "muestras", "cata", "expediente_do", "bitacora", "insumos", "tienda", "eventos", "fenologia",
 ]
 // Módulo seleccionado al cargar sin ?modulo= (Fernando: la IA agrícola primero)
 export const MODULO_INICIAL = "chat_ia"
@@ -49,6 +52,11 @@ export const CATEGORIAS_MODULO = {
   eventos: [],
   tienda: ["mercados-y-precios"],
   drones: ["satelite-y-teledeteccion", "maquinaria-y-telematica"],
+  agroclima_viticola: ["clima-y-meteorologia", "modelos-y-agronomia"],
+  cuarteles: ["geodatos-y-territorio", "satelite-y-teledeteccion"],
+  muestras: ["suelo-y-agua", "trazabilidad-y-certificacion"],
+  cata: ["trazabilidad-y-certificacion"],
+  expediente_do: ["trazabilidad-y-certificacion", "geodatos-y-territorio"],
 }
 
 // Anillo 2. `etiqueta`: líneas del chip en el diagrama.
@@ -177,6 +185,19 @@ export const INTEGRACIONES = [
   // Fisaro: el conector existe en la plataforma, apagado por defecto y solo con las credenciales que cargue el admin
   fila("calculadoras", "terceros", "fisaro", "Calculadoras particulares", "pedido", "api/src/fuentes-externas/registro.js, apagado por defecto"),
   fila("fenologia", "terceros", "fisaro", "Fases fenológicas por cultivo y zona", "pedido", "api/src/fuentes-externas/registro.js, apagado por defecto"),
+  // Vitivinicultura: módulos en desarrollo en la plataforma (ramas feat/agroclima-viticola, feat/muestras-laboratorio
+  // y feat/cata-sensorial). Sus integraciones reutilizan conectores que ya existen; nada se muestra como conectado.
+  fila("agroclima_viticola", "agromet", "inia", "Temperaturas y lluvia de las estaciones Agromet para los índices", "proximamente"),
+  fila("agroclima_viticola", "pronostico", "open-meteo", "Histórico y pronóstico de heladas por cuartel", "proximamente"),
+  fila("agroclima_viticola", "http", null, "Tus estaciones en los índices y el riesgo de helada", "proximamente"),
+  fila("cuarteles", "satelite", "copernicus", "Vigor NDVI por cuartel con Sentinel-2", "proximamente"),
+  fila("cuarteles", "publicos", "ciren", "Suelos del catastro en la ficha del cuartel", "proximamente"),
+  fila("muestras", "compartir", "whatsapp", "Etiqueta QR y guía de despacho por WhatsApp", "proximamente"),
+  fila("muestras", "archivos", "aws", "Informes del laboratorio respaldados en S3", "pedido"),
+  fila("cata", "compartir", "whatsapp", "Acta de la sesión por WhatsApp", "proximamente"),
+  fila("cata", "archivos", "aws", "Fichas y actas respaldadas en S3", "pedido"),
+  fila("expediente_do", "publicos", "ciren", "Suelos y catastro para la zonificación", "proximamente"),
+  fila("expediente_do", "archivos", "aws", "Expediente y anexos respaldados en S3", "pedido"),
 ]
 
 export const conectorPorId = (id) => CONECTORES.find((c) => c.id === id)
@@ -211,8 +232,8 @@ export function resaltado(sel) {
 // Medidas elegidas para que nada se toque con estos datos: lo revisa scripts/tests/ecosistema.test.mjs
 // con las cajas estimadas (cajasDiagrama + solapes). Chivo Mono: cada carácter mide 0,6 em.
 export const GEO = {
-  medio: 530,
-  R: { centro: 76, modulos: 222, conectores: 298, servicios: 372 },
+  medio: 605,
+  R: { centro: 76, modulos: 300, conectores: 375, servicios: 448 },
   baldosa: { alto: 50, minAncho: 72, relleno: 16 }, // módulos: ícono arriba y nombre abajo
   conector: 8, // medio lado del cuadrado de cada conector
   punto: 12, // radio del círculo de cada servicio (lleva su inicial)

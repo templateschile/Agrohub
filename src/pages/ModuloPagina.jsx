@@ -12,6 +12,7 @@ const FOTO_MODULO = {
   dashboard_sensores: 'riegoPersona', bitacora: 'cosechaManos', chat_ia: 'agricultorTablet', documentos: 'asesorCampo',
   fuentes: 'capacitacion', clima: 'cereales', recomendaciones: 'frutales', fenologia: 'vinas', calculadoras: 'familiaCampo',
   eventos: 'capacitacion', tienda: 'feriaVendedor', drones: 'operadorDron',
+  agroclima_viticola: 'vinas', cuarteles: 'vinas', muestras: 'asesorCampo', cata: 'vinas', expediente_do: 'vinas',
 }
 
 // Cabecera común de las páginas de módulo (las armadas aquí y las hechas a mano: Dashboard, AI Chat,
@@ -64,7 +65,7 @@ export function HeroModulo({ moduloKey, badge, titulo, destacado, bajada }) {
 }
 
 // Página de un módulo a partir de su ficha en lib/modulos.js (Bitácora, Fuentes, Clima, Recomendaciones,
-// Fenología, Calculadoras y Drones), con el texto de `pagina` en el idioma activo
+// Fenología, Calculadoras, Drones y los cinco de vitivinicultura), con el texto de `pagina` en el idioma activo
 // (src/i18n/datos/modulos-paginas.js). Mismo estilo que las páginas hechas a mano.
 export default function ModuloPagina({ slug }) {
   const { t } = useIdioma()

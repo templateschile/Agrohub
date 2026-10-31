@@ -11,8 +11,8 @@ const leer = (ruta) => readFileSync(new URL(`../../${ruta}`, import.meta.url), '
 const IDIOMAS = ['es', 'en', 'pt']
 const TRADUCIDOS = ['en', 'pt']
 
-// Los 7 módulos con página armada por ModuloPagina (campo `pagina` en src/lib/modulos.js)
-const CON_PAGINA = ['bitacora', 'fuentes', 'clima', 'recomendaciones', 'fenologia', 'calculadoras', 'drones']
+// Los 12 módulos con página armada por ModuloPagina (campo `pagina` en src/lib/modulos.js)
+const CON_PAGINA = ['bitacora', 'fuentes', 'clima', 'recomendaciones', 'fenologia', 'calculadoras', 'drones', 'agroclima_viticola', 'cuarteles', 'muestras', 'cata', 'expediente_do']
 
 // Archivos del área de módulos
 const ARCHIVOS = [
@@ -79,9 +79,9 @@ function paginasEnEspanol() {
   return out
 }
 
-test('modulos-paginas.js traduce la página completa de los 7 módulos', () => {
+test('modulos-paginas.js traduce la página completa de los 12 módulos', () => {
   const es = paginasEnEspanol()
-  assert.deepEqual(Object.keys(es).sort(), [...CON_PAGINA].sort(), 'los 7 módulos con página')
+  assert.deepEqual(Object.keys(es).sort(), [...CON_PAGINA].sort(), 'los 12 módulos con página')
   for (const i of TRADUCIDOS) {
     assert.deepEqual(Object.keys(PAGINAS[i]).sort(), [...CON_PAGINA].sort(), `${i}: solo y todos los módulos con página`)
     for (const key of CON_PAGINA) {

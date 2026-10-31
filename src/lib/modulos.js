@@ -1,4 +1,4 @@
-// Los 12 módulos de la app AgroHubs, tal como los ofrece la plataforma
+// Los 17 módulos de la app AgroHubs, tal como los ofrece la plataforma
 // (templateschile/agrohubs-app: api/src/predios/catalogo.js, MODULOS). Mismas `key`, nombres y textos.
 // Fuente única para la portada (AppModulos y el diagrama del ecosistema), el menú, el índice /modulos
 // y las páginas de los módulos.
@@ -8,6 +8,7 @@
 import {
   Radio, NotebookPen, Sparkles, FolderOpen, Globe, Sun,
   Lightbulb, Flower2, Calculator, CalendarDays, Store,
+  ThermometerSun, LandPlot, FlaskConical, Wine, FileBadge,
 } from "lucide-react"
 import IconoDron from "../components/IconoDron"
 
@@ -192,6 +193,119 @@ export const MODULOS = [
         "La solicitud llega a DronX con los datos de tu predio.",
         "Un operador de la red DronX la cotiza y agenda el vuelo.",
         "Sigues el estado en AgroHubs y recibes los mapas y reportes.",
+      ],
+    },
+  },
+  // Vitivinicultura: viñas, asociaciones de productores y denominaciones de origen
+  {
+    key: "agroclima_viticola", slug: "agroclima-viticola", ruta: "/agroclima-viticola", icono: ThermometerSun,
+    nombre: "Agroclima vitícola", corto: "Agroclima vitícola",
+    descripcion: "Índices Winkler, Huglin, frescor nocturno, sequía y multicriterio, y riesgo de heladas por estación y cuartel.",
+    pagina: {
+      badge: "Agroclima vitícola",
+      titulo: "Los índices de tu zona,", destacado: "por estación y cuartel",
+      bajada: "AgroHubs calcula los índices bioclimáticos de la viña con las estaciones cercanas y las tuyas, y los lleva a cada cuartel para comparar temporadas y anticipar heladas.",
+      features: [
+        { titulo: "Winkler y Huglin", desc: "Grados día acumulados y potencial heliotérmico por temporada, con la clase climática de cada zona." },
+        { titulo: "Frescor nocturno", desc: "Mínimas del periodo de maduración, que anticipan aromas y acidez." },
+        { titulo: "Sequía", desc: "Balance hídrico de la temporada con lluvia y evapotranspiración." },
+        { titulo: "Índice multicriterio", desc: "Los índices juntos en una sola clasificación climática de la zona." },
+        { titulo: "Riesgo de heladas", desc: "Probabilidad de helada por estación y cuartel, con la fecha de la última helada de primavera." },
+        { titulo: "Por estación y cuartel", desc: "Agromet INIA, Open-Meteo y tus estaciones, asignadas a cada cuartel." },
+      ],
+      pasos: [
+        "Registras tus cuarteles y eliges la estación que representa a cada uno.",
+        "AgroHubs calcula los índices con los datos de cada temporada.",
+        "Comparas zonas y temporadas, y recibes el aviso de riesgo de helada.",
+      ],
+    },
+  },
+  {
+    key: "cuarteles", slug: "cuarteles", ruta: "/cuarteles", icono: LandPlot,
+    nombre: "Cuarteles y levantamiento", corto: "Cuarteles",
+    descripcion: "Ficha de cada cuartel con variedad, plantación, riego y suelo; polígono en el mapa, levantamiento en terreno con fotos y GPS sin señal, y vigor NDVI por cuartel.",
+    pagina: {
+      badge: "Cuarteles y levantamiento",
+      titulo: "Cada cuartel en el mapa,", destacado: "con su ficha y su vigor",
+      bajada: "Dibujas el polígono de cada cuartel, completas su ficha y la actualizas en terreno desde el celular, con fotos y GPS aunque no haya señal. El vigor NDVI llega del satélite.",
+      features: [
+        { titulo: "Ficha del cuartel", desc: "Variedad, portainjerto, año de plantación, marco, riego y suelo." },
+        { titulo: "Polígono en el mapa", desc: "Dibujas o importas el contorno y AgroHubs calcula la superficie." },
+        { titulo: "Levantamiento en terreno", desc: "Fotos y punto GPS desde el celular, sin señal; se sincroniza al volver a tener red." },
+        { titulo: "Vigor NDVI", desc: "Imágenes Sentinel-2 por cuartel para comparar vigor entre sectores y fechas." },
+        { titulo: "Historial", desc: "Cada cambio de la ficha queda con fecha y responsable." },
+      ],
+      pasos: [
+        "Dibujas los cuarteles del predio en el mapa.",
+        "Completas la ficha y la revisas en terreno con fotos y GPS.",
+        "Sigues el vigor NDVI de cada cuartel a lo largo de la temporada.",
+      ],
+    },
+  },
+  {
+    key: "muestras", slug: "muestras", ruta: "/muestras", icono: FlaskConical,
+    nombre: "Muestras y laboratorio", corto: "Muestras",
+    descripcion: "Toma de muestras con código y QR, cadena de custodia, envío al laboratorio y resultados analíticos de vinos, mostos, suelo y agua.",
+    pagina: {
+      badge: "Muestras y laboratorio",
+      titulo: "De la muestra al resultado,", destacado: "sin perder la pista",
+      bajada: "Cada muestra nace con un código y un QR, pasa por la cadena de custodia hasta el laboratorio y vuelve con sus resultados analíticos al cuartel de donde salió.",
+      features: [
+        { titulo: "Código y QR", desc: "Etiqueta impresa para cada muestra de vino, mosto, suelo o agua." },
+        { titulo: "Cadena de custodia", desc: "Quién tomó, transportó y recibió cada muestra, con fecha y hora." },
+        { titulo: "Envío al laboratorio", desc: "Lotes de muestras con guía de despacho y aviso de recepción." },
+        { titulo: "Resultados analíticos", desc: "pH, acidez, azúcares, alcohol y el resto de los parámetros, por muestra." },
+        { titulo: "Trazabilidad al cuartel", desc: "Cada resultado queda asociado al cuartel y a la temporada." },
+      ],
+      pasos: [
+        "Tomas la muestra y escaneas su QR desde el celular.",
+        "La envías al laboratorio con la cadena de custodia registrada.",
+        "Los resultados llegan a AgroHubs y quedan en la ficha del cuartel.",
+      ],
+    },
+  },
+  {
+    key: "cata", slug: "cata", ruta: "/cata", icono: Wine,
+    nombre: "Evaluación sensorial", corto: "Cata",
+    descripcion: "Panel de cata, sesiones con codificación ciega, fichas OIV y descriptivas, consistencia entre jueces y acta de resultados.",
+    pagina: {
+      badge: "Evaluación sensorial",
+      titulo: "Sesiones de cata", destacado: "con resultados comparables",
+      bajada: "Armas el panel, codificas las muestras a ciegas y cada juez completa su ficha desde el celular. AgroHubs calcula la consistencia entre jueces y emite el acta.",
+      features: [
+        { titulo: "Panel de cata", desc: "Jueces, roles y calendario de sesiones." },
+        { titulo: "Codificación ciega", desc: "Cada muestra recibe un código aleatorio para la sesión." },
+        { titulo: "Fichas OIV y descriptivas", desc: "Ficha OIV de 100 puntos o fichas descriptivas propias." },
+        { titulo: "Consistencia entre jueces", desc: "Dispersión por atributo y jueces fuera de rango." },
+        { titulo: "Acta de resultados", desc: "Resumen de la sesión, listo para compartir." },
+      ],
+      pasos: [
+        "Creas la sesión, eliges la ficha y codificas las muestras.",
+        "Cada juez completa su ficha desde el celular.",
+        "Revisas la consistencia y emites el acta.",
+      ],
+    },
+  },
+  {
+    key: "expediente_do", slug: "expediente-de-origen", ruta: "/expediente-de-origen", icono: FileBadge,
+    nombre: "Expediente de origen", corto: "Expediente DO",
+    descripcion: "Arma la solicitud de Denominación de Origen o Indicación Geográfica para el SAG con los datos del hub: zonificación, agroclima, análisis, cata y productores.",
+    pagina: {
+      badge: "Expediente de origen",
+      titulo: "La solicitud de origen,", destacado: "armada con tus datos",
+      bajada: "El expediente para pedir una Denominación de Origen o una Indicación Geográfica reúne lo que el hub ya registró: cuarteles, índices agroclimáticos, análisis de laboratorio, actas de cata y padrón de productores.",
+      features: [
+        { titulo: "Zonificación", desc: "Mapa y superficie de los cuarteles que forman la zona." },
+        { titulo: "Agroclima", desc: "Índices Winkler, Huglin y frescor nocturno de las temporadas que respaldan la zona." },
+        { titulo: "Análisis", desc: "Resultados de laboratorio de vinos, mostos, suelo y agua." },
+        { titulo: "Cata", desc: "Actas de las sesiones de evaluación sensorial." },
+        { titulo: "Productores", desc: "Padrón de productores y viñas que integran la solicitud." },
+        { titulo: "Expediente listo", desc: "Documento ordenado según lo que pide la autoridad, con sus anexos." },
+      ],
+      pasos: [
+        "Eliges la zona y los cuarteles que la componen.",
+        "AgroHubs reúne agroclima, análisis, cata y productores.",
+        "Revisas el expediente y lo presentas a la autoridad.",
       ],
     },
   },

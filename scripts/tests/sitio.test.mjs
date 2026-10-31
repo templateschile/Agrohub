@@ -86,15 +86,15 @@ test('el video real de la app está publicado con su portada', () => {
   assert.ok(readFileSync(new URL('../../public/videos/app.jpg', import.meta.url)).length > 0)
 })
 
-test('los 12 módulos tienen página: propia o armada por ModuloPagina', () => {
+test('los 17 módulos tienen página: propia o armada por ModuloPagina', () => {
   const fuente = leer('../../src/lib/modulos.js')
   const app = leer('../../src/App.jsx')
   const bloques = fuente.split(/\r?\n  \{\r?\n/).slice(1)
-  assert.equal(bloques.length, 12)
+  assert.equal(bloques.length, 17)
   const keys = bloques.map((b) => b.match(/key: "([^"]+)"/)[1])
   // Mismas key que la plataforma; el orden es del sitio (la IA agrícola va primera, por pedido de Fernando)
   assert.deepEqual([...keys].sort(), ['dashboard_sensores', 'bitacora', 'chat_ia', 'documentos', 'fuentes', 'clima', 'recomendaciones',
-    'fenologia', 'calculadoras', 'eventos', 'tienda', 'drones'].sort(), 'mismas key que la plataforma')
+    'fenologia', 'calculadoras', 'eventos', 'tienda', 'drones', 'agroclima_viticola', 'cuarteles', 'muestras', 'cata', 'expediente_do'].sort(), 'mismas key que la plataforma')
   assert.equal(keys[0], 'chat_ia', 'la IA agrícola va primera')
   for (const b of bloques) {
     const ruta = b.match(/ruta: "([^"]+)"/)[1]

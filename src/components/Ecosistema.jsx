@@ -10,7 +10,7 @@ import {
   modulosDeServicio, resumen, resaltado, plano, etiquetaServicio,
 } from "../lib/ecosistema"
 
-// El ecosistema de AgroHubs: el centro, los 12 módulos, sus conectores y los servicios de terceros.
+// El ecosistema de AgroHubs: el centro, los 17 módulos, sus conectores y los servicios de terceros.
 // Lo principal es el filtro: al elegir un módulo (en la fila de botones o en el diagrama) queda resaltado
 // solo lo suyo y la lista muestra solo sus integraciones. Al elegir un servicio se ve en qué módulos se usa.
 // El filtro queda en la URL (?modulo=sensores o ?servicio=google) y lo sigue también la lista de
@@ -27,6 +27,7 @@ export const SLUG_MODULO = {
   dashboard_sensores: "sensores", bitacora: "bitacora", chat_ia: "chat-ia", documentos: "biblioteca", fuentes: "fuentes",
   clima: "clima", recomendaciones: "recomendaciones", fenologia: "fenologia", calculadoras: "calculadoras",
   eventos: "eventos", tienda: "mercado", drones: "drones", insumos: "insumos",
+  agroclima_viticola: "agroclima", cuarteles: "cuarteles", muestras: "muestras", cata: "cata", expediente_do: "expediente",
 }
 export const moduloDeSlug = slug => Object.keys(SLUG_MODULO).find(k => SLUG_MODULO[k] === slug) || null
 
