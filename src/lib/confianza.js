@@ -5,6 +5,8 @@
 // (p. ej. "/marcas/uc.svg", guardado en public/marcas/) y ConfianStrip muestra la imagen.
 export const CONFIAN = [
   { nombre: "UC", titulo: "Pontificia Universidad Católica de Chile", logo: null },
+  { nombre: "UC Curauma", titulo: "UC, Campus Curauma", logo: null },
+  { nombre: "GORE", titulo: "Gobierno Regional", logo: null },
   { nombre: "FAO", titulo: "Organización de las Naciones Unidas para la Alimentación y la Agricultura", logo: null },
   { nombre: "Beemining", titulo: "Beemining", logo: null },
   { nombre: "QTI Works", titulo: "QTI Works", logo: null },

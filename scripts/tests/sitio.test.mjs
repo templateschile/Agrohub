@@ -68,7 +68,7 @@ test('los textos de las apps no inventan cifras', () => {
 })
 
 test('Confían en nosotros: wordmarks de texto, listos para cambiar por logos', () => {
-  assert.deepEqual(CONFIAN.map((m) => m.nombre), ['UC', 'FAO', 'Beemining', 'QTI Works', 'OlaDigital', 'Telefónica'])
+  assert.deepEqual(CONFIAN.map((m) => m.nombre), ['UC', 'UC Curauma', 'GORE', 'FAO', 'Beemining', 'QTI Works', 'OlaDigital', 'Telefónica'])
   assert.ok(CONFIAN.every((m) => m.logo === null), 'sin logos hasta tener autorización')
   assert.equal(PARTNER.url, 'https://oladigital.cl')
 })
