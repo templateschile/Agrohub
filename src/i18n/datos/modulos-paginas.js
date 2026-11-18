@@ -26,17 +26,17 @@ export default {
     fuentes: {
       pagina: {
         badge: "External sources",
-        titulo: "Bulletins, weather and public data,", destacado: "next to your own",
-        bajada: "AgroHubs brings together technical publications, agrometeorological data and sources from your region, so the assistant and your team can answer citing the source.",
+        titulo: "Bulletins, weather and Chilean public data,", destacado: "next to your own",
+        bajada: "AgroHubs brings together technical publications, weather stations and Chilean public data, so the assistant and your team can answer citing the source.",
         features: [
-          { titulo: "Technical publications", desc: "Bulletins and guides from agricultural institutions, searchable by topic and crop." },
-          { titulo: "Agrometeorology", desc: "Data from public weather stations, built into your farm's weather." },
-          { titulo: "Sources from your region", desc: "Connectors to local institutions, ministries and universities for each hub." },
+          { titulo: "Technical publications", desc: "Bulletins and guides from INIA, searchable by topic and crop." },
+          { titulo: "Agrometeorology", desc: "Stations from Chile's National Agroclimatic Network and CEAZA-Met, next to your farm's weather." },
+          { titulo: "Chilean public data", desc: "ODEPA prices, soils and orchard census from IDE Minagri, and climate risk from ARClim." },
           { titulo: "Your own repository", desc: "Documents from the demonstration center, public or private." },
         ],
         pasos: [
-          "Together with your hub, we choose the sources that matter in its region.",
-          "We connect them through an API or an automatic collector.",
+          "Together with your hub, we choose the sources that serve its area.",
+          "We connect them from the AgroHubs panel.",
           "They show up in search and in the assistant's answers.",
         ],
       },
@@ -80,23 +80,6 @@ export default {
         ],
       },
     },
-    fenologia: {
-      pagina: {
-        badge: "Crop stages",
-        titulo: "Every crop stage,", destacado: "with its management",
-        bajada: "The phenological stages of your crops, from budbreak to harvest, with the management advice for each one.",
-        features: [
-          { titulo: "Stages by crop", desc: "The stage calendar for each crop, prepared by the AgroHubs team." },
-          { titulo: "Management by stage", desc: "What to check and which tasks to prioritize at each stage." },
-          { titulo: "Your farm's own stages", desc: "Adjust the stages to your area, your variety and what you see in the field." },
-        ],
-        pasos: [
-          "You choose the crops on your farm.",
-          "You see which stage each one is in and what management it needs.",
-          "You adjust the stages with what you see in the field.",
-        ],
-      },
-    },
     calculadoras: {
       pagina: {
         badge: "Calculators",
@@ -115,29 +98,22 @@ export default {
         ],
       },
     },
-    drones: {
+    tienda: {
       pagina: {
-        badge: "Farm drones · DronX integration",
-        titulo: "Farm drones on demand,", destacado: "from your farm",
-        bajada: "You request the service from the AgroHubs app or dashboard, and the request reaches the DronX operator network with your farm's details.",
-        aviso: {
-          titulo: "Integrated with DronX",
-          texto: "DronX is built by OlaDigital and has an Android app and a web version (iOS coming soon). Your requests go out with your farm's details, and their status updates in AgroHubs on its own.",
-          enlace: { texto: "See the DronX app" },
-        },
+        badge: "Digital Market",
+        titulo: "Digital Market",
+        bajada: "Products and Services",
+        texto: "What the hubs in the network and outside suppliers offer, in one online store.",
         features: [
-          { titulo: "Drone spraying", desc: "Spraying and product application per hectare, including on slopes." },
-          { titulo: "NDVI maps", desc: "Crop vigor and early detection of water stress or pests." },
-          { titulo: "Mapping and surveying", desc: "Orthophotos and terrain models to plan irrigation and planting." },
-          { titulo: "Plant counts", desc: "Plants and gaps per block, to estimate yield and replanting." },
-          { titulo: "Thermal imaging", desc: "A thermal camera to check irrigation uniformity." },
-          { titulo: "Tracking", desc: "Follow the status of each request and get maps and reports in AgroHubs." },
+          { titulo: "Products from the hubs", desc: "Harvests and inputs posted by the growers in each hub." },
+          { titulo: "Services", desc: "Farm services from the network and from outside suppliers." },
+          { titulo: "Outside suppliers", desc: "Companies outside the network sell in the same market." },
+          { titulo: "Online orders and payment", desc: "Cart, order and payment link." },
         ],
         pasos: [
-          "You request the service from the app or your farm's dashboard: crop, hectares, location and date.",
-          "The request reaches DronX with your farm's details.",
-          "An operator in the DronX network quotes it and schedules the flight.",
-          "You follow the status in AgroHubs and get the maps and reports.",
+          "Each hub and each supplier posts its products and services.",
+          "Buyers across the network find them in one catalog.",
+          "They order, pay online and arrange delivery with the seller.",
         ],
       },
     },
@@ -166,17 +142,17 @@ export default {
     fuentes: {
       pagina: {
         badge: "Fontes externas",
-        titulo: "Boletins, clima e dados públicos,", destacado: "junto aos seus dados",
-        bajada: "A AgroHubs reúne publicações técnicas, dados agrometeorológicos e fontes da sua região para que o assistente e a sua equipe respondam citando a fonte.",
+        titulo: "Boletins, clima e dados públicos do Chile,", destacado: "junto aos seus dados",
+        bajada: "A AgroHubs reúne publicações técnicas, estações agrometeorológicas e dados públicos chilenos para que o assistente e a sua equipe respondam citando a fonte.",
         features: [
-          { titulo: "Publicações técnicas", desc: "Boletins e guias de instituições agrícolas, pesquisáveis por tema e cultura." },
-          { titulo: "Agrometeorologia", desc: "Dados de estações públicas integrados ao clima da sua propriedade." },
-          { titulo: "Fontes da sua região", desc: "Conectores com instituições locais, ministérios e universidades de cada hub." },
+          { titulo: "Publicações técnicas", desc: "Boletins e guias do INIA, pesquisáveis por tema e cultura." },
+          { titulo: "Agrometeorologia", desc: "Estações da Rede Agroclimática Nacional do Chile e da CEAZA-Met junto ao clima da sua propriedade." },
+          { titulo: "Dados públicos do Chile", desc: "Preços da ODEPA, solos e cadastro frutícola da IDE Minagri e risco climático do ARClim." },
           { titulo: "Repositório próprio", desc: "Documentos do centro demonstrativo, públicos ou privados." },
         ],
         pasos: [
-          "Escolhemos com o seu hub as fontes que importam na região.",
-          "Conectamos essas fontes por API ou com um coletor automático.",
+          "Escolhemos com o seu hub as fontes que servem à sua região.",
+          "Conectamos essas fontes pelo painel da AgroHubs.",
           "Elas ficam disponíveis na busca e nas respostas do assistente.",
         ],
       },
@@ -220,23 +196,6 @@ export default {
         ],
       },
     },
-    fenologia: {
-      pagina: {
-        badge: "Fases fenológicas",
-        titulo: "Cada fase da cultura,", destacado: "com o seu manejo",
-        bajada: "As fases fenológicas das suas culturas, da brotação à colheita, com as recomendações de manejo de cada uma.",
-        features: [
-          { titulo: "Fases por cultura", desc: "O calendário de fases de cada cultura, preparado pela equipe AgroHubs." },
-          { titulo: "Manejo por fase", desc: "O que verificar e quais tarefas priorizar em cada etapa." },
-          { titulo: "Fases da sua propriedade", desc: "Ajuste as fases à sua região, à sua variedade e ao que você observa no campo." },
-        ],
-        pasos: [
-          "Você escolhe as culturas da sua propriedade.",
-          "Vê em que fase cada uma está e qual manejo corresponde.",
-          "Ajusta as fases com o que observa no campo.",
-        ],
-      },
-    },
     calculadoras: {
       pagina: {
         badge: "Calculadoras",
@@ -255,29 +214,22 @@ export default {
         ],
       },
     },
-    drones: {
+    tienda: {
       pagina: {
-        badge: "Drones agrícolas · integração DronX",
-        titulo: "Drones agrícolas sob demanda,", destacado: "a partir da sua propriedade",
-        bajada: "Você pede o serviço pelo app ou pelo painel da AgroHubs e a solicitação chega à rede de operadores da DronX com os dados da sua propriedade.",
-        aviso: {
-          titulo: "Integrado à DronX",
-          texto: "A DronX é da OlaDigital e tem app Android e versão web (iOS em breve). As suas solicitações saem com os dados da propriedade e o status é atualizado sozinho na AgroHubs.",
-          enlace: { texto: "Conheça o app DronX" },
-        },
+        badge: "Feira Digital",
+        titulo: "Feira Digital",
+        bajada: "Produtos e Serviços",
+        texto: "O que os hubs da rede e os fornecedores externos oferecem, em uma só loja on-line.",
         features: [
-          { titulo: "Aplicação com drone", desc: "Pulverização e aplicação de produtos por hectare, inclusive em encostas." },
-          { titulo: "Mapas NDVI", desc: "Vigor da cultura e detecção precoce de estresse hídrico ou pragas." },
-          { titulo: "Mapeamento e topografia", desc: "Ortofotos e modelos do terreno para planejar irrigação e plantio." },
-          { titulo: "Contagem de plantas", desc: "Plantas e falhas por talhão para estimar produção e replantio." },
-          { titulo: "Termografia", desc: "Câmera térmica para verificar a uniformidade da irrigação." },
-          { titulo: "Acompanhamento", desc: "Acompanhe o status de cada solicitação e receba mapas e relatórios na AgroHubs." },
+          { titulo: "Produtos dos hubs", desc: "Colheitas e insumos que os agricultores de cada hub publicam." },
+          { titulo: "Serviços", desc: "Serviços para o campo, da rede e de fornecedores externos." },
+          { titulo: "Fornecedores externos", desc: "Empresas de fora da rede vendem na mesma feira." },
+          { titulo: "Pedido e pagamento on-line", desc: "Carrinho, pedido e link de pagamento." },
         ],
         pasos: [
-          "Você pede o serviço pelo app ou pelo painel da sua propriedade: cultura, hectares, localização e data.",
-          "A solicitação chega à DronX com os dados da sua propriedade.",
-          "Um operador da rede DronX faz o orçamento e agenda o voo.",
-          "Você acompanha o status na AgroHubs e recebe os mapas e relatórios.",
+          "Cada hub e cada fornecedor publica seus produtos e serviços.",
+          "Os compradores de toda a rede os encontram em um só catálogo.",
+          "Fazem o pedido, pagam on-line e combinam a entrega com quem vende.",
         ],
       },
     },

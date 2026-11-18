@@ -6,8 +6,9 @@ import evaluacion from "./evaluacion.js"
 import apps from "./apps.js"
 import modulos from "./modulos.js"
 import licencias from "./licencias.js"
+import integraciones from "./integraciones.js"
 
-export const AREAS = { comun, evaluacion, apps, modulos, licencias }
+export const AREAS = { comun, evaluacion, apps, modulos, licencias, integraciones }
 
 export const TEXTOS = Object.fromEntries(
   ["es", "en", "pt"].map((i) => [i, Object.assign({}, ...Object.values(AREAS).map((a) => a[i] || {}))]),

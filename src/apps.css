@@ -256,3 +256,18 @@
   .ah-apps__flecha, .ah-apps__item, .ah-ecoapp, .ah-ecoapp__ver svg, .ah-appf img { transition: none; }
   .ah-ecoapp:hover .ah-appf img, .ah-ecoapp:hover .ah-ecoapp__ver svg { transform: none; }
 }
+
+/* Portada: AgroHubs.cl (multi integración) va primera y más ancha; las otras cuatro, en fichas iguales.
+   Escritorio: AgroHubs.cl en dos columnas y Fisaro al lado; debajo AgroCiclo, DronX y AgroSeller. */
+@media (min-width: 40rem) {
+  .ah-ecoapps:not(.ah-ecoapps--otras) .ah-ecoapps__lista { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ah-ecoapp--principal { grid-column: 1 / -1; grid-template-rows: none; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .ah-ecoapp--principal .ah-ecoapp__foto .ah-foto, .ah-ecoapp--principal .ah-ecoapp__foto img { height: 100%; }
+  .ah-ecoapp--principal .ah-ecoapp__cuerpo { align-content: center; padding: var(--space-lg); }
+  .ah-ecoapp--principal .ah-ecoapp__icono { margin-top: 0; }
+  .ah-ecoapp--principal .ah-ecoapp__nombre { font-size: var(--text-2xl, var(--text-xl)); }
+}
+@media (min-width: 64rem) {
+  .ah-ecoapps:not(.ah-ecoapps--otras) .ah-ecoapps__lista { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ah-ecoapp--principal { grid-column: span 2; }
+}

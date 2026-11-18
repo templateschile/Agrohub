@@ -1,4 +1,4 @@
-import { CheckCircle2, ArrowRight, Smartphone, Globe } from 'lucide-react'
+import { CheckCircle2, ArrowRight } from 'lucide-react'
 import { useInView } from '../hooks/useInView'
 import { useIdioma, useModulos, Enlace } from '../i18n'
 import Captura from '../components/Captura'
@@ -10,12 +10,12 @@ import { FOTOS } from '../lib/fotos'
 // Foto de gente del campo detrás de la cabecera de cada módulo (lib/fotos.js)
 const FOTO_MODULO = {
   dashboard_sensores: 'riegoPersona', bitacora: 'cosechaManos', chat_ia: 'agricultorTablet', documentos: 'asesorCampo',
-  fuentes: 'capacitacion', clima: 'cereales', recomendaciones: 'frutales', fenologia: 'vinas', calculadoras: 'familiaCampo',
-  eventos: 'capacitacion', tienda: 'feriaVendedor', drones: 'operadorDron',
+  fuentes: 'capacitacion', clima: 'cereales', recomendaciones: 'frutales', calculadoras: 'familiaCampo',
+  eventos: 'capacitacion', tienda: 'feriaVendedor',
 }
 
 // Cabecera común de las páginas de módulo (las armadas aquí y las hechas a mano: Dashboard, AI Chat,
-// Documentos, Eventos y Tienda): nombre del módulo, h1 (el único de la página), bajada y botones.
+// Documentos y Eventos): nombre del módulo, h1 (el único de la página), bajada, `texto` opcional y botones.
 // Capturas reales del módulo (lib/capturas.js): la vista de escritorio en una ventana y la del celular
 // en un teléfono, a la derecha del texto. Sin captura, la cabecera queda de una columna.
 function CapturasModulo({ moduloKey }) {
@@ -29,7 +29,7 @@ function CapturasModulo({ moduloKey }) {
   )
 }
 
-export function HeroModulo({ moduloKey, badge, titulo, destacado, bajada }) {
+export function HeroModulo({ moduloKey, badge, titulo, destacado, bajada, texto }) {
   const { t } = useIdioma()
   const m = useModulos().find((x) => x.key === moduloKey)
   const Icon = m?.icono
@@ -40,14 +40,18 @@ export function HeroModulo({ moduloKey, badge, titulo, destacado, bajada }) {
       {fondo && <div className="ah-modhero-fondo__foto"><Foto foto={fondo} prioridad sizes="100vw" /><CreditoFoto foto={fondo} /></div>}
       <div className={`relative max-w-7xl mx-auto px-6 lg:px-14${conCaptura ? " ah-modhero" : ""}`}>
         <div>
-        <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
-          {Icon && <Icon size={14} className="text-agro-green-300" aria-hidden="true" />}
-          <span className="text-white/85 text-sm font-medium">{badge || m?.nombre}</span>
-        </div>
+        {/* La etiqueta con el nombre del módulo, salvo que el h1 ya sea ese nombre (Feria Digital) */}
+        {(badge || m?.nombre) !== titulo && (
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
+            {Icon && <Icon size={14} className="text-agro-green-300" aria-hidden="true" />}
+            <span className="text-white/85 text-sm font-medium">{badge || m?.nombre}</span>
+          </div>
+        )}
         <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 max-w-3xl" style={{ textWrap: 'balance' }}>
-          {titulo} <span className="text-agro-green-300">{destacado}</span>
+          {titulo}{destacado && <> <span className="text-agro-green-300">{destacado}</span></>}
         </h1>
         <p className="text-white/75 text-lg md:text-xl max-w-2xl leading-relaxed">{bajada}</p>
+        {texto && <p className="text-white/75 text-base md:text-lg max-w-2xl leading-relaxed mt-3">{texto}</p>}
         <div className="flex flex-wrap gap-3 mt-8">
           <Enlace to="/evaluacion" className="inline-flex items-center gap-2 min-h-[44px] bg-agro-green-500 hover:bg-agro-green-400 text-white font-bold px-6 py-3 rounded-full transition-colors">
             {t('mod.cta.quiero')} <ArrowRight size={16} aria-hidden="true" />
@@ -63,8 +67,8 @@ export function HeroModulo({ moduloKey, badge, titulo, destacado, bajada }) {
   )
 }
 
-// Página de un módulo a partir de su ficha en lib/modulos.js (Bitácora, Fuentes, Clima, Recomendaciones,
-// Fenología, Calculadoras y Drones), con el texto de `pagina` en el idioma activo
+// Página de un módulo a partir de su ficha en lib/modulos.js (Cuaderno de campo, Fuentes, Clima,
+// Recomendaciones, Calculadoras y Feria Digital), con el texto de `pagina` en el idioma activo
 // (src/i18n/datos/modulos-paginas.js). Mismo estilo que las páginas hechas a mano.
 export default function ModuloPagina({ slug }) {
   const { t } = useIdioma()
@@ -73,42 +77,12 @@ export default function ModuloPagina({ slug }) {
   const [ref, visible] = useInView({ threshold: 0.12 })
   if (!m || !m.pagina) return null
   const p = m.pagina
-  const Icon = m.icono
   const otros = modulos.filter((x) => x.slug !== m.slug)
 
   return (
     <div>
-      <HeroModulo moduloKey={m.key} badge={p.badge} titulo={p.titulo} destacado={p.destacado} bajada={p.bajada} />
+      <HeroModulo moduloKey={m.key} badge={p.badge} titulo={p.titulo} destacado={p.destacado} bajada={p.bajada} texto={p.texto} />
 
-      {/* Aviso destacado (p. ej. integración DronX) */}
-      {p.aviso && (
-        <section className="bg-white pt-12">
-          <div className="max-w-7xl mx-auto px-6 lg:px-14">
-            <div className="rounded-3xl border border-agro-green-200 bg-agro-green-50 p-6 md:p-8 flex flex-col md:flex-row gap-6 md:items-center">
-              <div className="w-14 h-14 rounded-2xl bg-agro-green-700 text-white flex items-center justify-center shrink-0">
-                <Icon size={28} aria-hidden="true" />
-              </div>
-              <div className="min-w-0">
-                <h2 className="text-xl md:text-2xl font-bold text-agro-green-900 mb-2">{p.aviso.titulo}</h2>
-                <p className="text-agro-green-900/80 leading-relaxed max-w-3xl">{p.aviso.texto}</p>
-                {p.aviso.enlace && (
-                  <Enlace to={p.aviso.enlace.ruta} className="inline-flex items-center gap-1.5 min-h-[44px] mt-1 font-semibold text-agro-green-800 underline underline-offset-4 hover:text-agro-green-900">
-                    {p.aviso.enlace.texto} <ArrowRight size={15} aria-hidden="true" />
-                  </Enlace>
-                )}
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {/* La app iOS aún no está publicada: Android y web */}
-                  {[[t('mod.chip.android'), Smartphone], [t('mod.chip.web'), Globe], [t('mod.chip.integrado'), CheckCircle2]].map(([texto, Chip]) => (
-                    <span key={texto} className="inline-flex items-center gap-1.5 bg-white border border-agro-green-200 text-agro-green-800 text-xs font-semibold rounded-full px-3 py-1">
-                      <Chip size={12} aria-hidden="true" /> {texto}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Qué incluye */}
       <section className="py-16 bg-white">

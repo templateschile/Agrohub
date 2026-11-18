@@ -10,11 +10,14 @@
 //   externo, otra pestaña), { ruta } (página de este sitio, con el prefijo de idioma) o { ancla } (una
 //   sección de la misma página: "como-funciona" o "interes").
 // - `interes`: la página termina con el formulario "súmate para probarlo primero" (FormInteres).
-// - `modulo`: la página muestra los servicios de ese módulo (lib/modulos.js), p. ej. DronX → Drones.
+// - `tarjeta` (solo AgroHubs): su ficha en la sección de apps de la portada, que va primera.
 // - `icono`: "dron", "reciclaje" o "feria" (IconoApp en components/AppsEcosistema.jsx).
 // - `foto` / `fotoRespaldo`: claves de FOTOS (lib/fotos.js); la segunda se usa si la primera no está.
 // - El color de cada app está en ACENTOS, más abajo.
 // Fisaro es una app de OlaDigital (asistencia agrícola): va como app del ecosistema, sin integración asumida.
+// DronX y AgroSeller están en desarrollo (`estado`). DronX no se integra con AgroHubs: el sitio no ofrece
+// solicitar drones (Fernando, nov. 2026).
+// Orden (menú Apps y portada): AgroHubs.cl, Fisaro, AgroCiclo, DronX y AgroSeller.
 
 const SITIO_AGROCICLO = "https://agrociclo.oladigital.cl"
 const SITIO_DRONX = "https://dsp.oladigital.cl"
@@ -26,6 +29,66 @@ export const APPS = [
     nombre: "AgroHubs",
     promesa: "Crea tu Centro Demostrativo Agrícola",
     ruta: "/",
+    // Ficha de la portada (AppsEcosistema): AgroHubs.cl va primera, como la app que conecta las fuentes
+    tarjeta: {
+      nombre: "AgroHubs.cl",
+      etiqueta: "Multi integración",
+      texto: "Estaciones, clima, precios, suelo y satélite de muchas fuentes, en una sola app para tu predio.",
+      ruta: "/integraciones",
+      foto: "hortalizas",
+    },
+  },
+  {
+    slug: "fisaro",
+    nombre: "Fisaro",
+    promesa: "Asistencia agrícola con más de 50.000 documentos técnicos en tu bolsillo",
+    ruta: "/apps/fisaro",
+    sitio: SITIO_FISARO,
+    icono: "biblioteca",
+    foto: "asesorCampo",
+    fotoRespaldo: "agricultorTablet",
+    bajada: "Fisaro, desarrollada por OlaDigital, reúne más de 50.000 documentos técnicos agrícolas. Buscas por texto, voz o foto, consultas al asistente de IA, revisas el clima por comuna, calculas fertilización y sigues consultando sin conexión.",
+    cta: "Ir a Fisaro",
+    destino: { url: SITIO_FISARO },
+    otra: { texto: "Cómo funciona", destino: { ancla: "como-funciona" } },
+    problemas: [
+      {
+        problema: "La información técnica está repartida en boletines, fichas y manuales difíciles de encontrar en terreno.",
+        solucion: "Más de 50.000 documentos técnicos en una sola app, con búsqueda por texto, voz o foto.",
+      },
+      {
+        problema: "Una duda agronómica en el campo espera hasta hablar con el asesor.",
+        solucion: "El asistente de IA responde al momento, apoyado en los documentos de la biblioteca.",
+      },
+      {
+        problema: "En muchos predios no hay señal.",
+        solucion: "Lo que consultaste queda disponible sin conexión.",
+      },
+    ],
+    pasos: [
+      { titulo: "Busca", texto: "Escribe, dicta o saca una foto: la app encuentra el documento o la respuesta." },
+      { titulo: "Consulta", texto: "Pregunta al asistente de IA, revisa el clima de tu comuna o usa las calculadoras de fertilización." },
+      { titulo: "Lleva la respuesta al campo", texto: "Guarda lo consultado y úsalo sin conexión." },
+    ],
+    paraQuien: [
+      { titulo: "Agricultores", texto: "Que necesitan una respuesta técnica en el momento, en el predio." },
+      { titulo: "Asesores y técnicos", texto: "Que buscan fichas, boletines y dosis sin cargar carpetas." },
+      { titulo: "Estudiantes y centros de formación", texto: "Que quieren una biblioteca técnica a mano." },
+    ],
+    conexion: [
+      "Fisaro es una app aparte, de OlaDigital, con su propio sitio y cuenta.",
+      "AgroHubs y Fisaro comparten el mismo equipo de desarrollo.",
+    ],
+    faq: [
+      { q: "¿Qué documentos tiene?", a: "Más de 50.000 documentos técnicos agrícolas: boletines, fichas, manuales y publicaciones." },
+      { q: "¿Funciona sin internet?", a: "Sí: lo que consultaste queda disponible sin conexión." },
+      { q: "¿Cómo busco?", a: "Por texto, por voz o con una foto." },
+      { q: "¿Es la misma app que AgroHubs?", a: "No. Fisaro es una app de asistencia agrícola de OlaDigital; AgroHubs es la plataforma de tu Centro Demostrativo." },
+    ],
+    cierre: {
+      titulo: "Descarga Fisaro",
+      texto: "Entra a fisaro.cl y empieza a consultar.",
+    },
   },
   {
     slug: "agrociclo",
@@ -34,8 +97,8 @@ export const APPS = [
     ruta: "/apps/agrociclo",
     sitio: SITIO_AGROCICLO,
     icono: "reciclaje",
-    foto: "recicladorCampo",
-    fotoRespaldo: "residuos",
+    foto: "residuos",
+    fotoRespaldo: "recicladorCampo",
     bajada: "AgroCiclo conecta a agricultores con recicladores para retirar, valorizar y reciclar los residuos del predio desde el celular.",
     cta: "Ir a AgroCiclo",
     destino: { url: SITIO_AGROCICLO },
@@ -95,17 +158,17 @@ export const APPS = [
   {
     slug: "dronx",
     nombre: "DronX",
+    estado: "En desarrollo",
     promesa: "Servicios de dron a demanda",
     ruta: "/apps/dronx",
     sitio: SITIO_DRONX,
-    modulo: "drones",
     icono: "dron",
     foto: "dron",
     fotoRespaldo: "operadorDron",
-    bajada: "DronX, de OlaDigital, conecta a quien necesita un dron con los operadores de su red. Desde AgroHubs pides el servicio y la solicitud sale con los datos de tu predio.",
-    cta: "Pedir desde AgroHubs",
-    destino: { ruta: "/drones" },
-    otra: { texto: "Ir al sitio de DronX", destino: { url: SITIO_DRONX } },
+    bajada: "DronX, de OlaDigital, une a quien necesita un servicio con dron y a los operadores de su red. Está en desarrollo.",
+    cta: "Ir al sitio de DronX",
+    destino: { url: SITIO_DRONX },
+    otra: { texto: "Cómo funciona", destino: { ancla: "como-funciona" } },
     problemas: [
       {
         problema: "Encontrar un operador de drones disponible cerca del predio toma tiempo.",
@@ -117,7 +180,7 @@ export const APPS = [
       },
       {
         problema: "Los mapas y reportes quedan repartidos en correos y pendrives.",
-        solucion: "Descargas los entregables en la app y, si pediste desde AgroHubs, los ves junto a tu predio.",
+        solucion: "Descargas los entregables desde la app.",
       },
     ],
     pasos: [
@@ -127,17 +190,19 @@ export const APPS = [
     ],
     paraQuien: [
       { titulo: "Agricultores y administradores de predios", texto: "Que necesitan aplicaciones, mapas o conteos sin comprar un dron." },
-      { titulo: "Centros demostrativos y asesores", texto: "Que quieren ofrecer servicios con dron a los agricultores de su red." },
+      { titulo: "Asesores y empresas de servicios", texto: "Que quieren ofrecer servicios con dron a sus clientes." },
       { titulo: "Operadores de drones", texto: "Que reciben solicitudes cercanas y cobran por cada misión completada." },
     ],
     conexion: [
-      "Pides el servicio desde la app o el panel de tu predio en AgroHubs, con el cultivo, las hectáreas, la ubicación y la fecha.",
-      "La solicitud llega a DronX con los datos de tu predio.",
-      "El estado de la solicitud y los entregables vuelven a AgroHubs.",
+      "DronX es una app aparte, de OlaDigital, con su propio sitio y cuenta.",
     ],
     faq: [
       {
-        q: "¿Qué servicios agrícolas puedo pedir?",
+        q: "¿Ya puedo usar DronX?",
+        a: "DronX está en desarrollo. Entra a su sitio para conocerla.",
+      },
+      {
+        q: "¿Qué servicios agrícolas se pueden pedir?",
         a: "Aplicación con dron, mapas NDVI, mapeo y topografía, conteo de plantas y termografía, entre otros.",
       },
       {
@@ -146,16 +211,12 @@ export const APPS = [
       },
       {
         q: "¿Cómo recibo los entregables?",
-        a: "El operador los sube a la app y tú los descargas desde ahí. Si pediste desde AgroHubs, también quedan asociados a tu predio.",
-      },
-      {
-        q: "¿Hay operadores en mi zona?",
-        a: "La red está creciendo. Si en tu zona aún no hay operadores, puedes registrarte para que te avisemos cuando haya uno cerca.",
+        a: "El operador los sube a la app y tú los descargas desde ahí.",
       },
     ],
     cierre: {
-      titulo: "Pide tu próximo servicio con dron",
-      texto: "Pídelo desde el módulo Drones de AgroHubs o entra al sitio de DronX.",
+      titulo: "Conoce DronX",
+      texto: "Entra al sitio de DronX para ver los servicios con dron.",
     },
   },
   {
@@ -166,8 +227,8 @@ export const APPS = [
     promesa: "Vende tu fruta directo a feriantes, por lotes y con reserva",
     ruta: "/apps/agroseller",
     icono: "feria",
-    foto: "feriaVendedor",
-    fotoRespaldo: "paltos",
+    foto: "feria",
+    fotoRespaldo: "feriaVendedor",
     bajada: "AgroSeller nace de AgroCiclo para que productores y packings vendan fruta a feriantes y comerciantes. Publicas lotes con precio y mínimo de compra, y el comprador reserva, retira o pide despacho. Está en desarrollo y puedes sumarte para probarlo primero.",
     cta: "Quiero ser parte",
     destino: { ancla: "interes" },
@@ -239,7 +300,7 @@ export const APPS = [
     conexion: [
       "Nace de AgroCiclo, y lo que no se vende en AgroSeller se deriva a AgroCiclo.",
       "Muestra el precio de referencia de ODEPA, en Chile, una de las fuentes que AgroHubs ya integra.",
-      "Complementa el Mercado de cosecha de AgroHubs con reservas por lote para feriantes.",
+      "Complementa la Feria Digital de AgroHubs con reservas por lote para feriantes.",
     ],
     faq: [
       {
@@ -262,58 +323,6 @@ export const APPS = [
     cierre: {
       titulo: "Sé parte de las primeras pruebas",
       texto: "Si produces fruta o compras para la feria, cuéntanos tu caso y te avisamos cuando AgroSeller esté listo.",
-    },
-  },
-  {
-    slug: "fisaro",
-    nombre: "Fisaro",
-    promesa: "Asistencia agrícola con más de 50.000 documentos técnicos en tu bolsillo",
-    ruta: "/apps/fisaro",
-    sitio: SITIO_FISARO,
-    icono: "biblioteca",
-    foto: "agricultorTablet",
-    fotoRespaldo: "asesorCampo",
-    bajada: "Fisaro, desarrollada por OlaDigital, reúne más de 50.000 documentos técnicos agrícolas. Buscas por texto, voz o foto, consultas al asistente de IA, revisas el clima por comuna, calculas fertilización y sigues consultando sin conexión.",
-    cta: "Ir a Fisaro",
-    destino: { url: SITIO_FISARO },
-    otra: { texto: "Cómo funciona", destino: { ancla: "como-funciona" } },
-    problemas: [
-      {
-        problema: "La información técnica está repartida en boletines, fichas y manuales difíciles de encontrar en terreno.",
-        solucion: "Más de 50.000 documentos técnicos en una sola app, con búsqueda por texto, voz o foto.",
-      },
-      {
-        problema: "Una duda agronómica en el campo espera hasta hablar con el asesor.",
-        solucion: "El asistente de IA responde al momento, apoyado en los documentos de la biblioteca.",
-      },
-      {
-        problema: "En muchos predios no hay señal.",
-        solucion: "Lo que consultaste queda disponible sin conexión.",
-      },
-    ],
-    pasos: [
-      { titulo: "Busca", texto: "Escribe, dicta o saca una foto: la app encuentra el documento o la respuesta." },
-      { titulo: "Consulta", texto: "Pregunta al asistente de IA, revisa el clima de tu comuna o usa las calculadoras de fertilización." },
-      { titulo: "Lleva la respuesta al campo", texto: "Guarda lo consultado y úsalo sin conexión." },
-    ],
-    paraQuien: [
-      { titulo: "Agricultores", texto: "Que necesitan una respuesta técnica en el momento, en el predio." },
-      { titulo: "Asesores y técnicos", texto: "Que buscan fichas, boletines y dosis sin cargar carpetas." },
-      { titulo: "Estudiantes y centros de formación", texto: "Que quieren una biblioteca técnica a mano." },
-    ],
-    conexion: [
-      "Fisaro es una app aparte, de OlaDigital, con su propio sitio y cuenta.",
-      "AgroHubs y Fisaro comparten el mismo equipo de desarrollo.",
-    ],
-    faq: [
-      { q: "¿Qué documentos tiene?", a: "Más de 50.000 documentos técnicos agrícolas: boletines, fichas, manuales y publicaciones." },
-      { q: "¿Funciona sin internet?", a: "Sí: lo que consultaste queda disponible sin conexión." },
-      { q: "¿Cómo busco?", a: "Por texto, por voz o con una foto." },
-      { q: "¿Es la misma app que AgroHubs?", a: "No. Fisaro es una app de asistencia agrícola de OlaDigital; AgroHubs es la plataforma de tu Centro Demostrativo." },
-    ],
-    cierre: {
-      titulo: "Descarga Fisaro",
-      texto: "Entra a fisaro.cl y empieza a consultar.",
     },
   },
 ]

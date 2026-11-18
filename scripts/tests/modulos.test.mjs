@@ -2,7 +2,7 @@
 // Solo importa archivos .js puros (src/lib/modulos.js importa un .jsx: se lee como texto).
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { readFileSync, existsSync } from 'node:fs'
 import TEXTOS from '../../src/i18n/textos/modulos.js'
 import PAGINAS from '../../src/i18n/datos/modulos-paginas.js'
 import { PRODUCTOS_AGRO, PRODUCTOS_AGRO_TRAD, etiquetaProductoAgro } from '../../src/lib/productosAgro.js'
@@ -11,14 +11,13 @@ const leer = (ruta) => readFileSync(new URL(`../../${ruta}`, import.meta.url), '
 const IDIOMAS = ['es', 'en', 'pt']
 const TRADUCIDOS = ['en', 'pt']
 
-// Los 7 módulos con página armada por ModuloPagina (campo `pagina` en src/lib/modulos.js)
-const CON_PAGINA = ['bitacora', 'fuentes', 'clima', 'recomendaciones', 'fenologia', 'calculadoras', 'drones']
+// Los 6 módulos con página armada por ModuloPagina (campo `pagina` en src/lib/modulos.js)
+const CON_PAGINA = ['bitacora', 'fuentes', 'clima', 'recomendaciones', 'calculadoras', 'tienda']
 
 // Archivos del área de módulos
 const ARCHIVOS = [
   'src/pages/Modulos.jsx', 'src/pages/ModuloPagina.jsx', 'src/pages/Dashboard.jsx', 'src/pages/AIChat.jsx',
-  'src/pages/Documentos.jsx', 'src/pages/Eventos.jsx', 'src/pages/Tienda.jsx', 'src/components/PedidoModal.jsx',
-  'src/components/MultiSelectBusqueda.jsx',
+  'src/pages/Documentos.jsx', 'src/pages/Eventos.jsx', 'src/components/MultiSelectBusqueda.jsx',
 ]
 const FUENTES = Object.fromEntries(ARCHIVOS.map((f) => [f, leer(f)]))
 
@@ -52,8 +51,7 @@ test('las claves que usan las páginas existen en el diccionario', () => {
       assert.ok(`${k}.uno` in TEXTOS.es && `${k}.otros` in TEXTOS.es, `${f}: falta el plural ${k}`)
     }
   }
-  // Claves armadas con variables: productos de la Tienda y fichas de las páginas hechas a mano
-  for (const [, clave] of FUENTES['src/pages/Tienda.jsx'].matchAll(/clave: "(\w+)"/g)) assert.ok(`mod.prod.${clave}` in TEXTOS.es, `producto ${clave}`)
+  // Claves armadas con variables: fichas de las páginas hechas a mano
   for (const id of ['iot', 'vivo', 'alertas', 'historico', 'hidrica', 'riego']) assert.ok(`mod.dash.f.${id}.t` in TEXTOS.es && `mod.dash.f.${id}.d` in TEXTOS.es)
   for (const id of ['protocolos', 'sensores', 'historial', 'externas']) assert.ok(`mod.chat.f.${id}.t` in TEXTOS.es && `mod.chat.f.${id}.d` in TEXTOS.es)
   for (const n of [1, 2, 3, 4]) assert.ok(`mod.chat.caso${n}.p` in TEXTOS.es && `mod.chat.caso${n}.r` in TEXTOS.es)
@@ -79,16 +77,17 @@ function paginasEnEspanol() {
   return out
 }
 
-test('modulos-paginas.js traduce la página completa de los 7 módulos', () => {
+test('modulos-paginas.js traduce la página completa de los 6 módulos', () => {
   const es = paginasEnEspanol()
-  assert.deepEqual(Object.keys(es).sort(), [...CON_PAGINA].sort(), 'los 7 módulos con página')
+  assert.deepEqual(Object.keys(es).sort(), [...CON_PAGINA].sort(), 'los 6 módulos con página')
   for (const i of TRADUCIDOS) {
     assert.deepEqual(Object.keys(PAGINAS[i]).sort(), [...CON_PAGINA].sort(), `${i}: solo y todos los módulos con página`)
     for (const key of CON_PAGINA) {
       const p = PAGINAS[i][key]?.pagina
       const ref = `${i} ${key}`
       assert.ok(p, `${ref}: sin pagina`)
-      for (const campo of ['badge', 'titulo', 'destacado', 'bajada']) assert.ok(p[campo]?.trim(), `${ref}: falta ${campo}`)
+      for (const campo of ['badge', 'titulo', 'bajada']) assert.ok(p[campo]?.trim(), `${ref}: falta ${campo}`)
+      if (key !== 'tienda') assert.ok(p.destacado?.trim(), `${ref}: falta destacado`)
       assert.equal(p.features.length, es[key].features, `${ref}: mismas features que en español`)
       assert.ok(p.features.every((f) => f.titulo?.trim() && f.desc?.trim()), `${ref}: features con titulo y desc`)
       assert.equal(p.pasos.length, es[key].pasos, `${ref}: mismos pasos que en español`)
@@ -109,47 +108,32 @@ test('textos sin rayas largas (—) y sin anunciar la app iOS como disponible', 
   for (const [f, texto] of Object.entries(FUENTES)) assert.ok(!/—/.test(texto.replace(/\/\/.*$|\{\/\*.*?\*\/\}/gm, '')), `${f}: raya larga en un texto`)
 })
 
-test('sin preferencia por Chile en los datos de ejemplo', () => {
-  const chile = /\+56|es-CL|\bCLP\b|INDAP|\bSAG\b|comunas?\b|Curic[oó]|Rancagua|Chill[aá]n|Temuco|Osorno|Ovalle/i
-  for (const [f, texto] of Object.entries(FUENTES)) assert.ok(!chile.test(texto), `${f}: ${texto.match(chile)?.[0]}`)
-  const textos = JSON.stringify([TEXTOS, PAGINAS])
-  assert.ok(!chile.test(textos), `textos: ${textos.match(chile)?.[0]}`)
-  // La Tienda muestra productores de varios países, marcados como ejemplo, con precios en USD
-  const tienda = FUENTES['src/pages/Tienda.jsx']
-  const paises = new Set([...tienda.matchAll(/pais: "([A-Z]{2})"/g)].map((m) => m[1]))
-  assert.ok(paises.size >= 5, `productores de varios países: ${[...paises]}`)
-  assert.ok(FUENTES['src/components/PedidoModal.jsx'].includes('currency: "USD"'))
-  assert.ok(tienda.includes('t("mod.ejemplo")'), 'cada productor se marca como ejemplo')
+// Fernando (nov. 2026): el sitio se enfoca en Chile; la Feria Digital es genérica (productos y servicios de los hubs
+// y de proveedores externos), sin productores de ejemplo de varios países ni plataformas de comercio nombradas.
+test('ejemplos de Chile y Feria Digital genérica', () => {
+  for (const r of ['Coquimbo', "O'Higgins", 'Los Lagos']) assert.ok(JSON.stringify(TEXTOS.es).includes(r), `evento de ejemplo en ${r}`)
+  assert.ok(!existsSync(new URL('../../src/pages/Tienda.jsx', import.meta.url)), 'sin la tienda de productores de ejemplo')
+  assert.ok(!existsSync(new URL('../../src/components/PedidoModal.jsx', import.meta.url)))
+  assert.equal(PAGINAS.en.tienda.pagina.bajada, 'Products and Services')
+  assert.equal(PAGINAS.pt.tienda.pagina.bajada, 'Produtos e Serviços')
+  const fuente = leer('src/lib/modulos.js')
+  assert.match(fuente, /bajada: "Productos y Servicios"/)
+  assert.ok(!/woocommerce|shopify|mercado ?pago/i.test(fuente + JSON.stringify(PAGINAS)), 'sin plataformas de comercio nombradas')
 })
 
-test('el pedido se envía al API en español y con el idioma del sitio', () => {
-  const modal = FUENTES['src/components/PedidoModal.jsx']
-  assert.ok(modal.includes('textosDe("es")'), 'nombres de productos en español para el resumen')
-  assert.ok(/enviarLead\(\{ tipo: "pedido",.*\bresumen, idioma \}\)/.test(modal), 'enviarLead recibe idioma')
-  assert.ok(modal.includes('Idioma del sitio: ${idioma}'), 'el resumen dice en qué idioma se pidió')
-})
 
 test('accesibilidad: un h1 por página, filtros con aria-pressed, controles de 44 px y etiquetas', () => {
   // El h1 está solo en HeroModulo (ModuloPagina.jsx) y en el índice; las páginas a mano usan HeroModulo
   assert.equal((FUENTES['src/pages/ModuloPagina.jsx'].match(/<h1\b/g) || []).length, 1)
   assert.equal((FUENTES['src/pages/Modulos.jsx'].match(/<h1\b/g) || []).length, 1)
-  for (const f of ['Dashboard', 'AIChat', 'Documentos', 'Eventos', 'Tienda']) {
+  for (const f of ['Dashboard', 'AIChat', 'Documentos', 'Eventos']) {
     const texto = FUENTES[`src/pages/${f}.jsx`]
     assert.ok(!/<h1\b/.test(texto) && texto.includes('<HeroModulo'), `${f}: h1 de HeroModulo`)
   }
   assert.ok(FUENTES['src/pages/Eventos.jsx'].includes('aria-pressed={activo}'), 'filtro de eventos')
-  assert.ok(FUENTES['src/pages/Tienda.jsx'].includes('aria-pressed={f.soloDisponibles}'), 'filtro con cupos')
   assert.ok(FUENTES['src/components/MultiSelectBusqueda.jsx'].includes('aria-pressed={activo}'), 'opciones del selector')
-  // Botones de solo ícono con nombre accesible
-  assert.ok(/aria-label=\{t\("mod\.pedido\.cerrar"\)\}/.test(FUENTES['src/components/PedidoModal.jsx']))
-  assert.ok(/aria-label=\{t\("mod\.tienda\.cerrarFiltros"\)\}/.test(FUENTES['src/pages/Tienda.jsx']))
-  // Campos del pedido con label asociado
-  const modal = FUENTES['src/components/PedidoModal.jsx']
-  for (const c of ['nombre', 'telefono', 'email']) {
-    assert.ok(modal.includes(`htmlFor={\`\${ids}-${c}\`}`) && modal.includes(`id={\`\${ids}-${c}\`}`), `pedido: label de ${c}`)
-  }
   // Los botones de los formularios y filtros miden al menos 44 px (min-h-[44px], w-11/h-11 o más)
-  for (const f of ['src/pages/Eventos.jsx', 'src/pages/Tienda.jsx', 'src/components/PedidoModal.jsx', 'src/components/MultiSelectBusqueda.jsx']) {
+  for (const f of ['src/pages/Eventos.jsx', 'src/components/MultiSelectBusqueda.jsx']) {
     const texto = FUENTES[f]
     for (const { index } of texto.matchAll(/<button\b/g)) {
       const clases = texto.slice(index).match(/className=(?:"([^"]*)"|\{`([^`]*)`\})/)

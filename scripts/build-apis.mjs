@@ -11,6 +11,8 @@ import {
 } from './apis/lib.mjs'
 import { techRadarSvg, scoreRadarSvg, RADAR_ITEMS, radarNum } from './apis/charts.mjs'
 import { partesNombre, resumenPorCategoria } from './apis/ecosistema.mjs'
+import { INTEGRACIONES, GRUPOS } from '../src/lib/integraciones.js'
+import { TEXTOS } from '../src/i18n/textos/index.js'
 
 const PUB = join(ROOT, 'public')
 const OUT = join(PUB, 'apis')
@@ -631,6 +633,43 @@ CASOS.forEach((t) => listPage('caso', t))
   }, null, 2) + '\n')
 }
 
+// ── Integraciones de AgroHubs (src/lib/integraciones.js): sección de llms.txt, una ficha por integración en
+// llms-full.txt y sus páginas en el sitemap. Las páginas las arma la SPA (/integraciones/<slug>) y el HTML previo
+// sale de scripts/prerender-integraciones.mjs después de vite build.
+const TXT = TEXTOS.es
+const estadoIntg = (i) => TXT[`intg.estado.${i.estado}`]
+const enlaceIntg = (i) => `${i.tipoEnlace === 'sitio' ? TXT['intg.pagina.sitio'] : TXT['intg.pagina.documentacion']}: ${i.enlace}`
+const integracionesLlms = `## Integraciones de AgroHubs
+
+Fuentes de datos que AgroHubs conecta y muestra junto a los datos de cada predio, con una página por fuente: ${SITE}/integraciones
+
+${GRUPOS.map((g) => `### ${TXT[`intg.grupo.${g}`]}
+
+${INTEGRACIONES.filter((i) => i.grupo === g).map((i) => `- [${i.nombre}](${SITE}/integraciones/${i.slug}): ${i.resumen} Estado: ${estadoIntg(i)}.`).join('\n')}`).join('\n\n')}
+`
+const integracionMd = (i) => `# ${i.nombre} en AgroHubs: ${i.tema}
+
+> ${i.resumen}
+
+- Página: ${SITE}/integraciones/${i.slug}
+- Fuente: ${i.organizacion}
+${i.cobertura ? `- Cobertura: ${i.cobertura}\n` : ''}- Grupo: ${TXT[`intg.grupo.${i.grupo}`]}
+- Estado en AgroHubs: ${estadoIntg(i)}
+- ${enlaceIntg(i)}
+
+## ${TXT['intg.pagina.datos']}
+
+${i.datos.map((d) => `- ${d}`).join('\n')}
+
+## ${TXT['intg.pagina.usos']}
+
+${i.usos.map((u) => `- ${u}`).join('\n')}
+
+## ${TXT['intg.pagina.como']}
+
+${i.como}${i.estado === 'cuenta' ? ` ${TXT['intg.credencial']}` : ''}
+`
+
 // ── Catálogo JSON, llms.txt, llms-full.txt ──
 write('apis/catalogo.json', JSON.stringify({
   fuente: SITE + '/apis', actualizado: UPDATED, moneda: 'USD', licencia: 'CC BY 4.0 (AgroHubs)', total, cotizar: SITE + COTIZAR,
@@ -660,6 +699,7 @@ Datos clave:
 
 ## Páginas principales
 
+- [Integraciones de AgroHubs](${SITE}/integraciones)
 - [Directorio de APIs agro](${SITE}/apis)
 - [Las mejores APIs para Chile y Latinoamérica](${SITE}/apis/ranking)
 - [Mapa de APIs](${SITE}/apis/radar)
@@ -667,6 +707,7 @@ Datos clave:
 - [Catálogo en JSON](${SITE}/apis/catalogo.json)
 - [Texto completo para LLM](${SITE}/llms-full.txt)
 
+${integracionesLlms}
 ## Mejores para Chile
 
 ${sortedBy('chile').slice(0, 10).map((a) => `- [${a.nombre}](${SITE}/apis/${a.slug}.md): ${a.resumen}`).join('\n')}
@@ -684,7 +725,7 @@ ${CATEGORIAS.filter((c) => APIS.some((a) => a.categorias.includes(c.slug))).map(
 ${CASOS.filter((c) => APIS.some((a) => a.casos_de_uso.includes(c.slug))).map((c) => `- [${c.nombre}](${SITE}/apis/caso-de-uso/${c.slug}): ${c.descripcion}`).join('\n')}
 `
 write('llms.txt', llms)
-write('llms-full.txt', [llms, ...sortedBy('relevancia').map((a) => readFileSync(join(OUT, a.slug + '.md'), 'utf8'))].join('\n\n---\n\n'))
+write('llms-full.txt', [llms, ...INTEGRACIONES.map(integracionMd), ...sortedBy('relevancia').map((a) => readFileSync(join(OUT, a.slug + '.md'), 'utf8'))].join('\n\n---\n\n'))
 
 // ── CSS ──
 write('apis/apis.css', readFileSync(join(ROOT, 'scripts', 'apis', 'apis.css'), 'utf8'))
@@ -702,7 +743,7 @@ write('apis/apis.css', readFileSync(join(ROOT, 'scripts', 'apis', 'apis.css'), '
 }
 
 // ── sitemap.xml y robots.txt ──
-const spa = ['/', '/dashboard', '/ai-chat', '/documentos', '/eventos', '/tienda', '/evaluacion', '/terminos']
+const spa = ['/', '/dashboard', '/ai-chat', '/documentos', '/eventos', '/tienda', '/evaluacion', '/terminos', '/integraciones', ...INTEGRACIONES.map((i) => `/integraciones/${i.slug}`)]
 const urls = [...spa, ...files]
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

@@ -7,10 +7,12 @@ import { useIdioma, useApps, Enlace } from '../i18n'
 import { IDIOMAS, NOMBRES, CORTOS, conIdioma, sinIdioma, guardarPreferencia } from '../i18n/idiomas'
 
 // Menú corto: lo que la mayoría viene a hacer. Los módulos tienen su índice en /modulos y
-// el resto del sitio sigue en el pie de página. "Apps" despliega las apps del ecosistema.
+// el resto del sitio sigue en el pie de página. "Apps" despliega las apps del ecosistema. "Integraciones" lleva
+// al índice de fuentes (/integraciones), que enlaza al directorio de APIs agro (/apis, en el pie).
 // El selector de idioma lleva a la misma página en español, inglés o portugués y recuerda la elección.
 const navLinks = [
   { clave: 'nav.modulos',    to: '/modulos', activo: esRutaDeModulo },
+  { clave: 'nav.integraciones', to: '/integraciones', activo: (r) => r === '/integraciones' || r.startsWith('/integraciones/') },
   { clave: 'nav.evaluacion', to: '/evaluacion' },
   { clave: 'nav.tienda',     to: '/tienda' },
 ]
@@ -20,7 +22,7 @@ function Marca() {
   return (
     <Enlace to="/" className="ah-nav__marca" aria-label={t('nav.inicio')}>
       <span className="ah-nav__logo"><HubMark className="ah-nav__hub" title={null} /></span>
-      <span className="ah-nav__nombre">AgroHubs<small>{t('nav.lema')}</small></span>
+      <span className="ah-nav__nombre"><span>Agro<span className="ah-hubs">Hubs</span></span><small>{t('nav.lema')}</small></span>
     </Enlace>
   )
 }
@@ -130,7 +132,6 @@ export default function Navbar() {
           {enlaces.slice(0, 1)}
           <li><MenuApps pathname={location.pathname} /></li>
           {enlaces.slice(1)}
-          <li><a href="/apis" className="ah-nav__link" hrefLang="es">{t('nav.apis')}</a></li>
           <li><SelectorIdioma /></li>
           <li><a href={ruta('/#contacto')} className="ah-btn ah-btn--chico">{t('cta.demo')}</a></li>
         </ul>
@@ -143,7 +144,6 @@ export default function Navbar() {
       {menuOpen && (
         <ul className="ah-nav__movil" id="menu-movil">
           {enlaces}
-          <li><a href="/apis" className="ah-nav__link" hrefLang="es">{t('nav.apis')}</a></li>
           <li className="ah-nav__grupo">
             <p className="ah-nav__grupo-titulo" id="movil-apps">{t('nav.apps')}</p>
             <ul className="ah-nav__apps" aria-labelledby="movil-apps">

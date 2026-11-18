@@ -1,15 +1,16 @@
-// Los 12 módulos de la app AgroHubs, tal como los ofrece la plataforma
-// (templateschile/agrohubs-app: api/src/predios/catalogo.js, MODULOS). Mismas `key`, nombres y textos.
+// Los 10 módulos de la app AgroHubs que muestra el sitio, con las mismas `key` de la plataforma
+// (templateschile/agrohubs-app: api/src/predios/catalogo.js, MODULOS). La plataforma tiene además
+// las fases del cultivo y los drones: Fernando pidió sacarlos del sitio (nov. 2026), así que no van aquí.
 // Fuente única para la portada (AppModulos y el diagrama del ecosistema), el menú, el índice /modulos
 // y las páginas de los módulos.
-// - `ruta`: página del módulo en este sitio. Las de Dashboard, AI Chat, Documentos, Eventos y Tienda
-//   están hechas a mano; el resto la arma ModuloPagina con `pagina`.
+// - `ruta`: página del módulo en este sitio. Las de Dashboard, AI Chat, Documentos y Eventos están
+//   hechas a mano; el resto la arma ModuloPagina con `pagina`.
+// - `bajada`: línea bajo el nombre (la Feria Digital lleva «Productos y Servicios»).
 // - `corto`: nombre breve para el diagrama del ecosistema.
 import {
   Radio, NotebookPen, Sparkles, FolderOpen, Globe, Sun,
-  Lightbulb, Flower2, Calculator, CalendarDays, Store,
+  Lightbulb, Calculator, CalendarDays, Store,
 } from "lucide-react"
-import IconoDron from "../components/IconoDron"
 
 export const MODULOS = [
   {
@@ -52,20 +53,20 @@ export const MODULOS = [
   {
     key: "fuentes", slug: "fuentes", ruta: "/fuentes", icono: Globe,
     nombre: "Fuentes externas", corto: "Fuentes",
-    descripcion: "Información de fuentes externas (MODAG, Kadi, INIA y otras) junto a tus datos.",
+    descripcion: "Datos de fuentes chilenas como INIA, CEAZA, ODEPA y CIREN junto a los de tu predio.",
     pagina: {
       badge: "Fuentes externas",
-      titulo: "Boletines, clima y datos públicos,", destacado: "junto a tus datos",
-      bajada: "AgroHubs reúne publicaciones técnicas, datos agrometeorológicos y fuentes de tu territorio para que el asistente y tu equipo respondan citando la fuente.",
+      titulo: "Boletines, clima y datos públicos de Chile,", destacado: "junto a tus datos",
+      bajada: "AgroHubs reúne publicaciones técnicas, estaciones agrometeorológicas y datos públicos chilenos para que el asistente y tu equipo respondan citando la fuente.",
       features: [
-        { titulo: "Publicaciones técnicas", desc: "Boletines y guías de instituciones agrícolas, buscables por tema y cultivo." },
-        { titulo: "Agrometeorología", desc: "Datos de estaciones públicas integrados al clima de tu predio." },
-        { titulo: "Fuentes de tu territorio", desc: "Conectores a instituciones locales, ministerios y universidades de cada hub." },
+        { titulo: "Publicaciones técnicas", desc: "Boletines y guías de INIA, buscables por tema y cultivo." },
+        { titulo: "Agrometeorología", desc: "Estaciones de la Red Agroclimática Nacional y de CEAZA-Met junto al clima de tu predio." },
+        { titulo: "Datos públicos de Chile", desc: "Precios de ODEPA, suelos y catastro frutícola de IDE Minagri y riesgo climático de ARClim." },
         { titulo: "Repositorio propio", desc: "Documentos del centro demostrativo, públicos o privados." },
       ],
       pasos: [
-        "Elegimos con tu hub las fuentes relevantes para su territorio.",
-        "Las conectamos por API o con un recolector automático.",
+        "Elegimos con tu hub las fuentes que sirven a su zona.",
+        "Las conectamos desde el panel de AgroHubs.",
         "Quedan disponibles en el buscador y en las respuestas del asistente.",
       ],
     },
@@ -116,26 +117,6 @@ export const MODULOS = [
     },
   },
   {
-    key: "fenologia", slug: "fenologia", ruta: "/fenologia", icono: Flower2,
-    nombre: "Fases fenológicas", corto: "Fenología",
-    descripcion: "Fases fenológicas por cultivo con sus recomendaciones de manejo.",
-    pagina: {
-      badge: "Fases fenológicas",
-      titulo: "Cada etapa del cultivo,", destacado: "con su manejo",
-      bajada: "Las fases fenológicas de tus cultivos, de la brotación a la cosecha, con las recomendaciones de manejo que corresponden a cada una.",
-      features: [
-        { titulo: "Fases por cultivo", desc: "El calendario de fases de cada cultivo, preparado por el equipo AgroHubs." },
-        { titulo: "Manejo por fase", desc: "Qué revisar y qué labores priorizar en cada etapa." },
-        { titulo: "Fases propias del predio", desc: "Ajusta las fases a tu zona, tu variedad y lo que observas en terreno." },
-      ],
-      pasos: [
-        "Eliges los cultivos de tu predio.",
-        "Ves en qué fase está cada uno y qué manejo corresponde.",
-        "Ajustas las fases con lo que observas en terreno.",
-      ],
-    },
-  },
-  {
     key: "calculadoras", slug: "calculadoras", ruta: "/calculadoras", icono: Calculator,
     nombre: "Calculadoras", corto: "Calculadoras",
     descripcion: "Calculadoras agronómicas de dosis y costos.",
@@ -163,35 +144,23 @@ export const MODULOS = [
   },
   {
     key: "tienda", slug: "tienda", ruta: "/tienda", icono: Store,
-    nombre: "Mercado de cosecha / tienda", corto: "Mercado",
-    descripcion: "Catálogo de productos e insumos y venta de cosecha entre productores de la red.",
-  },
-  {
-    key: "drones", slug: "drones", ruta: "/drones", icono: IconoDron,
-    nombre: "Solicitar drones (DronX)", corto: "Drones",
-    descripcion: "Pide servicios con dron (aplicación, NDVI, mapeo, conteo) a operadores de DronX.",
+    nombre: "Feria Digital", corto: "Feria Digital", bajada: "Productos y Servicios",
+    descripcion: "Productos y servicios de todos los hubs de la red y de proveedores externos, en una tienda en línea.",
     pagina: {
-      badge: "Drones agrícolas · integración DronX",
-      titulo: "Drones agrícolas a demanda,", destacado: "desde tu predio",
-      bajada: "Pides el servicio desde la app o el panel de AgroHubs y la solicitud llega a la red de operadores de DronX con los datos de tu predio.",
-      aviso: {
-        titulo: "Integrado con DronX",
-        texto: "DronX es de OlaDigital y tiene app Android y web (iOS próximamente). Tus solicitudes salen con los datos del predio y su estado se actualiza solo en AgroHubs.",
-        enlace: { texto: "Conoce la app DronX", ruta: "/apps/dronx" },
-      },
+      badge: "Feria Digital",
+      titulo: "Feria Digital",
+      bajada: "Productos y Servicios",
+      texto: "Lo que ofrecen los hubs de la red y los proveedores externos, en una sola tienda en línea.",
       features: [
-        { titulo: "Aplicación con dron", desc: "Fumigación y aplicación de productos por hectárea, también en pendientes." },
-        { titulo: "Mapas NDVI", desc: "Vigor del cultivo y detección temprana de estrés hídrico o plagas." },
-        { titulo: "Mapeo y topografía", desc: "Ortofotos y modelos del terreno para planificar riego y plantación." },
-        { titulo: "Conteo de plantas", desc: "Plantas y fallas por lote para estimar producción y replantes." },
-        { titulo: "Termografía", desc: "Cámara térmica para revisar la uniformidad del riego." },
-        { titulo: "Seguimiento", desc: "Sigues el estado de cada solicitud y recibes mapas y reportes en AgroHubs." },
+        { titulo: "Productos de los hubs", desc: "Cosechas e insumos que publican los agricultores de cada hub." },
+        { titulo: "Servicios", desc: "Servicios para el campo, de la red y de proveedores externos." },
+        { titulo: "Proveedores externos", desc: "Empresas fuera de la red venden en la misma feria." },
+        { titulo: "Pedido y pago en línea", desc: "Carrito, pedido y enlace de pago." },
       ],
       pasos: [
-        "Pides el servicio desde la app o el panel de tu predio: cultivo, hectáreas, ubicación y fecha.",
-        "La solicitud llega a DronX con los datos de tu predio.",
-        "Un operador de la red DronX la cotiza y agenda el vuelo.",
-        "Sigues el estado en AgroHubs y recibes los mapas y reportes.",
+        "Cada hub y cada proveedor publica sus productos y servicios.",
+        "Los compradores de toda la red los encuentran en un solo catálogo.",
+        "Piden, pagan en línea y coordinan la entrega con quien vende.",
       ],
     },
   },

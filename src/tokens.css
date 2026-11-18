@@ -12,7 +12,7 @@
   --color-ink: oklch(24% 0.033 160.8); --color-ink-2: oklch(38.6% 0.086 155); --color-muted: oklch(51.2% 0.024 160.8);
   --color-rule: oklch(91.7% 0.016 154.5);
   /* Bosque y menta de la app (app-mobile/lib/theme/ah_tokens.dart) */
-  --color-forest: oklch(31.4% 0.065 157.8); --color-forest-deep: oklch(24.3% 0.05 156.9); --color-mint: oklch(84.2% 0.142 158.4);
+  --color-forest: oklch(31.4% 0.065 157.8); --color-forest-deep: oklch(24.3% 0.05 156.9); --color-mint: oklch(84.2% 0.142 158.4); --color-hubs: oklch(44.6% 0.11 152.5); /* «Hubs» del logo sobre fondo claro, #17663C */
   --color-on-dark: oklch(97.5% 0.008 139.4); --color-on-dark-2: oklch(93.7% 0.059 160.3);
   --color-accent: oklch(45.3% 0.101 154.9); --color-accent-ink: oklch(97.5% 0.008 139.4); --color-focus: oklch(45.3% 0.101 154.9);
   --font-display: "Sora", ui-sans-serif, system-ui, sans-serif; --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif; --font-outlier: var(--font-body);

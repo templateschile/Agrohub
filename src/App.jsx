@@ -10,7 +10,6 @@ import Dashboard from './pages/Dashboard'
 import AIChat from './pages/AIChat'
 import Documentos from './pages/Documentos'
 import Eventos from './pages/Eventos'
-import Tienda from './pages/Tienda'
 import Evaluacion from './pages/Evaluacion'
 import Terminos from './pages/Terminos'
 import Licencias from './pages/Licencias'
@@ -19,6 +18,8 @@ import RedirigirAdmin from './pages/RedirigirAdmin'
 import Modulos from './pages/Modulos'
 import ModuloPagina from './pages/ModuloPagina'
 import AppPagina from './pages/AppPagina'
+import IntegracionesIndice from './pages/IntegracionesIndice'
+import IntegracionPagina from './pages/IntegracionPagina'
 import { MODULOS } from './lib/modulos'
 import { useIdioma, textosDe } from './i18n'
 import { IDIOMAS, PREDETERMINADO, LOCALES, enlacesAlternos, destinoInicial, leerPreferencia, guardarPreferencia, conIdioma, esRobot } from './i18n/idiomas'
@@ -49,9 +50,10 @@ function IdiomaInicial() {
   return null
 }
 
-// Cabecera de cada página: <html lang>, título (el h1 de la página), canonical y hreflang. Al cambiar de
-// página se parte arriba (salvo enlaces a una sección, como /#contacto) y el foco va al h1, para que el
-// lector de pantalla anuncie la página nueva.
+// Cabecera de cada página: <html lang>, título (el h1 de la página), descripción, canonical y hreflang. Una
+// página puede traer título y descripción propios con data-meta-titulo y data-meta-descripcion en un elemento
+// de <main> (p. ej. las de /integraciones). Al cambiar de página se parte arriba (salvo enlaces a una sección,
+// como /#contacto) y el foco va al h1, para que el lector de pantalla anuncie la página nueva.
 function Cabecera() {
   const { pathname, hash } = useLocation()
   const { idioma } = useIdioma()
@@ -73,15 +75,17 @@ function Cabecera() {
       el.dataset.ah = ''
       document.head.appendChild(el)
     }
-    fijar('meta[name="description"]', () => Object.assign(document.createElement('meta'), { name: 'description' })).content = t('meta.descripcion')
+    const descripcion = fijar('meta[name="description"]', () => Object.assign(document.createElement('meta'), { name: 'description' }))
     fijar('meta[property="og:locale"]', () => { const m = document.createElement('meta'); m.setAttribute('property', 'og:locale'); return m }).content = LOCALES[idioma].replace('-', '_')
 
-    // Título: el h1 de la página, una vez que la página lo pintó
+    // Título: el propio de la página o su h1, una vez que la página lo pintó
     const id = requestAnimationFrame(() => {
       const h1 = document.querySelector('main h1')
+      const meta = document.querySelector('main [data-meta-titulo]')
       const nombre = h1?.textContent.trim().replace(/\s+/g, ' ')
       const esInicio = pathname === '/' || IDIOMAS.some(i => pathname === `/${i}`)
-      document.title = esInicio || !nombre ? t('meta.titulo') : `${nombre} | AgroHubs`
+      document.title = meta?.dataset.metaTitulo || (esInicio || !nombre ? t('meta.titulo') : `${nombre} | AgroHubs`)
+      descripcion.content = meta?.dataset.metaDescripcion || t('meta.descripcion')
       if (primera.current) { primera.current = false; return }
       if (hash) return
       window.scrollTo({ top: 0, behavior: 'instant' })
@@ -104,7 +108,6 @@ function rutas(prefijo) {
     <Route key={p('/ai-chat')} path={p('/ai-chat')} element={<AIChat />} />,
     <Route key={p('/documentos')} path={p('/documentos')} element={<Documentos />} />,
     <Route key={p('/eventos')} path={p('/eventos')} element={<Eventos />} />,
-    <Route key={p('/tienda')} path={p('/tienda')} element={<Tienda />} />,
     <Route key={p('/modulos')} path={p('/modulos')} element={<Modulos />} />,
     // Módulos con página armada desde lib/modulos.js (los demás tienen página propia arriba)
     ...MODULOS.filter(m => m.pagina).map(m => (
@@ -112,6 +115,9 @@ function rutas(prefijo) {
     )),
     // Apps del ecosistema (lib/apps.js); un slug desconocido vuelve a la portada
     <Route key={p('/apps/:slug')} path={p('/apps/:slug')} element={<AppPagina />} />,
+    // Integraciones con fuentes externas (lib/integraciones.js): índice y una página por integración
+    <Route key={p('/integraciones')} path={p('/integraciones')} element={<IntegracionesIndice />} />,
+    <Route key={p('/integraciones/:slug')} path={p('/integraciones/:slug')} element={<IntegracionPagina />} />,
     <Route key={p('/evaluacion')} path={p('/evaluacion')} element={<Evaluacion />} />,
     <Route key={p('/precios')} path={p('/precios')} element={<Navigate to={p('/evaluacion')} replace />} />,
     <Route key={p('/terminos')} path={p('/terminos')} element={<Terminos />} />,

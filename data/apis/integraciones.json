@@ -279,7 +279,6 @@
       "programacion-de-riego",
       "alerta-de-heladas",
       "balance-hidrico-y-eto",
-      "fenologia-y-grados-dia",
       "sensores-en-el-predio"
     ],
     "resumen": "Red agrometeorológica pública de Chile: más de 400 estaciones de 10 redes (INIA, DMC, Arauco, AgriChile…) con datos cada 15 minutos vía API REST con clave gratuita.",
@@ -364,170 +363,6 @@
     "radar": {
       "anillo": "adoptar",
       "cuadrante": "clima-suelo-agua"
-    }
-  },
-  {
-    "key": "kadi_sostenible",
-    "slug": "kadi-agrohubs-sostenible",
-    "nombre": "Kadi / Adone — AgroHubs Sostenible",
-    "proveedor": "KADI COWORK SPA (kadi.adone.cl)",
-    "pais": "CL",
-    "alcance": "Chile",
-    "tipo": "api_rest",
-    "categorias": [
-      "gestion-predial",
-      "sostenibilidad-y-carbono",
-      "documentos-y-conocimiento"
-    ],
-    "casos_de_uso": [
-      "registro-de-labores",
-      "huella-de-carbono-y-mrv",
-      "fenologia-y-grados-dia"
-    ],
-    "resumen": "Fuente propia de anotaciones de sostenibilidad (etapa fenológica, labor y residuo generado, con fotos) que alimenta los manuales \"AgroHubs Sostenible\" y el carrusel de fases fenológicas de la app.",
-    "descripcion": [
-      "Es un endpoint de la plataforma Kadi/Adone que entrega, por fecha, registros completos de sostenibilidad del predio: etapa fenológica, labor realizada y residuo generado, cada uno con texto e imagen. El kadi-scheduler los convierte en documentos tipo 6 y en etapas fenológicas con ítems.",
-      "En el Hub aparece como proveedor de registros (HubRecord tipo sostenibilidad), lo que permitirá en el futuro cruzarlos con lecturas de sensores y fechas de labores."
-    ],
-    "que_entrega": [
-      "Registros diarios de sostenibilidad por sector",
-      "Etapa fenológica, labor y residuo con imagen",
-      "Base para fases fenológicas en la app"
-    ],
-    "acceso": {
-      "auth": "Cabecera Token",
-      "costo": "Propio",
-      "licencia": "Propia",
-      "registro": "Interno"
-    },
-    "docs_url": "https://kadi.adone.cl",
-    "sitio_url": "https://agrohubs.cl",
-    "formatos": [
-      "JSON"
-    ],
-    "estado_agrohubs": "integrada",
-    "endpoints_agrohubs": [
-      "GET /hub/records?provider=kadi_sostenible&fecha=2026-10-20",
-      "/kadi-scheduler/* (sincronización a documentos y fenología)"
-    ],
-    "env": [
-      "KADI_TOKEN",
-      "KADI_BASE_URL"
-    ],
-    "origen": "fisaro",
-    "verificacion": {
-      "nivel": "verificado",
-      "fecha": "2026-10-20",
-      "nota": "Integración propia en producción."
-    },
-    "faq": [],
-    "relacionadas": [
-      "modag"
-    ],
-    "costos": {
-      "modelo": "propio",
-      "mensual_usd": 0,
-      "anual_usd": 0,
-      "plan": "Fuente propia de AgroHubs",
-      "verificacion": "interno",
-      "moneda": "USD",
-      "fecha": "2026-10-20"
-    },
-    "ranking": {
-      "relevancia": 80,
-      "popularidad": 5,
-      "chile": 50,
-      "latam": 5,
-      "pos_relevancia": 12,
-      "pos_popularidad": 90,
-      "pos_chile": 32,
-      "pos_latam": 90
-    },
-    "radar": {
-      "anillo": "adoptar",
-      "cuadrante": "campo-conectado"
-    }
-  },
-  {
-    "key": "modag",
-    "slug": "modag",
-    "nombre": "MODAG",
-    "proveedor": "MODAG (modag.cl)",
-    "pais": "CL",
-    "alcance": "Chile",
-    "tipo": "api_rest",
-    "categorias": [
-      "gestion-predial",
-      "documentos-y-conocimiento"
-    ],
-    "casos_de_uso": [
-      "registro-de-labores",
-      "busqueda-de-conocimiento-tecnico"
-    ],
-    "resumen": "Cuaderno de campo chileno con API de anotaciones (labores, aplicaciones, costos) por campo y sector; AgroHubs la sincroniza a diario hacia sus documentos y búsqueda.",
-    "descripcion": [
-      "MODAG expone endpoints POST autenticados con cabecera Token: anotaciones por fecha (lista de IDs), detalle de anotación (nombre, fecha, campo, tipo de aplicación, costo, observaciones, usuario, sectores), sector y campo. Fisaro construyó sobre ella el \"modag-scheduler\" que convierte cada anotación en un documento buscable.",
-      "En el Hub de AgroHubs se expone además como registros prediales normalizados (HubRecord), de modo que una anotación MODAG y un registro de sostenibilidad Kadi se consultan con el mismo formato."
-    ],
-    "que_entrega": [
-      "IDs de anotaciones por día",
-      "Detalle de anotación con campo, sectores, tipo de aplicación y costo",
-      "Datos de sector y campo"
-    ],
-    "acceso": {
-      "auth": "Cabecera Token (convenio)",
-      "costo": "Por convenio",
-      "licencia": "Datos del cliente",
-      "registro": "Convenio con MODAG"
-    },
-    "docs_url": "https://modag.cl",
-    "sitio_url": "https://modag.cl",
-    "formatos": [
-      "JSON"
-    ],
-    "estado_agrohubs": "integrada",
-    "endpoints_agrohubs": [
-      "GET /hub/records?provider=modag&tipo=anotaciones&fecha=2026-10-20&expand=1",
-      "GET /hub/records?provider=modag&tipo=campo&id=1064",
-      "POST /modag/sector/:id (proxy heredado)",
-      "/modag-scheduler/* (sincronización a documentos)"
-    ],
-    "env": [
-      "MODAG_TOKEN",
-      "MODAG_BASE_URL"
-    ],
-    "origen": "fisaro",
-    "verificacion": {
-      "nivel": "verificado",
-      "fecha": "2026-10-20",
-      "nota": "Integración en producción desde Fisaro (2025)."
-    },
-    "faq": [],
-    "relacionadas": [
-      "kadi-agrohubs-sostenible"
-    ],
-    "costos": {
-      "modelo": "convenio",
-      "mensual_usd": null,
-      "anual_usd": null,
-      "plan": "Convenio con MODAG",
-      "verificacion": "interno",
-      "moneda": "USD",
-      "fecha": "2026-10-20"
-    },
-    "ranking": {
-      "relevancia": 85,
-      "popularidad": 15,
-      "chile": 60,
-      "latam": 10,
-      "pos_relevancia": 9,
-      "pos_popularidad": 88,
-      "pos_chile": 24,
-      "pos_latam": 80
-    },
-    "radar": {
-      "anillo": "adoptar",
-      "cuadrante": "campo-conectado"
     }
   },
   {
@@ -1384,8 +1219,7 @@
       "modelos-y-agronomia"
     ],
     "casos_de_uso": [
-      "pronostico-y-clima-local",
-      "fenologia-y-grados-dia"
+      "pronostico-y-clima-local"
     ],
     "resumen": "Plataforma de pronósticos agroclimáticos estacionales y recomendaciones de siembra con API documentada y paquete R.",
     "descripcion": [
@@ -1489,7 +1323,6 @@
       "nota": "Portal de desarrolladores confirmado por búsqueda; endpoints exactos por verificar."
     },
     "relacionadas": [
-      "modag",
       "farmos"
     ],
     "costos": {
@@ -1907,7 +1740,6 @@
       "geodatos-y-territorio"
     ],
     "casos_de_uso": [
-      "fenologia-y-grados-dia",
       "alerta-de-heladas",
       "geodatos-del-predio"
     ],
@@ -2513,8 +2345,7 @@
       "pronostico-y-clima-local",
       "balance-hidrico-y-eto",
       "programacion-de-riego",
-      "alerta-de-heladas",
-      "fenologia-y-grados-dia"
+      "alerta-de-heladas"
     ],
     "resumen": "Pronóstico global gratuito sin API key, con ET0 FAO-56, radiación, humedad de suelo y reanálisis ERA5 histórico; uso no comercial gratis (10.000 llamadas/día) y planes desde USD 29/mes.",
     "descripcion": [
@@ -2835,7 +2666,7 @@
     "casos_de_uso": [
       "busqueda-de-conocimiento-tecnico"
     ],
-    "resumen": "Motor de búsqueda full-text que indexa los más de 50.000 documentos de AgroHubs (manuales, productos, anotaciones MODAG y Kadi, INIA) con analizador de stopwords en español y boost por título.",
+    "resumen": "Motor de búsqueda full-text que indexa los más de 50.000 documentos de AgroHubs (manuales, productos, anotaciones de campo, INIA) con analizador de stopwords en español y boost por título.",
     "descripcion": [
       "La API y el panel sincronizan documentos a un índice en Elastic Cloud; la app consulta vía el proxy /search/elastic con function_score sobre título, descripción, contenido y adjuntos PDF (pipeline attachment).",
       "Es el núcleo del módulo Documentos."
@@ -2911,7 +2742,7 @@
     "casos_de_uso": [
       "busqueda-de-conocimiento-tecnico"
     ],
-    "resumen": "Accesos directos configurables desde el panel (app_links) a servicios externos como Campo Limpio (reciclaje de envases), MODAG, Biorizon e Instadrop; no son integraciones de datos sino enlaces curados.",
+    "resumen": "Accesos directos configurables desde el panel (app_links) a servicios externos como Campo Limpio (reciclaje de envases), Biorizon e Instadrop; no son integraciones de datos sino enlaces curados.",
     "descripcion": [
       "El módulo app_links permite al administrador publicar enlaces externos, búsquedas o calculadoras en la pantalla \"Apps\". Es el mecanismo más simple para sumar un servicio antes de integrarlo por API.",
       "Cualquier integración \"enlace\" de este directorio se publica por esta vía."
@@ -3828,7 +3659,6 @@
     ],
     "casos_de_uso": [
       "balance-hidrico-y-eto",
-      "fenologia-y-grados-dia",
       "estadisticas-y-planificacion"
     ],
     "resumen": "No existen APIs SaaS oficiales de simulación de cultivos; sí librerías Python mantenidas (pcse 6.x, aquacrop 3.x, apsimNGpy 1.5, DSSATTools 3.0) que AgroHubs puede envolver como servicio propio.",
@@ -4750,9 +4580,7 @@
       "fecha": "2026-10-20",
       "nota": "Detalles de auth/precio por verificar."
     },
-    "relacionadas": [
-      "kadi-agrohubs-sostenible"
-    ],
+    "relacionadas": [],
     "costos": {
       "modelo": "convenio",
       "mensual_usd": null,
@@ -5492,7 +5320,6 @@
       "nota": "SDKs confirmados en PyPI/npm."
     },
     "relacionadas": [
-      "modag",
       "auravant",
       "adapt-standard"
     ],
@@ -6072,7 +5899,6 @@
     ],
     "casos_de_uso": [
       "balance-hidrico-y-eto",
-      "fenologia-y-grados-dia",
       "manejo-de-plagas-y-enfermedades"
     ],
     "resumen": "API meteorológica de pago con parámetros agrícolas nativos: ET0 acumulada, grados-día acumulados, suma térmica de pradera y humectación foliar; cuenta gratuita no comercial de 500 consultas/día.",
@@ -6303,8 +6129,7 @@
       "clima-y-meteorologia"
     ],
     "casos_de_uso": [
-      "balance-hidrico-y-eto",
-      "fenologia-y-grados-dia"
+      "balance-hidrico-y-eto"
     ],
     "resumen": "Series diarias/horarias de radiación, temperatura, humedad y viento por coordenada desde 1981, orientadas a agroclimatología y energía, gratuitas y sin clave.",
     "descripcion": [

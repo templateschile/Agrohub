@@ -4,7 +4,7 @@
 //   t.plural("eco.n", 3)        claves "eco.n.uno" / "eco.n.otros"
 //   ruta("/modulos")            "/en/modulos" en inglés (para <Link to> y <a href>)
 //   <Enlace to="/modulos">      un <Link> que agrega el prefijo solo
-// Los datos con texto (módulos, apps) se piden ya traducidos: useModulos(), useApps().
+// Los datos con texto (módulos, apps, integraciones) se piden ya traducidos: useModulos(), useApps(), useIntegraciones().
 import { useMemo } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { idiomaDeRuta, conIdioma, traductor, localizar, LOCALES, PREDETERMINADO } from "./idiomas"
@@ -12,9 +12,11 @@ import { TEXTOS } from "./textos/index.js"
 import MODULOS_BASE from "./datos/modulos-base.js"
 import MODULOS_PAGINAS from "./datos/modulos-paginas.js"
 import APPS_TRAD from "./datos/apps.js"
+import INTEGRACIONES_TRAD from "./datos/integraciones.js"
 import { MODULOS } from "../lib/modulos"
 import { APPS } from "../lib/apps"
 import { MODULOS_PROXIMOS } from "../lib/modulos-proximos"
+import { INTEGRACIONES } from "../lib/integraciones"
 
 const TRADUCTORES = Object.fromEntries(Object.keys(TEXTOS).map((i) => [i, traductor(TEXTOS[i], TEXTOS[PREDETERMINADO])]))
 
@@ -72,4 +74,14 @@ const CACHE_APPS = {}
 export function useApps() {
   const { idioma } = useIdioma()
   return (CACHE_APPS[idioma] ||= appsDe(idioma))
+}
+
+// Integraciones con fuentes externas (lib/integraciones.js) con sus textos en el idioma activo
+export function integracionesDe(idioma) {
+  return INTEGRACIONES.map((i) => localizar(i, INTEGRACIONES_TRAD[idioma]?.[i.slug]))
+}
+const CACHE_INTEGRACIONES = {}
+export function useIntegraciones() {
+  const { idioma } = useIdioma()
+  return (CACHE_INTEGRACIONES[idioma] ||= integracionesDe(idioma))
 }
