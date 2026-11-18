@@ -15,7 +15,7 @@ Páginas HTML estáticas para SEO y motores de IA, generadas en el build desde `
 
 ## Apps del ecosistema (`/apps/<slug>`) y diagrama de la portada
 
-- Menú **Apps** y páginas de AgroCiclo, DronX y AgroSeller desde `src/lib/apps.js`, con una plantilla
+- Menú **Apps** y páginas de Fisaro, AgroCiclo, DronX y AgroSeller desde `src/lib/apps.js`, con una plantilla
   común (`src/pages/AppPagina.jsx`). AgroHubs es la portada (`/`).
 - Video de cada app: `public/videos/<slug>.mp4` y su portada `public/videos/<slug>.jpg`. Si el archivo no
   está, la página muestra «Video próximamente» (`src/components/AppVideo.jsx`).
@@ -24,6 +24,17 @@ Páginas HTML estáticas para SEO y motores de IA, generadas en el build desde `
 - Diagrama del ecosistema (`src/components/EcosystemDiagram.jsx`): módulos de `src/lib/modulos.js`,
   integraciones por categoría desde `data/apis/destacadas.json` (lo genera `npm run apis` a partir del
   catálogo) y sistemas generales de `src/lib/ecosistema.js`.
+
+## Integraciones (`/integraciones` y `/integraciones/<slug>`)
+
+- Datos en `src/lib/integraciones.js` (lista verificada, en cuatro grupos: Chile, Heladas y clima, Satélite,
+  suelo y agua, y Estaciones propias) y su traducción en `src/i18n/datos/integraciones.js`. Para sumar una
+  fuente: agregar su objeto en el grupo que corresponde y su traducción; el índice, su página, la portada,
+  `llms.txt`, `llms-full.txt` y `sitemap.xml` la toman solos.
+- Páginas en React (`src/pages/IntegracionesIndice.jsx`, `src/pages/IntegracionPagina.jsx`) con título, meta
+  description y JSON-LD propios (`src/lib/integraciones-seo.js`). `npm run build` deja además el HTML previo en
+  español (`scripts/prerender-integraciones.mjs`) para buscadores y LLM que no ejecutan JavaScript.
+- Estados: «Disponible» o «Disponible con cuenta del proveedor» (se activa en el panel con la credencial).
 
 ## Pruebas
 

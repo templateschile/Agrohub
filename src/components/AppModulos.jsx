@@ -2,7 +2,7 @@ import { useRef, useState } from "react"
 import { useIdioma, useModulos, Enlace } from "../i18n"
 import { capturasDeModulo, capturasDe } from "../lib/capturas"
 
-// La app al centro y sus 12 módulos alrededor. Elegir un módulo muestra en el teléfono su pantalla real
+// La app al centro y sus 10 módulos alrededor (mitad a cada lado). Elegir un módulo muestra en el teléfono su pantalla real
 // (captura de la app con datos de ejemplo, lib/capturas.js); los módulos sin pantalla propia muestran
 // "Mi predio", donde se activan. Debajo del teléfono, el nombre del módulo, una línea y su página.
 const PREDIO = capturasDe("predio").movil
@@ -14,6 +14,7 @@ export default function AppModulos() {
   const pantalla = useRef(null)
   const m = MODULOS.find(x => x.key === activo)
   const captura = capturasDeModulo(activo).movil || PREDIO
+  const mitad = Math.ceil(MODULOS.length / 2)
 
   const elegir = key => {
     setActivo(key)
@@ -39,7 +40,7 @@ export default function AppModulos() {
 
   return (
     <div className="ah-mapa" role="group" aria-label={t("app.diagrama")}>
-      <ul className="ah-mapa__col ah-mapa__col--izq" aria-label={t("app.modulos")}>{MODULOS.slice(0, 6).map(x => boton(x, "izq"))}</ul>
+      <ul className="ah-mapa__col ah-mapa__col--izq" aria-label={t("app.modulos")}>{MODULOS.slice(0, mitad).map(x => boton(x, "izq"))}</ul>
 
       <div className="ah-mapa__centro" ref={pantalla}>
         <div className="ah-telefono ah-telefono--real">
@@ -50,12 +51,13 @@ export default function AppModulos() {
         </div>
         <div className="ah-telefono__pie" aria-live="polite">
           <p className="ah-telefono__nombre">{m.nombre}</p>
+          {m.bajada && <p className="ah-telefono__bajada">{m.bajada}</p>}
           {/* Sin la descripción larga: el teléfono ya muestra el módulo; el detalle está en su página */}
           {m.ruta && <Enlace className="ah-telefono__ver" to={m.ruta}>{t("app.verModulo")}</Enlace>}
         </div>
       </div>
 
-      <ul className="ah-mapa__col ah-mapa__col--der" aria-label={t("app.masModulos")}>{MODULOS.slice(6).map(x => boton(x, "der"))}</ul>
+      <ul className="ah-mapa__col ah-mapa__col--der" aria-label={t("app.masModulos")}>{MODULOS.slice(mitad).map(x => boton(x, "der"))}</ul>
     </div>
   )
 }

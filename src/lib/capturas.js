@@ -6,10 +6,10 @@ import MANIFIESTO from "./capturas.json"
 const LISTA = Array.isArray(MANIFIESTO) ? MANIFIESTO : []
 
 // Pantalla que muestra cada módulo. Los que no tienen pantalla propia en la plataforma (cuaderno de campo,
-// fuentes, fenología, calculadoras, eventos, insumos) no llevan captura.
+// fuentes, calculadoras, eventos, insumos) no llevan captura.
 export const CAPTURA_MODULO = {
   dashboard_sensores: "sensores", chat_ia: "chat", documentos: "documentos", clima: "clima",
-  recomendaciones: "recomendaciones", tienda: "tienda", drones: "drones",
+  recomendaciones: "recomendaciones", tienda: "tienda",
 }
 
 // { escritorio, movil } de una pantalla: { src, ancho, alto, alt: { es, en, pt } }

@@ -6,11 +6,12 @@ import { readFileSync } from 'node:fs'
 import { partesNombre, resumenPorCategoria } from '../apis/ecosistema.mjs'
 import { APIS, CATEGORIAS } from '../apis/lib.mjs'
 import {
-  ESTADOS, ORDEN_MODULOS, CONECTORES, SERVICIOS, INTEGRACIONES, CATEGORIAS_MODULO, GEO, integracionesDe,
+  ESTADOS, ORDEN_MODULOS, CONECTORES, SERVICIOS, INTEGRACIONES, GEO, integracionesDe,
   modulosDeServicio, estadoDeServicio, resumen, resaltado, plano, cajasDiagrama, solapes, dentroDelLienzo,
 } from '../../src/lib/ecosistema.js'
 import BASE from '../../src/i18n/datos/modulos-base.js'
 import TRAD from '../../src/i18n/datos/ecosistema.js'
+import { INTEGRACIONES as FICHAS } from '../../src/lib/integraciones.js'
 
 const leer = (ruta) => readFileSync(new URL(ruta, import.meta.url), 'utf8')
 const DESTACADAS = JSON.parse(leer('../../data/apis/destacadas.json'))
@@ -44,17 +45,17 @@ test('destacadas.json trae el resumen por categoría al día con el catálogo, y
   for (const f of [...DESTACADAS.chile, ...DESTACADAS.latam]) assert.ok(Array.isArray(f.categorias) && f.categorias.length, `${f.slug} sin categorías`)
 })
 
-test('el anillo tiene los 12 módulos de la app y el que viene (Insumos y bodega), una vez cada uno', () => {
-  assert.equal(Object.keys(CORTOS_ES).length, 12)
+test('el anillo tiene los 10 módulos del sitio y el que viene (Insumos y bodega), una vez cada uno', () => {
+  assert.equal(Object.keys(CORTOS_ES).length, 10)
   assert.deepEqual([...ORDEN_MODULOS].sort(), [...Object.keys(CORTOS_ES), 'insumos'].sort())
   assert.ok(!('insumos' in CORTOS_ES), 'Insumos y bodega no está en la plataforma: no va en lib/modulos.js')
   for (const i of ['es', 'en', 'pt']) assert.ok(BASE[i].insumos?.nombre && BASE[i].insumos?.descripcion, `insumos (${i})`)
 })
 
-test('MODAG es un cuaderno de campo: va en el módulo bitácora, no en Fuentes; Insumos no tiene nada conectado', () => {
-  assert.deepEqual(modulosDeServicio('modag').sort(), ['bitacora', 'insumos'])
-  assert.ok(INTEGRACIONES.some((f) => f.modulo === 'bitacora' && f.servicio === 'modag' && f.estado === 'conectada'))
-  assert.ok(!integracionesDe('fuentes').some((f) => f.servicio === 'modag'))
+test('el cuaderno de campo es del predio, sin marcas de terceros: va en bitácora, no en Fuentes; Insumos no tiene nada conectado', () => {
+  assert.ok(INTEGRACIONES.some((f) => f.modulo === 'bitacora' && f.conector === 'registros' && f.servicio === null && f.estado === 'conectada'))
+  assert.ok(!integracionesDe('fuentes').some((f) => f.conector === 'registros'))
+  assert.ok(!/kadi|modag/i.test(JSON.stringify([CONECTORES, SERVICIOS, INTEGRACIONES, TRAD])), 'sin Kadi ni MODAG en el sitio')
   assert.ok(integracionesDe('insumos').length > 0 && integracionesDe('insumos').every((f) => f.estado !== 'conectada'))
   assert.match(FUENTE_MODULOS, /nombre: "Cuaderno de campo"/)
   assert.equal(BASE.en.bitacora.nombre, 'Field notebook')
@@ -83,19 +84,19 @@ test('los servicios que pidió Fernando están, y lo que no está construido no 
   for (const id of ['claude', 'openai', 'whatsapp', 'sii', 'kommo', 'aws', 'google', 'azure', 'sap']) {
     assert.ok(SERVICIOS.some((s) => s.id === id), `falta ${id}`)
   }
-  for (const id of ['sii', 'kommo', 'aws', 'azure', 'sap', 'telegram', 'mercado-pago', 'mercado-publico', 'fisaro']) {
+  for (const id of ['sii', 'kommo', 'aws', 'azure', 'sap', 'telegram', 'mercado-publico', 'fisaro']) {
     assert.equal(estadoDeServicio(id), 'pedido', `${id} es a pedido`)
   }
-  for (const id of ['wiseconn', 'meter', 'sentek', 'cropx', 'pessl', 'davis', 'lorawan', 'copernicus']) {
+  for (const id of ['wiseconn', 'meter', 'sentek', 'cropx', 'pessl', 'davis', 'lorawan', 'ceaza', 'arclim', 'sag', 'dga', 'banco-central', 'cne']) {
     assert.equal(estadoDeServicio(id), 'proximamente', `${id} está planificado, no conectado`)
   }
-  for (const id of ['claude', 'openai', 'google', 'inia', 'dmc', 'open-meteo', 'dronx', 'woocommerce', 'odepa']) {
+  for (const id of ['claude', 'openai', 'google', 'inia', 'agromet-inia', 'dmc', 'open-meteo', 'odepa']) {
     assert.equal(estadoDeServicio(id), 'conectada', `${id} está en el código`)
   }
 })
 
 test('las agencias públicas dicen de qué país son: el sitio no presenta las de Chile como si fueran de todos', () => {
-  for (const id of ['inia', 'dmc', 'ciren', 'conaf', 'odepa', 'mercado-publico', 'sii']) {
+  for (const id of ['inia', 'agromet-inia', 'ceaza', 'dmc', 'ciren', 'conaf', 'odepa', 'arclim', 'sag', 'dga', 'banco-central', 'cne', 'mercado-publico', 'sii']) {
     const s = SERVICIOS.find((x) => x.id === id)
     assert.match(s.que, /Chile/, `${id} (es)`)
     assert.match(TRAD.en.servicios[id], /Chile/, `${id} (en)`)
@@ -106,6 +107,7 @@ test('las agencias públicas dicen de qué país son: el sitio no presenta las d
 test('traducciones del ecosistema completas en inglés y portugués', () => {
   for (const i of ['en', 'pt']) {
     for (const c of CONECTORES) assert.ok(TRAD[i].conectores[c.id]?.nombre && TRAD[i].conectores[c.id]?.etiqueta?.length, `${i}: conector ${c.id}`)
+    for (const c of CONECTORES.filter((x) => x.propio)) assert.ok(TRAD[i].conectores[c.id]?.propio, `${i}: propio de ${c.id}`)
     for (const s of SERVICIOS.filter((x) => x.que)) assert.ok(TRAD[i].servicios[s.id], `${i}: servicio ${s.id}`)
     for (const f of INTEGRACIONES) assert.ok(TRAD[i].filas[`${f.modulo}/${f.conector}/${f.servicio}`], `${i}: fila ${f.modulo}/${f.conector}/${f.servicio}`)
     for (const k of ORDEN_MODULOS) assert.ok(BASE[i][k]?.nombre && BASE[i][k]?.corto && BASE[i][k]?.descripcion, `${i}: módulo ${k}`)
@@ -125,13 +127,6 @@ test('filtro por módulo: Sensores trae solo lo suyo; filtro por servicio: Googl
   assert.ok(g.lineas.has('c:ia>google') && !g.lineas.has('c:ia>claude'))
 })
 
-test('la lista de integraciones de la región sigue el filtro con categorías que existen en el directorio', () => {
-  const slugs = new Set(CATEGORIAS.map((c) => c.slug))
-  assert.deepEqual(Object.keys(CATEGORIAS_MODULO).sort(), [...ORDEN_MODULOS].sort())
-  for (const [k, cats] of Object.entries(CATEGORIAS_MODULO)) for (const c of cats) assert.ok(slugs.has(c), `${k}: ${c} no es una categoría`)
-  const filas = [...DESTACADAS.chile, ...DESTACADAS.latam]
-  assert.ok(filas.some((f) => f.categorias.some((c) => CATEGORIAS_MODULO.dashboard_sensores.includes(c))), 'Sensores tiene al menos una destacada')
-})
 
 test('las cifras de la portada salen de los datos y no mezclan integraciones activas con el directorio', () => {
   const r = resumen()
@@ -146,11 +141,25 @@ test('diagrama: nada se pisa y las etiquetas caben en el lienzo, en los tres idi
     const cortos = etiquetas(i)
     assert.deepEqual(solapes(cajasDiagrama(cortos)), [], `solapes en ${i}`)
     const { modulos, conectores, servicios, lineas } = plano(cortos)
-    assert.equal(modulos.length, 13)
+    assert.equal(modulos.length, 11)
     assert.equal(conectores.length, CONECTORES.length)
     assert.equal(servicios.length, SERVICIOS.length)
     for (const p of [...modulos, ...conectores, ...servicios]) assert.ok(Math.hypot(p.x, p.y) < GEO.medio, 'dentro del lienzo')
     assert.ok(lineas.every((l) => /^M [-\d.]+ [-\d.]+ Q /.test(l.d)))
   }
   assert.ok(dentroDelLienzo())
+})
+
+test('sin fases fenológicas ni drones, y la Feria Digital sin nombrar plataformas de comercio electrónico', () => {
+  const todo = JSON.stringify([ORDEN_MODULOS, CONECTORES, SERVICIOS, INTEGRACIONES, TRAD, BASE])
+  for (const x of [/fenolog/i, /phenolog/i, /\bdron/i, /\bdrone/i, /woocommerce/i, /mercado ?pago/i, /shopify/i]) assert.ok(!x.test(todo), `aparece ${x}`)
+  for (const f of integracionesDe('tienda')) assert.ok(f.servicio === null || f.servicio === 'sii', `Feria Digital: ${f.servicio}`)
+})
+
+test('fuentes públicas de Chile alrededor del centro, cada una con su página de integración', () => {
+  for (const id of ['agromet-inia', 'ceaza', 'dmc', 'odepa', 'ciren', 'arclim', 'sag', 'dga']) assert.ok(SERVICIOS.some((s) => s.id === id), `falta ${id}`)
+  const slugs = new Set(FICHAS.map((f) => f.slug))
+  for (const s of SERVICIOS.filter((x) => x.integracion)) assert.ok(slugs.has(s.integracion), `${s.id}: /integraciones/${s.integracion} no existe`)
+  assert.equal(SERVICIOS.find((s) => s.id === 'agromet-inia').integracion, 'agrometeorologia-inia')
+  assert.equal(SERVICIOS.find((s) => s.id === 'ceaza').integracion, 'ceaza-met')
 })

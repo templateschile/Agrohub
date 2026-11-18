@@ -1,6 +1,6 @@
 {
   "_nota": "Generado por scripts/build-apis.mjs (npm run apis): no editar a mano.",
-  "total_directorio": 89,
+  "total_directorio": 87,
   "chile": [
     {
       "slug": "inia-agromet",
@@ -252,25 +252,6 @@
       ]
     },
     {
-      "slug": "gestion-predial",
-      "nombre": "Gestión predial (FMIS)",
-      "total": 9,
-      "top": [
-        {
-          "slug": "modag",
-          "nombre": "MODAG"
-        },
-        {
-          "slug": "kadi-agrohubs-sostenible",
-          "nombre": "Kadi / Adone"
-        },
-        {
-          "slug": "auravant",
-          "nombre": "Auravant"
-        }
-      ]
-    },
-    {
       "slug": "mercados-y-precios",
       "nombre": "Mercados y precios",
       "total": 9,
@@ -305,6 +286,25 @@
         {
           "slug": "sentek-irrimax",
           "nombre": "Sentek"
+        }
+      ]
+    },
+    {
+      "slug": "gestion-predial",
+      "nombre": "Gestión predial (FMIS)",
+      "total": 7,
+      "top": [
+        {
+          "slug": "auravant",
+          "nombre": "Auravant"
+        },
+        {
+          "slug": "climate-fieldview",
+          "nombre": "Climate FieldView API"
+        },
+        {
+          "slug": "farmos",
+          "nombre": "farmOS"
         }
       ]
     },
@@ -347,25 +347,6 @@
       ]
     },
     {
-      "slug": "documentos-y-conocimiento",
-      "nombre": "Documentos y conocimiento",
-      "total": 5,
-      "top": [
-        {
-          "slug": "elasticsearch",
-          "nombre": "Elasticsearch"
-        },
-        {
-          "slug": "modag",
-          "nombre": "MODAG"
-        },
-        {
-          "slug": "kadi-agrohubs-sostenible",
-          "nombre": "Kadi / Adone"
-        }
-      ]
-    },
-    {
       "slug": "maquinaria-y-telematica",
       "nombre": "Maquinaria y telemática",
       "total": 5,
@@ -404,25 +385,6 @@
       ]
     },
     {
-      "slug": "sostenibilidad-y-carbono",
-      "nombre": "Sostenibilidad y carbono",
-      "total": 5,
-      "top": [
-        {
-          "slug": "kadi-agrohubs-sostenible",
-          "nombre": "Kadi / Adone"
-        },
-        {
-          "slug": "kilimo",
-          "nombre": "Kilimo"
-        },
-        {
-          "slug": "cool-farm-tool",
-          "nombre": "Cool Farm Tool API"
-        }
-      ]
-    },
-    {
       "slug": "ganaderia-y-acuicultura",
       "nombre": "Ganadería y acuicultura",
       "total": 4,
@@ -457,6 +419,44 @@
         {
           "slug": "instacrops",
           "nombre": "Instacrops"
+        }
+      ]
+    },
+    {
+      "slug": "sostenibilidad-y-carbono",
+      "nombre": "Sostenibilidad y carbono",
+      "total": 4,
+      "top": [
+        {
+          "slug": "kilimo",
+          "nombre": "Kilimo"
+        },
+        {
+          "slug": "cool-farm-tool",
+          "nombre": "Cool Farm Tool API"
+        },
+        {
+          "slug": "global-forest-watch",
+          "nombre": "Global Forest Watch Data API"
+        }
+      ]
+    },
+    {
+      "slug": "documentos-y-conocimiento",
+      "nombre": "Documentos y conocimiento",
+      "total": 3,
+      "top": [
+        {
+          "slug": "elasticsearch",
+          "nombre": "Elasticsearch"
+        },
+        {
+          "slug": "biblioteca-digital-inia",
+          "nombre": "Biblioteca Digital INIA"
+        },
+        {
+          "slug": "agrovoc",
+          "nombre": "AGROVOC (FAO) y Crop Ontology"
         }
       ]
     },

@@ -8,11 +8,9 @@ import FormInteres from "../components/FormInteres"
 import AppsEcosistema, { IconoApp, fotoDe } from "../components/AppsEcosistema"
 import { ConfianStrip } from "../components/Confianza"
 import { HubMark } from "../components/HubMark"
-import { Enlace, useApps, useIdioma, useModulos } from "../i18n"
+import { Enlace, useApps, useIdioma } from "../i18n"
 import { estiloAcento } from "../lib/apps"
 import { hayVideo } from "../lib/video"
-import Captura from "../components/Captura"
-import { capturasDeModulo } from "../lib/capturas"
 
 // Plantilla común de las páginas de app (/apps/<slug>), con los datos de lib/apps.js ya traducidos:
 // 1 hero con foto · 2 problemas → soluciones · 3 cómo funciona · (qué incluye) · (video, si existe
@@ -68,14 +66,12 @@ export default function AppPagina() {
   const { slug } = useParams()
   const { t, ruta } = useIdioma()
   const app = useApps().find(a => a.slug === slug)
-  const modulos = useModulos()
   const [contacto, setContacto] = useState(false)
 
   // AgroHubs es el sitio completo; un slug desconocido vuelve a la portada (en el mismo idioma)
   if (!app || !app.bajada) return <Navigate to={ruta("/")} replace />
 
   const foto = fotoDe(app)
-  const incluyeModulo = app.modulo ? modulos.find(m => m.slug === app.modulo)?.pagina?.features : null
   const id = k => `app-${app.slug}-${k}`
   // En el cierre: el botón principal, el secundario si lleva a otro lugar (no a una sección de arriba)
   // y "Hablar con el equipo", que abre el contacto
@@ -110,18 +106,6 @@ export default function AppPagina() {
         </div>
       </section>
 
-      {/* Capturas reales: las apps que reutilizan un módulo de AgroHubs (DronX → Drones) muestran sus pantallas */}
-      {app.modulo && (capturasDeModulo(app.modulo).escritorio || capturasDeModulo(app.modulo).movil) && (
-        <section className="ah-bloque ah-appcap" aria-labelledby={id("capturas")}>
-          <div className="container">
-            <h2 id={id("capturas")} className="ah-seccion">{t("apps.capturas.titulo")}</h2>
-            <div className="ah-modcap ah-modcap--claro">
-              <Captura captura={capturasDeModulo(app.modulo).escritorio} vista="escritorio" className="ah-modcap__escritorio" />
-              <Captura captura={capturasDeModulo(app.modulo).movil} vista="movil" className="ah-modcap__movil" />
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* 2 · Problemas → soluciones */}
       <section className="ah-bloque" aria-labelledby={id("problemas")}>
@@ -154,8 +138,8 @@ export default function AppPagina() {
         </div>
       </section>
 
-      {/* Qué incluye (opcional): el detalle de la app o, si reutiliza un módulo, sus servicios */}
-      {(app.incluye || incluyeModulo) && (
+      {/* Qué incluye (opcional): el detalle de la app */}
+      {app.incluye && (
         <section className="ah-bloque" aria-labelledby={id("incluye")}>
           <div className="container">
             <h2 id={id("incluye")} className="ah-seccion">{app.incluye?.titulo || t("apps.queIncluye")}</h2>
@@ -165,18 +149,12 @@ export default function AppPagina() {
               </ol>
             )}
             <div className="ah-incluye">
-              {app.incluye
-                ? app.incluye.grupos.map(g => (
-                  <div key={g.titulo} className="ah-incluye__grupo">
-                    <h3 className="ah-incluye__titulo">{g.titulo}</h3>
-                    <ul className="ah-checks">{g.items.map(x => <li key={x}><Check size={18} aria-hidden="true" />{x}</li>)}</ul>
-                  </div>
-                ))
-                : (
-                  <ul className="ah-checks ah-checks--grilla">
-                    {incluyeModulo.map(f => <li key={f.titulo}><Check size={18} aria-hidden="true" /><span><b>{f.titulo}.</b> {f.desc}</span></li>)}
-                  </ul>
-                )}
+              {app.incluye.grupos.map(g => (
+                <div key={g.titulo} className="ah-incluye__grupo">
+                  <h3 className="ah-incluye__titulo">{g.titulo}</h3>
+                  <ul className="ah-checks">{g.items.map(x => <li key={x}><Check size={18} aria-hidden="true" />{x}</li>)}</ul>
+                </div>
+              ))}
             </div>
           </div>
         </section>

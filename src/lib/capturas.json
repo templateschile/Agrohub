@@ -108,30 +108,6 @@
     }
   },
   {
-    "archivo": "drones-escritorio.webp",
-    "pantalla": "drones",
-    "vista": "escritorio",
-    "ancho": 1440,
-    "alto": 900,
-    "alt": {
-      "es": "Panel AgroHubs: solicitudes de vuelos de dron del predio (NDVI, fumigación, mapeo y riego) con su estado y precio cotizado.",
-      "en": "AgroHubs dashboard: the farm's drone flight requests (NDVI, spraying, mapping and irrigation) with their status and quoted price.",
-      "pt": "Painel AgroHubs: solicitações de voos de drone da propriedade (NDVI, pulverização, mapeamento e irrigação) com status e preço cotado."
-    }
-  },
-  {
-    "archivo": "drones-movil.webp",
-    "pantalla": "drones",
-    "vista": "movil",
-    "ancho": 780,
-    "alto": 1688,
-    "alt": {
-      "es": "App AgroHubs: sección Servicios con la tarjeta de drones DronX para pedir fumigación, mapas NDVI o mapeo, y servicios de aliados.",
-      "en": "AgroHubs app: Services section with the DronX drone card to request spraying, NDVI maps or mapping, plus partner services.",
-      "pt": "App AgroHubs: seção Serviços com o cartão de drones DronX para pedir pulverização, mapas NDVI ou mapeamento, e serviços de parceiros."
-    }
-  },
-  {
     "archivo": "tienda-escritorio.webp",
     "pantalla": "tienda",
     "vista": "escritorio",

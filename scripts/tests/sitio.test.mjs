@@ -16,9 +16,9 @@ const FUENTES = readdirSync(new URL('../../src/', import.meta.url), { recursive:
   .map((f) => String(f).replace(/\\/g, '/')).filter((f) => /\.jsx?$/.test(f))
   .map((f) => ({ f, texto: leer(`../../src/${f}`) }))
 
-test('menú Apps: AgroHubs, AgroCiclo, DronX, AgroSeller y Fisaro', () => {
+test('menú Apps: AgroHubs, Fisaro, AgroCiclo, DronX y AgroSeller (orden de Fernando)', () => {
   assert.deepEqual(APPS.map((a) => [a.nombre, a.ruta]), [
-    ['AgroHubs', '/'], ['AgroCiclo', '/apps/agrociclo'], ['DronX', '/apps/dronx'], ['AgroSeller', '/apps/agroseller'], ['Fisaro', '/apps/fisaro'],
+    ['AgroHubs', '/'], ['Fisaro', '/apps/fisaro'], ['AgroCiclo', '/apps/agrociclo'], ['DronX', '/apps/dronx'], ['AgroSeller', '/apps/agroseller'],
   ])
   assert.ok(APPS.some((a) => a.slug === 'fisaro' && a.sitio === 'https://fisaro.cl'), 'Fisaro es una app de OlaDigital en el ecosistema')
   assert.equal(appPorSlug('agrohubs').promesa, 'Crea tu Centro Demostrativo Agrícola')
@@ -33,7 +33,8 @@ test('sitios propios y CTA de cada app', () => {
   assert.equal(seller.sitio, undefined, 'AgroSeller aún no tiene sitio')
   assert.equal(seller.cta, 'Quiero ser parte')
   assert.equal(seller.nuevo, true)
-  assert.equal(appPorSlug('dronx').modulo, 'drones', 'DronX reutiliza el módulo Drones')
+  for (const slug of ['dronx', 'agroseller']) assert.equal(appPorSlug(slug).estado, 'En desarrollo', `${slug} en desarrollo`)
+  assert.equal(appPorSlug('dronx').modulo, undefined, 'DronX ya no es un módulo de AgroHubs')
 })
 
 test('cada página de app tiene todas las secciones de la plantilla', () => {
@@ -86,15 +87,17 @@ test('el video real de la app está publicado con su portada', () => {
   assert.ok(readFileSync(new URL('../../public/videos/app.jpg', import.meta.url)).length > 0)
 })
 
-test('los 12 módulos tienen página: propia o armada por ModuloPagina', () => {
+test('los 10 módulos tienen página: propia o armada por ModuloPagina', () => {
   const fuente = leer('../../src/lib/modulos.js')
   const app = leer('../../src/App.jsx')
   const bloques = fuente.split(/\r?\n  \{\r?\n/).slice(1)
-  assert.equal(bloques.length, 12)
+  assert.equal(bloques.length, 10)
   const keys = bloques.map((b) => b.match(/key: "([^"]+)"/)[1])
-  // Mismas key que la plataforma; el orden es del sitio (la IA agrícola va primera, por pedido de Fernando)
+  // Mismas key que la plataforma, sin fases del cultivo ni drones (Fernando, nov. 2026); la IA agrícola va primera
   assert.deepEqual([...keys].sort(), ['dashboard_sensores', 'bitacora', 'chat_ia', 'documentos', 'fuentes', 'clima', 'recomendaciones',
-    'fenologia', 'calculadoras', 'eventos', 'tienda', 'drones'].sort(), 'mismas key que la plataforma')
+    'calculadoras', 'eventos', 'tienda'].sort(), 'mismas key que la plataforma, menos fases del cultivo y drones')
+  assert.ok(!/fenolog|Solicitar drones|DronX/i.test(fuente.replace(/^\s*\/\/.*$/gm, '')), 'sin fases fenológicas ni solicitud de drones')
+  assert.match(fuente, /nombre: "Feria Digital", corto: "Feria Digital", bajada: "Productos y Servicios"/)
   assert.equal(keys[0], 'chat_ia', 'la IA agrícola va primera')
   for (const b of bloques) {
     const ruta = b.match(/ruta: "([^"]+)"/)[1]
@@ -192,7 +195,7 @@ test('nada envía a /api/lead (ya no existe) y los formularios ofrecen otro cont
   assert.ok(build.includes(`var LEADS_URL='${LEADS_URL}'`))
   assert.ok(build.includes('j.ok===true'))
   assert.equal(CORREO_CONTACTO, 'cotizaciones@agrohubs.cl')
-  for (const f of ['components/ContactModal.jsx', 'pages/Evaluacion.jsx', 'components/PedidoModal.jsx']) {
+  for (const f of ['components/ContactModal.jsx', 'pages/Evaluacion.jsx']) {
     assert.ok(leer(`../../src/${f}`).includes('mailto:${CORREO_CONTACTO}'), `${f}: sin contacto alternativo`)
   }
 })
@@ -223,4 +226,22 @@ test('las plataformas de la app AgroHubs solo se escriben en lib/plataformas.js'
     if (f === 'lib/plataformas.js') continue
     assert.ok(!/iOS y Android|iOS and Android|iOS e Android|['"]iOS['"]/.test(texto), `src/${f}`)
   }
+})
+
+test('fotos de cultivos de clima templado: sin piña, plátano, café, caña ni mango', async () => {
+  const { FOTOS } = await import('../../src/lib/fotos.js')
+  const tropical = /piña|abacaxi|pineapple|pl[aá]tano|banan|caf[eé]|coffee|caña|canavial|\bcane\b|mango|papaya|cacao|cocoa/i
+  for (const [k, f] of Object.entries(FOTOS)) assert.ok(!tropical.test(JSON.stringify(f.alt)), `${k}: ${f.alt.es}`)
+  for (const k of ['cosechaManos', 'arandanos', 'cerezas', 'uva', 'paltos', 'feria']) assert.ok(FOTOS[k], `falta la foto ${k}`)
+  assert.match(FOTOS.feria.alt.es, /Santiago/)
+  const portada = leer('../../src/pages/Home.jsx')
+  assert.match(portada, /const GENTE = \["cosechaManos", "paltos", "arandanos", "uva", "riegoPersona", "feriaVendedor"\]/)
+})
+
+test('la portada parte arriba: el diagrama baja solo con un filtro en el enlace, y «Comenzar» lleva a la sección siguiente', () => {
+  const eco = leer('../../src/components/Ecosistema.jsx')
+  assert.ok(eco.includes('useRef(params.has("modulo") || params.has("servicio"))'), 'sin ?modulo= ni ?servicio= no hay scrollIntoView')
+  const portada = leer('../../src/pages/Home.jsx')
+  assert.ok(portada.includes('href="#flujo" onClick={bajar}') && portada.includes('t("hero.comenzar")'))
+  assert.ok(leer('../../src/components/Diagramas.jsx').includes('id="flujo"'))
 })

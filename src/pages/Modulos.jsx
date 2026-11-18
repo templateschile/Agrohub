@@ -37,6 +37,7 @@ export default function Modulos() {
                   </div>
                   <div className="min-w-0">
                     <h2 className="font-bold text-gray-900 text-base mb-1.5 group-hover:text-agro-green-700 transition-colors">{m.nombre}</h2>
+                    {m.bajada && <p className="text-agro-green-800 text-sm font-semibold mb-1.5">{m.bajada}</p>}
                     <p className="text-gray-600 text-sm leading-relaxed">{m.descripcion}</p>
                   </div>
                   <span className="text-sm font-semibold text-agro-green-700 flex items-center gap-1 mt-auto">

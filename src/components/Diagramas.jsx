@@ -13,7 +13,7 @@ export function FlujoDato() {
   ]
   const ancho = 1100, cajaW = 220, cajaH = 92, hueco = (ancho - 4 * cajaW) / 3
   return (
-    <section className="ah-diag" aria-labelledby="flujo-titulo">
+    <section className="ah-diag" id="flujo" tabIndex={-1} aria-labelledby="flujo-titulo">
       <div className="container">
         <div className="ah-diag__cabeza"><h2 id="flujo-titulo" className="ah-seccion">{t("flujo.titulo")}</h2></div>
         <svg className="ah-diag__svg" viewBox={`0 0 ${ancho} ${cajaH}`} role="img" aria-label={t("flujo.aria")}>

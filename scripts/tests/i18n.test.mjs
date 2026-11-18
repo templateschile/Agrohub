@@ -97,11 +97,14 @@ test('toda clave literal usada con t() existe en el diccionario', () => {
   assert.deepEqual(faltan, [])
 })
 
-test('los textos nuevos no usan rayas largas ni datos de ejemplo de un solo país', () => {
+// Fernando (nov. 2026): el sitio se enfoca en Chile, también en los ejemplos
+test('los textos nuevos no usan rayas largas y los ejemplos son de Chile', () => {
   const comun = JSON.stringify(AREAS.comun)
   assert.ok(!/—/.test(comun), 'sin rayas largas')
-  assert.ok(!/\+56/.test(comun), 'sin teléfonos chilenos de ejemplo')
-  assert.ok(!/@empresa\.cl/.test(comun), 'sin correos .cl de ejemplo')
+  assert.ok(!/—/.test(JSON.stringify(AREAS.integraciones)), 'sin rayas largas en integraciones')
+  assert.match(TEXTOS.es['demo.contactoEjemplo'], /\+56/)
+  assert.match(TEXTOS.es['cultivos.titulo'], /Cerezas, paltas, arándanos, uva de mesa/)
+  for (const i of IDIOMAS) assert.match(TEXTOS[i]['hero.eyebrow'], /^10 /, `hero.eyebrow (${i}): 10 módulos`)
 })
 
 test('las plataformas de la app se escriben en un solo lugar', () => {

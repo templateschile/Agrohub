@@ -10,11 +10,11 @@ import {
   modulosDeServicio, resumen, resaltado, plano, etiquetaServicio,
 } from "../lib/ecosistema"
 
-// El ecosistema de AgroHubs: el centro, los 12 módulos, sus conectores y los servicios de terceros.
+// El ecosistema de AgroHubs: el centro, los 10 módulos, sus conectores y los servicios de terceros, con las
+// fuentes públicas de Chile alrededor. Un servicio con página en /integraciones enlaza a ella desde la lista.
 // Lo principal es el filtro: al elegir un módulo (en la fila de botones o en el diagrama) queda resaltado
 // solo lo suyo y la lista muestra solo sus integraciones. Al elegir un servicio se ve en qué módulos se usa.
-// El filtro queda en la URL (?modulo=sensores o ?servicio=google) y lo sigue también la lista de
-// integraciones de la región (components/Integraciones.jsx).
+// El filtro queda en la URL (?modulo=sensores o ?servicio=google).
 // El diagrama es para mirar y tocar con el mouse; con teclado y lector de pantalla se usa la fila de
 // módulos y la lista, que dicen lo mismo.
 
@@ -25,8 +25,8 @@ const SERV_ORDENADOS = [...SERVICIOS].sort((a, b) => a.nombre.localeCompare(b.no
 // El filtro de la URL usa el nombre corto en español, igual en los tres idiomas
 export const SLUG_MODULO = {
   dashboard_sensores: "sensores", bitacora: "bitacora", chat_ia: "chat-ia", documentos: "biblioteca", fuentes: "fuentes",
-  clima: "clima", recomendaciones: "recomendaciones", fenologia: "fenologia", calculadoras: "calculadoras",
-  eventos: "eventos", tienda: "mercado", drones: "drones", insumos: "insumos",
+  clima: "clima", recomendaciones: "recomendaciones", calculadoras: "calculadoras",
+  eventos: "eventos", tienda: "feria", insumos: "insumos",
 }
 export const moduloDeSlug = slug => Object.keys(SLUG_MODULO).find(k => SLUG_MODULO[k] === slug) || null
 
@@ -66,6 +66,7 @@ function useTextosEco() {
     t,
     conector: c => tr?.conectores[c.id]?.nombre || c.nombre,
     etiquetaConector: c => tr?.conectores[c.id]?.etiqueta || c.etiqueta,
+    propio: c => tr?.conectores[c?.id]?.propio || c?.propio || "",
     que: s => tr?.servicios[s.id] || s.que,
     detalle: f => tr?.filas[`${f.modulo}/${f.conector}/${f.servicio}`] || f.detalle,
   }
@@ -103,8 +104,9 @@ export default function Ecosistema() {
   const mostrado = vista || sel
   const luz = resaltado(mostrado)
 
-  // Si llegan con un filtro en el enlace, se abre el diagrama (solo al cargar: por eso no depende de `sel`)
-  const alCargar = useRef(Boolean(sel))
+  // Solo si el enlace trae un filtro (?modulo= o ?servicio=) la página baja al diagrama al cargar. Sin filtro, la
+  // portada parte arriba aunque la IA agrícola quede elegida por defecto.
+  const alCargar = useRef(params.has("modulo") || params.has("servicio"))
   useEffect(() => {
     if (alCargar.current && seccion.current) seccion.current.scrollIntoView({ block: "start" })
   }, [])
@@ -282,7 +284,7 @@ function Diagrama({ idioma, modulos, MOD, luz, compacto, clase, elegirModulo, el
 }
 
 function Panel({ sel, MOD, disponibles, verTodo, elegirModulo, elegirServicio }) {
-  const { t, conector, que, detalle } = useTextosEco()
+  const { t, conector, que, detalle, propio } = useTextosEco()
   let titulo, cuerpo
   if (sel?.tipo === "modulo") {
     const m = MOD[sel.id]
@@ -302,7 +304,7 @@ function Panel({ sel, MOD, disponibles, verTodo, elegirModulo, elegirServicio })
                 return (
                   <li key={`${f.conector}-${f.servicio}`} className="eco-fila">
                     <span className="eco-fila__nombre">
-                      {s ? <button type="button" className="eco-fila__boton" onClick={() => elegirServicio(s.id)}>{s.nombre}</button> : <b>{t("eco.tuEstacion")}</b>}
+                      {s ? <button type="button" className="eco-fila__boton" onClick={() => elegirServicio(s.id)}>{s.nombre}</button> : <b>{propio(c)}</b>}
                       <small>{detalle(f)}</small>
                     </span>
                     <Estado estado={f.estado} />
@@ -333,6 +335,7 @@ function Panel({ sel, MOD, disponibles, verTodo, elegirModulo, elegirServicio })
             </li>
           ))}
         </ul>
+        {s.integracion && <p className="eco-panel__demo"><Enlace className="eco-enlace" to={`/integraciones/${s.integracion}`}>{t("eco.verIntegracion", { nombre: s.nombre })}</Enlace></p>}
       </>
     )
   } else {

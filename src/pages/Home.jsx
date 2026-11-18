@@ -13,12 +13,25 @@ import { FlujoDato, CentroDemostrativo } from "../components/Diagramas"
 import FormDemo from "../components/FormDemo"
 import { useIdioma, Enlace } from "../i18n"
 import { FOTOS } from "../lib/fotos"
+import { ArrowDown } from "lucide-react"
 
-// Gente del campo (lib/fotos.js): personas trabajando, de varios países, sin preferir ninguno
-const GENTE = ["cosechaManos", "familiaCampo", "riegoPersona", "ganaderoCampo", "feriaVendedor", "vinas"].filter(k => FOTOS[k])
+// Cultivos de Chile y gente del campo (lib/fotos.js): cerezas, paltos, arándanos, uva, riego y feria. Sin piña,
+// plátano, café ni otros cultivos tropicales.
+const GENTE = ["cosechaManos", "paltos", "arandanos", "uva", "riegoPersona", "feriaVendedor"].filter(k => FOTOS[k])
 
-// Portada: la app con sus módulos y los tres pasos, el ecosistema interactivo (lo principal) con las
-// integraciones de la región que siguen su filtro, las apps del ecosistema, los cultivos, el video,
+// «Comenzar»: baja a la sección que sigue al héroe (el flujo del dato) y le pasa el foco. La portada parte
+// arriba: ningún ancla ni filtro la mueve al cargar (ver Ecosistema.jsx).
+function bajar(e) {
+  const destino = document.getElementById("flujo")
+  if (!destino) return
+  e.preventDefault()
+  const quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  destino.scrollIntoView({ behavior: quieto ? "auto" : "smooth", block: "start" })
+  destino.focus({ preventScroll: true })
+}
+
+// Portada: la app con sus módulos y los tres pasos (parte arriba; «Comenzar» baja al flujo del dato), el
+// ecosistema interactivo con las fuentes de Chile, las integraciones por grupo, las apps del ecosistema, los cultivos, el video,
 // quiénes confían y agendar la reunión (con la evaluación como segunda opción en la portada).
 // Un llamado corto a la demo, repetido después del ecosistema y del video
 function CtaDemo({ id }) {
@@ -48,7 +61,8 @@ export default function Home() {
             <h1 id="hero-titulo" className="ah-display">{t("hero.titulo")}</h1>
             <p className="ah-lead ah-hero__bajada">{t("hero.bajada")}</p>
             <div className="ah-acciones">
-              <a className="ah-btn" href="#contacto">{t("cta.demo")}</a>
+              <a className="ah-btn" href="#flujo" onClick={bajar}>{t("hero.comenzar")}<ArrowDown size={18} aria-hidden="true" /></a>
+              <a className="ah-btn ah-btn--claro" href="#contacto">{t("cta.demo")}</a>
             </div>
           </div>
           <div className="ah-hero__app">

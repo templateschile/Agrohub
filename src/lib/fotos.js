@@ -1,7 +1,7 @@
 // Fotos reales de campo, todas de Unsplash (licencia Unsplash: uso libre, crédito voluntario que igual damos).
 // Cada una: `imagen` (id en images.unsplash.com), `autor`, `perfil` (usuario), `id` (página de la foto) y
 // `alt` en los tres idiomas. Se muestran con <Foto> (WebP, srcset y carga diferida) y <CreditoFoto>.
-// Nada enlazado desde Wikimedia.
+// Nada enlazado desde Wikimedia. Cultivos de clima templado, como los de Chile: sin piña, plátano, café ni caña.
 export const FOTOS = {
   paltos: {
     imagen: "photo-1789919350057-cf61e32bf138", autor: "Timur Seyfelmlyukov", perfil: "timurse", id: "JA95LH6tfI4", pos: "50% 38%",
@@ -36,8 +36,8 @@ export const FOTOS = {
     alt: { es: "Trabajador levantando una caja de uvas recién cosechadas en el viñedo", en: "Worker lifting a crate of freshly harvested grapes in the vineyard", pt: "Trabalhador levantando uma caixa de uvas recém-colhidas no vinhedo" },
   },
   capacitacion: {
-    imagen: "photo-1791570923966-e113b13766a7", autor: "David Maillard", perfil: "orubecoffee", id: "Ft6VsaJYdBo", pos: "45% 40%",
-    alt: { es: "Tres productores revisan una planta de café mientras conversan en una ladera", en: "Three growers examine a coffee plant while talking on a hillside", pt: "Três produtores examinam um pé de café enquanto conversam em uma encosta" },
+    imagen: "photo-1759365754624-0dc75fd72744", autor: "Avesta", perfil: "avesta1", id: "hBkptZecHpg", pos: "50% 40%",
+    alt: { es: "Un grupo camina por la entrehilera de un huerto de manzanos; el más cercano lleva bolsas con manzanas al hombro", en: "A group walks down the row of an apple orchard; the nearest man carries bags of apples over his shoulder", pt: "Um grupo caminha entre as fileiras de um pomar de macieiras; o mais próximo leva sacolas de maçãs no ombro" },
   },
   dron: {
     imagen: "photo-1713952160156-bb59cac789a9", autor: "DRONE EFT", perfil: "eftdrone", id: "nMDwrS1NsIE", pos: "50% 40%",
@@ -48,8 +48,20 @@ export const FOTOS = {
     alt: { es: "Rollos de tubería plástica corrugada dejados sobre tierra y pasto seco", en: "Coils of corrugated plastic pipe left on soil and dry grass", pt: "Rolos de tubo plástico corrugado deixados sobre terra e capim seco" },
   },
   feria: {
-    imagen: "photo-1729622493745-03ca9590c64a", autor: "Ricky Beron", perfil: "nacio1966", id: "V0sZeTunIvY",
-    alt: { es: "Puesto de feria repleto de fruta fresca a la venta: uvas, mangos, manzanas y cerezas", en: "Market stall packed with fresh fruit for sale: grapes, mangoes, apples and cherries", pt: "Banca de feira repleta de frutas frescas à venda: uvas, mangas, maçãs e cerejas" },
+    imagen: "photo-1668616636312-351578780e0d", autor: "Rebecca Hausner", perfil: "rebecca_h", id: "-9-zh6WXGk8", pos: "50% 55%",
+    alt: { es: "Puesto de feria en Santiago con cajones de paltas, manzanas, naranjas, mandarinas y kiwis, con precios en pizarras", en: "Market stall in Santiago, Chile, with crates of avocados, apples, oranges, mandarins and kiwis, with prices on chalkboards", pt: "Banca de feira em Santiago, no Chile, com caixas de abacates, maçãs, laranjas, tangerinas e kiwis, com preços em lousas" },
+  },
+  arandanos: {
+    imagen: "photo-1595812344149-a5a84e1c3964", autor: "Mario Mendez", perfil: "m_mendez_ix", id: "fw7sKxSg5Vs", pos: "55% 50%",
+    alt: { es: "Racimos de arándanos maduros en la planta", en: "Clusters of ripe blueberries on the bush", pt: "Cachos de mirtilos maduros no arbusto" },
+  },
+  cerezas: {
+    imagen: "photo-1686182368088-c355cb622561", autor: "Jared Subia", perfil: "jaysoobs", id: "SpToe3939_w", pos: "45% 35%",
+    alt: { es: "Cerezas rojas colgando de una rama del cerezo", en: "Red cherries hanging from a cherry tree branch", pt: "Cerejas vermelhas penduradas em um galho da cerejeira" },
+  },
+  uva: {
+    imagen: "photo-1785670085297-ef092337f088", autor: "Nicole Almendrada", perfil: "nicolealmendrada", id: "46oseDnYihM", pos: "60% 45%",
+    alt: { es: "Racimos de uva morada entre hojas, bajo una viga de madera, en Ovalle", en: "Bunches of purple grapes among leaves under a wooden beam, in Ovalle, Chile", pt: "Cachos de uva roxa entre folhas, sob uma viga de madeira, em Ovalle, no Chile" },
   },
   // --- Fotos con personas (héroe, equipo, módulos) ---
   agricultorTablet: {
@@ -57,36 +69,32 @@ export const FOTOS = {
     alt: { es: "Agricultor con guantes apoyado en un cerco de madera revisa una tablet en su predio", en: "Farmer in work gloves leaning on a wooden fence checks a tablet on his farm", pt: "Agricultor de luvas apoiado em uma cerca de madeira consulta um tablet em sua propriedade" },
   },
   asesorCampo: {
-    imagen: "photo-1791570923102-0d9dc11d14db", autor: "David Maillard", perfil: "orubecoffee", id: "RGfN4xqQTOQ", pos: "55% 45%",
-    alt: { es: "Asesor conversa con dos productores entre cafetos en una ladera soleada", en: "Adviser talks with two growers among coffee plants on a sunny hillside", pt: "Assessor conversa com dois produtores entre pés de café em uma encosta ensolarada" },
-  },
-  capacitacionGrupo: {
-    imagen: "photo-1723851944164-121e673fbffb", autor: "Jhonathan David Posso Guaitarilla", perfil: "jhonathan_posso", id: "UF7NdgkLBBU", pos: "55% 45%",
-    alt: { es: "Grupo de productores trabaja en hileras de cultivo en una ladera rodeada de vegetación", en: "Group of growers works crop rows on a hillside surrounded by vegetation", pt: "Grupo de produtores trabalha em fileiras de cultivo em uma encosta cercada de vegetação" },
+    imagen: "photo-1581457154118-5f473df4b204", autor: "Valentina Troncoso", perfil: "valetroncoso", id: "pyU3uWtd6kY", pos: "50% 55%",
+    alt: { es: "Tres jóvenes miran cómo una mujer revisa las plantas junto a un maizal, con cerros secos al fondo", en: "Three young men watch a woman check the plants beside a corn field, with dry hills behind", pt: "Três jovens observam uma mulher examinar as plantas ao lado de um milharal, com morros secos ao fundo" },
   },
   cosechaManos: {
-    imagen: "photo-1775434657007-549ae5d21bd4", autor: "Felipe Osorio", perfil: "felipeosoriogarcia", id: "TcPJecW_V0g",
-    alt: { es: "Manos de un recolector sostienen cerezas de café recién cosechadas junto al arbusto", en: "A picker's hands hold freshly harvested coffee cherries beside the bush", pt: "Mãos de um colhedor seguram cerejas de café recém-colhidas junto ao arbusto" },
+    imagen: "photo-1781956171798-b19c38fa0d16", autor: "Liana S", perfil: "cherstve_pechivo", id: "74hIMV-bCoI", pos: "60% 45%",
+    alt: { es: "Una mano cosecha cerezas rojas de una rama con hojas", en: "A hand picks red cherries from a leafy branch", pt: "Uma mão colhe cerejas vermelhas de um galho com folhas" },
   },
   feriaVendedor: {
-    imagen: "photo-1778720431543-8f2446c74dc8", autor: "Anton Acosta", perfil: "ottelo", id: "S7vHvX9a1h4", pos: "50% 40%",
-    alt: { es: "Vendedora sonríe en su puesto de feria entre plátanos, piñas y sandías", en: "Smiling vendor at her market stall among bananas, pineapples and watermelons", pt: "Vendedora sorri em sua banca de feira entre bananas, abacaxis e melancias" },
+    imagen: "photo-1723980042954-999376ce5afe", autor: "Alireza heidarpour", perfil: "ahcapture", id: "_Eyxo90ehGQ", pos: "45% 45%",
+    alt: { es: "Vendedor de feria detrás de un montón de cerezas, con duraznos al lado y quitasoles de colores", en: "Market vendor behind a heap of cherries, with peaches beside them and colorful umbrellas", pt: "Feirante atrás de um monte de cerejas, com pêssegos ao lado e guarda-sóis coloridos" },
   },
   operadorDron: {
     imagen: "photo-1767194316751-dce698b5e224", autor: "Rob Wingate", perfil: "robwingate", id: "eu9YwRKCt3s", pos: "50% 45%",
     alt: { es: "Operador con el control en la mano lanza un dron sobre un terreno abierto al atardecer", en: "Operator holding the controller launches a drone over open terrain at sunset", pt: "Operador com o controle na mão lança um drone sobre um terreno aberto ao entardecer" },
   },
   recicladorCampo: {
-    imagen: "photo-1695492120345-1ab1ee0c217f", autor: "Gerson Crespo", perfil: "yersoncrespo", id: "rcJukcTNXq8", pos: "55% 50%",
-    alt: { es: "Campesino con azadón recoge un saco en un campo de caña con cerros al fondo", en: "Farmer with a hoe collects a sack in a cane field with hills in the background", pt: "Agricultor com enxada recolhe um saco em um canavial com morros ao fundo" },
+    imagen: "photo-1605000797499-95a51c5269ae", autor: "Tim Mossholder", perfil: "timmossholder", id: "xDwEa2kaeJA", pos: "55% 40%",
+    alt: { es: "Trabajador lleva una caja al hombro entre las hileras de un campo de frutillas con neblina", en: "Worker carries a crate on his shoulder between the rows of a misty strawberry field", pt: "Trabalhador leva uma caixa no ombro entre as fileiras de um campo de morangos com neblina" },
   },
   riegoPersona: {
-    imagen: "photo-1567497063796-7952e455a2a6", autor: "daniel kawed", perfil: "dancalorg", id: "9f_eJeULtSY", pos: "50% 55%",
-    alt: { es: "Tres trabajadores ajustan una tubería de riego entre plantas de banano", en: "Three workers adjust an irrigation pipe among banana plants", pt: "Três trabalhadores ajustam uma tubulação de irrigação entre bananeiras" },
+    imagen: "photo-1624720114708-0cbd6ee41f4e", autor: "Zoe Richardson", perfil: "farmsteadphoto", id: "siD6uufCyt8", pos: "35% 45%",
+    alt: { es: "Agricultor riega con manguera las hortalizas de un invernadero", en: "Grower waters vegetable beds with a hose inside a greenhouse", pt: "Agricultor rega com mangueira as hortaliças de uma estufa" },
   },
   familiaCampo: {
-    imagen: "photo-1654727317152-b8178b6083ef", autor: "Ashlyn Ciara", perfil: "ashlynciara", id: "py7JHxeMPKM", pos: "50% 40%",
-    alt: { es: "Pareja de productores sonríe entre almácigos de café bajo malla sombra", en: "Couple of growers smiles among coffee seedlings under shade netting", pt: "Casal de produtores sorri entre mudas de café sob tela de sombreamento" },
+    imagen: "photo-1761839258671-6495fdc188b3", autor: "Land O'Lakes, Inc.", perfil: "landolakesinc", id: "0VIqR7HmDZw", pos: "45% 55%",
+    alt: { es: "Una mujer y dos niños en un vehículo de campo junto a un manzano; una niña toma una manzana", en: "A woman and two children on a farm vehicle beside an apple tree; a girl reaches for an apple", pt: "Uma mulher e duas crianças em um veículo agrícola ao lado de uma macieira; uma menina pega uma maçã" },
   },
   ganaderoCampo: {
     imagen: "photo-1732138186663-7a71cd3a46f2", autor: "Brandon Lotero", perfil: "blotero", id: "jjJomvOZpt8", pos: "50% 45%",

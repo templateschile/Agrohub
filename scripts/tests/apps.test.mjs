@@ -1,4 +1,4 @@
-// Apps del ecosistema (DronX, AgroCiclo, AgroSeller): colores, destinos de los botones, traducciones y
+// Apps del ecosistema (Fisaro, AgroCiclo, DronX, AgroSeller): colores, destinos de los botones, traducciones y
 // formularios. Solo importa archivos .js puros; los .jsx se leen como texto. Uso: npm test
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
@@ -80,10 +80,12 @@ test('cada botón de las apps lleva a un destino que existe', () => {
       revisarDestino(a, a.otra.destino, 'botón secundario')
     }
   }
-  // DronX: se pide desde el módulo Drones de AgroHubs y su sitio se abre aparte
+  // DronX: en desarrollo, solo como app del ecosistema (sin módulo de drones ni solicitudes desde AgroHubs)
   const dronx = APPS.find((a) => a.slug === 'dronx')
-  assert.deepEqual(dronx.destino, { ruta: '/drones' })
-  assert.deepEqual(dronx.otra.destino, { url: 'https://dsp.oladigital.cl' })
+  assert.deepEqual(dronx.destino, { url: 'https://dsp.oladigital.cl' })
+  assert.equal(dronx.estado, 'En desarrollo')
+  assert.equal(dronx.modulo, undefined)
+  assert.ok(!/AgroHubs/.test(JSON.stringify([dronx.bajada, dronx.problemas, dronx.pasos, dronx.conexion, dronx.faq, dronx.cierre])), 'DronX no se presenta integrada con AgroHubs')
   // AgroCiclo: su sitio
   assert.deepEqual(APPS.find((a) => a.slug === 'agrociclo').destino, { url: 'https://agrociclo.oladigital.cl' })
   // AgroSeller: en desarrollo, el botón lleva al formulario de interés de la misma página
@@ -91,7 +93,7 @@ test('cada botón de las apps lleva a un destino que existe', () => {
   assert.deepEqual(seller.destino, { ancla: 'interes' })
   assert.ok(seller.interes && seller.estado, 'AgroSeller muestra que está en desarrollo y pide interés')
   // Las rutas internas llevan el prefijo del idioma
-  assert.equal(conIdioma('/drones', 'en'), '/en/drones')
+  assert.equal(conIdioma('/tienda', 'en'), '/en/tienda')
   assert.equal(conIdioma('/apps/agroseller', 'pt'), '/pt/apps/agroseller')
 })
 
@@ -102,8 +104,13 @@ test('cada app tiene ícono y foto (con respaldo mientras la propia no esté)', 
     assert.ok(FOTOS[a.foto] || FOTOS[a.fotoRespaldo], `${a.slug}: ni ${a.foto} ni ${a.fotoRespaldo} están en lib/fotos.js`)
     assert.ok(FOTOS[a.fotoRespaldo], `${a.slug}: la foto de respaldo (${a.fotoRespaldo}) tiene que existir`)
   }
-  // Fotos con personas (lib/fotos.js): quien recoge en el campo, el dron en vuelo y la vendedora de feria
-  assert.deepEqual(APPS_CON_PAGINA.map((a) => a.foto), ['recicladorCampo', 'dron', 'feriaVendedor', 'agricultorTablet'])
+  // Fotos (lib/fotos.js), en el orden del menú: Fisaro, AgroCiclo, DronX y AgroSeller (la feria de Santiago)
+  assert.deepEqual(APPS_CON_PAGINA.map((a) => a.foto), ['asesorCampo', 'residuos', 'dron', 'feria'])
+  // AgroHubs.cl va primera en la portada, con su ficha y enlace a las integraciones
+  const ah = APPS.find((a) => a.slug === 'agrohubs')
+  assert.equal(ah.tarjeta.nombre, 'AgroHubs.cl')
+  assert.equal(ah.tarjeta.ruta, '/integraciones')
+  assert.ok(FOTOS[ah.tarjeta.foto], 'foto de la ficha de AgroHubs.cl')
 })
 
 // ── Traducciones ──
@@ -180,8 +187,8 @@ const TODOS = [
 test('textos sin rayas largas ni datos de ejemplo de un solo país', () => {
   for (const s of TODOS) {
     assert.ok(!s.includes('—'), `raya larga: ${s}`)
-    // Los sitios reales de las apps (fisaro.cl) no son datos de ejemplo
-    assert.ok(!/\+\s?56|\.cl\b/.test(s.replace(/\bfisaro\.cl\b/g, '')), `dato de ejemplo chileno: ${s}`)
+    // Los sitios reales (fisaro.cl, AgroHubs.cl) no son datos de ejemplo
+    assert.ok(!/\+\s?56|\.cl\b/.test(s.replace(/\b(fisaro|agrohubs)\.cl\b/gi, '')), `dato de ejemplo chileno: ${s}`)
   }
   for (const [f, fuente] of [['FormInteres', INTERES], ['ContactModal', CONTACTO], ['AppPagina', PAGINA]]) {
     assert.ok(!/\+56|placeholder="\+/.test(fuente), `${f}: teléfono de ejemplo con código de un país`)
@@ -223,5 +230,6 @@ test('AppsEcosistema: sección de la portada con id="apps", un h2 y enlaces a ca
   assert.ok(PORTADA.includes('id = "apps"'))
   assert.ok(PORTADA.includes('<h2'))
   assert.ok(PORTADA.includes('<Enlace to={app.ruta}'))
-  assert.ok(PORTADA.includes('<CreditoFoto foto={foto} />') && PORTADA.includes('<Foto foto={foto}'))
+  assert.ok(PORTADA.includes('<CreditoFoto foto={app.foto} />') && PORTADA.includes('<Foto foto={app.foto}'))
+  assert.ok(PORTADA.includes('ah-ecoapp--principal') && PORTADA.includes('app.tarjeta'), 'AgroHubs.cl primera y más ancha')
 })

@@ -14,7 +14,7 @@ export default function Footer() {
         <div>
           <p className="ah-pie__marca">
             <span className="ah-pie__logo"><HubMark className="ah-pie__hub" title={null} /></span>
-            AgroHubs
+            <span>Agro<span className="ah-hubs">Hubs</span></span>
           </p>
           <p className="ah-pie__linea">{t('pie.linea')}</p>
           <Partner variante="linea" />
@@ -28,7 +28,7 @@ export default function Footer() {
             <Enlace to="/documentos">{t('pie.documentos')}</Enlace>
             <Enlace to="/eventos">{t('pie.eventos')}</Enlace>
             <Enlace to="/tienda">{t('pie.tienda')}</Enlace>
-            <Enlace to="/drones">{t('pie.drones')}</Enlace>
+            <Enlace to="/integraciones">{t('pie.integraciones')}</Enlace>
             <Enlace to="/evaluacion">{t('pie.evaluacion')}</Enlace>
             <a href="/apis" hrefLang="es">{t('pie.apis')}</a>
             <a href="/apis/cotizar" hrefLang="es">{t('pie.cotizar')}</a>

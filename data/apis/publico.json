@@ -47,19 +47,6 @@
     ],
     "resumen": "Mapas oficiales de Chile para consultar por ubicación: suelos, catastro frutícola, propiedades rurales, erosión, uso de la tierra e incendios. Gratis y sin registro."
   },
-  "kadi_sostenible": {
-    "resumen": "Registros de sostenibilidad del predio (etapa del cultivo, labores realizadas y residuos generados, con fotos) que alimentan los manuales AgroHubs Sostenible.",
-    "descripcion": [
-      "AgroHubs Sostenible es una fuente propia de AgroHubs. Registra por fecha la etapa del cultivo, las labores realizadas y los residuos que se generan, cada uno con texto y foto.",
-      "Sirve para construir historiales de manejo sostenible, reportes para certificaciones y material de capacitación. Está disponible para quienes integran su sistema con AgroHubs."
-    ]
-  },
-  "modag": {
-    "descripcion": [
-      "MODAG es un cuaderno de campo digital chileno. Registra las labores de cada campo y sector: aplicaciones, tipo de producto, costos, observaciones y responsables.",
-      "Si tu empresa ya usa MODAG, AgroHubs puede traer esos registros y combinarlos con clima, sensores y precios. El acceso a los datos requiere un acuerdo con MODAG."
-    ]
-  },
   "biblioteca_inia": {
     "resumen": "Boletines, fichas técnicas y manuales de la Biblioteca Digital de INIA, que AgroHubs reúne en su buscador para encontrarlos en segundos.",
     "descripcion": [
